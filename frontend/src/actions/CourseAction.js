@@ -34,11 +34,13 @@ function courseSearchKeywordAction(GlobalHook, key) {
 
 function courseSearchCatAction(GlobalHook, key) {
   GlobalHook.setGlobalShowSearch(true)
+  GlobalHook.setGlobalLoading(true)
 
   axios
     .get(`/api/course/category/${key}`)
     .then(res => {
       GlobalHook.setGlobalCourseSearch(res.data)
+      GlobalHook.setGlobalLoading(false)
 
     })
     .catch(err => console.log(err));

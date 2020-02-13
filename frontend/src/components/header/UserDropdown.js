@@ -8,12 +8,15 @@ import {
     FaPowerOff,
     FaChalkboardTeacher
   } from "react-icons/fa";
+import { useHistory } from 'react-router-dom';
+
   import {LogoutAction} from '../../actions'
 import {GlobalContext} from '../../hook/GlobalHook'
 
 const UserDropdown = () => {
   const GlobalHook = useContext(GlobalContext)
   const [getAvatar,setAvatar] = useState("")
+  let history = useHistory();
 
   useEffect(() => {
     if(GlobalHook.getGlobalCurrentUser){
@@ -28,7 +31,7 @@ const UserDropdown = () => {
     const menu = (
         <Menu>
         <Menu.Item key="1">
-          <div className="flex w-30 justify-start items-center text-gray-800 hover:text-black"onClick={()=>window.location.href="/teacher"}> <FaChalkboardTeacher className="mr-2 text-black"/>
+          <div className="flex w-30 justify-start items-center text-gray-800 hover:text-black"onClick={()=>history.push("/teacher")}> <FaChalkboardTeacher className="mr-2 text-black"/>
           ครู</div>
           
         </Menu.Item>
@@ -36,7 +39,7 @@ const UserDropdown = () => {
        
         <Menu.Item key="3">
     
-          <div className="flex w-30 justify-start items-center text-gray-800" onClick={()=>window.location.href="/setting"}> <FaCog className="mr-2 text-black"/>
+          <div className="flex w-30 justify-start items-center text-gray-800" onClick={()=>history.push("/setting")}> <FaCog className="mr-2 text-black"/>
           Setting</div>
         </Menu.Item>
         <Menu.Divider />

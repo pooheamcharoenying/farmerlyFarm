@@ -5,12 +5,13 @@ import { FaTh, FaCalculator, FaAtom, FaRobot, FaCode } from "react-icons/fa";
 
 
 import { GlobalContext } from "../../hook/GlobalHook";
+import {courseSearchCatAction} from "../../actions"
 
 const CourseCatDropdown = ({showTitle}) => {
   const GlobalHook = useContext(GlobalContext);
 
   function handleMenuClick(val) {
-    // courseSearchCatAction(GlobalHook,val.key)
+    courseSearchCatAction(GlobalHook,val.key)
 
   }
 

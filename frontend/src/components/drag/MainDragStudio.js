@@ -48,7 +48,6 @@ export default function MainDragStudio() {
           onClick={() =>{
             setUnSaveAlertStatus(false);
               GlobalHook.setMutantStatus(false);
-              // window.location.reload()
               GlobalHook.setGlobalCourseStructure(JSON.parse(localStorage.getItem("InitStructure")))
 
             if(getAfterLeaveType == "NewTopic"){
