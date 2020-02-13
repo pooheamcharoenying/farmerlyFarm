@@ -518,6 +518,7 @@ export default function MainDragStudio() {
                             mainId={item.id}
                             parentIndex={index}
                             sectionName={item.content}
+                            itemsPool={items}
                           />
                         </div>
                         {provided.placeholder}
