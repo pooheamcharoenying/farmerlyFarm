@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { Input, Button, Upload, Icon, Progress, Popover, Spin, message } from "antd";
+import {
+  Input,
+  Button,
+  Upload,
+  Icon,
+  Progress,
+  Popover,
+  Spin,
+  message
+} from "antd";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import tus from "tus-js-client";
 import axios from "axios";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
 import { SaveAllAction, CheckMutateAction } from "../../actions";
-
 
 const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
 
@@ -18,13 +27,10 @@ const headerPost = {
 };
 
 const headerDelete = {
-  
   Authorization: `bearer ${accessToken}`
- 
 };
 
 const StudioVideoContent = () => {
-
   const GlobalHook = useContext(GlobalContext);
 
   const [getLessionTime, setLessionTime] = useState("");
@@ -33,12 +39,10 @@ const StudioVideoContent = () => {
   const [getInitStateName, setInitStateName] = useState("");
   const [getInitStateTime, setInitStateTime] = useState("");
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
-  const [getVideoData, setVideoData] = useState(null)
+  const [getVideoData, setVideoData] = useState(null);
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getVideoFileName, setVideoFileName] = useState("");
-
-
 
   const {
     acceptedFiles,
@@ -54,11 +58,9 @@ const StudioVideoContent = () => {
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
-      setVideoFileName(acceptedFiles[0].name)
+      setVideoFileName(acceptedFiles[0].name);
     }
   }, [acceptedFiles]);
-
-
 
   useEffect(() => {
     setLessionName(GlobalHook.getGlobalLessionSelect.mediaName);
@@ -66,34 +68,31 @@ const StudioVideoContent = () => {
 
     setLessionTime(GlobalHook.getGlobalLessionSelect.mediaTime);
     setInitStateTime(GlobalHook.getGlobalLessionSelect.mediaTime);
-    setVideoFileName(GlobalHook.getGlobalLessionSelect.mediaEtc1)
-    console.log(GlobalHook.getGlobalLessionSelect)
+    setVideoFileName(GlobalHook.getGlobalLessionSelect.mediaEtc1);
+    console.log(GlobalHook.getGlobalLessionSelect);
   }, [GlobalHook.getGlobalLessionSelect]);
 
   useEffect(() => {
-    console.log(getVideoFileName)
+    console.log(getVideoFileName);
     var oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
-
 
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].title = getLessionName;
       oldCourseStructure[parentIndex].subItems[selfIndex].time = getLessionTime;
-      oldCourseStructure[parentIndex].subItems[selfIndex].etc1 = getVideoFileName
-    
-
+      oldCourseStructure[parentIndex].subItems[
+        selfIndex
+      ].etc1 = getVideoFileName;
 
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
     }
   }, [getLessionName, getLessionTime, getVideoFileName]);
 
   useEffect(() => {
-   console.log(GlobalHook.getGlobalCourseStructureNew)
-  }, [ GlobalHook.getGlobalCourseStructureNew])
-
-
+    console.log(GlobalHook.getGlobalCourseStructureNew);
+  }, [GlobalHook.getGlobalCourseStructureNew]);
 
   useEffect(() => {
     CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
@@ -103,14 +102,10 @@ const StudioVideoContent = () => {
     CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
   }, [getLessionTime]);
 
-
-
   function handleDeleteLession() {
-
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
-    GlobalHook.setGlobalLessionSelect({ "mediaType": "CourseOverview" })
-
+    GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
 
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
@@ -121,23 +116,20 @@ const StudioVideoContent = () => {
         url: `https://api.vimeo.com/videos/${GlobalHook.getGlobalMediaVideo}`,
         headers: headerDelete,
         data: {}
-      }).catch((err)=>console.log(err))
+      }).catch(err => console.log(err));
       SaveAllAction(GlobalHook);
     }
   }
-
 
   useEffect(() => {
     setVideoData(GlobalHook.getGlobalMediaVideo);
     setInitStateVideo(GlobalHook.getGlobalMediaVideo);
   }, [GlobalHook.getGlobalMediaVideo]);
 
-
   useEffect(() => {
     GlobalHook.setGlobalMediaNew(getVideoData);
     CheckMutateAction(GlobalHook, getInitStateVideo, getVideoData);
   }, [getVideoData]);
-
 
   function UploadBtnClick() {
     setUploadingShow("initing");
@@ -162,12 +154,11 @@ const StudioVideoContent = () => {
         TusUpload(res);
       })
       .catch(err => {
-        message.error("Upload Error, Try Again")
+        message.error("Upload Error, Try Again");
         console.log(err);
-        setUploadingShow(false)
+        setUploadingShow(false);
       });
   }
-
 
   function TusUpload(response) {
     // Create a new tus upload
@@ -180,21 +171,21 @@ const StudioVideoContent = () => {
         filetype: GlobalHook.getGlobalStudioUploadFile.type
       },
       headers: {},
-      onError: function (error) {
+      onError: function(error) {
         console.log("Failed because: " + error);
-        setVideoData(null)
-        GlobalHook.setGlobalStudioUploadFile(null)
+        setVideoData(null);
+        GlobalHook.setGlobalStudioUploadFile(null);
         setUploadingShow("error");
-        message.error("Upload Error Try Again")
-        setUploadingShow(false)
+        message.error("Upload Error Try Again");
+        setUploadingShow(false);
       },
-      onProgress: function (bytesUploaded, bytesTotal) {
+      onProgress: function(bytesUploaded, bytesTotal) {
         setUploadingShow("uploading");
         let percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
         console.log(bytesUploaded, bytesTotal, percentage + "%");
         setuploadPercent(percentage);
       },
-      onSuccess: function () {
+      onSuccess: function() {
         console.log("Download %s from %s", upload.file.name, upload.url);
         setUploadingShow("done");
         console.log(upload);
@@ -203,23 +194,34 @@ const StudioVideoContent = () => {
 
     // Start the upload
     upload.start();
-
-   
   }
 
   useEffect(() => {
     if (GlobalHook.getGlobalLessionSelect.new == "new") {
-      setUploadingShow(false)
+      setUploadingShow(false);
     }
   }, [GlobalHook.getGlobalLessionSelect]);
   return (
-    <div className=" h-full w-full flex flex-col items-center pt-4 overflow-hidden">
-      <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold bg-blue-500">
-        {getLessionName}
-      </div>
+    <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
+    <div className="w-full flex mb-2  justify-center items-center">
+      <FaCaretLeft
+        className="hover:text-gray-700 text-gray-900 cursor-pointer"
+        style={{ fontSize: "35px" }}
+        onClick={() => GlobalHook.setPrevNextStatus("PrevLession")}
+      />
 
-      <div className="flex flex-col overflow-y-auto  h-full w-full over items-center justify-start py-4">
-        <div className="flex flex-col text-center mb-4">
+      <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
+        {GlobalHook.getGlobalLessionSelect.mediaName}
+      </div>
+      <FaCaretRight
+        className="hover:text-gray-700 text-gray-900 cursor-pointer"
+        style={{ fontSize: "35px" }}
+        onClick={() => GlobalHook.setPrevNextStatus("NextLession")}
+      />
+    </div>
+
+
+        <div className="flex flex-col text-center mb-4 mt-8">
           <div className="flex items-baseline justify-center">
             <div className="font-bold text-lg mb-2">ชื่อบทเรียน</div>
             <Popover
@@ -281,10 +283,15 @@ const StudioVideoContent = () => {
               }}
             />
           </div>
-          <div className="bg-white flex justify-center items-center flex-col "
-            style={{ minHeight: "200px", width: "60%" }}>
-            {GlobalHook.getGlobalMediaVideo ?
-              <div className="mt-4 flex flex-col" style={{ width: "100%", height: "auto" }}>
+          <div
+            className="bg-white flex justify-center items-center flex-col "
+            style={{ minHeight: "200px", width: "60%" }}
+          >
+            {GlobalHook.getGlobalMediaVideo ? (
+              <div
+                className="mt-4 flex flex-col"
+                style={{ width: "100%", height: "auto" }}
+              >
                 <div className="mb-2">"FileName:"{getVideoFileName}</div>
                 <div style={{ padding: "56.25% 0 0 0", position: "relative" }}>
                   <iframe
@@ -302,65 +309,93 @@ const StudioVideoContent = () => {
                   ></iframe>
                 </div>
               </div>
-              :
+            ) : (
               <div className="w-full h-full flex flex-col items-center">
-
-                {!getUploadingShow && (<div style={{ minHeight: "200px" }} className="w-full flex flex-col justify-center items-center cursor-pointer "> <div {...getRootProps({ className: "dropzone" })} style={{ minHeight: "200px" }} className="w-full flex flex-col justify-center items-center cursor-pointer ">
-                  <input {...getInputProps()} />
-                  {isDragAccept && <p>All files will be accepted</p>}
-                  {isDragReject && <p>Some files will be rejected</p>}
-                  {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
-                  {GlobalHook.getGlobalStudioUploadFile && <p className="mt-4">{GlobalHook.getGlobalStudioUploadFile.name}</p>}
-                </div>
-
-                  {GlobalHook.getGlobalStudioUploadFile && <button className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4" style={{ width: "100px" }} onClick={() => UploadBtnClick()}>Upload</button>}</div>)
-                }
-                {getUploadingShow == "initing" && <div>
-                  <div className="flex justify-center">
-                    <Spin size="large" />
+                {!getUploadingShow && (
+                  <div
+                    style={{ minHeight: "200px" }}
+                    className="w-full flex flex-col justify-center items-center cursor-pointer "
+                  >
+                    {" "}
+                    <div
+                      {...getRootProps({ className: "dropzone" })}
+                      style={{ minHeight: "200px" }}
+                      className="w-full flex flex-col justify-center items-center cursor-pointer "
+                    >
+                      <input {...getInputProps()} />
+                      {isDragAccept && <p>All files will be accepted</p>}
+                      {isDragReject && <p>Some files will be rejected</p>}
+                      {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
+                      {GlobalHook.getGlobalStudioUploadFile && (
+                        <p className="mt-4">
+                          {GlobalHook.getGlobalStudioUploadFile.name}
+                        </p>
+                      )}
+                    </div>
+                    {GlobalHook.getGlobalStudioUploadFile && (
+                      <button
+                        className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4"
+                        style={{ width: "100px" }}
+                        onClick={() => UploadBtnClick()}
+                      >
+                        Upload
+                      </button>
+                    )}
                   </div>
-                  <div className="mt-4 text-center">กำลังอัพโหลดวิดีโอ โปรดรอสักครู่ .....</div>
-
-
-                </div>
-
-                }
-
-                {getUploadingShow == "uploading" && <div>
-                  <div className="flex justify-center">
-                    <Progress className="mt-4" type="circle" percent={uploadPercentage} format={percent => `${percent} %`} />
+                )}
+                {getUploadingShow == "initing" && (
+                  <div>
+                    <div className="flex justify-center">
+                      <Spin size="large" />
+                    </div>
+                    <div className="mt-4 text-center">
+                      กำลังอัพโหลดวิดีโอ โปรดรอสักครู่ .....
+                    </div>
                   </div>
-                  <div className="mt-4 text-center">กำลังอัพโหลดวิดีโอ โปรดรอสักครู่ .....</div>
-                  
+                )}
 
-                </div>
-
-                }
-
-                {getUploadingShow == "done" && <div>
-                  <div className="flex justify-center">
-                    <Progress type="circle" percent={100} format={() => 'Done'} />
+                {getUploadingShow == "uploading" && (
+                  <div>
+                    <div className="flex justify-center">
+                      <Progress
+                        className="mt-4"
+                        type="circle"
+                        percent={uploadPercentage}
+                        format={percent => `${percent} %`}
+                      />
+                    </div>
+                    <div className="mt-4 text-center">
+                      กำลังอัพโหลดวิดีโอ โปรดรอสักครู่ .....
+                    </div>
                   </div>
-                  <div className="mt-4 text-center">อัพโหลดสำเร็จ โปรดรอสักครู่ (10-20นาที) ระบบกำลังประมวลผลวิดีโอ.....</div>
-                  <div className="mt-4 text-center">กด Save เพื่อบันทึกข้อมูล</div>
-                </div>
+                )}
 
-                }
-
+                {getUploadingShow == "done" && (
+                  <div>
+                    <div className="flex justify-center">
+                      <Progress
+                        type="circle"
+                        percent={100}
+                        format={() => "Done"}
+                      />
+                    </div>
+                    <div className="mt-4 text-center">
+                      อัพโหลดสำเร็จ โปรดรอสักครู่ (10-20นาที)
+                      ระบบกำลังประมวลผลวิดีโอ.....
+                    </div>
+                    <div className="mt-4 text-center">
+                      กด Save เพื่อบันทึกข้อมูล
+                    </div>
+                  </div>
+                )}
               </div>
-
-
-            }
+            )}
           </div>
         </div>
-
-
-
-
+        <div style={{ minHeight: "50px" }} />
       </div>
-
-    </div>
+   
   );
-}
+};
 
 export default StudioVideoContent;

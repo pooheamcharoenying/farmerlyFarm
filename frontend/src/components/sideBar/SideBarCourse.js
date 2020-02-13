@@ -102,7 +102,7 @@ export default function SideBarCourse() {
       </div>
 
       <div
-        className="bg-blue-500 hover:bg-blue-400 rounded my-4 text-center shadow-lg text-white text-lg mx-2"
+        className="bg-blue-500 hover:bg-blue-400 rounded my-4 text-center shadow-lg text-white text-lg mx-2 cursor-pointer"
         style={{ paddingTop: "10px", paddingBottom: "10px" }}
         onClick={() => {
           GlobalHook.setGlobalLessionSelect({ mediaType: "Overview" });
@@ -113,6 +113,7 @@ export default function SideBarCourse() {
       </div>
 
       <Drag />
+      <div style={{minHeight:"60px"}}/>
     </div>
   
   );

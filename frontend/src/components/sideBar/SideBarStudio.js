@@ -107,7 +107,47 @@ export default function SideBarCourse() {
     return (
       <>
       {RenderUnSaveAlert()}
+      <div
+      className="bg-gray-300 w-10/12 md:w-5/12  xl:w-3/12 mt-16 fixed md:relative top-0 left-0 flex-col h-full z-40 hidden md:flex"
+      style={{
+        display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
+        overflowY: "auto"
+      }}
+    >
+      <div
+        className="bg-blue-300 flex flex-col px-6 w-full "
+        style={{ minHeight: "150px" }}
+      >
+          <div
+          className="bg-white rounded my-4 text-center shadow-lg  text-lg "
+          style={{ paddingTop: "10px", paddingBottom: "10px" }}
+        >
+          {"คอร์ส: " + GlobalHook.getGlobalCourseName}
+        </div>
         <div
+            className="bg-white rounded mb-4 text-center shadow-lg px-4 flex items-center justify-center"
+            style={{ paddingTop: "12px", paddingBottom: "12px" }}
+          >
+            <div> Publish:</div>
+           
+           <div  className="ml-2">{renderPublishSwitch()}</div>
+          </div>
+
+        </div>
+        <div
+        className="bg-blue-500 hover:bg-blue-400 rounded my-4 text-center shadow-lg text-white text-lg mx-2 cursor-pointer"
+        style={{ paddingTop: "10px", paddingBottom: "10px" }}
+        onClick={() => {
+          handleUnSaveCheck()
+        }}
+      >
+        รายละเอียดคอร์ส
+      </div>
+
+      <Drag />
+      <div style={{minHeight:"60px"}}/>
+        </div>
+        {/* <div
       className="pb-4 w-10/12 bg-gray-300 md:w-6/12 lg:w-5/12 xl:w-3/12 min-h-full max-h-full md:relative hidden md:flex flex-col fixed left-0 z-30 overflow-y-auto overflow-x-hidden"
       style={{ display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "" }}
     >
@@ -133,7 +173,7 @@ export default function SideBarCourse() {
         </button>
         <Drag />
       </div>
-    </div>
+    </div> */}
     </>
     )
 }

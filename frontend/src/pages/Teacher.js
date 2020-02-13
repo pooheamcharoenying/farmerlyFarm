@@ -21,14 +21,15 @@ export default function Teacher() {
         }, [])
     return (
         <>
+        <div >
          <Helmet><title>Studysabai:Teacher</title></Helmet>
         
         <Header/>
-        <Banner/>
+        {/* <Banner/> */}
         <TeacherCourse/>
         <FabCreateCourse/>
         <Footer/>
-       
+        </div>
        
         </>
     )

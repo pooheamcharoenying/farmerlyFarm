@@ -27,9 +27,9 @@ export default function StudioContent() {
     }
   }
   return (
-    <div className="w-full h-full max-h-full max-w-full bg-gray-100 relative">
+    <div className="h-full bg-gray-100 flex-1 mt-16" style={{overflowY:"auto"}}>
       {RenderStudioContentSwitch()}
-      {GlobalHook.getGlobalShowSideBarStatus? <div className="absolute inset-0 min-h-screen min-w-full bg-black opacity-50 z-20"/>:<div/>}
+      {GlobalHook.getGlobalShowSideBarStatus? <div className="absolute inset-0 min-h-screen min-w-full bg-black opacity-50 z-20 md:hidden"/>:<div/>}
 
       <Tooltip title="Save">
         <button

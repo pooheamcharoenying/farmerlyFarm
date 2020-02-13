@@ -405,7 +405,7 @@ export default function MainDragStudio() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full h-auto px-2 min-h-screen relative" >
       {CreateNewTopicPopUp()}
       {CreateNewLessionPopUp()}
       {EditSectionPopUp()}

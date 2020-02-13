@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Input, Button} from "antd";
 import {FaSearch,FaBars,FaTimes} from 'react-icons/fa'
-import {Link } from "react-router-dom";
 import { GlobalContext } from "../../hook/GlobalHook";
 
 import CourseCatDropdown from "./CourseCatDropdown";
@@ -34,7 +33,7 @@ useEffect(() => {
 
   return (
     <>
-    <div className="sticky top-0 bg-white z-50 flex flex-col">
+    <div className="fixed inset-0 bg-white z-50 h-16 w-full">
       
     <div className="h-16 shadow-lg  flex flex-row justify-between items-center px-2 md:px-6 ">
     <div className="md:hidden text-2xl  justify-start flex text-gray-700 cursor-pointer" style={{flex:1}} onClick={()=>GlobalHook.setGlobalShowSideBarStatus(!GlobalHook.getGlobalShowSideBarStatus)}>
@@ -52,7 +51,7 @@ useEffect(() => {
      className=" hidden md:flex justify-end ml-10 h-full"
      style={{ flex: 1 }}
    >
-     <CourseCatDropdown />
+     <CourseCatDropdown showTitle/>
 
      <Search
        placeholder="ค้นหา คอร์ส"

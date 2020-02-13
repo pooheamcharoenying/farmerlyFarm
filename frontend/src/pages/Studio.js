@@ -33,19 +33,28 @@ export default function Studio() {
 
     
     return (
-        <div className="h-screen flex flex-col">
-            {/* <Prompt
-            when={GlobalHook.getMutantStatus}
-            message={location => ` Changes that you made may not be saved. Are you sure you want to leave this page ?`}
-          /> */}
-         <Helmet><title>Studysabai:{courseName}</title></Helmet>
-         <Header/>
-        
-         <div className="fixed inset-0 bg-yellow-400 mt-16 flex">
-            <SideBar />
-            <StudioContent/>
+      <div className="flex relative h-screen overflow-hidden">
+      <Helmet><title>Studysabai-Course</title></Helmet>
+      <Header/>
 
-      </div>
-        </div>
+      <SideBar />
+      <StudioContent/>
+
+</div>
+
+      //   <div className="h-screen flex flex-col">
+      //       {/* <Prompt
+      //       when={GlobalHook.getMutantStatus}
+      //       message={location => ` Changes that you made may not be saved. Are you sure you want to leave this page ?`}
+      //     /> */}
+      //    <Helmet><title>Studysabai:{courseName}</title></Helmet>
+      //    <Header/>
+        
+      //    <div className="fixed inset-0 bg-yellow-400 mt-16 flex">
+      //       <SideBar />
+      //       <StudioContent/>
+
+      // </div>
+      //   </div>
     )
 }

@@ -28,7 +28,7 @@ useEffect(() => {
 }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalCoursePool])
 
     return (
-        <div className="bg-blue-300 flex flex-col py-10 items-center" style={{minHeight:"500px"}}>
+        <div className="bg-blue-300 flex flex-col py-10 items-center min-h-screen">
         <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >คอร์สที่ฉันสร้าง</div>
         <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
            {getcourseMatchPool.map((courseData,i) => <div key={i} className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center flex-col "  >

@@ -2,9 +2,12 @@ import React,{useState,useEffect,useContext} from "react";
 import { Input,Popover } from "antd";
 import ReactQuill from "react-quill";
 import {FaTrashAlt} from 'react-icons/fa'
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+
 import { GlobalContext } from "../../hook/GlobalHook";
 import {SaveAllAction,CheckMutateAction} from "../../actions"
 import TextEditorComp from '../textEditor/TextEditor'
+
 const StudioDocumentContent = () => {
   const GlobalHook = useContext(GlobalContext);
 
@@ -110,13 +113,23 @@ useEffect(() => {
   }
   
   return (
-    <div className=" h-full w-full flex flex-col items-center pt-4 overflow-hidden">
-      <div className="w-11/12 md:w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold bg-blue-500 flex justify-center items-center">
-      {getLessionName}
-      
-      {/* <FaTrashAlt className="self-end text-red-500 text-md text-right ml-4 cursor-pointer" onClick={()=>handleDeleteLession()}/> */}
+    <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
+    <div className="w-full flex mb-2  justify-center items-center">
+      <FaCaretLeft
+        className="hover:text-gray-700 text-gray-900 cursor-pointer"
+        style={{ fontSize: "35px" }}
+        onClick={() => GlobalHook.setPrevNextStatus("PrevLession")}
+      />
+
+      <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
+        {GlobalHook.getGlobalLessionSelect.mediaName}
       </div>
-      <div className="flex flex-col overflow-y-auto  h-full w-full over items-center justify-start py-4">
+      <FaCaretRight
+        className="hover:text-gray-700 text-gray-900 cursor-pointer"
+        style={{ fontSize: "35px" }}
+        onClick={() => GlobalHook.setPrevNextStatus("NextLession")}
+      />
+    </div>
 
           <div className="flex flex-col text-center mb-4">
           <div className="flex items-baseline justify-center">
@@ -155,10 +168,9 @@ useEffect(() => {
             className="editor"
             modules={modules}
           />
-          {/* <TextEditorComp dataIn={val} dataOut={handleChange}/> */}
         </div>
+        <div style={{ minHeight: "60px" }} />
       </div>
-    </div>
   );
 };
 
