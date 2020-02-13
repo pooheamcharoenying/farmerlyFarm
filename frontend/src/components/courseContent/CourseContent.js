@@ -30,7 +30,7 @@ const GlobalHook = useContext(GlobalContext)
   
 
   return (
-    <div className="bg-gray-100 flex-1 mt-16" style={{overflowY:"auto"}}>
+    <div className="h-full bg-gray-100 flex-1 mt-16" style={{overflowY:"auto"}}>
         {RenderSwitch()}
         {GlobalHook.getGlobalShowSideBarStatus? <div className="absolute inset-0 min-h-screen min-w-full bg-black opacity-50 z-20"/>:<div/>}
         
