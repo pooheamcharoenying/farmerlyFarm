@@ -27,7 +27,7 @@ export default function StudioOverviewContent() {
 
   return (
     <div className=" h-full w-full flex flex-col items-center py-4 justify-start">
-      <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 bg-blue-500">
+      <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-blue-500">
         รายละเอียดคอร์ส
       </div>
       <div className="flex flex-col text-center mb-6 md:mb-8">
