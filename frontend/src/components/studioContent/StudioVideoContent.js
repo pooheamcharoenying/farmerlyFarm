@@ -156,6 +156,8 @@ const StudioVideoContent = () => {
       .catch(err => {
         message.error("Upload Error, Try Again");
         console.log(err);
+        setVideoData(null);
+        
         setUploadingShow(false);
       });
   }
