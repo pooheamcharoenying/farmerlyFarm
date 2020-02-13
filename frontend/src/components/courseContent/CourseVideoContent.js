@@ -10,7 +10,6 @@ export default function CourseVideoContent() {
       setVideoId(GlobalHook.getGlobalMediaVideo);
     }
 
-    console.log(GlobalHook.getGlobalMediaVideo);
   }, [GlobalHook.getGlobalMediaVideo]);
   if (typeof GlobalHook.getGlobalMediaVideo == "string") {
     return (

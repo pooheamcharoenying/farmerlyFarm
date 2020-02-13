@@ -1,49 +1,53 @@
-import React, { useContext,useState,useEffect } from "react";
-import {FaCaretLeft,FaCaretRight} from 'react-icons/fa'
-import ReactQuill from 'react-quill';
+import React, { useContext, useState, useEffect } from "react";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import ReactQuill from "react-quill";
 // import TextEditorComp from '../textEditor/TextEditorCompCourse'
 
 import { GlobalContext } from "../../hook/GlobalHook";
 
 export default function CourseDocumentContent() {
+  const GlobalHook = useContext(GlobalContext);
 
-    const GlobalHook = useContext(GlobalContext);
+  const [getEditorData, setEditorData] = useState("");
 
-    const [getEditorData,setEditorData] = useState("")
+  useEffect(() => {
+    if (typeof GlobalHook.getGlobalMediaDocument == "string") {
+      setEditorData(GlobalHook.getGlobalMediaDocument);
+    }
+  }, [GlobalHook.getGlobalMediaDocument]);
 
-    useEffect(() => {
-        if(typeof(GlobalHook.getGlobalMediaDocument) == "string"){
-           
-            setEditorData(GlobalHook.getGlobalMediaDocument)
-            
-          }
-    }, [GlobalHook.getGlobalMediaDocument])
+  return (
+    <div className="min-h-full h-auto w-full flex flex-col items-center justify-start py-4">
+      <div className="w-full flex mb-2  justify-center items-center">
+        <FaCaretLeft
+          className="hover:text-gray-700 text-gray-900 cursor-pointer"
+          style={{ fontSize: "35px" }}
+          onClick={() => GlobalHook.setPrevNextStatus("PrevLession")}
+        />
 
-
-
-    return (
-        <div className=" h-full w-full flex flex-col items-center pt-4 overflow-hidden">
-         <div className="w-full flex mb-2  justify-center items-center">
-      <FaCaretLeft className="hover:text-gray-700 text-gray-900 cursor-pointer" style={{fontSize:"35px"}} onClick={()=>GlobalHook.setPrevNextStatus("PrevLession")}/>
-
-      <div className="w-10/12 rounded-lg text-center text-white  text-2xl font-bold  bg-blue-500 mx-2 py-2">{GlobalHook.getGlobalLessionSelect.mediaName}</div>
-      <FaCaretRight className="hover:text-gray-700 text-gray-900 cursor-pointer" style={{fontSize:"35px"}} onClick={()=>GlobalHook.setPrevNextStatus("NextLession")}/>
+        <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
+          {GlobalHook.getGlobalLessionSelect.mediaName}
+        </div>
+        <FaCaretRight
+          className="hover:text-gray-700 text-gray-900 cursor-pointer"
+          style={{ fontSize: "35px" }}
+          onClick={() => GlobalHook.setPrevNextStatus("NextLession")}
+        />
       </div>
-        <div className="flex flex-col overflow-y-auto  h-full w-full over">
-        <div className=" w-full min-h-full px-2 md:px-4 lg:px-6 mx-auto mt-4 rounded ">
-        <ReactQuill value={getEditorData || ''}
-                  
-                    theme = "snow"
-                    className="hide-toolbar"
-                    readOnly
-                   
-                   
-                    />
+      <div className=" w-full min-h-full px-2 md:px-4 lg:px-6 mx-auto my-4 rounded">
+        <ReactQuill
+          value={getEditorData || ""}
+          theme="snow"
+          className="hide-toolbar"
+          readOnly
+        />
+      </div>
+      <div style={{minHeight:"50px"}}/>
+       
 
-                    {/* <TextEditorComp dataIn={getEditorData}/> */}
-        </div>
-        </div>
-   
+    
     </div>
-    )
+
+
+  );
 }
