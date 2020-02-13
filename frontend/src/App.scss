@@ -1,0 +1,36 @@
+@import '~normalize.css';
+@import url('https://fonts.googleapis.com/css?family=Prompt:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
+@import url('https://cdn.plyr.io/3.5.2/plyr.css');
+@import './quill.snow.css';
+*{
+    font-family: 'Prompt', sans-serif;
+    /* Keyword values */
+user-select: none;
+/* Mozilla-specific values */
+-moz-user-select: none;
+/* WebKit-specific values */
+-webkit-user-select: none;
+/* Microsoft-specific values */
+-ms-user-select: none;
+}
+
+.hide-toolbar .ql-toolbar.ql-snow{
+  display: none;
+}
+.noMinHeight .ql-editor{
+  min-height: 100%;
+}
+
+.noBorder .ql-container.ql-snow{
+  border: none;
+}
+
+.DropClick {
+    float: right;
+    right: 0;
+    margin-top: -35px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 100%;
+    height: 30px;
+  }
