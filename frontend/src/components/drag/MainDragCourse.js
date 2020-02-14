@@ -7,11 +7,11 @@ export default function MainDragStudio() {
   const GlobalHook = useContext(GlobalContext);
   const [items, setitems] = useState([]);
   useEffect(() => {
-    if (GlobalHook.getGlobalCourseContent[0]) {
-      setitems(GlobalHook.getGlobalCourseContent[0].contentStructure);
+    if (GlobalHook.getGlobalCourseStructure) {
+      setitems(GlobalHook.getGlobalCourseStructure);
+      
     }
-
-  }, [GlobalHook.getGlobalCourseContent]);
+  }, [GlobalHook.getGlobalCourseStructure]);
 
 
   

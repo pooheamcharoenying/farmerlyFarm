@@ -1,5 +1,6 @@
 import React,{useContext,useEffect,useState} from 'react'
-import {Modal,Switch} from 'antd'
+import {Modal,Switch,Icon} from 'antd'
+import CourseSetting from '../courseSetting/courseSetting'
 import {GlobalContext} from "../../hook/GlobalHook"
 import Drag from '../drag/MainDragStudio'
 
@@ -13,16 +14,18 @@ export default function SideBarCourse() {
 
     
     useEffect(() => {
-      if(GlobalHook.getGlobalCoursePool[0] &&GlobalHook.getGlobalCourseName ){
+      if(GlobalHook.getGlobalCoursePool[0] &&GlobalHook.getGlobalcourseId ){
 
       
-     const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data.courseName == GlobalHook.getGlobalCourseName)
-     console.log(matchPool[0].coursePublish)
+     const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
+    //  console.log(matchPool[0].coursePublish)
+    console.log(GlobalHook.getGlobalCoursePool)
+    console.log(matchPool)
      if(matchPool){
       setCoursePublishStatus(matchPool[0].coursePublish)
      }
       }
-    }, [GlobalHook.getGlobalCourseName,GlobalHook.getGlobalCoursePool])
+    }, [GlobalHook.getGlobalcourseId,GlobalHook.getGlobalCoursePool])
 
     function RenderUnSaveAlert(){
 
@@ -85,16 +88,17 @@ export default function SideBarCourse() {
     function renderPublishSwitch(){
       let publishStatus =false
 
-      if(GlobalHook.getGlobalCoursePool[0] &&GlobalHook.getGlobalCourseName ){
+      if(GlobalHook.getGlobalCoursePool[0] &&GlobalHook.getGlobalcourseId ){
 
       
-        const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data.courseName == GlobalHook.getGlobalCourseName)
+        const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
         console.log(matchPool[0].coursePublish)
         if(matchPool){
           publishStatus = matchPool[0].coursePublish
+          console.log(publishStatus)
         
         return(
-          <Switch defaultChecked={publishStatus} checkedChildren="Yes" unCheckedChildren="No" onClick={(coursePublish)=>UpdataCoursepublishAction(GlobalHook,GlobalHook.getGlobalCourseName,coursePublish)}/>
+          <Switch defaultChecked={publishStatus} checkedChildren="Yes" unCheckedChildren="No" onClick={(coursePublish)=>UpdataCoursepublishAction(GlobalHook,GlobalHook.getGlobalCourseSlug,coursePublish)}/>
         )
         }
 
@@ -115,8 +119,8 @@ export default function SideBarCourse() {
       }}
     >
       <div
-        className="bg-blue-300 flex flex-col px-6 w-full "
-        style={{ minHeight: "150px" }}
+        className="bg-blue-300 flex flex-col px-6 w-full h-auto"
+        
       >
           <div
           className="bg-white rounded my-4 text-center shadow-lg  text-lg "
@@ -128,11 +132,13 @@ export default function SideBarCourse() {
             className="bg-white rounded mb-4 text-center shadow-lg px-4 flex items-center justify-center"
             style={{ paddingTop: "12px", paddingBottom: "12px" }}
           >
+             <div className="mr-2">Setting :</div><CourseSetting/>
             <div> Publish:</div>
            
            <div  className="ml-2">{renderPublishSwitch()}</div>
+          
           </div>
-
+       
         </div>
         <div
         className="bg-blue-500 hover:bg-blue-400 rounded my-4 text-center shadow-lg text-white text-lg mx-2 cursor-pointer"
@@ -147,33 +153,7 @@ export default function SideBarCourse() {
       <Drag />
       <div style={{minHeight:"60px"}}/>
         </div>
-        {/* <div
-      className="pb-4 w-10/12 bg-gray-300 md:w-6/12 lg:w-5/12 xl:w-3/12 min-h-full max-h-full md:relative hidden md:flex flex-col fixed left-0 z-30 overflow-y-auto overflow-x-hidden"
-      style={{ display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "" }}
-    >
-      <div className="bg-blue-300 flex flex-col px-6 w-full">
-        <div className="bg-white rounded my-4 text-center py-4 shadow-lg  text-lg flex justify-center mb-2">
-    คอร์ส:<div className="ml-2">{GlobalHook.getGlobalCourseName}</div>
-        </div>
-
-        <div className="bg-white rounded my-4 text-center py-4 shadow-lg  text-lg flex justify-center">
-    Publish:<div className="ml-2">{renderPublishSwitch()}</div>
-        </div>
-
-      </div>
-
-      <div className=" flex flex-col px-2 w-full">
-        <button
-          className="bg-blue-500 hover:bg-blue-400 rounded my-4 text-center py-2 shadow-lg text-white text-lg"
-          onClick={() => {
-            handleUnSaveCheck()
-          }}
-        >
-          รายละเอียดคอร์ส
-        </button>
-        <Drag />
-      </div>
-    </div> */}
+       
     </>
     )
 }

@@ -48,6 +48,7 @@ function QuestionNumberHead(props) {
   const [getQuestionName, setQuestionName] = useState("");
   const [getCurrentQuestionIndex,setCurrentQuestionIndex] = useState(0)
   const [getQuestionLength,setQuestionLength] = useState(0)
+  const [getUnSaveAlertStatus,setUnSaveAlertStatus] = useState(false)
 
   useEffect(() => {
     GlobalHook.setGlobalMediaNew(items)
@@ -119,7 +120,38 @@ function QuestionNumberHead(props) {
     }
   }
 
- 
+  function RenderUnSaveAlert(){
+
+    return(
+        <Modal
+    visible={getUnSaveAlertStatus}
+    title="UnSaveAlert"
+    onOk={() => setUnSaveAlertStatus(false)}
+    onCancel={() => {
+      setUnSaveAlertStatus(false);
+    }}
+    footer={[
+      <div className="w-full flex justify-center">
+       
+      
+        <button
+          onClick={() => {setUnSaveAlertStatus(false)}}
+          className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+        >
+          cancel
+        </button>
+
+
+        
+      </div>
+    ]}
+  >
+    Changes that you made may not be saved.
+
+  </Modal> 
+    )
+  }
+
 
   function renderAddQuestionModal() {
   
@@ -167,7 +199,9 @@ function QuestionNumberHead(props) {
   function handleNewQuestionCreate() {
 
     setModalNewQuestionOpenStatus(false)
-
+    GlobalHook.setGlobalStatusCodeQ("CreateNewQuestion")
+    GlobalHook.setMutantStatus(true)
+console.log("new quest")
     const newQuestionId = uuid.v4();
     const newId = Math.floor(Math.random() * 1000) + 1;
     const oldstate = [...items];
@@ -232,7 +266,7 @@ function QuestionNumberHead(props) {
   return (
     <>
        {renderAddQuestionModal()}
-
+        {RenderUnSaveAlert()}
     <div className="max-w-full min-w-full w-full overflow-x-auto flex h-full border-solid border-b-2 rounded-b-none rounded-lg border-gray-300">
     <button className="text-5xl mr-4 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -284,7 +318,15 @@ function QuestionNumberHead(props) {
               {provided.placeholder}
               <div
                 className="flex justify-center items-center"
-                onClick={() => {setModalNewQuestionOpenStatus(true);  setQuestionName("");}}
+                onClick={() => {
+                  if(GlobalHook.getMutantStatus){
+                    setUnSaveAlertStatus(true)
+                  }else{
+                  setModalNewQuestionOpenStatus(true);  
+                  setQuestionName("");
+                  }
+                  // setAfterLeaveType("NewQuestion");
+                }}
                 style={{
                   marginLeft: "10px",
                   minWidth: "40px",

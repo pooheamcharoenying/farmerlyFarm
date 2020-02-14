@@ -8,6 +8,8 @@ import { GlobalContext } from "../../hook/GlobalHook";
 
 export default function CourseContent() {
 const GlobalHook = useContext(GlobalContext)
+
+
   function RenderSwitch() {
     switch (GlobalHook.getGlobalLessionSelect.mediaType) {
       case "Video":
@@ -22,6 +24,7 @@ const GlobalHook = useContext(GlobalContext)
       case "Overview":
         return <CourseOverviewContent />;
         break;
+     
       default:
         return <CourseOverviewContent />;
         break;

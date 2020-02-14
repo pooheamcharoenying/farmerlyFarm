@@ -11,46 +11,51 @@ export default function SideBarCourse() {
   const [getisSubscription, setisSubscription] = useState(false);
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser) {
+    if (GlobalHook.getGlobalUser && GlobalHook.setGlobalcourseId) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
-        if (data.courseName == GlobalHook.getGlobalCourseName) {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
+    
           setisSubscription(true);
         }
+
       });
     }
-  }, [GlobalHook.getGlobalUser]);
+  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId]);
 
   function BeforehandleSubscription() {
     if (!GlobalHook.getGlobalToken) {
       GlobalHook.setGlobalShowLoginModal(true);
       GlobalHook.setGlobalLoginTab("Signup");
     } else {
+      console.log(GlobalHook.getGlobalcourseId)
       CourseSubscriptionAction(GlobalHook);
     }
   }
   useEffect(() => {
-    if (GlobalHook.getGlobalUser&&GlobalHook.getGlobalCourseContent[0]) {
+    if (GlobalHook.getGlobalUser&&GlobalHook.getGlobalCourseStructure&&GlobalHook.getGlobalcourseId) {
       var mainlength = 0;
-      const courseNameIndex = GlobalHook.getGlobalUser.courseSubscription
-        .map(data => data.courseName)
-        .indexOf(GlobalHook.getGlobalCourseName);
+      const courseIdIndex = GlobalHook.getGlobalUser.courseSubscription
+        .map(data => data.courseId)
+        .indexOf(GlobalHook.getGlobalcourseId);
+
+        console.log(courseIdIndex)
       if (
-        GlobalHook.getGlobalUser.courseSubscription[courseNameIndex] !=
+        GlobalHook.getGlobalUser.courseSubscription[courseIdIndex] !=
         undefined
       ) {
         setuserCouresLogLength(
-          GlobalHook.getGlobalUser.courseSubscription[courseNameIndex].courseLog
+          GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].courseLog
             .length
         );
       }
-      GlobalHook.getGlobalCourseContent[0].contentStructure.map(data => {
+      GlobalHook.getGlobalCourseStructure.map(data => {
 
         mainlength = mainlength + data.subItems.length - 1;
       });
 
       setMainCourseLength(mainlength);
     }
-  }, [GlobalHook.getGlobalUser]);
+  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId,GlobalHook.getGlobalCourseStructure]);
 
 
   return (

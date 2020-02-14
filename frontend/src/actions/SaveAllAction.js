@@ -9,21 +9,22 @@ function SaveAllAction(GlobalHook) {
 }
 
 function SaveCourseStructure(GlobalHook){
+
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
     CourseInfoOverview: GlobalHook.getGlobalCourseInfoOverviewNew,
     CourseInfoStudent: GlobalHook.getGlobalCourseInfoStudentNew,
     CourseInfoTeacher: GlobalHook.getGlobalCourseInfoTeacherNew,
-    courseStructure: GlobalHook.getGlobalCourseStructureNew
+    courseStructure: GlobalHook.getGlobalCourseStructureNew,
+    courseSlug:GlobalHook.getGlobalCourseSlug
   };
   GlobalHook.setGlobalCourseInfoOverview(GlobalHook.getGlobalCourseInfoOverviewNew)
   GlobalHook.setGlobalCourseInfoStudent(GlobalHook.getGlobalCourseInfoStudentNew)
   GlobalHook.setGlobalCourseInfoTeacher(GlobalHook.getGlobalCourseInfoTeacherNew)
-  console.log(pushData)
 
   axios
-    .post(`/api/course/${GlobalHook.getGlobalCourseName}`, pushData)
+    .post(`/api/course/structureUpdate`, pushData)
     .then(res => {
       SaveMediaContent(GlobalHook)
       localStorage.setItem("InitStructure", JSON.stringify((GlobalHook.getGlobalCourseStructureNew)))
@@ -50,6 +51,7 @@ function SaveMediaContent (GlobalHook){
       "mediaPreview":mediaPreview,
 
       "mediaContent":GlobalHook.getGlobalMediaNew,
+      courseSlug:GlobalHook.getGlobalCourseSlug
   }
 
 

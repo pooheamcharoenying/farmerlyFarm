@@ -1,9 +1,9 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useContext} from 'react'
 import ReactQuill from "react-quill";
-
+import {GlobalContext} from '../../hook/GlobalHook'
 export default function TextEditor({dataIn,dataOut,readOnly,hindToolBar,noBorder,noMinHeight,noAll}) {
     const [getVal,setVal] = useState("")
-
+const GlobalHook = useContext(GlobalContext)
     useEffect(() => {
         setVal(dataIn)
        }, [dataIn])
@@ -12,6 +12,14 @@ export default function TextEditor({dataIn,dataOut,readOnly,hindToolBar,noBorder
         setVal(e)
         dataOut(e)
       }
+
+      useEffect(() => {
+      if(GlobalHook.getGlobalStatusCodeQ == "CreateNewQuestion"){
+        GlobalHook.setGlobalStatusCodeQ("")
+        setVal("")
+      }
+      console.log(GlobalHook.getGlobalStatusCodeQ)
+      }, )
 
       var modules = {
         toolbar: [

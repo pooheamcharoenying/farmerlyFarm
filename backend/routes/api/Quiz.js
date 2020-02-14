@@ -4,9 +4,12 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const QuizSchema = require("../../models/Quiz");
 const UserSchema = require("../../models/User");
+const CourseSchema = require("../../models/Course");
+
 const User = mongoose.model("user", UserSchema);
 const Quiz = mongoose.model("quiz", QuizSchema);
 ///////////////////////////////////////////
+const Course = mongoose.model("course", CourseSchema);
 
 
 ///ADD Quiz
@@ -15,6 +18,12 @@ router.post(
     passport.authenticate("jwt", { session: false }),
   
     (req, res) => {
+      const adjustCourseSlug = req.body.courseSlug.toString();
+
+      Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
+        let courseId = poolData._id.toString();
+
+     
         User.findById( req.user.id ).then(user => {
         Quiz.findOneAndUpdate(
         { questionId: req.body.questionId },
@@ -24,10 +33,11 @@ router.post(
             answerType: req.body.answerType,
             answerField: req.body.answerField,
             answerCorrect: req.body.answerCorrect,
-            courseName: req.body.courseName,
+            courseId: courseId,
+            courseSlug: req.body.courseSlug,
             sectionName: req.body.sectionName,
             lessionName: req.body.lessionName,
-            TeacherId: user._id,
+            teacherId: user._id,
             mediaId:req.body.mediaId,
             answerExplainType: req.body.answerExplainType,
             answerExplainField: req.body.answerExplainField
@@ -43,7 +53,7 @@ router.post(
       );
     
     })
-
+  }).catch((err)=>console.log(err))
     }
   );
   
@@ -79,7 +89,7 @@ router.post(
   //         })
   //           // //////
   //           // /////
-  //         await user.TeacherCourse.map(data => {
+  //         await user.teacherCourse.map(data => {
   //             if (data.courseName == adjustCourseNameStr) {
   //               mock =1
   //               Quiz.findOne({ questionId: req.body.mediaId }).then(doc => {
@@ -102,9 +112,8 @@ router.post(
   // });
 
 
-//Mock Get Media
+//Mock Get Quiz
 router.post("/free", async (req, res) => {
-console.log(req.body)
  
   Quiz.findOne({ questionId: req.body.questionId }).then(doc => {
     res.status(200).json({"status":"200","data":doc});

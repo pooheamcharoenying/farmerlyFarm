@@ -31,7 +31,7 @@ const UserDropdown = () => {
     const menu = (
         <Menu>
         <Menu.Item key="1">
-          <div className="flex w-30 justify-start items-center text-gray-800 hover:text-black"onClick={()=>history.push("/teacher")}> <FaChalkboardTeacher className="mr-2 text-black"/>
+          <div className="flex w-30 justify-start items-center text-gray-800 hover:text-black"onClick={()=>window.location.href="/teacher"}> <FaChalkboardTeacher className="mr-2 text-black"/>
           ครู</div>
           
         </Menu.Item>

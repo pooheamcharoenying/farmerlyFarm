@@ -9,15 +9,15 @@ import CourseContent from "../components/courseContent/CourseContent"
 import {getCourseContentAction} from '../actions'
 import {GlobalContext} from '../hook/GlobalHook'
 export default function Course() {
-  let { courseName } = useParams();
+  let { courseSlug } = useParams();
 
   const GlobalHook = useContext(GlobalContext)
   
   useEffect(() => {
   
-         getCourseContentAction(GlobalHook,courseName)
+         getCourseContentAction(GlobalHook,courseSlug)
   
-      GlobalHook.setGlobalCourseName(courseName)
+      GlobalHook.setGlobalCourseSlug(courseSlug)
     }, [])
 
   return (

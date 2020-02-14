@@ -30,12 +30,12 @@ const SubDragStudio = ({
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
-        if (data.courseName == GlobalHook.getGlobalCourseName) {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
           setisSubscription(true);
         }
       });
     }
-  }, [GlobalHook.getGlobalUser]);
+  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId]);
 
 
   useEffect(() => {
@@ -123,7 +123,7 @@ if(itemsPool[0]){
       GetMediaFreeAction(GlobalHook,item.mediaId)
 
     }
-    if(GlobalHook.getGlobalToken ){
+    if(GlobalHook.getGlobalToken && getisSubscription){
       LessionVisitedLogAction(GlobalHook,item.mediaId)
 
     }
@@ -135,15 +135,15 @@ if(itemsPool[0]){
       GlobalHook.getGlobalUser.courseSubscription != undefined &&
       GlobalHook.getGlobalUser.courseSubscription[
         GlobalHook.getGlobalUser.courseSubscription
-          .map(data => data.courseName)
-          .indexOf(GlobalHook.getGlobalCourseName)
+          .map(data => data.courseId)
+          .indexOf(GlobalHook.getGlobalcourseId)
       ] != undefined
     ) {
       if (
         GlobalHook.getGlobalUser.courseSubscription[
           GlobalHook.getGlobalUser.courseSubscription
-            .map(data => data.courseName)
-            .indexOf(GlobalHook.getGlobalCourseName)
+            .map(data => data.courseId)
+            .indexOf(GlobalHook.getGlobalcourseId)
         ].courseLog
           .map(data => data.lessionId)
           .indexOf(item.mediaId) == -1

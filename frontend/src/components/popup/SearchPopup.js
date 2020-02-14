@@ -20,7 +20,7 @@ export default function SearchPopup() {
         </div>
 
         <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
-           {GlobalHook.getGlobalCourseSearch.map((courseData,i) => <div style={{display:courseData.courseActive?"":"none"}} key={i} className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center" onClick={()=>window.location.href=`/course/${courseData.courseName}`}><CourseCard courseData={courseData}/></div>)}
+           {GlobalHook.getGlobalCourseSearch.map((courseData,i) => <div style={{display:courseData.courseActive?"":"none"}} key={i} className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center" onClick={()=>window.location.href=`/course/${courseData.courseSlug}`}><CourseCard courseData={courseData}/></div>)}
         </ScrollContainer>
       </div>
     );

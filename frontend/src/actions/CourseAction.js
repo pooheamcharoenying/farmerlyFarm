@@ -1,137 +1,199 @@
 import React from "react";
 import axios from "axios";
-import { message } from 'antd';
+import { message } from "antd";
 function getCoursePoolAction(GlobalHook) {
-  GlobalHook.setGlobalLoading(true)
+  GlobalHook.setGlobalLoading(true);
   axios
     .get("/api/course")
     .then(res => {
       GlobalHook.setGlobalCoursePool(res.data);
-      GlobalHook.setGlobalLoading(false)
-      console.log(res.data)
+      GlobalHook.setGlobalLoading(false);
+      console.log(res.data);
     })
     .catch(err => console.log(err));
-
 }
 
 function courseSearchKeywordAction(GlobalHook, key) {
-
-  GlobalHook.setGlobalShowSearch(true)
-  GlobalHook.setGlobalLoading(true)
+  GlobalHook.setGlobalShowSearch(true);
+  GlobalHook.setGlobalLoading(true);
 
   axios
     .get(`/api/course/search/${key}`)
     .then(res => {
-
-      GlobalHook.setGlobalCourseSearch(res.data)
-      GlobalHook.setGlobalLoading(false)
-
+      GlobalHook.setGlobalCourseSearch(res.data);
+      GlobalHook.setGlobalLoading(false);
     })
     .catch(err => console.log(err));
-
-
 }
 
 function courseSearchCatAction(GlobalHook, key) {
-  GlobalHook.setGlobalShowSearch(true)
-  GlobalHook.setGlobalLoading(true)
+  GlobalHook.setGlobalShowSearch(true);
+  GlobalHook.setGlobalLoading(true);
 
   axios
     .get(`/api/course/category/${key}`)
     .then(res => {
-      GlobalHook.setGlobalCourseSearch(res.data)
-      GlobalHook.setGlobalLoading(false)
-
+      GlobalHook.setGlobalCourseSearch(res.data);
+      GlobalHook.setGlobalLoading(false);
     })
     .catch(err => console.log(err));
-
 }
 
-function getCourseContentAction(GlobalHook, courseName) {
-  GlobalHook.setGlobalLoading(true)
+function getCourseContentAction(GlobalHook, courseSlug) {
+  GlobalHook.setGlobalLoading(true);
   axios
-    .get(`/api/course/${courseName}`)
+    .get(`/api/course/${courseSlug}`)
     .then(res => {
+      console.log(res.data);
+
       GlobalHook.setGlobalCourseContent(res.data);
 
-      GlobalHook.setGlobalCourseStructure(res.data[0].contentStructure);
+      GlobalHook.setGlobalCourseStructure(
+        res.data.courseData[0].contentStructure
+      );
 
-      GlobalHook.setGlobalCourseInfoOverview(res.data[0].CourseInfoOverview)
-      GlobalHook.setGlobalCourseInfoStudent(res.data[0].CourseInfoStudent)
-      GlobalHook.setGlobalCourseInfoTeacher(res.data[0].CourseInfoTeacher)
+      GlobalHook.setGlobalCourseInfoOverview(
+        res.data.courseData[0].CourseInfoOverview
+      );
+      GlobalHook.setGlobalCourseInfoStudent(
+        res.data.courseData[0].CourseInfoStudent
+      );
+      GlobalHook.setGlobalCourseInfoTeacher(
+        res.data.courseData[0].CourseInfoTeacher
+      );
 
+      GlobalHook.setGlobalCourseName(res.data.courseName);
 
-      GlobalHook.setGlobalLoading(false)
+      GlobalHook.setGlobalcourseId(res.data.courseId)
+      console.log(res.data.courseId)
+      GlobalHook.setGlobalLoading(false);
 
-      localStorage.setItem("InitStructure", JSON.stringify((res.data[0].contentStructure)))
-      console.log(res.data)
-
-
+      localStorage.setItem(
+        "InitStructure",
+        JSON.stringify(res.data.courseData[0].contentStructure)
+      );
     })
     .catch(err => console.log(err));
-
 }
 
-
-
 function CreateCourseAction(GlobalHook, setModalOpenStatus) {
-  setModalOpenStatus(false)
-  GlobalHook.setGlobalLoading(true)
-
+  setModalOpenStatus(false);
+  GlobalHook.setGlobalLoading(true);
+  const courseSlug = GlobalHook.getGlobalCourseName
+    .replace(/\s/g, "-")
+    .toString();
   const pushData = {
     courseName: GlobalHook.getGlobalCourseName,
     courseTeacher: GlobalHook.getGlobalCourseTeacher,
     courseLevel: GlobalHook.getGlobalCourseLevel,
     courseImage: GlobalHook.getGlobalCourseImage,
     courseSubject: GlobalHook.getGlobalCourseSubject,
-    courseTags: GlobalHook.getGlobalCourseTags,
-    courseDescription: GlobalHook.getGlobalCourseDescription
-  }
+    courseTag: GlobalHook.getGlobalCourseTag,
+    courseDescription: GlobalHook.getGlobalCourseDescription,
+    courseSlug: courseSlug
+  };
 
   axios
-    .post("/api/course", pushData)
+    .post("/api/course/create", pushData)
     .then(res => {
-
       GlobalHook.setGlobalUser(res.data.newUser);
 
       localStorage.setItem("globalUser", JSON.stringify(res.data.newUser));
-      message.success('สร้างคอร์สสำเร็จ');
-      GlobalHook.setGlobalLoading(false)
+      message.success("สร้างคอร์สสำเร็จ");
+      GlobalHook.setGlobalLoading(false);
 
-
-      const adjustCourseName = GlobalHook.getGlobalCourseName.replace(/\s/g, '-');
-      const adjustCourseNameStr = adjustCourseName.toString();
-      window.location.href = `/teacher/${adjustCourseNameStr}`
+      window.location.href = `/teacher/${courseSlug}`;
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-
 function GetMediaFreeAction(GlobalHook, mediaId) {
-  GlobalHook.setGlobalLoading(true)
+  GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-    courseName: GlobalHook.getGlobalCourseName,
+    courseSlug: GlobalHook.getGlobalCourseSlug,
     mediaId: mediaId
-  }
-
+  };
+console.log(pushData)
   axios
     .post("/api/coursemedia/free", pushData)
     .then(res => {
-      GlobalHook.setGlobalLoading(false)
 
+      GlobalHook.setGlobalLoading(false);
 
       if (res.data.data.mediaType == "Video") {
-        GlobalHook.setGlobalMediaVideo(res.data.data.mediaContent)
+        GlobalHook.setGlobalMediaVideo(res.data.data.mediaContent);
       } else if (res.data.data.mediaType == "Document") {
-        GlobalHook.setGlobalMediaDocument(res.data.data.mediaContent)
-
+        GlobalHook.setGlobalMediaDocument(res.data.data.mediaContent);
       } else if (res.data.data.mediaType == "Quiz") {
-        GlobalHook.setGlobalMediaQuiz(res.data.data.mediaContent)
-
+        GlobalHook.setGlobalMediaQuiz(res.data.data.mediaContent);
       }
+      console.log(res.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+function GetCourseSettingAction(GlobalHook,courseSlug) {
+  GlobalHook.setGlobalLoading(true);
+
+  const pushData = {
+    courseSlug: courseSlug
+  };
+
+  axios
+    .post("/api/course/getcoursesetting", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      console.log(res.data)
+
+      GlobalHook.setGlobalCourseSubject(res.data.courseSubject)
+      GlobalHook.setGlobalCourseLevel(res.data.courseLevel)
+      GlobalHook.setGlobalCourseTeacher(res.data.courseTeacher)
+      GlobalHook.setGlobalCourseDescription(res.data.courseDescription)
+      GlobalHook.setGlobalCourseImage(res.data.courseImage)
+      GlobalHook.setGlobalCourseTag(res.data.courseTag)
+      GlobalHook.setGlobalcourseImageFileName(res.data.courseImageFileName)
+
+
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
+  const NewCourseSlug = GlobalHook.getGlobalCourseName
+    .replace(/\s/g, "-")
+    .toString();
+  GlobalHook.setGlobalLoading(true);
+
+  const pushData = {
+        courseSlug: courseSlug,
+        NewCourseSlug:NewCourseSlug,
+        courseName: GlobalHook.getGlobalCourseName,
+        courseDescription: GlobalHook.getGlobalCourseDescription,
+        courseTeacher: GlobalHook.getGlobalCourseTeacher,
+        courseLevel: GlobalHook.getGlobalCourseLevel,
+        courseSubject: GlobalHook.getGlobalCourseSubject,
+        courseImage: GlobalHook.getGlobalCourseImage,
+        courseTag: GlobalHook.getGlobalCourseTag,
+        courseImageFileName:GlobalHook.getGlobalcourseImageFileName
+  };
+
+  console.log(pushData)
+
+  axios
+    .post("/api/course/update", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      console.log(res.data)
+      setModalOpenStatus(false)
+      // window.location.href = `/teacher/${NewCourseSlug}`;
+
 
     })
     .catch(err => {
@@ -140,57 +202,56 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
 }
 
 
-function UpdataCourseStatusAction(GlobalHook, courseName, courseStatus) {
-  GlobalHook.setGlobalLoading(true)
-
+function UpdataCourseStatusAction(GlobalHook, courseSlug, courseStatus) {
+  GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-    courseName: courseName,
+    courseSlug: courseSlug,
     courseActive: courseStatus
-  }
+  };
 
   axios
     .post("/api/course/status", pushData)
     .then(res => {
-
-      GlobalHook.setGlobalLoading(false)
-
+      GlobalHook.setGlobalLoading(false);
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-function UpdataCoursepublishAction(GlobalHook, courseName, coursePublish) {
-  GlobalHook.setGlobalLoading(true)
-
+function UpdataCoursepublishAction(GlobalHook, courseSlug, coursePublish) {
+  GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-    courseName: courseName,
-    coursePublish:coursePublish
-  }
+    courseSlug: courseSlug,
+    coursePublish: coursePublish
+  };
 
   axios
     .post("/api/course/publish", pushData)
     .then(res => {
-
-      GlobalHook.setGlobalLoading(false)
-
+      GlobalHook.setGlobalLoading(false);
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-
-
-
 function DeleteCourseLessionAction(GlobalHook) {
-  GlobalHook.setGlobalLoading(true)
-
-
-
+  GlobalHook.setGlobalLoading(true);
 }
 
-
-export { getCoursePoolAction, courseSearchKeywordAction, courseSearchCatAction, getCourseContentAction, CreateCourseAction, GetMediaFreeAction, UpdataCourseStatusAction, DeleteCourseLessionAction, UpdataCoursepublishAction };
+export {
+  getCoursePoolAction,
+  courseSearchKeywordAction,
+  courseSearchCatAction,
+  getCourseContentAction,
+  CreateCourseAction,
+  GetMediaFreeAction,
+  UpdataCourseStatusAction,
+  DeleteCourseLessionAction,
+  UpdataCoursepublishAction,
+  GetCourseSettingAction,
+  SaveCourseSetting
+};

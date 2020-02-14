@@ -14,7 +14,7 @@ export default function StudioOverviewContent() {
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
-        if (data.courseName == GlobalHook.getGlobalCourseName) {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
           if (GlobalHook.getGlobalNotFirstLoadStatus) {
           } else {
             GlobalHook.setPrevNextStatus("Init");

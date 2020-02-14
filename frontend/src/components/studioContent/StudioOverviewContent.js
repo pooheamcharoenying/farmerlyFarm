@@ -82,11 +82,11 @@ export default function StudioOverviewContent() {
     
                    </div>
 
-                   <div className="flex flex-col text-center mb-6 md:mb-8">
+                   {/* <div className="flex flex-col text-center mb-6 md:mb-8">
                    <div className="font-bold text-lg mb-2">TAG</div>
                    <TextArea  autoSize={{ minRows: 2, maxRows: 6 }} value={getCourseInfoTeacher} onChange={(e)=>{}}/>
     
-                   </div>
+                   </div> */}
     
                 </div>
           

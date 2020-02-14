@@ -3,23 +3,9 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
-  userId: Schema.Types.ObjectId,
+  _Id: Schema.Types.ObjectId,
   uid:{
     type:String
-  },
-  name: {
-    type: String
-  },
-  email: {
-    type: String,
-  
-  },
-  password: {
-    type: String,
-
-  },
-  avatar: {
-    type: String
   },
   role:{
     type:String,
@@ -27,7 +13,7 @@ const UserSchema = new Schema({
   },
   courseSubscription: [
     {
-      courseName: {
+      courseId: {
         type: String
       },
       courseLog: [
@@ -56,12 +42,9 @@ const UserSchema = new Schema({
       ]
     }
   ],
-  TeacherCourse: [
+  teacherCourse: [
     {
-      courseName: {
-        type: String
-      },
-      courseActive: {
+      courseId: {
         type: String
       }
     }

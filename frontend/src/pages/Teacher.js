@@ -11,12 +11,10 @@ import {GlobalContext} from '../hook/GlobalHook'
 import Footer from "../components/footer/Footer"
 
 export default function Teacher() {
-    let { courseName } = useParams();
 
     const GlobalHook = useContext(GlobalContext)
     useEffect(() => {
              getCoursePoolAction(GlobalHook)
-             GlobalHook.setGlobalCourseName(courseName)
 
         }, [])
     return (

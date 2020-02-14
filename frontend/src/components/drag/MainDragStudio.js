@@ -376,8 +376,7 @@ export default function MainDragStudio() {
           time: ""
         });
         setitems(oldstate);
-        GlobalHook.setGlobalStudioUploadFile(null)
-        GlobalHook.setGlobalMediaVideo(null);
+      
         GlobalHook.setGlobalLessionSelect({
           parentIndex: getLessionParentIndex,
           selfIndex:( oldstate[index].subItems.length) -1,
@@ -398,6 +397,7 @@ export default function MainDragStudio() {
         message.success("สร้างหัวบทเรียนใหม่สำเร็จ");
         setLessionName("");
         setLessionType("Video");
+        GlobalHook.setGlobalStatusCode("CreateNewLession")
         ClearCreateLessionAction(GlobalHook)
       }
     });

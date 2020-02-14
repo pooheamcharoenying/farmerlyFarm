@@ -17,7 +17,7 @@ useEffect(() => {
     if(GlobalHook.getGlobalUser && GlobalHook.getGlobalCoursePool[0]){
     GlobalHook.getGlobalUser.courseSubscription.map(subList =>
         GlobalHook.getGlobalCoursePool.map(allCourseList => {
-        if (allCourseList.courseName == subList.courseName) {
+        if (allCourseList._id == subList.courseId) {
           myCourseMatch.push(allCourseList);
           setcourseMatchPool(myCourseMatch)
         }
@@ -49,7 +49,7 @@ useEffect(() => {
         if(getcourseMatchPool[0]){
             return(
                 <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
-               {getcourseMatchPool.map((courseData,i) => <div style={{display:courseData.courseActive?"":"none"}} key={i} className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center" onClick={()=>history.push(`/course/${courseData.courseName}`)}><CourseCard courseData={courseData}/></div>)}
+               {getcourseMatchPool.map((courseData,i) => <div style={{display:courseData.courseActive?"":"none"}} key={i} className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center" onClick={()=>history.push(`/course/${courseData.courseSlug}`)}><CourseCard courseData={courseData}/></div>)}
             </ScrollContainer>
                 
                 

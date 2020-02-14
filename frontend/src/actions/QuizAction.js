@@ -47,6 +47,7 @@ function FetchQuestionWhenSelectAction (GlobalHook,item) {
             sectionName: GlobalHook.getGlobalLessionSelect.sectionName,
             lessionName: GlobalHook.getGlobalLessionSelect.mediaName,
             mediaId:GlobalHook.getGlobalLessionSelect.mediaId,
+            courseSlug:GlobalHook.getGlobalCourseSlug
            
     };
 

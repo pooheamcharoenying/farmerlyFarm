@@ -27,7 +27,10 @@ const QuizSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  courseName:{
+  courseSlug:{
+    type: String
+  },
+  courseId:{
     type: String
   },
   sectionName:{
@@ -36,7 +39,7 @@ const QuizSchema = new Schema({
   lessionName:{
     type:String
   },
-  TeacherId:{
+  teacherId:{
     type:String
   },
   mediaId:{

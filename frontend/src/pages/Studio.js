@@ -6,20 +6,18 @@ import SideBar from "../components/sideBar/SideBarStudio"
 import StudioContent from "../components/studioContent/StudioContent"
 import {getCourseContentAction,getCoursePoolAction} from '../actions'
 import {GlobalContext} from '../hook/GlobalHook'
-// import {Prompt} from 'react-router-dom'
-// import UnSaveAlert from '../components/popup/unSaveAlert'
+
 export default function Studio() {
 
  
-    let { courseName } = useParams();
+    let { courseSlug } = useParams();
    
     const GlobalHook = useContext(GlobalContext)
 
 
     useEffect(() => { 
-             getCourseContentAction(GlobalHook,courseName)
-             GlobalHook.setGlobalCourseName(courseName)
-             console.log(courseName)
+             getCourseContentAction(GlobalHook,courseSlug)
+             GlobalHook.setGlobalCourseSlug(courseSlug)
              getCoursePoolAction(GlobalHook)
         }, [])
 
@@ -42,19 +40,6 @@ export default function Studio() {
 
 </div>
 
-      //   <div className="h-screen flex flex-col">
-      //       {/* <Prompt
-      //       when={GlobalHook.getMutantStatus}
-      //       message={location => ` Changes that you made may not be saved. Are you sure you want to leave this page ?`}
-      //     /> */}
-      //    <Helmet><title>Studysabai:{courseName}</title></Helmet>
-      //    <Header/>
-        
-      //    <div className="fixed inset-0 bg-yellow-400 mt-16 flex">
-      //       <SideBar />
-      //       <StudioContent/>
 
-      // </div>
-      //   </div>
     )
 }

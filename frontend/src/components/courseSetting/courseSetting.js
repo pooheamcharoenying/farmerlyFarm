@@ -7,22 +7,27 @@ import {
   Tooltip,
   Spin,
   Progress,
-  message
+  message,
+  Icon
 } from "antd";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
+import { useParams} from "react-router";
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
-  CreateCourseAction
+  SaveCourseSetting,
+  GetCourseSettingAction
 } from "../../actions";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 export default function FabCreateCourse() {
+  let { courseSlug } = useParams();
+
   const GlobalHook = useContext(GlobalContext);
 
   const [getModalOpenStatus, setModalOpenStatus] = useState(false);
@@ -32,6 +37,9 @@ export default function FabCreateCourse() {
   const [uploadPercentage, setuploadPercent] = useState();
   const [getVideoFileName, setVideoFileName] = useState("");
 
+  useEffect(() => {
+    GetCourseSettingAction(GlobalHook,courseSlug)
+  }, [])
   const {
     acceptedFiles,
     getRootProps,
@@ -42,9 +50,12 @@ export default function FabCreateCourse() {
   } = useDropzone({
     accept: "image/jpeg, image/png, image/jpg, image/gif"
   });
+
+
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
+      GlobalHook.setGlobalcourseImageFileName(acceptedFiles[0].name)
       setVideoFileName(acceptedFiles[0].name);
       UploadBtnClick(acceptedFiles[0]);
     }
@@ -117,20 +128,27 @@ export default function FabCreateCourse() {
     return (
       <Modal
         visible={getModalOpenStatus}
-        title="Create Course"
+        title="Course Setting"
         onOk={() => setModalOpenStatus(false)}
         onCancel={() => {
           setModalOpenStatus(false);
-          ClearCreateCourseFieldAction(GlobalHook);
+     
         }}
         footer={[
           <div className="w-full flex justify-center">
             <button
-              onClick={() => CreateCourseAction(GlobalHook, setModalOpenStatus)}
+              onClick={() =>{alert("delete")}}
+              className="bg-red-500 text-white p-2 rounded hover:bg-red-400"
+            >
+              Delete Course
+            </button>
+            <button
+              onClick={() => SaveCourseSetting(GlobalHook, courseSlug,setModalOpenStatus)}
               className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             >
-              Create
+              Save
             </button>
+            
           </div>
         ]}
       >
@@ -139,7 +157,7 @@ export default function FabCreateCourse() {
           style={{ maxWidth: "300px" }}
           onKeyPress={event => {
             if (event.key === "Enter") {
-              CreateCourseAction(GlobalHook, setModalOpenStatus);
+              SaveCourseSetting(GlobalHook,courseSlug, setModalOpenStatus);
             }
           }}
         >
@@ -211,6 +229,7 @@ export default function FabCreateCourse() {
                   setVideoData(null);
                   GlobalHook.setGlobalCourseImage(null);
                   setUploadingShow(null);
+                  GlobalHook.setGlobalCourseImage(null);
                 }}
               />
             </div>
@@ -223,8 +242,8 @@ export default function FabCreateCourse() {
                   className="mt-4 flex flex-col"
                   style={{ width: "100%", height: "auto" }}
                 >
-                  <div className="mb-2">"FileName:"{getVideoFileName}</div>
-                  <img src={getVideoData} />
+                  <div className="mb-2">"FileName:"{ GlobalHook.getGlobalcourseImageFileName}</div>
+                  <img src={GlobalHook.getGlobalCourseImage} />
                 </div>
               ) : (
                 <div className="w-full h-full flex flex-col items-center">
@@ -298,14 +317,13 @@ export default function FabCreateCourse() {
                       </div>
                       <div className="mt-4 text-center">อัพโหลดสำเร็จ</div>
                       <div className="mt-4 text-center">
-                        กด Create เพื่อบันทึกข้อมูล
+                        กด Save เพื่อบันทึกข้อมูล
                       </div>
                     </div>
                   )}
                 </div>
               )}
             </div>
-
             <div className="flex flex-col text-center my-4">
             <div className="font-bold text mb-2">Tags</div>
             <TextArea
@@ -325,25 +343,11 @@ export default function FabCreateCourse() {
   return (
     <>
       {CreateCoursePopUp()}
-      <Tooltip title="Create Course">
-        <button
-          onClick={() => {
-            setModalOpenStatus(true);
-            GlobalHook.setGlobalCourseSubject("Mathematic")
-      GlobalHook.setGlobalCourseLevel("ประถม")
-      GlobalHook.setGlobalCourseTeacher("")
-      GlobalHook.setGlobalCourseDescription("")
-      GlobalHook.setGlobalCourseImage("")
-      GlobalHook.setGlobalcourseImageFileName("")
-      GlobalHook.setGlobalCourseTag("")
-
-          }}
-          className="bg-orange-600 fixed right-0 bottom-0 m-4 text-white rounded-full flex justify-center items-center hover:bg-orange-500"
-          style={{ width: "60px", height: "60px", fontSize: "40px" }}
-        >
-          +
-        </button>
-      </Tooltip>
+      <Icon
+                className="text-bold mr-6 cursor-pointer"
+                type="setting"
+                onClick={() => setModalOpenStatus(true)}
+              />
     </>
   );
 }

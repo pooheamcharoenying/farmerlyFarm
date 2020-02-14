@@ -17,6 +17,7 @@ function ClearCreateLessionAction(GlobalHook){
   GlobalHook.setGlobalMediaVideo("")
   GlobalHook.setGlobalMediaDocument("")
   GlobalHook.setGlobalMediaQuiz("")
+  GlobalHook.setGlobalMediaNew("")
 }
 function ClearCreateQuizFieldAction(GlobalHook){
  GlobalHook.setGloblaQuizQuestionName("");
@@ -39,7 +40,7 @@ function ClearCreateQuizFieldAction(GlobalHook){
     ]
   }])
  GlobalHook.setGloblaQuizAnswerCorrect()
-  GlobalHook.setGloblaQuizExplainType("Text")
+GlobalHook.setGloblaQuizExplainType("Text")
  GlobalHook.setGloblaQuizExplainField()
  GlobalHook.setGloblaQuizQuestionSelect({});
 }

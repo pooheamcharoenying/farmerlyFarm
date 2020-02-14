@@ -220,7 +220,7 @@ router.post(
 
   (req, res) => {
     User.findById(req.user.id).then(user => {
-      user.courseSubscription.unshift({ courseName: req.body.courseName });
+      user.courseSubscription.unshift({ courseId: req.body.courseId });
 
       user.save().then(user => res.json(user));
     }).catch((err)=>console.log(err))
@@ -236,8 +236,8 @@ router.post(
     User.findById(req.user.id)
       .then(user => {
         const findCourseMatch = user.courseSubscription
-          .map(data => data.courseName)
-          .indexOf(req.body.courseName);
+          .map(data => data.courseId)
+          .indexOf(req.body.courseId);
         if (user.courseSubscription[findCourseMatch] != undefined) {
           const isLessIdExist = user.courseSubscription[
             findCourseMatch
@@ -257,7 +257,7 @@ router.post(
           user.save().then(user => res.json(user));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err);res.status(400).json(err)});
   }
 );
 
@@ -270,8 +270,8 @@ router.post(
     User.findById(req.user.id)
       .then(user => {
         const findCourseMatch = user.courseSubscription
-          .map(data => data.courseName)
-          .indexOf(req.body.courseName);
+          .map(data => data.courseId)
+          .indexOf(req.body.courseId);
         if (user.courseSubscription[findCourseMatch] != undefined) {
           // const isLessIdExist = user.courseSubscription[findCourseMatch].quizLog
           //   .map(data => data.lessionId)

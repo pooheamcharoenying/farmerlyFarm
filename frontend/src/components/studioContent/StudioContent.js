@@ -6,6 +6,8 @@ import StudioVideoContent from "./StudioVideoContent";
 import StudioDocumentContent from "./StudioDocumentContent";
 import StudioQuizContent from "./StudioQuizContent";
 import StudioOverviewContent from "./StudioOverviewContent";
+import Blank from "./Blank";
+
 import {SaveAllAction} from '../../actions'
 export default function StudioContent() {
   const GlobalHook = useContext(GlobalContext);
@@ -20,7 +22,9 @@ export default function StudioContent() {
       case "Quiz":
         return <StudioQuizContent />;
         break;
-     
+      case "Blank":
+        return <Blank />;
+        break;
       default:
         return <StudioOverviewContent />;
         break;

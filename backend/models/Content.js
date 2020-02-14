@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ContentSchema = new Schema({
- name:{
-  type:String
- },
+  _Id: Schema.Types.ObjectId,
+  name:{
+    type:String
+   },
   contentStructure: {
     type: Array
   },

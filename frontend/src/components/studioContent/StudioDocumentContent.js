@@ -52,7 +52,7 @@ useEffect(() => {
 
      let oldCourseStructure = GlobalHook.getGlobalCourseStructure
     const { parentIndex,selfIndex } = GlobalHook.getGlobalLessionSelect
-    if(oldCourseStructure[parentIndex]){
+    if(oldCourseStructure[parentIndex] && getLessionName){
       (oldCourseStructure[parentIndex].subItems)[selfIndex].title = getLessionName;
       (oldCourseStructure[parentIndex].subItems)[selfIndex].time = getLessionTime;
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
@@ -65,7 +65,7 @@ useEffect(() => {
 
     useEffect(() => {
       CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
-
+console.log(getLessionName)
     }, [getLessionName])
 
     
@@ -74,6 +74,18 @@ useEffect(() => {
 
 
     }, [getLessionTime])
+
+
+    useEffect(() => {
+   if(GlobalHook.getGlobalStatusCode == "CreateNewLession"){
+     setval("")
+     console.log("CreateNewLession")
+     GlobalHook.setGlobalStatusCode("")
+   }
+
+   console.log(GlobalHook.getGlobalStatusCode)
+    },[GlobalHook.getGlobalStatusCode])
+
 
   var modules = {
     toolbar: [

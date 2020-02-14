@@ -129,7 +129,7 @@ const StudioQuizContent = () => {
   useEffect(() => {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
-    if (oldCourseStructure[parentIndex]) {
+    if (oldCourseStructure[parentIndex] && getLessionName &&getLessionTime) {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].title = getLessionName;

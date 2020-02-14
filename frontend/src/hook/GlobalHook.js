@@ -41,12 +41,19 @@ const [getGlobalShowMobileSearchBar,setGlobalShowMobileSearchBar] = useState(fal
 const [getGlobalCoursePool,setGlobalCoursePool] = useState([])
 const [getGlobalCourseContent,setGlobalCourseContent] = useState([])
 const [getGlobalCourseSearch,setGlobalCourseSearch] = useState([])
+const [getGlobalCourseSlug,setGlobalCourseSlug] = useState("")
+const [getGlobalcourseId,setGlobalcourseId] = useState("")
+const [getGlobalCourseTag,setGlobalCourseTag] = useState("")
+
 
 const [getGlobalLessionSelect,setGlobalLessionSelect] = useState({})
 
 const [getGlobalCourseStructure,setGlobalCourseStructure] = useState([])
 const [getGlobalCourseStructureNew,setGlobalCourseStructureNew] = useState([])
 const [getGlobalNotFirstLoadStatus,setGlobalNotFirstLoadStatus] = useState(false)
+
+const [getGlobalStatusCode,setGlobalStatusCode] = useState("")
+const [getGlobalStatusCodeQ,setGlobalStatusCodeQ] = useState("")
 
 //Filter
 const [getGlobalCourseSubjectFilter,setGlobalCourseSubjectFilter] = useState("ทั้งหมด")
@@ -59,6 +66,9 @@ const [getGlobalCourseLevel,setGlobalCourseLevel] = useState("ประถม")
 const [getGlobalCourseTeacher,setGlobalCourseTeacher] = useState("")
 const [getGlobalCourseDescription,setGlobalCourseDescription] = useState("")
 const [getGlobalCourseImage,setGlobalCourseImage] = useState("")
+
+const [getGlobalcourseImageFileName,setGlobalcourseImageFileName] = useState("")
+
 
 //Quiz
 const [getGloblaQuizQuestionSelect,setGloblaQuizQuestionSelect] = useState({})
@@ -268,10 +278,25 @@ const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState
       setGlobalStudioUploadFile:setGlobalStudioUploadFile,
 
       getGlobalCurrentUser:getGlobalCurrentUser,
-      setGlobalCurrentUser:setGlobalCurrentUser
+      setGlobalCurrentUser:setGlobalCurrentUser,
 
+      getGlobalCourseSlug:getGlobalCourseSlug,
+      setGlobalCourseSlug:setGlobalCourseSlug,
 
+      getGlobalcourseId,
+      setGlobalcourseId,
+      
+      getGlobalStatusCode,
+      setGlobalStatusCode,
 
+      getGlobalStatusCodeQ,
+      setGlobalStatusCodeQ,
+
+      getGlobalcourseImageFileName,
+      setGlobalcourseImageFileName,
+
+      getGlobalCourseTag,
+      setGlobalCourseTag
         
 
 

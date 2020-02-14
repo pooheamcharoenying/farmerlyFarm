@@ -195,36 +195,41 @@ function LogoutAction(GlobalHook) {
 
 function CourseSubscriptionAction(GlobalHook) {
   GlobalHook.setGlobalLoading(true);
-  const pushData = { courseName: GlobalHook.getGlobalCourseName };
+  const pushData = { courseId: GlobalHook.getGlobalcourseId };
+
+  // console.log(pushData)
   axios
     .post("/api/user/subscription", pushData)
     .then(res => {
       // console.log(res.data)
       GlobalHook.setGlobalUser(res.data);
       localStorage.setItem("globalUser", JSON.stringify(res.data));
-      CourseSubscriptorActior(GlobalHook)
-    })
-    .catch(err => console.log(err));
-}
-
-function CourseSubscriptorActior(GlobalHook){
-  GlobalHook.setGlobalLoading(true);
-  const pushData = { courseName: GlobalHook.getGlobalCourseName };
-  axios
-    .post("/api/course/subscriptor", pushData)
-    .then(res => {  
-
+     // CourseSubscriptorActior(GlobalHook)
       GlobalHook.setGlobalLoading(false);
     })
     .catch(err => console.log(err));
 }
 
+// function CourseSubscriptorActior(GlobalHook){
+//   GlobalHook.setGlobalLoading(true);
+//   const pushData = { courseId: GlobalHook.getGlobalcourseId };
+//   axios
+//     .post("/api/course/subscriptor", pushData)
+//     .then(res => {  
+
+//       GlobalHook.setGlobalLoading(false);
+//     })
+//     .catch(err => console.log(err));
+//}
+
 function LessionVisitedLogAction(GlobalHook,mediaId) {
   GlobalHook.setGlobalLoading(false);
   const pushLogData = {
-    courseName: GlobalHook.getGlobalCourseName,
+    courseId: GlobalHook.getGlobalcourseId,
     lessionId: mediaId
   };
+
+  console.log(pushLogData)
   axios
     .post("/api/user/log", pushLogData)
     .then(res => {
@@ -238,7 +243,7 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
 
 function QuizLogAction(GlobalHook) {
   const pushLogData = {
-    courseName: GlobalHook.getGlobalCourseName,
+    courseId: GlobalHook.getGlobalcourseId,
     lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
     quizData:GlobalHook.getGlobalUserAnswerPool
   };

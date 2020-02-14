@@ -3,10 +3,12 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const CourseSchema = new Schema({
-  courseId: Schema.Types.ObjectId,
+  _Id: Schema.Types.ObjectId,
+  courseSlug: {
+    type: String,
+  },
   courseName: {
     type: String,
-    required: true
   },
   courseDescription: {
     type: String
@@ -23,7 +25,10 @@ const CourseSchema = new Schema({
   courseImage: {
     type: String
   },
-  courseTags: {
+  courseImageFileName: {
+    type: String
+  },
+  courseTag: {
     type: String
   },
   courseActive: {
@@ -38,6 +43,9 @@ const CourseSchema = new Schema({
   },
   courseSubscriptor :{
     type: Object
+  },
+  courseOwnerId: {
+    type: String
   }
 });
 
