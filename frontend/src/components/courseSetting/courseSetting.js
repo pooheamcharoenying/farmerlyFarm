@@ -19,7 +19,8 @@ import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
   SaveCourseSetting,
-  GetCourseSettingAction
+  GetCourseSettingAction,
+  DeleteCourseLessionAction
 } from "../../actions";
 
 const { TextArea } = Input;
@@ -137,7 +138,7 @@ export default function FabCreateCourse() {
         footer={[
           <div className="w-full flex justify-center">
             <button
-              onClick={() =>{alert("delete")}}
+              onClick={() =>{DeleteCourseLessionAction(GlobalHook,courseSlug)}}
               className="bg-red-500 text-white p-2 rounded hover:bg-red-400"
             >
               Delete Course

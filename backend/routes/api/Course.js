@@ -101,26 +101,30 @@ router.post(
   }
 );
 
-// //Del
-// router.post(
-//   "/delete/:coursename",
-//   passport.authenticate("jwt", { session: false }),
+//Del
+router.post(
+  "/delete",
+  passport.authenticate("jwt", { session: false }),
 
-//   (req, res) => {
-//     const adjustCourseName = req.params.coursename.replace(/\s/g, "-");
-//     const adjustCourseNameStr = adjustCourseName.toString();
-//     const adjustMediaName = adjustCourseNameStr + "Media";
-//     const adjustMediaNameStr = adjustMediaName.toString();
+  (req, res) => {
+    const adjustCourseSlug = (req.body.courseSlug).toString();
 
-//     Course.deleteOne({ courseName: adjustCourseNameStr }, function(err) {
-//       res.status(200).json("success");
-//       if (err) return handleError(err);
+    Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
+      let courseId = poolData._id.toString();
+    const adjustMediaName = courseId + "Media";
+    const adjustMediaNameStr = adjustMediaName.toString();
 
-//       mongoose.connection.db.dropCollection(adjustCourseNameStr);
-//       mongoose.connection.db.dropCollection(adjustMediaNameStr);
-//     });
-//   }
-// );
+    Course.deleteOne({ courseSlug: adjustCourseSlug }, function(err) {
+      res.status(200).json("success");
+      if (err) return handleError(err);
+
+      mongoose.connection.db.dropCollection(courseId);
+      mongoose.connection.db.dropCollection(adjustMediaNameStr);
+    });
+  
+}).catch(err => console.log(err));
+  }
+);
 
 //Get By Cat
 router.get("/category/:category", async (req, res) => {

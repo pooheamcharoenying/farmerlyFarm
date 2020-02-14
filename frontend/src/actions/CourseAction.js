@@ -238,8 +238,23 @@ function UpdataCoursepublishAction(GlobalHook, courseSlug, coursePublish) {
     });
 }
 
-function DeleteCourseLessionAction(GlobalHook) {
+function DeleteCourseLessionAction(GlobalHook,courseSlug) {
   GlobalHook.setGlobalLoading(true);
+
+
+  const pushData = {
+    courseSlug: courseSlug
+  };
+
+  axios
+    .post("/api/course/delete", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      window.location.href="/teacher";
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 export {
