@@ -57,20 +57,31 @@ export default function CourseQuizContent() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
-      if (
-        parseInt(GlobalHook.getGlobalMediaQuiz.length) -
-          parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5) ==
-        0
-      ) {
+      // if (
+
+      if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
+        setQuestionAmount(GlobalHook.getGlobalLessionSelect.mediaEtc5)
+      }else{
         setQuestionAmount(parseInt(GlobalHook.getGlobalMediaQuiz.length));
-      } else {
-        setQuestionAmount(
-          parseInt(GlobalHook.getGlobalMediaQuiz.length) -
-            parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5)
-        );
       }
+      //   parseInt(GlobalHook.getGlobalMediaQuiz.length) -
+      //     parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5) ==
+      //   0
+      // ) {
+      //   setQuestionAmount(parseInt(GlobalHook.getGlobalMediaQuiz.length));
+      // } else {
+      //   setQuestionAmount(
+      //     parseInt(GlobalHook.getGlobalMediaQuiz.length) -
+      //       parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5)
+      //   );
+      // }
     }
   }, [GlobalHook.getGlobalMediaQuiz]);
+
+  useEffect(() => {
+   console.log(getQuestionAmount)
+   console.log(GlobalHook.getGloblaQuizQuestionSelect.selfIndex)
+  }, )
 
   function CheckanswerResult() {
     if (GlobalHook.getGlobalUserAnswerSelect != "") {
@@ -561,7 +572,7 @@ export default function CourseQuizContent() {
                 )}
               </div>
 
-              {GlobalHook.getGloblaQuizQuestionSelect.selfIndex + 1 ==
+              {GlobalHook.getGloblaQuizQuestionSelect.selfIndex +1  ==
               getQuestionAmount ? (
                 <div>
                   {GlobalHook.getGlobalLessionSelect.mediaEtc1 && (

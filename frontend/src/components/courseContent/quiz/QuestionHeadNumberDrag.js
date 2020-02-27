@@ -59,16 +59,17 @@ function QuestionNumberHead(props) {
       setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length))
     let FinalQuizBank = []
     let randomAmount = parseInt(GlobalHook.getGlobalMediaQuiz.length) - parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5)
-
+      console.log(randomAmount)
     if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
       FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
+      console.log(FinalQuizBank)
     }else{
       FinalQuizBank = GlobalHook.getGlobalMediaQuiz
   
 
     }
 
-    setitems(GlobalHook.getGlobalMediaQuiz);
+    setitems(FinalQuizBank);
     handleQuizSelect(FinalQuizBank[0],0)
 
 
