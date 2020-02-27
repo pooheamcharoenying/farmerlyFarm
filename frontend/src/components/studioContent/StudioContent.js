@@ -34,7 +34,7 @@ export default function StudioContent() {
     }
   }
   return (
-    <div className="h-full bg-gray-100 flex-1 mt-16" style={{overflowY:"auto"}}>
+    <div className="bg-gray-100 flex-1 mt-16" style={{overflowY:"auto"}}>
       {RenderStudioContentSwitch()}
       {GlobalHook.getGlobalShowSideBarStatus? <div className="absolute inset-0 min-h-screen min-w-full bg-black opacity-50 z-20 md:hidden"/>:<div/>}
 

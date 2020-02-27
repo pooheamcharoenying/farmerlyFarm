@@ -26,7 +26,7 @@ export default function StudioOverviewContent() {
   }, [GlobalHook.getGlobalUser]);
 
   return (
-    <div className=" h-full w-full flex flex-col items-center py-4 justify-start">
+    <div className=" w-full flex flex-col items-center py-4 justify-start">
       <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-blue-500">
         รายละเอียดคอร์ส
       </div>
@@ -57,6 +57,7 @@ export default function StudioOverviewContent() {
       >
         เริ่มเรียนเลย
       </button> 
+      <div style={{minHeight:"60px"}}/>
       
     
     </div>

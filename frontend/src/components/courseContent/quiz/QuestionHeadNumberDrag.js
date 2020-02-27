@@ -52,10 +52,7 @@ function QuestionNumberHead(props) {
     
   }, [items]);
 
-  useEffect(() => {
-  console.log("items")
-  console.log(items)
-  }, )
+
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
