@@ -1,11 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import uuid from "uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Button, Modal, Input, message, Select,Tooltip } from "antd";
-import {FaCaretLeft,FaCaretRight} from 'react-icons/fa'
+import { Button, Modal, Input, message, Select, Tooltip } from "antd";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
-import { GlobalContext } from "../../../hook/GlobalHook";
-import {FetchQuestionWhenSelectAction,ClearCreateQuizFieldAction} from '../../../actions'
+import { GlobalContext, CourseQuizContext } from "../../../hook/GlobalHook";
+import {
+  FetchQuestionWhenSelectAction,
+  ClearCreateQuizFieldAction
+} from "../../../actions";
 
 const getItemStyle = (isDragging, draggableStyle, item, isSelect) => ({
   userSelect: "none",
@@ -21,109 +24,112 @@ const getItemStyle = (isDragging, draggableStyle, item, isSelect) => ({
   borderWidth: "1px",
   cursor: "pointer",
   background: isSelect.mediaId == item.id ? "#ffe06c" : "rgba(0,0,0,0)",
-  display:"flex",
-  justifyContent:"center",
-  alignItems:"center",
-  borderColor:"gray",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderColor: "gray",
   ...draggableStyle
 });
 
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "white" : "white",
-  width:"100%",
-  maxWidth:"100%",
+  width: "100%",
+  maxWidth: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  overflowX: "auto",
-  
+  overflowX: "auto"
 });
 
 function QuestionNumberHead(props) {
-
   const GlobalHook = useContext(GlobalContext);
   const [items, setitems] = useState([]);
-  const [getCurrentQuestionIndex,setCurrentQuestionIndex] = useState(0)
-  const [getQuestionLength,setQuestionLength] = useState(0)
-
+  const [getCurrentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [getQuestionLength, setQuestionLength] = useState(0);
+  const [
+    getStartedQuiz,
+    setStartedQuiz,
+    getGlobalUserAnsSelectNew,
+    setGlobalUserAnsSelectNew,
+    getGlobalUserAnswerPoolNew,
+    setGlobalUserAnswerPoolNew,
+    getGloblaQuizQuestionSelectNew,
+    setGloblaQuizQuestionSelectNew
+  ] = useContext(CourseQuizContext);
 
   useEffect(() => {
-    GlobalHook.setGlobalMediaNew(items)
-    
+    GlobalHook.setGlobalMediaNew(items);
   }, [items]);
-
-
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
-      setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length))
-    let FinalQuizBank = []
-    let randomAmount = parseInt(GlobalHook.getGlobalMediaQuiz.length) - parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5)
-      console.log(randomAmount)
-    if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
-      FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
-      console.log(FinalQuizBank)
-    }else{
-      FinalQuizBank = GlobalHook.getGlobalMediaQuiz
-  
+      setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length));
+      let FinalQuizBank = [];
+      let randomAmount =
+        parseInt(GlobalHook.getGlobalMediaQuiz.length) -
+        parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5);
+      console.log(randomAmount);
+      if (GlobalHook.getGlobalLessionSelect.mediaEtc3) {
+        FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(
+          randomAmount
+        );
+        console.log(FinalQuizBank);
+      } else {
+        FinalQuizBank = GlobalHook.getGlobalMediaQuiz;
+      }
 
+      setitems(FinalQuizBank);
+      handleQuizSelect(FinalQuizBank[0], 0);
+
+      // if(GlobalHook.getGlobalLessionSelect.mediaEtc5 == 0){
+      //   randomAmount = 0
+      //       if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
+
+      //         FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
+
+      // }else{
+      //   FinalQuizBank = GlobalHook.getGlobalMediaQuiz.slice(randomAmount)
+      // console.log(FinalQuizBank)
+
+      // }
+      //     console.log(GlobalHook.getGlobalMediaQuiz)
+      //     console.log(FinalQuizBank)
+
+      //     setitems(FinalQuizBank);
+      //     handleQuizSelect(FinalQuizBank[0],0)
+
+      //     }else{
+      //       setitems(GlobalHook.getGlobalMediaQuiz);
+      //     }
     }
-
-    setitems(FinalQuizBank);
-    handleQuizSelect(FinalQuizBank[0],0)
-
-
-// if(GlobalHook.getGlobalLessionSelect.mediaEtc5 == 0){
-//   randomAmount = 0
-//       if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
-  
-
-//         FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
-   
-
-    // }else{
-    //   FinalQuizBank = GlobalHook.getGlobalMediaQuiz.slice(randomAmount)
-    // console.log(FinalQuizBank)
-
-    // }
-//     console.log(GlobalHook.getGlobalMediaQuiz)
-//     console.log(FinalQuizBank)
-
-//     setitems(FinalQuizBank);
-//     handleQuizSelect(FinalQuizBank[0],0)
-
-
-//     }else{
-//       setitems(GlobalHook.getGlobalMediaQuiz);
-//     }
-  }
   }, [GlobalHook.getGlobalMediaQuiz]);
 
   useEffect(() => {
-    if(GlobalHook.getPrevNextStatus == "RestartQuiz"){
-      handleQuizSelect(items[0],0)
-     setTimeout(() => {
-       GlobalHook.setPrevNextStatus(null)
-     }, 100);
+    if (GlobalHook.getPrevNextStatus == "RestartQuiz") {
+      handleQuizSelect(items[0], 0);
+      setTimeout(() => {
+        GlobalHook.setPrevNextStatus(null);
+      }, 100);
     }
-   }, [GlobalHook.getPrevNextStatus])
+  }, [GlobalHook.getPrevNextStatus]);
 
   function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-  
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-  
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-  
+
       // And swap it with the current element.
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-  
+
     return array;
   }
 
@@ -184,67 +190,75 @@ function QuestionNumberHead(props) {
     }
   }
 
- 
-
-
   function handleQuizSelect(item, index) {
-
-    setCurrentQuestionIndex(index)
-    ClearCreateQuizFieldAction(GlobalHook)
-    console.log(item)
+    setCurrentQuestionIndex(index);
+    ClearCreateQuizFieldAction(GlobalHook);
+    console.log(item);
     GlobalHook.setGloblaQuizQuestionSelect({
       selfIndex: index,
       mediaId: item.id,
       questionId: item.questionId
     });
-    FetchQuestionWhenSelectAction(GlobalHook,item);
 
-
+    setGloblaQuizQuestionSelectNew({
+      selfIndex: index,
+      mediaId: item.id,
+      questionId: item.questionId
+    });
+    FetchQuestionWhenSelectAction(GlobalHook, item);
   }
 
-function handlePreviousClick(){
-  if(getCurrentQuestionIndex != 0){
-    handleQuizSelect(items[getCurrentQuestionIndex-1],getCurrentQuestionIndex-1)
-  }
-} 
-
-function handleNextClick(){
-  if(getCurrentQuestionIndex+1 != getQuestionLength){
-    handleQuizSelect(items[getCurrentQuestionIndex+1],getCurrentQuestionIndex+1)
-  }
-}
-
-useEffect(() => {
- if(GlobalHook.getPrevNextStatus == "Next"){
-  handleNextClick();
-  setTimeout(() => {
-    GlobalHook.setPrevNextStatus(null)
-  }, 100);
- }
-}, [GlobalHook.getPrevNextStatus])
-
-useEffect(() => {
-  if(GlobalHook.getGlobalUserAnswerSelect != ""){
-    let result = "false"
-    if(GlobalHook.getGloblaQuizAnswerCorrect == GlobalHook.getGlobalUserAnswerSelect ){
-      result = "true"
-    }else{
-      result = "false"
+  function handlePreviousClick() {
+    if (getCurrentQuestionIndex != 0) {
+      handleQuizSelect(
+        items[getCurrentQuestionIndex - 1],
+        getCurrentQuestionIndex - 1
+      );
     }
+  }
 
-  let userAnswerPool = GlobalHook.getGlobalUserAnswerPool
-  userAnswerPool[GlobalHook.getGloblaQuizQuestionSelect.questionId] = {userAns:GlobalHook.getGlobalUserAnswerSelect,result:result}
-  GlobalHook.setGlobalUserAnswerPool(userAnswerPool)
-      
-}
-}, [GlobalHook.getGlobalUserAnswerSelect])
+  function handleNextClick() {
+    if (getCurrentQuestionIndex + 1 != getQuestionLength) {
+      handleQuizSelect(
+        items[getCurrentQuestionIndex + 1],
+        getCurrentQuestionIndex + 1
+      );
+    }
+  }
 
-useEffect(() => {
-console.log(GlobalHook.getGlobalUserAnswerPool)
-}, [GlobalHook.getGlobalUserAnswerPool,GlobalHook.getGlobalUserAnswerSelect])
+  useEffect(() => {
+    if (GlobalHook.getPrevNextStatus == "Next") {
+      handleNextClick();
+      setTimeout(() => {
+        GlobalHook.setPrevNextStatus(null);
+      }, 100);
+    }
+  }, [GlobalHook.getPrevNextStatus]);
+
+  useEffect(() => {
+    if (getGlobalUserAnsSelectNew != "") {
+      let result = "false";
+      if (GlobalHook.getGloblaQuizAnswerCorrect == getGlobalUserAnsSelectNew) {
+        result = "true";
+      } else {
+        result = "false";
+      }
+
+      let userAnswerPool = getGlobalUserAnswerPoolNew;
+      userAnswerPool[GlobalHook.getGloblaQuizQuestionSelect.questionId] = {
+        userAns: getGlobalUserAnsSelectNew,
+        result: result
+      };
+      setGlobalUserAnswerPoolNew(userAnswerPool);
+    }
+  }, [getGlobalUserAnsSelectNew]);
+
   return (
     <div className="max-w-full min-w-full w-full overflow-x-auto flex h-full border-solid border-b-2 rounded-b-none rounded-lg border-gray-300">
-       <button className="text-5xl mr-4 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button>
+      <button className="text-5xl mr-4 " onClick={() => handlePreviousClick()}>
+        {" "}
+        <FaCaretLeft />
+      </button>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable" type="app" direction="horizontal">
           {(provided, snapshot) => (
@@ -252,10 +266,7 @@ console.log(GlobalHook.getGlobalUserAnswerPool)
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-          
               {items.map((item, index) => {
-              
-
                 return (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided, snapshot) => (
@@ -271,7 +282,6 @@ console.log(GlobalHook.getGlobalUserAnswerPool)
                                 item,
                                 GlobalHook.getGloblaQuizQuestionSelect
                               )}
-
                             >
                               {index + 1}
 
@@ -290,12 +300,14 @@ console.log(GlobalHook.getGlobalUserAnswerPool)
                 );
               })}
               {provided.placeholder}
-             
             </div>
           )}
         </Droppable>
       </DragDropContext>
-      <button className="text-5xl ml-4 " onClick={()=>handleNextClick()}> <FaCaretRight /></button>
+      <button className="text-5xl ml-4 " onClick={() => handleNextClick()}>
+        {" "}
+        <FaCaretRight />
+      </button>
     </div>
   );
 }

@@ -572,7 +572,7 @@ export default function CourseQuizContent() {
                         AnswerLog();
                       }}
                     >
-                      Submmit
+                      Submit
                     </button>
                   )}
                   <button
@@ -594,7 +594,7 @@ export default function CourseQuizContent() {
                         AnswerLog();
                       }}
                     >
-                      Submmit
+                      Submit
                     </button>
                   ) : (
                     <button

@@ -5,7 +5,7 @@ import { Button, Modal, Input, message, Select,Tooltip } from "antd";
 
 
 // a little function to help us with reordering the result
-import { GlobalContext } from "../../../hook/GlobalHook";
+import { GlobalContext,CourseQuizContext } from "../../../hook/GlobalHook";
 
 const getItemStyle = (isDragging, draggableStyle,item,selectedItem,correctAnswer,QuizFinishStatus) => ({
   // some basic styles to make the items look a bit nicer
@@ -50,6 +50,16 @@ function CreateAnswerDrag() {
   const [getModalNewQAnswerOpenStatus, setModalNewQAnswerOpenStatus] = useState(false);
   const [getAnswerName, setAnswerName] = useState("");
   const [getUserAnswer,setUserAnswer] = useState("")
+  const [
+    getStartedQuiz,
+    setStartedQuiz,
+    getGlobalUserAnsSelectNew,
+    setGlobalUserAnsSelectNew,
+    getGlobalUserAnswerPoolNew,
+    setGlobalUserAnswerPoolNew,
+    getGloblaQuizQuestionSelectNew,
+    setGloblaQuizQuestionSelectNew
+  ] = useContext(CourseQuizContext);
  
   useEffect(() => {
     GlobalHook.setGloblaQuizAnswerFieldNew(items)
@@ -143,13 +153,15 @@ function CreateAnswerDrag() {
 
   function handleUserAnswerSelect(item,index){
   
-    setUserAnswer(item.content)
+    // setUserAnswer(item.content)
     GlobalHook.setGlobalUserAnswerSelect(item.content)
+
+    setGlobalUserAnsSelectNew(item.content)
   }
 
   function getUserSelectAns(){
-    if(GlobalHook.getGlobalUserAnswerPool[GlobalHook.getGloblaQuizQuestionSelect.questionId]){
-      return GlobalHook.getGlobalUserAnswerPool[GlobalHook.getGloblaQuizQuestionSelect.questionId].userAns
+    if(getGlobalUserAnswerPoolNew[getGloblaQuizQuestionSelectNew.questionId]){
+      return getGlobalUserAnswerPoolNew[getGloblaQuizQuestionSelectNew.questionId].userAns
     }
   }
 

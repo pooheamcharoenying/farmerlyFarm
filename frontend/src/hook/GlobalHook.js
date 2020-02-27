@@ -88,11 +88,20 @@ const [getGloblaQuizExplainType,setGloblaQuizExplainType] = useState("Text")
 const [getGloblaQuizExplainField,setGloblaQuizExplainField] = useState()
 const [getGloblaQuizExplainFieldNew,setGloblaQuizExplainFieldNew] = useState()
 
+const [getGloblaQuizQuestionSelectNew,setGloblaQuizQuestionSelectNew] = useState({})
+
+
+
+const [getGlobalUserAnsSelectNew,setGlobalUserAnsSelectNew] = useState("")
+
 
 const [getGloblaQuizAnswerFieldNew,setGloblaQuizAnswerFieldNew] = useState()
 
 const [getGlobalUserAnswerPool,setGlobalUserAnswerPool] = useState({})
 const [getGlobalUserAnswerSelect,setGlobalUserAnswerSelect] = useState("")
+
+const [getGlobalUserAnswerPoolNew,setGlobalUserAnswerPoolNew] = useState({})
+
 
 const [getGlobalQuizFinishStatus,setGlobalQuizFinishStatus] = useState(false)
 
@@ -343,7 +352,7 @@ const [getStartedQuiz, setStartedQuiz] = useState(false);
     return (
       <GlobalContext.Provider value={GlobalHook}>
          <NewContext.Provider value={[getGlobalLessionSelectNew,setGlobalLessionSelectNew]}>
-         <CourseQuizContext.Provider value={[getStartedQuiz, setStartedQuiz]}>
+         <CourseQuizContext.Provider value={[getStartedQuiz, setStartedQuiz,getGlobalUserAnsSelectNew,setGlobalUserAnsSelectNew,getGlobalUserAnswerPoolNew,setGlobalUserAnswerPoolNew,getGloblaQuizQuestionSelectNew,setGloblaQuizQuestionSelectNew]}>
 
          <Spin tip="Loading..." spinning={getGlobalLoading}>
         {props.children}

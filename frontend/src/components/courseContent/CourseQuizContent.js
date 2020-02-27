@@ -78,10 +78,6 @@ export default function CourseQuizContent() {
     }
   }, [GlobalHook.getGlobalMediaQuiz]);
 
-  useEffect(() => {
-   console.log(getQuestionAmount)
-   console.log(GlobalHook.getGloblaQuizQuestionSelect.selfIndex)
-  }, )
 
   function CheckanswerResult() {
     if (GlobalHook.getGlobalUserAnswerSelect != "") {
@@ -583,7 +579,7 @@ export default function CourseQuizContent() {
                         AnswerLog();
                       }}
                     >
-                      Submmit
+                      Submit
                     </button>
                   )}
                   <button
@@ -605,7 +601,7 @@ export default function CourseQuizContent() {
                         AnswerLog();
                       }}
                     >
-                      Submmit
+                      Submit
                     </button>
                   ) : (
                     <button
