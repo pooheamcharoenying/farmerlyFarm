@@ -6,6 +6,8 @@ import Firebase from "./firebase";
 
 export const GlobalContext = React.createContext("GlobalContext");
 export const FirebaseContext = React.createContext();
+export const NewContext = React.createContext("NewContext");
+
 
 const Store = props => {
 
@@ -47,6 +49,9 @@ const [getGlobalCourseTag,setGlobalCourseTag] = useState("")
 
 
 const [getGlobalLessionSelect,setGlobalLessionSelect] = useState({})
+
+const [getGlobalLessionSelectNew,setGlobalLessionSelectNew] = useState({})
+
 
 const [getGlobalCourseStructure,setGlobalCourseStructure] = useState([])
 const [getGlobalCourseStructureNew,setGlobalCourseStructureNew] = useState([])
@@ -157,8 +162,7 @@ const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState
 
       getGlobalLessionSelect:getGlobalLessionSelect,
       setGlobalLessionSelect:setGlobalLessionSelect,
-
-
+      
       getGlobalCourseName:getGlobalCourseName,
       setGlobalCourseName:setGlobalCourseName,
 
@@ -296,7 +300,12 @@ const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState
       setGlobalcourseImageFileName,
 
       getGlobalCourseTag,
-      setGlobalCourseTag
+      setGlobalCourseTag,
+
+       
+      getGlobalLessionSelectNew,
+      setGlobalLessionSelectNew,
+
         
 
 
@@ -328,11 +337,11 @@ const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState
       
     return (
       <GlobalContext.Provider value={GlobalHook}>
-         <FirebaseContext.Provider>
+         <NewContext.Provider value={[getGlobalLessionSelectNew,setGlobalLessionSelectNew]}>
          <Spin tip="Loading..." spinning={getGlobalLoading}>
         {props.children}
         </Spin>
-        </FirebaseContext.Provider>
+        </NewContext.Provider>
       </GlobalContext.Provider>
     );
   };

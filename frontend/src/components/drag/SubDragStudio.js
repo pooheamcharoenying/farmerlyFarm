@@ -11,7 +11,7 @@ import {
 
 import { Modal } from "antd";
 
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,NewContext } from "../../hook/GlobalHook";
 import { getItemStyle, getListStyle } from "./DragSubStyle";
 import { GetMediaFreeAction, ClearCreateQuizFieldAction } from "../../actions";
 
@@ -24,6 +24,8 @@ const SubDragStudio = ({
   itemsPool
 }) => {
   const GlobalHook = useContext(GlobalContext);
+
+ const [getGlobalLessionSelectNew,setGlobalLessionSelectNew] = useContext(NewContext)
 
   const [getisShow, setisShow] = useState(false);
 
@@ -186,6 +188,22 @@ const SubDragStudio = ({
         mediaEtc4: item.etc4,
         mediaEtc5: item.etc5
       });
+
+      setGlobalLessionSelectNew({
+        parentIndex: parentIndex,
+        selfIndex: index,
+        mediaId: item.mediaId,
+        mediaType: item.type,
+        mediaName: item.title,
+        mediaPreview: item.preview,
+        sectionName: sectionName,
+        mediaTime: item.time,
+        mediaEtc1: item.etc1,
+        mediaEtc2: item.etc2,
+        mediaEtc3: item.etc3,
+        mediaEtc4: item.etc4,
+        mediaEtc5: item.etc5
+      })
 
       GetMediaFreeAction(GlobalHook, item.mediaId);
       ClearCreateQuizFieldAction(GlobalHook);

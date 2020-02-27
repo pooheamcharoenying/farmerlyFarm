@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Input, Switch, Select, Tabs, Popover } from "antd";
 import {FaTrashAlt, FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import SwitchR from "react-switch";
 
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,NewContext } from "../../hook/GlobalHook";
 import QuestionHeadNumberDrag from "./quiz/QuestionHeadNumberDrag";
 import TextEditor from "./quiz/TextEditor";
 import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
@@ -10,16 +11,21 @@ import VideoUpload from "./quiz/VideoUpload";
 import { SaveAllAction, CheckMutateAction } from "../../actions";
 import TextEditorComp from "../textEditor/TextEditor";
 
+
 const { Option } = Select;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
 const StudioQuizContent = () => {
   const GlobalHook = useContext(GlobalContext);
+
+ const [getGlobalLessionSelectNew,setGlobalLessionSelectNew] = useContext(NewContext)
+
+ 
   const [getLessionTime, setLessionTime] = useState(null);
   const [getLessionName, setLessionName] = useState("");
-  const [getQuizSettingShowAns, setQuizSettingShowAns] = useState(true);
-  const [getQuizSettingTimeCount, setQuizSettingTimeCount] = useState(true);
-  const [getQuizSettingRandom, setQuizSettingRandom] = useState(true);
+  const [getQuizSettingShowAns, setQuizSettingShowAns] = useState(getGlobalLessionSelectNew.mediaEtc1);
+  const [getQuizSettingTimeCount, setQuizSettingTimeCount] = useState(getGlobalLessionSelectNew.mediaEtc2);
+  const [getQuizSettingRandom, setQuizSettingRandom] = useState(getGlobalLessionSelectNew.mediaEtc3);
   const [getQuizSettingAmountPass, setQuizSettingAmountPass] = useState(1);
   const [getQuizSettingAmountRandom, setQuizSettingAmountRandom] = useState(1);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
@@ -53,29 +59,29 @@ const StudioQuizContent = () => {
   }, [GlobalHook.getGlobalMediaQuiz]);
 
   useEffect(() => {
-    setLessionName(GlobalHook.getGlobalLessionSelect.mediaName);
-    setInitStateName(GlobalHook.getGlobalLessionSelect.mediaName);
+    setLessionName(getGlobalLessionSelectNew.mediaName);
+    setInitStateName(getGlobalLessionSelectNew.mediaName);
 
-    setLessionTime(GlobalHook.getGlobalLessionSelect.mediaTime);
-    setInitStateTime(GlobalHook.getGlobalLessionSelect.mediaTime);
+    setLessionTime(getGlobalLessionSelectNew.mediaTime);
+    setInitStateTime(getGlobalLessionSelectNew.mediaTime);
 
-    setQuizSettingShowAns(GlobalHook.getGlobalLessionSelect.mediaEtc1);
-    setInitStateSettingShowAns(GlobalHook.getGlobalLessionSelect.mediaEtc1);
+    setQuizSettingShowAns(getGlobalLessionSelectNew.mediaEtc1);
+    setInitStateSettingShowAns(getGlobalLessionSelectNew.mediaEtc1);
 
-    setQuizSettingTimeCount(GlobalHook.getGlobalLessionSelect.mediaEtc2);
-    setInitStateSettingTimeCount(GlobalHook.getGlobalLessionSelect.mediaEtc2);
+    setQuizSettingTimeCount(getGlobalLessionSelectNew.mediaEtc2);
+    setInitStateSettingTimeCount(getGlobalLessionSelectNew.mediaEtc2);
 
-    setQuizSettingRandom(GlobalHook.getGlobalLessionSelect.mediaEtc3);
-    setInitStateSettingRandom(GlobalHook.getGlobalLessionSelect.mediaEtc3);
+    setQuizSettingRandom(getGlobalLessionSelectNew.mediaEtc3);
+    setInitStateSettingRandom(getGlobalLessionSelectNew.mediaEtc3);
 
-    setQuizSettingAmountPass(GlobalHook.getGlobalLessionSelect.mediaEtc4);
-    setInitStateSettingAmountPass(GlobalHook.getGlobalLessionSelect.mediaEtc4);
+    setQuizSettingAmountPass(getGlobalLessionSelectNew.mediaEtc4);
+    setInitStateSettingAmountPass(getGlobalLessionSelectNew.mediaEtc4);
 
-    setQuizSettingAmountRandom(GlobalHook.getGlobalLessionSelect.mediaEtc5);
+    setQuizSettingAmountRandom(getGlobalLessionSelectNew.mediaEtc5);
     setInitStateSettingAmountRandom(
-      GlobalHook.getGlobalLessionSelect.mediaEtc5
+      getGlobalLessionSelectNew.mediaEtc5
     );
-  }, [GlobalHook.getGlobalLessionSelect]);
+  }, [getGlobalLessionSelectNew]);
 
   //Mutate
   useEffect(() => {
@@ -128,7 +134,7 @@ const StudioQuizContent = () => {
 
   useEffect(() => {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
-    const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
+    const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
     if (oldCourseStructure[parentIndex] && getLessionName &&getLessionTime) {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
@@ -158,12 +164,13 @@ const StudioQuizContent = () => {
     getQuizSettingShowAns,
     getQuizSettingTimeCount,
     getQuizSettingRandom,
-    getQuizSettingAmountRandom
+    getQuizSettingAmountRandom,getGlobalLessionSelectNew
   ]);
+
 
   function handleDeleteLession() {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
-    const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
+    const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
     GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
 
     console.log(oldCourseStructure);
@@ -205,7 +212,7 @@ const StudioQuizContent = () => {
       />
 
       <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-        {GlobalHook.getGlobalLessionSelect.mediaName}
+        {getGlobalLessionSelectNew.mediaName}
       </div>
       <FaCaretRight
         className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -271,24 +278,27 @@ const StudioQuizContent = () => {
 
           <div className="flex flex-col text-center">
             <div className="font-bold text-lg mb-2">เฉลยทันที</div>
-            <Switch
+            {/* <Switch
               style={{ width: "50px" }}
               className="self-center"
               defaultChecked={getQuizSettingShowAns}
               onChange={e => setQuizSettingShowAns(e)}
-            />
+            /> */}
+              <SwitchR  className="self-center" onChange={e => setQuizSettingShowAns(e)} checked={getQuizSettingShowAns} />
           </div>
         </div>
 
         <div className="flex justify-around w-11/12 md:w-4/12 mb-4">
           <div className="flex flex-col text-center">
             <div className="font-bold text-lg mb-2">จับเวลาหรือไม่</div>
-            <Switch
+            {/* <Switch
               style={{ width: "50px" }}
               className="self-center"
               defaultChecked={getQuizSettingTimeCount}
               onChange={e => setQuizSettingTimeCount(e)}
             />
+            {`${getQuizSettingTimeCount}`} */}
+            <SwitchR  className="self-center" onChange={e => setQuizSettingTimeCount(e)} checked={getQuizSettingTimeCount} />
           </div>
           <div className="flex flex-col text-center">
             <div className="font-bold text-lg mb-2">ระยะเวลาที่กำหนด</div>
@@ -305,12 +315,15 @@ const StudioQuizContent = () => {
         <div className="flex justify-around w-11/12 md:w-4/12 mb-8">
           <div className="flex flex-col text-center ">
             <div className="font-bold text-lg mb-2">สุ่มคำถามหรือไม่</div>
-            <Switch
+            {/* <Switch
               style={{ width: "50px" }}
               className="self-center"
               defaultChecked={getQuizSettingRandom}
               onChange={e => setQuizSettingRandom(e)}
-            />
+            /> */}
+
+<SwitchR  className="self-center" onChange={e => setQuizSettingRandom(e)} checked={getQuizSettingRandom} />
+
           </div>
 
           <div className="flex flex-col text-center">

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { FaSave } from "react-icons/fa";
 import { Tooltip } from "antd";
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,NewContext } from "../../hook/GlobalHook";
 import StudioVideoContent from "./StudioVideoContent";
 import StudioDocumentContent from "./StudioDocumentContent";
 import StudioQuizContent from "./StudioQuizContent";
@@ -11,6 +11,9 @@ import Blank from "./Blank";
 import {SaveAllAction} from '../../actions'
 export default function StudioContent() {
   const GlobalHook = useContext(GlobalContext);
+
+ const [getGlobalLessionSelectNew,setGlobalLessionSelectNew] = useContext(NewContext)
+
   function RenderStudioContentSwitch() {
     switch (GlobalHook.getGlobalLessionSelect.mediaType) {
       case "Video":
