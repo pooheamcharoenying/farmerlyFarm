@@ -617,9 +617,9 @@ export default function CourseQuizContent() {
               style={{ minHeight: "60vh" }}
             >
               <div className="mb-6">จำนวน {getQuestionAmount} ข้อ</div>
-              <div className="mb-6">
+             {GlobalHook.getGlobalLessionSelect.mediaEtc2&& <div className="mb-6">
                 ใช้เวลาทำ{GlobalHook.getGlobalLessionSelect.mediaTime} นาที
-              </div>
+              </div>}
 
               <button
                 className="bg-green-600 p-2 rounded text-white hover:bg-green-500 mb-8"
