@@ -8,7 +8,7 @@ import {
   FaLock
 } from "react-icons/fa";
 
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,CourseQuizContext } from "../../hook/GlobalHook";
 import {getItemStyle,getListStyle} from "./DragSubStyle"
 
 import {GetMediaFreeAction,LessionVisitedLogAction} from '../../actions'
@@ -19,7 +19,7 @@ const SubDragStudio = ({
   mainItem
 }) => {
   const GlobalHook = useContext(GlobalContext);
-
+  const [getStartedQuiz, setStartedQuiz] = useContext(CourseQuizContext)
   const [getisShow, setisShow] = useState(false);
   const [getLessionMediaId,setLessionMediaId] = useState([])
   const [getLessionBank,setLessionBank] = useState([])
@@ -100,7 +100,7 @@ if(itemsPool[0]){
   function LessionSelect(item, index) {
     // window.history.replaceState(null,null,`/course/${GlobalHook.getGlobalCourseName}/${mainItem.content}/${item.title}`)
   GlobalHook.setGlobalShowSideBarStatus(false)
-  
+ setStartedQuiz(false)
   GlobalHook.setGlobalUserAnswerSelect(null)
     GlobalHook.setGlobalLessionSelect({
       selfIndex: index,

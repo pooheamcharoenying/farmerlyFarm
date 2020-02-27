@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { Pie } from "react-chartjs-2";
 import moment from "moment";
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,CourseQuizContext } from "../../hook/GlobalHook";
 import QuestionHeadNumberDrag from "./quiz/QuestionHeadNumberDrag";
 import TextEditor from "../../components/textEditor/TextEditor";
 import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
@@ -20,7 +20,7 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 export default function CourseQuizContent() {
   const GlobalHook = useContext(GlobalContext);
-  const [getStartedQuiz, setStartedQuiz] = useState(false);
+  const [getStartedQuiz, setStartedQuiz] = useContext(CourseQuizContext)
   const [getQuestionAmount, setQuestionAmount] = useState(0);
   const [getModalExplainOpenStatus, setModalExplainOpenStatus] = useState(
     false
@@ -517,7 +517,7 @@ export default function CourseQuizContent() {
           className="self-start flex items-center w-11/12 md:w-10/12 mx-auto pl-4 bg-transparent"
           style={{
             height: "50px",
-            display: getRemainingTime ? "flex" : "none"
+            display: getRemainingTime && GlobalHook.getGlobalLessionSelect.mediaEtc2 ? "flex" : "none"
           }}
         >
           <div className="bg-white w-auto p-3 rounded-lg">

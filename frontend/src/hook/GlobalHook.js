@@ -7,6 +7,8 @@ import Firebase from "./firebase";
 export const GlobalContext = React.createContext("GlobalContext");
 export const FirebaseContext = React.createContext();
 export const NewContext = React.createContext("NewContext");
+export const CourseQuizContext = React.createContext("CourseQuizContext");
+
 
 
 const Store = props => {
@@ -124,6 +126,9 @@ const [getMutantStatus,setMutantStatus] = useState(false)
 
 //PopUp
 const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState(false)
+
+const [getStartedQuiz, setStartedQuiz] = useState(false);
+
 
 
     ///Generate GlobalHook///
@@ -338,9 +343,12 @@ const [getGlobalShowUnSaveAlertStatus,setGlobalShowUnSaveAlertStatus] = useState
     return (
       <GlobalContext.Provider value={GlobalHook}>
          <NewContext.Provider value={[getGlobalLessionSelectNew,setGlobalLessionSelectNew]}>
+         <CourseQuizContext.Provider value={[getStartedQuiz, setStartedQuiz]}>
+
          <Spin tip="Loading..." spinning={getGlobalLoading}>
         {props.children}
         </Spin>
+        </CourseQuizContext.Provider>
         </NewContext.Provider>
       </GlobalContext.Provider>
     );

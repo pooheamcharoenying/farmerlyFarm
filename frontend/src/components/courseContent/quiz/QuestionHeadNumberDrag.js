@@ -53,38 +53,51 @@ function QuestionNumberHead(props) {
   }, [items]);
 
   useEffect(() => {
+  console.log("items")
+  console.log(items)
+  }, )
+
+  useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
       setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length))
     let FinalQuizBank = []
     let randomAmount = parseInt(GlobalHook.getGlobalMediaQuiz.length) - parseInt(GlobalHook.getGlobalLessionSelect.mediaEtc5)
-    console.log(GlobalHook.getGlobalMediaQuiz.length)
-    console.log(GlobalHook.getGlobalLessionSelect.mediaEtc5)
-    console.log(randomAmount)
 
-
-if(GlobalHook.getGlobalLessionSelect.mediaEtc5 == 0){
-  randomAmount = 0
-      if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
-    console.log(GlobalHook.getGlobalMediaQuiz)
-    console.log(randomAmount)
-
-
-        FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
-    console.log(FinalQuizBank)
-
+    if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
+      FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
     }else{
-      FinalQuizBank = GlobalHook.getGlobalMediaQuiz.slice(randomAmount)
-    console.log(FinalQuizBank)
+      FinalQuizBank = GlobalHook.getGlobalMediaQuiz
+  
 
     }
-    console.log(GlobalHook.getGlobalMediaQuiz)
-    console.log(FinalQuizBank)
 
-    setitems(FinalQuizBank);
+    setitems(GlobalHook.getGlobalMediaQuiz);
     handleQuizSelect(FinalQuizBank[0],0)
 
 
-    }
+// if(GlobalHook.getGlobalLessionSelect.mediaEtc5 == 0){
+//   randomAmount = 0
+//       if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
+  
+
+//         FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
+   
+
+    // }else{
+    //   FinalQuizBank = GlobalHook.getGlobalMediaQuiz.slice(randomAmount)
+    // console.log(FinalQuizBank)
+
+    // }
+//     console.log(GlobalHook.getGlobalMediaQuiz)
+//     console.log(FinalQuizBank)
+
+//     setitems(FinalQuizBank);
+//     handleQuizSelect(FinalQuizBank[0],0)
+
+
+//     }else{
+//       setitems(GlobalHook.getGlobalMediaQuiz);
+//     }
   }
   }, [GlobalHook.getGlobalMediaQuiz]);
 
