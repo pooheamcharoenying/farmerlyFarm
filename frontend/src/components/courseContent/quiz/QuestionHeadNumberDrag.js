@@ -255,10 +255,10 @@ function QuestionNumberHead(props) {
 
   return (
     <div className="max-w-full min-w-full w-full overflow-x-auto flex h-full border-solid border-b-2 rounded-b-none rounded-lg border-gray-300">
-      <button className="text-5xl mr-4 " onClick={() => handlePreviousClick()}>
+      {/* <button className="text-5xl mr-4 " onClick={() => handlePreviousClick()}>
         {" "}
         <FaCaretLeft />
-      </button>
+      </button> */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable" type="app" direction="horizontal">
           {(provided, snapshot) => (
@@ -304,10 +304,10 @@ function QuestionNumberHead(props) {
           )}
         </Droppable>
       </DragDropContext>
-      <button className="text-5xl ml-4 " onClick={() => handleNextClick()}>
+      {/* <button className="text-5xl ml-4 " onClick={() => handleNextClick()}>
         {" "}
         <FaCaretRight />
-      </button>
+      </button> */}
     </div>
   );
 }

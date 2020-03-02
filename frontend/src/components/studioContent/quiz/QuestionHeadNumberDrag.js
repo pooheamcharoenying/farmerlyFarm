@@ -269,10 +269,10 @@ function QuestionNumberHead(props) {
     <>
        {renderAddQuestionModal()}
         {RenderUnSaveAlert()}
-    <div className="bg-white w-full min-w-full overflow-x-auto flex h-full border-solid border-b-2 rounded-b-none rounded-lg border-gray-300">
-    <button className="text-5xl mr-2 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button>
+    <div className="bg-red-200">
+    {/* <button className="text-5xl mr-2 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button> */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable"  direction="horizontal"  className="w-full">
+        <Droppable droppableId="droppable"  direction="horizontal" className="max-h-full bg-green-300" >
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
@@ -347,7 +347,7 @@ function QuestionNumberHead(props) {
           )}
         </Droppable>
       </DragDropContext>
-      <button className="text-5xl ml-2 " onClick={()=>handleNextClick()}> <FaCaretRight /></button>
+      {/* <button className="text-5xl ml-2 " onClick={()=>handleNextClick()}> <FaCaretRight /></button> */}
 
     </div>
     </>

@@ -60,10 +60,11 @@ export default function SideBarCourse() {
 
   return (
     <div
-      className="bg-gray-300 w-10/12 md:w-5/12  xl:w-3/12 mt-16 fixed md:relative top-0 left-0 flex-col h-auto z-30 hidden md:flex"
+      className="h-full bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex"
       style={{
         display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
-        overflowY: "auto"
+        overflowY: "scroll",
+        
       }}
     >
       <div
@@ -129,7 +130,7 @@ export default function SideBarCourse() {
       </div>
 
       <Drag />
-      <div style={{minHeight:"60px"}}/>
+      <div style={{minHeight:"60px"}}></div>
     </div>
   
   );
