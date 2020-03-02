@@ -144,7 +144,16 @@ export default function SideBarCourse() {
       >
         รายละเอียดคอร์ส
       </div>
-
+      <div
+        className="bg-orange-500 hover:bg-orange-400 rounded mb-4 text-center shadow-lg text-white text-lg mx-2 cursor-pointer"
+        style={{ paddingTop: "10px", paddingBottom: "10px" }}
+        onClick={() => {
+          GlobalHook.setGlobalLessionSelect({ mediaType: "Statistic" });
+          GlobalHook.setGlobalShowSideBarStatus(false);
+        }}
+      >
+       Statistic
+      </div>
       <Drag />
       <div style={{minHeight:"80px"}}/>
         </div>
