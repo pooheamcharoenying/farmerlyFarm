@@ -87,7 +87,7 @@ export default function MainDragStudio() {
 
   useEffect(() => {
     GlobalHook.setGlobalCourseStructureNew(items)
-    console.log(items)
+
   }, [items]);
 
   useEffect(() => {
@@ -531,7 +531,7 @@ export default function MainDragStudio() {
             </div>
           )}
         </Droppable>
-        <div className="w-full flex justify-center mt-4">
+        <div className="w-full flex justify-center my-4">
           <Button
             className="m-auto hover:text-black hover:border-black focus:text-black focus:border-black"
             onClick={() => {

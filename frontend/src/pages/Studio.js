@@ -1,45 +1,39 @@
-import React,{useState,useEffect,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
-import { useParams} from "react-router";
-import Header from '../components/header/HeaderStudio'
-import SideBar from "../components/sideBar/SideBarStudio"
-import StudioContent from "../components/studioContent/StudioContent"
-import {getCourseContentAction,getCoursePoolAction} from '../actions'
-import {GlobalContext} from '../hook/GlobalHook'
+import { useParams } from "react-router";
+import Header from "../components/header/HeaderStudio";
+import SideBar from "../components/sideBar/SideBarStudio";
+import StudioContent from "../components/studioContent/StudioContent";
+import { getCourseContentAction, getCoursePoolAction } from "../actions";
+import { GlobalContext } from "../hook/GlobalHook";
 
 export default function Studio() {
+  let { courseSlug } = useParams();
 
- 
-    let { courseSlug } = useParams();
-   
-    const GlobalHook = useContext(GlobalContext)
+  const GlobalHook = useContext(GlobalContext);
 
+  useEffect(() => {
+    getCourseContentAction(GlobalHook, courseSlug);
+    GlobalHook.setGlobalCourseSlug(courseSlug);
+    getCoursePoolAction(GlobalHook);
+  }, []);
 
-    useEffect(() => { 
-             getCourseContentAction(GlobalHook,courseSlug)
-             GlobalHook.setGlobalCourseSlug(courseSlug)
-             getCoursePoolAction(GlobalHook)
-        }, [])
+  window.onbeforeunload = function() {
+    if (GlobalHook.getMutantStatus) {
+      return "You have unsaved changes.  Do you want to leave this page and lose your changes?";
+    } else {
+      return;
+    }
+  };
 
-        window.onbeforeunload = function() {
-          if(GlobalHook.getMutantStatus){
-          return "Are you sure you want to navigate away?";
-          }else{
-            return
-          }
-        }
-
-    
-    return (
-      <div className="flex relative h-screen overflow-hidden">
-      <Helmet><title>Studysabai-Course</title></Helmet>
-      <Header/>
-
+  return (
+    <div className="flex relative h-screen overflow-hidden">
+      <Helmet>
+  <title>Studysabai:Studio::{GlobalHook.getGlobalCourseName}</title>
+      </Helmet>
+      <Header />
       <SideBar />
-      <StudioContent/>
-
-</div>
-
-
-    )
+      <StudioContent />
+    </div>
+  );
 }

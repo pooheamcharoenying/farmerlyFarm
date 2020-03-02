@@ -2,15 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Input, Button } from "antd";
 
 import { GlobalContext } from "../../hook/GlobalHook";
-const { TextArea } = Input;
+
 export default function StudioOverviewContent() {
   const GlobalHook = useContext(GlobalContext);
 
-  useEffect(() => {
-    console.log(GlobalHook.getGlobalCourseInfoOverview);
-  }, [GlobalHook.getGlobalCourseInfoOverview]);
 
-  //Check if subscripted then redirect to lession
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {

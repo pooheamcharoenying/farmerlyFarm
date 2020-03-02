@@ -66,14 +66,10 @@ function CreateAnswerDrag() {
   function handleDeleteChoice(selfIndex){
     let oldtype = GlobalHook.getGloblaQuizAnswerType
     GlobalHook.setGloblaQuizAnswerType("Temp")
-    console.log(selfIndex)
     let oldChoiceStructure = items
-      // console.log(oldChoiceStructure)
   
-    // if(oldChoiceStructure[selfIndex]){
       oldChoiceStructure.splice(selfIndex, 1)
 
-      console.log(selfIndex)
 
       
       setitems(oldChoiceStructure);
@@ -82,14 +78,10 @@ function CreateAnswerDrag() {
         
       }, 100);
    
-    //}
-    // console.log(oldChoiceStructure)
+    
 
   }
 
-  useEffect(() => {
-   console.log(items)
-  }, )
 
 
   function onDragEnd(result) {

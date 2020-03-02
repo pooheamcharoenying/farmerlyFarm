@@ -63,7 +63,6 @@ const StudioVideoContent = () => {
 
   function UploadBtnClick() {
     setUploadingShow("initing");
-    console.log("UPPPPP");
     axios({
       method: "post",
       url: `https://api.vimeo.com/me/videos`,
@@ -116,7 +115,6 @@ const StudioVideoContent = () => {
       onSuccess: function () {
         console.log("Download %s from %s", upload.file.name, upload.url);
         setUploadingShow("done");
-        console.log(upload);
       }
     });
 

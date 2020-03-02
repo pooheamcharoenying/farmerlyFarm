@@ -6,7 +6,6 @@ export default function AdminRoute (props){
     const GlobalHook =useContext(GlobalContext)
 
     function RoleCheck (){
-        console.log(GlobalHook.getGlobalUser)
         if(GlobalHook.getGlobalToken){
             if(GlobalHook.getGlobalUser && GlobalHook.getGlobalUser.role == "admin"){
                 return props.children

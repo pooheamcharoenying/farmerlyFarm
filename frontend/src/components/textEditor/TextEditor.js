@@ -18,7 +18,6 @@ const GlobalHook = useContext(GlobalContext)
         GlobalHook.setGlobalStatusCodeQ("")
         setVal("")
       }
-      console.log(GlobalHook.getGlobalStatusCodeQ)
       }, )
 
       var modules = {

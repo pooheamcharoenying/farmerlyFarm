@@ -27,10 +27,10 @@ export default function FabCreateCourse() {
 
   const [getModalOpenStatus, setModalOpenStatus] = useState(false);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
-  const [getVideoData, setVideoData] = useState(null);
+  const [getImageData, setImageData] = useState(null);
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
-  const [getVideoFileName, setVideoFileName] = useState("");
+  const [getImageFileName, setImageFileName] = useState("");
 
   const {
     acceptedFiles,
@@ -45,7 +45,7 @@ export default function FabCreateCourse() {
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
-      setVideoFileName(acceptedFiles[0].name);
+      setImageFileName(acceptedFiles[0].name);
       UploadBtnClick(acceptedFiles[0]);
     }
   }, [acceptedFiles]);
@@ -55,16 +55,12 @@ export default function FabCreateCourse() {
     handleImageTransform(file);
   }
   function handleImageTransform(raw) {
-    // const filesSelected = raw.target.files;
-
-    // var fileToLoad = filesSelected[0];
-
     UploadAction(raw).then(data => {
       setUploadingShow("uploading");
-      setVideoData(data);
+      setImageData(data);
 
       GlobalHook.setGlobalCourseImage(data);
-      console.log(data);
+ 
     });
   }
 
@@ -208,7 +204,7 @@ export default function FabCreateCourse() {
                 className="text-red-600 ml-4 text-xl cursor-pointer hover:text-red-500"
                 onClick={() => {
                   GlobalHook.setGlobalStudioUploadFile(null);
-                  setVideoData(null);
+                  setImageData(null);
                   GlobalHook.setGlobalCourseImage(null);
                   setUploadingShow(null);
                 }}
@@ -223,8 +219,8 @@ export default function FabCreateCourse() {
                   className="mt-4 flex flex-col"
                   style={{ width: "100%", height: "auto" }}
                 >
-                  <div className="mb-2">"FileName:"{getVideoFileName}</div>
-                  <img src={getVideoData} />
+                  <div className="mb-2">{getImageFileName}</div>
+                  <img src={getImageData} />
                 </div>
               ) : (
                 <div className="w-full h-full flex flex-col items-center">

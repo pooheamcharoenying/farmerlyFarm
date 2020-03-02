@@ -204,7 +204,6 @@ function QuestionNumberHead(props) {
     setModalNewQuestionOpenStatus(false)
     GlobalHook.setGlobalStatusCodeQ("CreateNewQuestion")
     GlobalHook.setMutantStatus(true)
-console.log("new quest")
     const newQuestionId = uuid.v4();
     const newId = Math.floor(Math.random() * 1000) + 1;
     const oldstate = [...items];

@@ -13,7 +13,7 @@ import {
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
-import { useParams} from "react-router";
+import { useParams } from "react-router";
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
@@ -33,14 +33,14 @@ export default function FabCreateCourse() {
 
   const [getModalOpenStatus, setModalOpenStatus] = useState(false);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
-  const [getVideoData, setVideoData] = useState(null);
+  const [getImageData, setImageData] = useState(null);
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
-  const [getVideoFileName, setVideoFileName] = useState("");
+  const [getImageFileName, setImageFileName] = useState("");
 
   useEffect(() => {
-    GetCourseSettingAction(GlobalHook,courseSlug)
-  }, [])
+    GetCourseSettingAction(GlobalHook, courseSlug);
+  }, []);
   const {
     acceptedFiles,
     getRootProps,
@@ -52,12 +52,11 @@ export default function FabCreateCourse() {
     accept: "image/jpeg, image/png, image/jpg, image/gif"
   });
 
-
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
-      GlobalHook.setGlobalcourseImageFileName(acceptedFiles[0].name)
-      setVideoFileName(acceptedFiles[0].name);
+      GlobalHook.setGlobalcourseImageFileName(acceptedFiles[0].name);
+      setImageFileName(acceptedFiles[0].name);
       UploadBtnClick(acceptedFiles[0]);
     }
   }, [acceptedFiles]);
@@ -67,16 +66,12 @@ export default function FabCreateCourse() {
     handleImageTransform(file);
   }
   function handleImageTransform(raw) {
-    // const filesSelected = raw.target.files;
-
-    // var fileToLoad = filesSelected[0];
-
+ 
     UploadAction(raw).then(data => {
       setUploadingShow("uploading");
-      setVideoData(data);
+      setImageData(data);
 
       GlobalHook.setGlobalCourseImage(data);
-      console.log(data);
     });
   }
 
@@ -116,7 +111,7 @@ export default function FabCreateCourse() {
             setUploadingShow(false);
           } else {
             setUploadingShow("done");
-    
+
             resolve(
               `https://studysabaiapp.sgp1.digitaloceanspaces.com/${file.name}`
             );
@@ -133,23 +128,25 @@ export default function FabCreateCourse() {
         onOk={() => setModalOpenStatus(false)}
         onCancel={() => {
           setModalOpenStatus(false);
-     
         }}
         footer={[
           <div className="w-full flex justify-center">
             <button
-              onClick={() =>{DeleteCourseLessionAction(GlobalHook,courseSlug)}}
+              onClick={() => {
+                DeleteCourseLessionAction(GlobalHook, courseSlug);
+              }}
               className="bg-red-500 text-white p-2 rounded hover:bg-red-400"
             >
               Delete Course
             </button>
             <button
-              onClick={() => SaveCourseSetting(GlobalHook, courseSlug,setModalOpenStatus)}
+              onClick={() =>
+                SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus)
+              }
               className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             >
               Save
             </button>
-            
           </div>
         ]}
       >
@@ -158,7 +155,7 @@ export default function FabCreateCourse() {
           style={{ maxWidth: "300px" }}
           onKeyPress={event => {
             if (event.key === "Enter") {
-              SaveCourseSetting(GlobalHook,courseSlug, setModalOpenStatus);
+              SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus);
             }
           }}
         >
@@ -227,7 +224,7 @@ export default function FabCreateCourse() {
                 className="text-red-600 ml-4 text-xl cursor-pointer hover:text-red-500"
                 onClick={() => {
                   GlobalHook.setGlobalStudioUploadFile(null);
-                  setVideoData(null);
+                  setImageData(null);
                   GlobalHook.setGlobalCourseImage(null);
                   setUploadingShow(null);
                   GlobalHook.setGlobalCourseImage(null);
@@ -243,7 +240,9 @@ export default function FabCreateCourse() {
                   className="mt-4 flex flex-col"
                   style={{ width: "100%", height: "auto" }}
                 >
-                  <div className="mb-2">"FileName:"{ GlobalHook.getGlobalcourseImageFileName}</div>
+                  <div className="mb-2">
+                    {GlobalHook.getGlobalcourseImageFileName}
+                  </div>
                   <img src={GlobalHook.getGlobalCourseImage} />
                 </div>
               ) : (
@@ -326,17 +325,14 @@ export default function FabCreateCourse() {
               )}
             </div>
             <div className="flex flex-col text-center my-4">
-            <div className="font-bold text mb-2">Tags</div>
-            <TextArea
-              onChange={e =>
-                GlobalHook.setGlobalCourseTag(e.target.value)
-              }
-              value={GlobalHook.getGlobalCourseTag}
-              autoSize={{ minRows: 3, maxRows: 5 }}
-            />
+              <div className="font-bold text mb-2">Tags</div>
+              <TextArea
+                onChange={e => GlobalHook.setGlobalCourseTag(e.target.value)}
+                value={GlobalHook.getGlobalCourseTag}
+                autoSize={{ minRows: 3, maxRows: 5 }}
+              />
+            </div>
           </div>
-          </div>
-
         </div>
       </Modal>
     );
@@ -345,10 +341,10 @@ export default function FabCreateCourse() {
     <>
       {CreateCoursePopUp()}
       <Icon
-                className="text-bold mr-6 cursor-pointer"
-                type="setting"
-                onClick={() => setModalOpenStatus(true)}
-              />
+        className="text-bold mr-6 cursor-pointer"
+        type="setting"
+        onClick={() => setModalOpenStatus(true)}
+      />
     </>
   );
 }

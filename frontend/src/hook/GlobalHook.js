@@ -16,9 +16,7 @@ const Store = props => {
     Firebase.auth().onAuthStateChanged(setGlobalCurrentUser);
   }, []);
 
-  useEffect(() => {
-    console.log(getGlobalCurrentUser);
-  }, [getGlobalCurrentUser]);
+ 
 
   //User
   const [getGlobalToken, setGlobalToken] = useState(null);

@@ -12,7 +12,6 @@ import uuid from 'uuid'
     
 }
 function ClearCreateLessionAction(GlobalHook){
-  console.log("wwww")
   ClearCreateQuizFieldAction(GlobalHook)
   GlobalHook.setGlobalMediaVideo("")
   GlobalHook.setGlobalMediaDocument("")

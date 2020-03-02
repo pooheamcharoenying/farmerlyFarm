@@ -18,9 +18,6 @@ export default function SideBarCourse() {
 
       
      const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
-    //  console.log(matchPool[0].coursePublish)
-    console.log(GlobalHook.getGlobalCoursePool)
-    console.log(matchPool)
      if(matchPool){
       setCoursePublishStatus(matchPool[0].coursePublish)
      }
@@ -92,10 +89,8 @@ export default function SideBarCourse() {
 
       
         const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
-        console.log(matchPool[0].coursePublish)
         if(matchPool){
           publishStatus = matchPool[0].coursePublish
-          console.log(publishStatus)
         
         return(
           <Switch defaultChecked={publishStatus} checkedChildren="Yes" unCheckedChildren="No" onClick={(coursePublish)=>UpdataCoursepublishAction(GlobalHook,GlobalHook.getGlobalCourseSlug,coursePublish)}/>
@@ -151,7 +146,7 @@ export default function SideBarCourse() {
       </div>
 
       <Drag />
-      <div style={{minHeight:"60px"}}/>
+      <div style={{minHeight:"80px"}}/>
         </div>
        
     </>

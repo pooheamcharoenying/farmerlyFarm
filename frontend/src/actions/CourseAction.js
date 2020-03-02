@@ -8,7 +8,6 @@ function getCoursePoolAction(GlobalHook) {
     .then(res => {
       GlobalHook.setGlobalCoursePool(res.data);
       GlobalHook.setGlobalLoading(false);
-      console.log(res.data);
     })
     .catch(err => console.log(err));
 }
@@ -44,7 +43,6 @@ function getCourseContentAction(GlobalHook, courseSlug) {
   axios
     .get(`/api/course/${courseSlug}`)
     .then(res => {
-      console.log(res.data);
 
       GlobalHook.setGlobalCourseContent(res.data);
 
@@ -65,7 +63,6 @@ function getCourseContentAction(GlobalHook, courseSlug) {
       GlobalHook.setGlobalCourseName(res.data.courseName);
 
       GlobalHook.setGlobalcourseId(res.data.courseId)
-      console.log(res.data.courseId)
       GlobalHook.setGlobalLoading(false);
 
       localStorage.setItem(
@@ -90,7 +87,8 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseSubject: GlobalHook.getGlobalCourseSubject,
     courseTag: GlobalHook.getGlobalCourseTag,
     courseDescription: GlobalHook.getGlobalCourseDescription,
-    courseSlug: courseSlug
+    courseSlug: courseSlug,
+    courseImageFileName:GlobalHook.getGlobalcourseImageFileName
   };
 
   axios
@@ -116,7 +114,7 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
     courseSlug: GlobalHook.getGlobalCourseSlug,
     mediaId: mediaId
   };
-console.log(pushData)
+
   axios
     .post("/api/coursemedia/free", pushData)
     .then(res => {
@@ -130,7 +128,7 @@ console.log(pushData)
       } else if (res.data.data.mediaType == "Quiz") {
         GlobalHook.setGlobalMediaQuiz(res.data.data.mediaContent);
       }
-      console.log(res.data)
+    
     })
     .catch(err => {
       console.log(err);
@@ -148,7 +146,7 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
     .post("/api/course/getcoursesetting", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
-      console.log(res.data)
+  
 
       GlobalHook.setGlobalCourseSubject(res.data.courseSubject)
       GlobalHook.setGlobalCourseLevel(res.data.courseLevel)
@@ -157,7 +155,6 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalCourseImage(res.data.courseImage)
       GlobalHook.setGlobalCourseTag(res.data.courseTag)
       GlobalHook.setGlobalcourseImageFileName(res.data.courseImageFileName)
-
 
     })
     .catch(err => {
@@ -184,15 +181,13 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseImageFileName:GlobalHook.getGlobalcourseImageFileName
   };
 
-  console.log(pushData)
-
   axios
     .post("/api/course/update", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
-      console.log(res.data)
+
       setModalOpenStatus(false)
-      // window.location.href = `/teacher/${NewCourseSlug}`;
+     window.location.href = `/teacher/${NewCourseSlug}`;
 
 
     })

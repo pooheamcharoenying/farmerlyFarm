@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
 //GetCourse
 router.post("/getcoursesetting",
  (req, res) => {
-   console.log(req.body.courseSlug)
   Course.findOne({courseSlug:req.body.courseSlug})
     .then(data => {
       res.status(200).json(data);
@@ -57,7 +56,8 @@ router.post(
       courseTag: req.body.courseTag,
       courseActive: false,
       coursePublish: false,
-      courseOwnerId: req.user.id
+      courseOwnerId: req.user.id,
+      courseImageFileName:req.body.courseImageFileName
     });
 
     newCourse.save().then(newcourseData => {

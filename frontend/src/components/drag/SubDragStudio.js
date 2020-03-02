@@ -158,7 +158,6 @@ const SubDragStudio = ({
    }, [GlobalHook.getPrevNextStatus])
 
   function LessionSelect(item, index) {
-    console.log("kik");
 
     GlobalHook.setGlobalStudioUploadFile(null);
     GlobalHook.setGlobalMediaVideo(null);

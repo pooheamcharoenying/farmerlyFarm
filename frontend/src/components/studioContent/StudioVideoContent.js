@@ -69,11 +69,9 @@ const StudioVideoContent = () => {
     setLessionTime(GlobalHook.getGlobalLessionSelect.mediaTime);
     setInitStateTime(GlobalHook.getGlobalLessionSelect.mediaTime);
     setVideoFileName(GlobalHook.getGlobalLessionSelect.mediaEtc1);
-    console.log(GlobalHook.getGlobalLessionSelect);
   }, [GlobalHook.getGlobalLessionSelect]);
 
   useEffect(() => {
-    console.log(getVideoFileName);
     var oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
 
@@ -90,9 +88,7 @@ const StudioVideoContent = () => {
     }
   }, [getLessionName, getLessionTime, getVideoFileName]);
 
-  useEffect(() => {
-    console.log(GlobalHook.getGlobalCourseStructureNew);
-  }, [GlobalHook.getGlobalCourseStructureNew]);
+
 
   useEffect(() => {
     CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
@@ -133,7 +129,7 @@ const StudioVideoContent = () => {
 
   function UploadBtnClick() {
     setUploadingShow("initing");
-    console.log("UPPPPP");
+
     axios({
       method: "post",
       url: `https://api.vimeo.com/me/videos`,
@@ -190,7 +186,6 @@ const StudioVideoContent = () => {
       onSuccess: function() {
         console.log("Download %s from %s", upload.file.name, upload.url);
         setUploadingShow("done");
-        console.log(upload);
       }
     });
 
@@ -294,7 +289,7 @@ const StudioVideoContent = () => {
                 className="mt-4 flex flex-col"
                 style={{ width: "100%", height: "auto" }}
               >
-                <div className="mb-2">"FileName:"{getVideoFileName}</div>
+                <div className="mb-2">{getVideoFileName}</div>
                 <div style={{ padding: "56.25% 0 0 0", position: "relative" }}>
                   <iframe
                     src={`https://player.vimeo.com/video/${GlobalHook.getGlobalMediaVideo}?title=0&byline=0&portrait=0`}
