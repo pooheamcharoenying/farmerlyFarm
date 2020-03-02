@@ -5,21 +5,26 @@ import { GlobalContext } from "../../hook/GlobalHook";
 
 export default function StudioOverviewContent() {
   const GlobalHook = useContext(GlobalContext);
+  const [getCourseSubscripted,setCourseSubscripted] = useState(false)
 
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
         if (data.courseId == GlobalHook.getGlobalcourseId) {
+          setCourseSubscripted(true)
+
           if (GlobalHook.getGlobalNotFirstLoadStatus) {
+
           } else {
             GlobalHook.setPrevNextStatus("Init");
             GlobalHook.setGlobalNotFirstLoadStatus(true);
+            
           }
         }
       });
     }
-  }, [GlobalHook.getGlobalUser]);
+  }, );
 
   return (
     <div className=" w-full flex flex-col items-center py-4 justify-start">
@@ -51,7 +56,7 @@ export default function StudioOverviewContent() {
         className="text-white bg-green-500 p-2 border-2 rounded border-green-600 hover:text-green-600 hover:bg-white"
         onClick={() => GlobalHook.setPrevNextStatus("Init")}
       >
-        เริ่มเรียนเลย
+        {getCourseSubscripted?"เรียนต่อเลย":"เริ่มเรียนเลย"}
       </button> 
       <div style={{minHeight:"60px"}}/>
       

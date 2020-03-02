@@ -3,6 +3,7 @@ import CourseVideoContent from "./CourseVideoContent";
 import CourseQuizContent from "./CourseQuizContent";
 import CourseDocumentContent from "./CourseDocumentContent";
 import CourseOverviewContent from "./CourseOverviewContent";
+import CourseReviewContent from "./CourseReviewContent";
 
 import { GlobalContext } from "../../hook/GlobalHook";
 
@@ -24,7 +25,9 @@ const GlobalHook = useContext(GlobalContext)
       case "Overview":
         return <CourseOverviewContent />;
         break;
-     
+        case "Review":
+        return <CourseReviewContent />;
+        break;
       default:
         return <CourseOverviewContent />;
         break;
