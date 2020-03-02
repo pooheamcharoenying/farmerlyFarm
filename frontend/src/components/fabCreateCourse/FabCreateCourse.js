@@ -338,7 +338,7 @@ export default function FabCreateCourse() {
       GlobalHook.setGlobalCourseTag("")
 
           }}
-          className="bg-orange-600 fixed right-0 bottom-0 m-4 text-white rounded-full flex justify-center items-center hover:bg-orange-500"
+          className="bg-orange-600  text-white rounded-full flex justify-center items-center hover:bg-orange-500 "
           style={{ width: "60px", height: "60px", fontSize: "40px" }}
         >
           +

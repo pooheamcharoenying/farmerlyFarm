@@ -4,6 +4,7 @@ import { Switch, Icon } from "antd";
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "../../hook/GlobalHook";
+import FabCreateCourse from "../fabCreateCourse/FabCreateCourse";
 
 import CourseCard from "../courseCard/CourseCard";
 import { UpdataCoursepublishAction } from "../../actions";
@@ -30,9 +31,11 @@ export default function TeacherCourse() {
 
   return (
     <div className="bg-blue-300 flex flex-col py-10 items-center min-h-screen">
-      <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6">
+      <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6 relative">
         คอร์สที่ฉันสร้าง
+        
       </div>
+      <FabCreateCourse />
       <ScrollContainer
         hideScrollbars={false}
         vertical={false}

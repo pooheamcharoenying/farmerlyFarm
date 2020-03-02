@@ -22,7 +22,7 @@ function RouterMain() {
         <Route exact path="/teacher" component={Teacher}/>
         <Route exact path="/teacher/:courseSlug" component={Studio}/>
         <Route exact path="/admin" component={Admin}/>
-        {/* <Route component={Home} /> */}
+        <Route path="*" component={Home} />
       </Switch>
     </Router>
  
