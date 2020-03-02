@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import Banner from "../components/banner/Banner";
 import Header from "../components/header/HeaderTeacher";
 import TeacherCourse from "../components/teacherCourse/TeacherCourse";
-import FabCreateCourse from "../components/fabCreateCourse/FabCreateCourse";
 import { getCoursePoolAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 import Footer from "../components/footer/Footer";
@@ -24,7 +23,6 @@ export default function Teacher() {
 
         <Header />
         <TeacherCourse />
-        {/* <FabCreateCourse /> */}
         <Footer />
       </div>
     </>
