@@ -19,6 +19,10 @@ function GetTokenAction(GlobalHook, uid) {
       GlobalHook.setGlobalUser(res.data.user);
       localStorage.setItem("globalUser", JSON.stringify(res.data.user));
 
+      localStorage.setItem("uid", uid);
+
+
+
       axios.defaults.headers.common['Authorization'] = res.data.token;
 
       GlobalHook.setGlobalLoading(false);
@@ -183,9 +187,12 @@ async function ResetPassAction (GlobalHook,email){
 //     .catch(err => console.log(err));
 // }
 function LogoutAction(GlobalHook) {
+  
   Firebase.auth().signOut();
   Cookies.remove("globalToken");
   localStorage.removeItem("globalUser");
+  localStorage.removeItem("uid");
+
   GlobalHook.setGlobalToken(null);
   GlobalHook.setGlobalUser(null);
 

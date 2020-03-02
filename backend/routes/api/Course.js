@@ -19,7 +19,7 @@ router.get("/test", (req, res) => res.json({ msg: "Course Works" }));
 
 //GetCourse
 router.get("/", async (req, res) => {
-  Course.find()
+  Course.find({courseActive:true,coursePublish:true})
     .then(data => {
       res.status(200).json(data);
     })
