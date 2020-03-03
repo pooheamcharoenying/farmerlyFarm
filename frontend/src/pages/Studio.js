@@ -27,7 +27,7 @@ export default function Studio() {
   };
 
   return (
-    <div className="flex relative overflow-hidden">
+    <div className="flex relative overflow-hidden bg-gray-100">
       <Helmet>
   <title>Studysabai:Studio::{GlobalHook.getGlobalCourseName}</title>
       </Helmet>

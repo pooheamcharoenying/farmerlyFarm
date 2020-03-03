@@ -22,8 +22,7 @@ function FetchQuestionWhenSelectAction (GlobalHook,item) {
        GlobalHook.setGloblaQuizAnswerCorrect(res.data.data.answerCorrect);
        GlobalHook.setGloblaQuizExplainType( res.data.data.answerExplainType );
        GlobalHook.setGloblaQuizExplainField(res.data.data.answerExplainField );
- GlobalHook.setGlobalLoading(false)
- console.log(res)
+       GlobalHook.setGlobalLoading(false)
 
       })
       .catch(err => {

@@ -342,7 +342,7 @@ const StudioQuizContent = () => {
 
       <div
         id="QuestionEditorZone"
-        className="w-11/12 md:w-10/12 flex flex-col bg-gray-300  h-auto rounded-lg border-dotted border-2 items-center"
+        className="w-11/12 md:w-10/12 flex flex-col bg-gray-200  h-auto rounded-lg border-dotted border-2 items-center"
       >
   <div
           id="QuestionEditorHead"
@@ -351,7 +351,140 @@ const StudioQuizContent = () => {
         >
           <QuestionHeadNumberDrag />
         </div>
-        fdfdfdf
+        {GlobalHook.getGloblaQuizQuestionSelect.questionId ? (
+          <div
+            id="QuestionEditorBody"
+            className="flex flex-col items-center w-full"
+          >
+            <div className="flex flex-col text-center mb-4">
+              <div className="flex items-baseline justify-center">
+                <div className="font-bold text-lg mb-2">ประเภทคำถาม</div>
+                <Popover
+                  content={
+                    <div className="flex w-full justify-center">
+                      <div
+                        className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
+                        onClick={() => {
+                          setShowConfirmDelQuestion(false);
+                          handleDeleteQuestion();
+                        }}
+                      >
+                        Delete
+                      </div>{" "}
+                      <div
+                        className="text-gray-600 hover:text-gray-500 cursor-pointer"
+                        onClick={() => {
+                          setShowConfirmDel(false);
+                        }}
+                      >
+                        cancel
+                      </div>
+                    </div>
+                  }
+                  title="Are you sure to delete this Question?"
+                  trigger="click"
+                  visible={getShowConfirmDelQuestion}
+                  onVisibleChange={() =>
+                    setShowConfirmDelQuestion(!getShowConfirmDelQuestion)
+                  }
+                >
+                  <FaTrashAlt className="text-red-600 ml-4 text-xl cursor-pointer hover:text-red-500 " />
+                </Popover>
+              </div>
+              <Select
+                style={{ maxWidth: "200px", width: "200px" }}
+                className="self-center"
+                defaultValue="1"
+                onChange={e => GlobalHook.setGloblaQuizAnswerType(e)}
+                value={GlobalHook.getGloblaQuizAnswerType}
+              >
+                <Option value="MultipleChoice">MultipleChoice</Option>
+                <Option value="ShortAnswer">ShortAnswer</Option>
+                <Option value="LongAnswer">LongAnswer</Option>
+              </Select>
+            </div>
+            <div className="flex flex-col text-center mb-4">
+              <div className="font-bold text-lg mb-2">ชื่อคำถาม</div>
+              <Input
+                style={{ maxWidth: "300px" }}
+                value={GlobalHook.getGloblaQuizQuestionName}
+                onChange={e =>
+                  GlobalHook.setGloblaQuizQuestionName(e.target.value)
+                }
+              />
+            </div>
+
+            <div className="w-full md:w-10/12 flex flex-col  mb-4">
+              <div className="font-bold text-lg mb-2 text-center">
+                ตั้งคำถาม
+              </div>
+              <TextEditorComp
+                dataIn={GlobalHook.getGloblaQuizQuestionField}
+                dataOut={GlobalHook.setGloblaQuizQuestionField}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="h-full w-full flex justify-center items-center">
+            โปรดเลือกหรือสร้างคำถามใหม่
+          </div>
+        )}
+        <div className="w-full md:w-10/12  flex flex-col  mb-4 mx-auto bg-white">
+          {GlobalHook.getGloblaQuizQuestionSelect.questionId && (
+            <Tabs type="card">
+              <TabPane tab="คำตอบ" key="1">
+                {GlobalHook.getGloblaQuizAnswerType == "Temp" && (
+                  <div className="mb-6"></div>
+                )}
+                {GlobalHook.getGloblaQuizAnswerType == "MultipleChoice" && (
+                  <div className="mb-6">
+                    {" "}
+                    <CreateAnswerDrag />
+                  </div>
+                )}
+                {GlobalHook.getGloblaQuizAnswerType == "ShortAnswer" && (
+                  <div className="flex flex-col w-11/12 mx-auto mb-6">
+                    {" "}
+                    <div className="w-10/12 mx-auto">
+                      <TextArea
+                        autoSize={{ minRows: 2, maxRows: 6 }}
+                        value={GlobalHook.getGloblaQuizAnswerCorrect}
+                        onChange={e => {
+                          GlobalHook.setGloblaQuizAnswerCorrect(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </TabPane>
+              <TabPane tab="คำอธิบาย" key="2">
+                <div className="flex flex-col mb-4">
+                  <Select
+                    style={{ maxWidth: "200px", width: "200px" }}
+                    className="self-center mb-2"
+                    defaultValue="Text"
+                    onChange={e => GlobalHook.setGloblaQuizExplainType(e)}
+                    value={GlobalHook.getGloblaQuizExplainType}
+                  >
+                    <Option value="Text">อธิบายด้วย Text Editor</Option>
+                    <Option value="Video">อธิบายด้วย Video</Option>
+                  </Select>
+                  {GlobalHook.getGloblaQuizExplainType == "Text" && (
+                    <div className="w-full md:w-10/12 mx-auto">
+                      <TextEditorComp
+                        dataIn={GlobalHook.getGloblaQuizExplainField}
+                        dataOut={GlobalHook.setGloblaQuizExplainFieldNew}
+                      />
+                    </div>
+                  )}
+                  {GlobalHook.getGloblaQuizExplainType == "Video" && (
+                    <VideoUpload />
+                  )}
+                </div>
+              </TabPane>
+            </Tabs>
+          )}
+        </div>
         </div>
 {/* QusionZone */}
       {/* <div
