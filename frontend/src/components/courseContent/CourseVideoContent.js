@@ -28,7 +28,7 @@ export default function CourseVideoContent() {
 
 
   function IsEnd(){
-console.log("endd")
+
 
  if(GlobalHook.getGlobalToken && getisSubscription){
       LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)

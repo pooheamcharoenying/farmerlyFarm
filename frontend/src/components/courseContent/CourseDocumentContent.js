@@ -1,16 +1,55 @@
 import React, { useContext, useState, useEffect } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import ReactQuill from "react-quill";
+import BottomScrollListener from 'react-bottom-scroll-listener'
 // import TextEditorComp from '../textEditor/TextEditorCompCourse'
 
 import { GlobalContext } from "../../hook/GlobalHook";
+import {LessionVisitedLogAction} from '../../actions'
 
 export default function CourseDocumentContent() {
   const GlobalHook = useContext(GlobalContext);
 
   const [getEditorData, setEditorData] = useState("");
-  
+
   const [getisSubscription, setisSubscription] = useState(false);
+
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', function() {
+  //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  //        console.log("you're at the bottom of the page");
+  //        //show loading spinner and make fetch request to api
+  //     }
+  //  });
+  //   return () => {
+  //     window.removeEventListener('scroll', function() {
+  //      console.log("remove")
+  //     });
+  //   };
+  // },)
+
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', function() {
+  //     console.log("scroll")
+  //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  //        console.log("you're at the bottom of the page");
+  //        //show loading spinner and make fetch request to api
+  //     }
+  //  });
+  //   // clean up
+  //   return () => {
+  //     window.removeEventListener('scroll', function() {
+  //       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  //          console.log("you're at the bottom of the page");
+  //          //show loading spinner and make fetch request to api
+  //       }
+  //    });
+  //   }
+  // }, []); // empty array => run only once
+
+
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
@@ -28,8 +67,16 @@ export default function CourseDocumentContent() {
     }
   }, [GlobalHook.getGlobalMediaDocument]);
 
+  function BottomDetect(){
+    if(GlobalHook.getGlobalToken && getisSubscription){
+      LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
+
+    }
+  }
+
   return (
-    <div className="min-h-full h-auto w-full flex flex-col items-center justify-start py-4">
+    <BottomScrollListener onBottom={BottomDetect}>
+    <div  className=" w-full flex flex-col items-center justify-start py-4" onScroll={(e)=>{console.log("e")}}>
       <div className="w-full flex mb-2  justify-center items-center">
         <FaCaretLeft
           className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -57,8 +104,8 @@ export default function CourseDocumentContent() {
       <div style={{minHeight:"50px"}}/>
        
 
-    
-    </div>
+      </div>
+    </BottomScrollListener >
 
 
   );

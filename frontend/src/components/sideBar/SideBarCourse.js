@@ -27,7 +27,6 @@ export default function SideBarCourse() {
       GlobalHook.setGlobalShowLoginModal(true);
       GlobalHook.setGlobalLoginTab("Signup");
     } else {
-      console.log(GlobalHook.getGlobalcourseId)
       CourseSubscriptionAction(GlobalHook);
     }
   }
@@ -38,7 +37,7 @@ export default function SideBarCourse() {
         .map(data => data.courseId)
         .indexOf(GlobalHook.getGlobalcourseId);
 
-        console.log(courseIdIndex)
+    
       if (
         GlobalHook.getGlobalUser.courseSubscription[courseIdIndex] !=
         undefined
@@ -60,10 +59,11 @@ export default function SideBarCourse() {
 
   return (
     <div
-      className="h-full bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex"
+      className=" bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex"
       style={{
         display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
         overflowY: "scroll",
+        maxHeight:"100vh"
         
       }}
     >

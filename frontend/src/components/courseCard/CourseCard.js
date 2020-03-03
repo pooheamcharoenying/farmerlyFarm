@@ -3,9 +3,9 @@ import {Icon} from 'antd';
 export default function CourseCard({courseData}) {
     const courseDataLocal = courseData || []
     return (
-        <div style={{minWidth:"200px",maxWidth:"200px",maxHeight:"380px",minHeight:"380px"}} className="bg-white flex flex-col shadow-lg rounded-lg relative ">
+        <div style={{minWidth:"200px",maxWidth:"200px",maxHeight:"360px",minHeight:"360px"}} className="bg-white flex flex-col shadow-lg rounded-lg relative ">
         <div className="bg-gray-500 absolute inset-0 opacity-0 hover:opacity-25 cursor-pointer"></div>
-        <img className="w-full object-cover rounded-lg rounded-b-none" alt={courseDataLocal.courseName} style={{minHeight:"200px",maxHeight:"200px"}} src={courseDataLocal.courseImage || "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"}/>
+        <img className="w-full object-cover rounded-lg rounded-b-none" alt={courseDataLocal.courseName} style={{minHeight:"180px",maxHeight:"180px"}} src={courseDataLocal.courseImage || "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"}/>
         <div className="text-xl mt-2 font-bold text-gray-900 px-2 capitalize text2line" style={{minHeight:"60px",maxHeight:"60px"}}>
            {courseDataLocal.courseName || ""}
         </div>
