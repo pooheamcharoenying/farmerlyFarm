@@ -191,7 +191,7 @@ if(itemsPool[0]){
                            
                           >
                             <div className="flex flex-col w-11/12 mx-auto ">
-                              <div className="mb-2">{item.title}</div>
+                              <div className="mb-2 truncate">{item.title}</div>
                               <div className="flex justify-start items-center">
                               <div>
                               {item.type == "Video" ? (

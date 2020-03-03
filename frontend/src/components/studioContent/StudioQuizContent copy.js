@@ -180,6 +180,7 @@ const StudioQuizContent = () => {
 
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
+      console.log(oldCourseStructure);
 
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
       SaveAllAction(GlobalHook);
@@ -339,22 +340,8 @@ const StudioQuizContent = () => {
           </Select>
         </div>
       </div>
-
-      <div
-        id="QuestionEditorZone"
-        className="w-11/12 md:w-10/12 flex flex-col bg-gray-300  h-auto rounded-lg border-dotted border-2 items-center"
-      >
-  <div
-          id="QuestionEditorHead"
-          className=" w-full  bg-white mb-4"
-         
-        >
-          <QuestionHeadNumberDrag />
-        </div>
-        fdfdfdf
-        </div>
 {/* QusionZone */}
-      {/* <div
+      <div
         id="QuestionEditorZone"
         className="w-11/12 md:w-10/12 flex flex-col bg-gray-300  h-auto rounded-lg border-dotted border-2 items-center"
       >
@@ -501,7 +488,7 @@ const StudioQuizContent = () => {
             </Tabs>
           )}
         </div>
-      </div> */}
+      </div>
       <div style={{ minHeight: "70px" }} />
     </div>
   );

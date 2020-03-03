@@ -370,8 +370,8 @@ export default function MainDragStudio() {
           etc1: true,
           etc2: true,
           etc3: true,
-          etc4: 0,
-          etc5: 0,
+          etc4: 1,
+          etc5: 1,
           date: Date.now(),
           time: ""
         });
@@ -389,8 +389,8 @@ export default function MainDragStudio() {
           mediaEtc1:true,
           mediaEtc2:true,
           mediaEtc3:true,
-          mediaEtc4:0,
-          mediaEtc5:0,
+          mediaEtc4:1,
+          mediaEtc5:1,
           new:"new"
         });
         setModalLessionOpenStatus(false);
@@ -449,6 +449,7 @@ export default function MainDragStudio() {
                                 fontSize: "16px",
                                 fontWeight: "normal"
                               }}
+                              className="truncate"
                             >
                               {sectionCounter++}. {item.content}
                             </div>

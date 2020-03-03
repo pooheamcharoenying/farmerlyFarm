@@ -123,6 +123,7 @@ export default function MainDragStudio() {
                                 fontWeight: "normal",
                                
                               }}
+                              className="truncate"
                             >
                               {sectionCounter++}. {item.content}
                             </div>

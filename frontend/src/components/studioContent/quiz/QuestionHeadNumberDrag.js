@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import uuid from "uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Button, Modal, Input, message, Select,Tooltip } from "antd";
-import {FaCaretLeft,FaCaretRight} from 'react-icons/fa'
+import { Button, Modal, Input, message, Select, Tooltip } from "antd";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
 import { GlobalContext } from "../../../hook/GlobalHook";
-import {FetchQuestionWhenSelectAction,ClearCreateQuizFieldAction} from '../../../actions'
-
+import {
+  FetchQuestionWhenSelectAction,
+  ClearCreateQuizFieldAction
+} from "../../../actions";
 
 const getItemStyle = (isDragging, draggableStyle, item, isSelect) => ({
   userSelect: "none",
@@ -22,45 +24,45 @@ const getItemStyle = (isDragging, draggableStyle, item, isSelect) => ({
   borderWidth: "1px",
   cursor: "pointer",
   background: isSelect.mediaId == item.id ? "#ffe06c" : "rgba(0,0,0,0)",
-  display:"flex",
-  justifyContent:"center",
-  alignItems:"center",
-  borderColor:"gray",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderColor: "gray",
   ...draggableStyle
 });
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? "white" : "white",
-  width:"100%",
+background:"white",
   
+  minHeight:"100%",
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "start",
   alignItems: "center",
   overflowX: "auto",
-  paddingLeft:"20px"
-
-
+  margin:"auto",
+  width:"auto"
   
 });
 
 function QuestionNumberHead(props) {
-
   const GlobalHook = useContext(GlobalContext);
   const [items, setitems] = useState([]);
-  const [getModalNewQuestionOpenStatus, setModalNewQuestionOpenStatus] = useState(false);
+  const [
+    getModalNewQuestionOpenStatus,
+    setModalNewQuestionOpenStatus
+  ] = useState(false);
   const [getQuestionName, setQuestionName] = useState("");
-  const [getCurrentQuestionIndex,setCurrentQuestionIndex] = useState(0)
-  const [getQuestionLength,setQuestionLength] = useState(0)
-  const [getUnSaveAlertStatus,setUnSaveAlertStatus] = useState(false)
+  const [getCurrentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [getQuestionLength, setQuestionLength] = useState(0);
+  const [getUnSaveAlertStatus, setUnSaveAlertStatus] = useState(false);
 
   useEffect(() => {
-    GlobalHook.setGlobalMediaNew(items)
-    
+    GlobalHook.setGlobalMediaNew(items);
   }, [items]);
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
-      setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length))
+      setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length));
 
       setitems(GlobalHook.getGlobalMediaQuiz);
     }
@@ -123,44 +125,36 @@ function QuestionNumberHead(props) {
     }
   }
 
-  function RenderUnSaveAlert(){
-
-    return(
-        <Modal
-    visible={getUnSaveAlertStatus}
-    title="UnSaveAlert"
-    onOk={() => setUnSaveAlertStatus(false)}
-    onCancel={() => {
-      setUnSaveAlertStatus(false);
-    }}
-    footer={[
-      <div className="w-full flex justify-center">
-       
-      
-        <button
-          onClick={() => {setUnSaveAlertStatus(false)}}
-          className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
-        >
-          cancel
-        </button>
-
-
-        
-      </div>
-    ]}
-  >
-    Changes that you made may not be saved.
-
-  </Modal> 
-    )
+  function RenderUnSaveAlert() {
+    return (
+      <Modal
+        visible={getUnSaveAlertStatus}
+        title="UnSaveAlert"
+        onOk={() => setUnSaveAlertStatus(false)}
+        onCancel={() => {
+          setUnSaveAlertStatus(false);
+        }}
+        footer={[
+          <div className="w-full flex justify-center">
+            <button
+              onClick={() => {
+                setUnSaveAlertStatus(false);
+              }}
+              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+            >
+              cancel
+            </button>
+          </div>
+        ]}
+      >
+        Changes that you made may not be saved.
+      </Modal>
+    );
   }
 
-
   function renderAddQuestionModal() {
-  
-
     return (
-     <Modal
+      <Modal
         visible={getModalNewQuestionOpenStatus}
         title="สร้างคำถามใหม่"
         onOk={() => setModalNewQuestionOpenStatus(false)}
@@ -200,10 +194,9 @@ function QuestionNumberHead(props) {
   }
 
   function handleNewQuestionCreate() {
-
-    setModalNewQuestionOpenStatus(false)
-    GlobalHook.setGlobalStatusCodeQ("CreateNewQuestion")
-    GlobalHook.setMutantStatus(true)
+    setModalNewQuestionOpenStatus(false);
+    GlobalHook.setGlobalStatusCodeQ("CreateNewQuestion");
+    GlobalHook.setMutantStatus(true);
     const newQuestionId = uuid.v4();
     const newId = Math.floor(Math.random() * 1000) + 1;
     const oldstate = [...items];
@@ -225,131 +218,135 @@ function QuestionNumberHead(props) {
     setitems(oldstate);
 
     const initSelfIndex = oldstate.length - 1;
-   
-    ClearCreateQuizFieldAction(GlobalHook)
+
+    ClearCreateQuizFieldAction(GlobalHook);
     GlobalHook.setGloblaQuizQuestionSelect({
       selfIndex: initSelfIndex,
       mediaId: newId,
       questionId: newQuestionId,
-      new:"new"
+      new: "new"
     });
-      GlobalHook.setGloblaQuizQuestionName(getQuestionName);
-   
-    
+    GlobalHook.setGloblaQuizQuestionName(getQuestionName);
   }
 
-
   function handleQuizSelect(item, index) {
-    setCurrentQuestionIndex(index)
+    setCurrentQuestionIndex(index);
 
-    ClearCreateQuizFieldAction(GlobalHook)
+    ClearCreateQuizFieldAction(GlobalHook);
     GlobalHook.setGloblaQuizQuestionSelect({
       selfIndex: index,
       mediaId: item.id,
       questionId: item.questionId
     });
-    FetchQuestionWhenSelectAction(GlobalHook,item);
+    FetchQuestionWhenSelectAction(GlobalHook, item);
   }
 
-  function handlePreviousClick(){
-    if(getCurrentQuestionIndex != 0){
-      handleQuizSelect(items[getCurrentQuestionIndex-1],getCurrentQuestionIndex-1)
-    }
-  } 
-  
-  function handleNextClick(){
-    if(getCurrentQuestionIndex+1 != getQuestionLength){
-      handleQuizSelect(items[getCurrentQuestionIndex+1],getCurrentQuestionIndex+1)
+  function handlePreviousClick() {
+    if (getCurrentQuestionIndex != 0) {
+      handleQuizSelect(
+        items[getCurrentQuestionIndex - 1],
+        getCurrentQuestionIndex - 1
+      );
     }
   }
-  
-  
+
+  function handleNextClick() {
+    if (getCurrentQuestionIndex + 1 != getQuestionLength) {
+      handleQuizSelect(
+        items[getCurrentQuestionIndex + 1],
+        getCurrentQuestionIndex + 1
+      );
+    }
+  }
 
   return (
     <>
-       {renderAddQuestionModal()}
-        {RenderUnSaveAlert()}
-    <div className="bg-red-200">
-    {/* <button className="text-5xl mr-2 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button> */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable"  direction="horizontal" className="max-h-full bg-green-300" >
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-          
-            
-              {items.map((item, index) => {
-              
-
-                return (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div>
-                        <div onClick={() => handleQuizSelect(item, index)}>
-                          <div>
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              style={getItemStyle(
-                                snapshot.isDragging,
-                                provided.draggableProps.style,
-                                item,
-                                GlobalHook.getGloblaQuizQuestionSelect
-                              )}
-                              {...provided.dragHandleProps}
-                            
-                            >
-                              {index + 1}
-
+      {renderAddQuestionModal()}
+      {RenderUnSaveAlert()}
+      <div className="py-2 flex">
+        <button className="text-5xl mr-2 " onClick={()=>handlePreviousClick()}> <FaCaretLeft /></button>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable
+            droppableId="droppable"
+            direction="horizontal"
+           
+          >
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+                className="mx-auto max-w-xl"
+              >
+                {items.map((item, index) => {
+                  return (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div>
+                          <div onClick={() => handleQuizSelect(item, index)}>
+                            <div>
                               <div
-                                style={{ display: "none" }}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  provided.draggableProps.style,
+                                  item,
+                                  GlobalHook.getGloblaQuizQuestionSelect
+                                )}
                                 {...provided.dragHandleProps}
-                              />
-                            </div>
+                              >
+                                {index + 1}
 
-                            {provided.placeholder}
+                                <div
+                                  style={{ display: "none" }}
+                                  {...provided.dragHandleProps}
+                                />
+                              </div>
+
+                              {provided.placeholder}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-              <div
-                className="flex justify-center items-center"
-                onClick={() => {
-                  if(GlobalHook.getMutantStatus){
-                    setUnSaveAlertStatus(true)
-                  }else{
-                  setModalNewQuestionOpenStatus(true);  
-                  setQuestionName("");
-                  }
-                  // setAfterLeaveType("NewQuestion");
-                }}
-                style={{
-                  marginLeft: "10px",
-                  minWidth: "40px",
-                  minHeight: "40px",
-                  borderRadius: "35px",
-                  fontSize: "20px",
-                  borderStyle: " solid",
-                  borderWidth: "1px",
-                  cursor: "pointer",
-                  borderColor:"black"
-                }}
-              >
-                +
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+                <div
+                  className="flex justify-center items-center"
+                  onClick={() => {
+                    if (GlobalHook.getMutantStatus) {
+                      setUnSaveAlertStatus(true);
+                    } else {
+                      setModalNewQuestionOpenStatus(true);
+                      setQuestionName("");
+                    }
+                    // setAfterLeaveType("NewQuestion");
+                  }}
+                  style={{
+                    marginLeft: "10px",
+                    minWidth: "40px",
+                    minHeight: "40px",
+                    borderRadius: "35px",
+                    fontSize: "20px",
+                    borderStyle: " solid",
+                    borderWidth: "1px",
+                    cursor: "pointer",
+                    borderColor: "black"
+                  }}
+                >
+                  +
+                </div>
               </div>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      {/* <button className="text-5xl ml-2 " onClick={()=>handleNextClick()}> <FaCaretRight /></button> */}
-
-    </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <button className="text-5xl ml-2 " onClick={()=>handleNextClick()}> <FaCaretRight /></button>
+      </div>
     </>
   );
 }

@@ -72,7 +72,7 @@ export default function SideBarCourse() {
         style={{ minHeight: "150px" }}
       >
         <div
-          className="bg-white rounded my-4 text-center shadow-lg  text-lg "
+          className="bg-white rounded my-4 text-center shadow-lg  text-lg truncate"
           style={{ paddingTop: "10px", paddingBottom: "10px" }}
         >
           {"คอร์ส: " + GlobalHook.getGlobalCourseName}

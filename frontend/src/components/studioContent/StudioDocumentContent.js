@@ -43,7 +43,6 @@ useEffect(() => {
 
   function handleChange(e) {
 
-    console.log(e)
     setval(e)
     GlobalHook.setGlobalMediaNew(e)
   }
@@ -65,7 +64,7 @@ useEffect(() => {
 
     useEffect(() => {
       CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
-console.log(getLessionName)
+
     }, [getLessionName])
 
     
@@ -79,11 +78,9 @@ console.log(getLessionName)
     useEffect(() => {
    if(GlobalHook.getGlobalStatusCode == "CreateNewLession"){
      setval("")
-     console.log("CreateNewLession")
      GlobalHook.setGlobalStatusCode("")
    }
 
-   console.log(GlobalHook.getGlobalStatusCode)
     },[GlobalHook.getGlobalStatusCode])
 
 
@@ -112,11 +109,9 @@ console.log(getLessionName)
     const { parentIndex,selfIndex } = GlobalHook.getGlobalLessionSelect
     GlobalHook.setGlobalLessionSelect({"mediaType":"CourseOverview"})
 
-    console.log(oldCourseStructure)
 
     if(oldCourseStructure[parentIndex]){
       (oldCourseStructure[parentIndex].subItems).splice(selfIndex, 1)
-    console.log(oldCourseStructure)
       
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
     SaveAllAction(GlobalHook)
