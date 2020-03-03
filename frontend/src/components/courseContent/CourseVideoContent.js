@@ -1,15 +1,42 @@
 import React, { useContext, useState, useEffect } from "react";
+import Vimeo from '@u-wave/react-vimeo';
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { GlobalContext } from "../../hook/GlobalHook";
+import {LessionVisitedLogAction} from '../../actions'
 
 export default function CourseVideoContent() {
   const GlobalHook = useContext(GlobalContext);
   const [getVideoId, setVideoId] = useState("");
+
+  const [getisSubscription, setisSubscription] = useState(false);
+
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser) {
+      GlobalHook.getGlobalUser.courseSubscription.map(data => {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
+          setisSubscription(true);
+        }
+      });
+    }
+  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId]);
+
   useEffect(() => {
     if (GlobalHook.getGlobalMediaVideo != "") {
       setVideoId(GlobalHook.getGlobalMediaVideo);
     }
   }, [GlobalHook.getGlobalMediaVideo]);
+
+
+  function IsEnd(){
+console.log("endd")
+
+ if(GlobalHook.getGlobalToken && getisSubscription){
+      LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
+
+    }
+  }
+
+
   if (typeof GlobalHook.getGlobalMediaVideo == "string") {
     return (
       <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
@@ -30,21 +57,21 @@ export default function CourseVideoContent() {
           />
         </div>
         <div className=" w-full h-full px-2 md:px-4 lg:px-6 mx-auto mt-2 rounded ">
-          <div style={{ padding: "56.25% 0 0 0", position: "relative" }}>
-            <iframe
-              src={`https://player.vimeo.com/video/${getVideoId}?title=0&byline=0&portrait=0`}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%"
-              }}
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-            ></iframe>
-          </div>
+
+        {/* <Vimeo
+            video={"115783408"}
+            responsive={true}
+            onEnd={IsEnd}
+            loop={false}
+            /> */}
+             <Vimeo
+            video={GlobalHook.getGlobalMediaVideo}
+            responsive={true}
+            onEnd={IsEnd}
+            loop={false}
+            />
+        
+         
         </div>
         <div style={{ minHeight: "60px" }} />
       </div>

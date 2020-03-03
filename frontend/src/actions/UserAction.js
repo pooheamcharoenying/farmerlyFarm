@@ -10,7 +10,6 @@ function GetTokenAction(GlobalHook, uid) {
   axios
     .post("/api/user/getToken", {"uid":uid})
     .then(res => {
-    console.log(res.data)
      
     
       GlobalHook.setGlobalToken(res.data.token);
@@ -39,7 +38,6 @@ async function LoginAction(GlobalHook,userData,vender){
       await Firebase
         .auth()
         .signInWithEmailAndPassword(userData.email, userData.password).then((data)=>{
-          console.log(data.user.uid)
           GetTokenAction(GlobalHook,data.user.uid)
         })
      
@@ -236,7 +234,6 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
     lessionId: mediaId
   };
 
-  console.log(pushLogData)
   axios
     .post("/api/user/log", pushLogData)
     .then(res => {

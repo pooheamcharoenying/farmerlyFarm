@@ -9,6 +9,18 @@ export default function CourseDocumentContent() {
   const GlobalHook = useContext(GlobalContext);
 
   const [getEditorData, setEditorData] = useState("");
+  
+  const [getisSubscription, setisSubscription] = useState(false);
+
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser) {
+      GlobalHook.getGlobalUser.courseSubscription.map(data => {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
+          setisSubscription(true);
+        }
+      });
+    }
+  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId]);
 
   useEffect(() => {
     if (typeof GlobalHook.getGlobalMediaDocument == "string") {

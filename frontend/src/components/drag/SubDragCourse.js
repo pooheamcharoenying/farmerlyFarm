@@ -123,10 +123,10 @@ if(itemsPool[0]){
       GetMediaFreeAction(GlobalHook,item.mediaId)
 
     }
-    if(GlobalHook.getGlobalToken && getisSubscription){
-      LessionVisitedLogAction(GlobalHook,item.mediaId)
+    // if(GlobalHook.getGlobalToken && getisSubscription){
+    //   LessionVisitedLogAction(GlobalHook,item.mediaId)
 
-    }
+    // }
   }
   
   function getIsLessionVisitedFn(item) {
