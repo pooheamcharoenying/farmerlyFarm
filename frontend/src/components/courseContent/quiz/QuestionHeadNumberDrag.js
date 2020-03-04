@@ -81,26 +81,7 @@ function QuestionNumberHead(props) {
       setitems(FinalQuizBank);
       handleQuizSelect(FinalQuizBank[0], 0);
 
-      // if(GlobalHook.getGlobalLessionSelect.mediaEtc5 == 0){
-      //   randomAmount = 0
-      //       if(GlobalHook.getGlobalLessionSelect.mediaEtc3){
 
-      //         FinalQuizBank = shuffle(GlobalHook.getGlobalMediaQuiz).slice(randomAmount)
-
-      // }else{
-      //   FinalQuizBank = GlobalHook.getGlobalMediaQuiz.slice(randomAmount)
-      // console.log(FinalQuizBank)
-
-      // }
-      //     console.log(GlobalHook.getGlobalMediaQuiz)
-      //     console.log(FinalQuizBank)
-
-      //     setitems(FinalQuizBank);
-      //     handleQuizSelect(FinalQuizBank[0],0)
-
-      //     }else{
-      //       setitems(GlobalHook.getGlobalMediaQuiz);
-      //     }
     }
   }, [GlobalHook.getGlobalMediaQuiz]);
 

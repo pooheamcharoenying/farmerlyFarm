@@ -3,12 +3,12 @@ import axios from "axios";
 import { message } from "antd";
 
 
-function FetchQuestionWhenSelectAction (GlobalHook,item) {
+function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
   GlobalHook.setGlobalLoading(true)
 
     const pushData = {
       courseName: GlobalHook.getGlobalCourseName,
-      questionId: item.questionId
+      questionId: questionId
     };
 
     axios
