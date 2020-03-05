@@ -12,6 +12,18 @@ function getCoursePoolAction(GlobalHook) {
     .catch(err => console.log(err));
 }
 
+function getCoursePoolAllAction(GlobalHook) {
+  GlobalHook.setGlobalLoading(true);
+  axios
+    .get("/api/course/all")
+    .then(res => {
+      GlobalHook.setGlobalCoursePool(res.data);
+      GlobalHook.setGlobalLoading(false);
+    })
+    .catch(err => console.log(err));
+}
+
+
 function courseSearchKeywordAction(GlobalHook, key) {
   GlobalHook.setGlobalShowSearch(true);
   GlobalHook.setGlobalLoading(true);
@@ -252,8 +264,27 @@ function DeleteCourseLessionAction(GlobalHook,courseSlug) {
     });
 }
 
+function SetCourseReviewAction(GlobalHook, courseSlug, ratingData) {
+  GlobalHook.setGlobalLoading(true);
+
+  const pushData = {
+    courseSlug: courseSlug,
+    ratingData: ratingData
+  };
+
+  axios
+    .post("/api/course/status", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 export {
   getCoursePoolAction,
+  getCoursePoolAllAction,
   courseSearchKeywordAction,
   courseSearchCatAction,
   getCourseContentAction,
@@ -263,5 +294,6 @@ export {
   DeleteCourseLessionAction,
   UpdataCoursepublishAction,
   GetCourseSettingAction,
-  SaveCourseSetting
+  SaveCourseSetting,
+  SetCourseReviewAction
 };

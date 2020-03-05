@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import Header from "../components/header/HeaderStudio";
 import SideBar from "../components/sideBar/SideBarStudio";
 import StudioContent from "../components/studioContent/StudioContent";
-import { getCourseContentAction, getCoursePoolAction } from "../actions";
+import { getCourseContentAction, getCoursePoolAllAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 
 export default function Studio() {
@@ -15,7 +15,7 @@ export default function Studio() {
   useEffect(() => {
     getCourseContentAction(GlobalHook, courseSlug);
     GlobalHook.setGlobalCourseSlug(courseSlug);
-    getCoursePoolAction(GlobalHook);
+    getCoursePoolAllAction(GlobalHook);
   }, []);
 
   window.onbeforeunload = function() {

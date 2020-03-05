@@ -9,8 +9,8 @@ import {
 import { Pie } from "react-chartjs-2";
 import { GlobalContext, CourseQuizContext } from "../../hook/GlobalHook";
 import TextEditor from "../../components/textEditor/TextEditor";
-import QuestionHeadNumberDrag from "./quiz/QuestionHeadNumberDrag";
-import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
+import {LessionVisitedLogAction} from '../../actions'
+
 import {
   FetchQuestionWhenSelectAction,
   ClearCreateQuizFieldAction
@@ -46,6 +46,23 @@ export default function CourseQuizContent() {
     getModalQuizResultSummaryOpenStatus,
     setModalQuizResultSummaryOpenStatus
   ] = useState(false);
+
+  const [getCourseSubscripted,setCourseSubscripted] = useState(false)
+
+
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser) {
+      GlobalHook.getGlobalUser.courseSubscription.map(data => {
+        if (data.courseId == GlobalHook.getGlobalcourseId) {
+          setCourseSubscripted(true)
+
+         
+        }
+      });
+    }
+  }, );
+
+
 
   useEffect(() => {
     setAnsPool(shuffle(GlobalHook.getGloblaQuizAnswerField));
@@ -355,6 +372,11 @@ export default function CourseQuizContent() {
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
     CalSocreFinish()
+
+    if(GlobalHook.getGlobalToken && getCourseSubscripted){
+      LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
+
+    }
   }
 
   return (

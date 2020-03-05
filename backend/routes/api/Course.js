@@ -26,6 +26,15 @@ router.get("/", async (req, res) => {
     .catch(err => console.log(err));
 });
 
+//GetCourse
+router.get("/all", async (req, res) => {
+  Course.find()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => console.log(err));
+});
+
 
 //GetCourse
 router.post("/getcoursesetting",
@@ -181,6 +190,25 @@ router.post(
       .catch(err => console.log(err));
   }
 );
+
+
+router.post(
+  "/setrating",
+  passport.authenticate("jwt", { session: false }),
+
+  (req, res) => {
+    const adjustCourseSlug = req.body.courseSlug.toString();
+
+    Course.findOneAndUpdate({ courseSlug: adjustCourseSlug })
+      .then((courseData) =>{
+        courseData.courseRating.unshift(req.body.ratingData)
+        courseData.save()
+        res.status(200).json("success")
+      })
+      .catch(err => console.log(err));
+  }
+);
+
 
 //Update ActiveStatus
 router.post(

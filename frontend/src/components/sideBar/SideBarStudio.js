@@ -14,11 +14,12 @@ export default function SideBarCourse() {
 
     
     useEffect(() => {
-      if(GlobalHook.getGlobalCoursePool[0] &&GlobalHook.getGlobalcourseId ){
+      if(GlobalHook.getGlobalCoursePool[0] && GlobalHook.getGlobalcourseId ){
 
       
      const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
-     if(matchPool){
+     console.log(matchPool)
+     if(matchPool[0]){
       setCoursePublishStatus(matchPool[0].coursePublish)
      }
       }
@@ -89,8 +90,8 @@ export default function SideBarCourse() {
 
       
         const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
-        if(matchPool){
-          publishStatus = matchPool[0].coursePublish
+        if(matchPool[0]){
+          publishStatus = matchPool[0].coursePublish 
         
         return(
           <Switch defaultChecked={publishStatus} checkedChildren="Yes" unCheckedChildren="No" onClick={(coursePublish)=>UpdataCoursepublishAction(GlobalHook,GlobalHook.getGlobalCourseSlug,coursePublish)}/>

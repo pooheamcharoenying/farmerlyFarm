@@ -35,7 +35,7 @@ const CourseSchema = new Schema({
     type: Boolean
   },
   coursePublish:{
-    type:Boolean
+    type:Boolean,
   },
   courseUpdate: {
     type: Date,
@@ -46,6 +46,9 @@ const CourseSchema = new Schema({
   },
   courseOwnerId: {
     type: String
+  },
+  courseRating :{
+    type: Object
   }
 });
 
