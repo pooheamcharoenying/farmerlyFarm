@@ -6,6 +6,7 @@ import {
   FaCaretLeft,
   FaCaretRight
 } from "react-icons/fa";
+import { Pie } from "react-chartjs-2";
 import { GlobalContext, CourseQuizContext } from "../../hook/GlobalHook";
 import TextEditor from "../../components/textEditor/TextEditor";
 import QuestionHeadNumberDrag from "./quiz/QuestionHeadNumberDrag";
@@ -206,7 +207,7 @@ export default function CourseQuizContent() {
     return (
       <Modal
         visible={getShowTimeOutModal}
-        title="QuizResultSummary"
+        title="TimeOut"
         onOk={() => setShowTimeOutModal(false)}
         onCancel={() => {
           setShowTimeOutModal(false);
@@ -285,11 +286,61 @@ export default function CourseQuizContent() {
         ]}
       >
         <div className="flex flex-col justify-center items-center mx-auto">
-          result
+
+        <Pie data={dataResult} />
+
+<div>ถูก{CalSocreFinish().correctAnswerAmount}</div>
+<div>
+  ผิด
+  {GlobalHook.getGlobalLessionSelect.mediaEtc5 -
+    CalSocreFinish().correctAnswerAmount}
+</div>
+<div>จำนวนทำเสร็จ{CalSocreFinish().doneQuestionAmount}</div>
+
+<div>จำนวนข้อ{GlobalHook.getGlobalLessionSelect.mediaEtc5}</div>
+
         </div>
       </Modal>
     );
   }
+
+  let dataResult = {
+    labels: ["ถูก", "ผิด", "ข้าม"],
+    datasets: [
+      {
+        data: [
+          CalSocreFinish().correctAnswerAmount,
+          CalSocreFinish().doneQuestionAmount -
+            CalSocreFinish().correctAnswerAmount,
+            GlobalHook.getGlobalLessionSelect.mediaEtc5 -
+            CalSocreFinish().doneQuestionAmount
+        ],
+        backgroundColor: ["#4ed34e", "#ce3a3a", "#3a90ce"],
+        hoverBackgroundColor: ["#4ed34e", "#ce3a3a", "#3a90ce"]
+      }
+    ]
+  };
+
+  function CalSocreFinish() {
+    let correctAnswerAmount = 0;
+    let doneQuestionAmount = 0;
+    let UserAnswerPool = getUserAnsBank;
+    Object.values(UserAnswerPool).forEach(value => {
+      if (value.result) {
+        correctAnswerAmount++;
+      }
+      doneQuestionAmount++;
+    });
+
+
+    return {
+      correctAnswerAmount: correctAnswerAmount,
+      doneQuestionAmount: doneQuestionAmount
+    };
+
+  }
+
+
 
   function RestartQuiz() {
     setModalQuizResultSummaryOpenStatus(false);
@@ -303,6 +354,7 @@ export default function CourseQuizContent() {
   }
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
+    CalSocreFinish()
   }
 
   return (
@@ -462,6 +514,22 @@ export default function CourseQuizContent() {
                       </div>
                     );
                   })}
+{/* 
+                    <div
+                        className=" mt-4 rounded-lg flex justify-center items-center cursor-pointer border-dotted border-2"
+                        style={{
+                          minWidth: "200px",
+                          minHeight: "40px",
+                          background:
+                            getUserClick == "Don't Know" ? "lightblue" : "white"
+                        }}
+                        onClick={() => {
+                          setUserClick("Don't Know");
+                          UserAnsClick("Don't Know");
+                        }}
+                      >
+                        Don't Know
+                      </div> */}
                 </div>
               ) : (
                 <TextArea
