@@ -315,8 +315,8 @@ export default function CourseQuizContent() {
             GlobalHook.getGlobalLessionSelect.mediaEtc5 -
             CalSocreFinish().doneQuestionAmount
         ],
-        backgroundColor: ["#4ed34e", "#ce3a3a", "#3a90ce"],
-        hoverBackgroundColor: ["#4ed34e", "#ce3a3a", "#3a90ce"]
+        backgroundColor: ["#88ee99", "#ff753e", "#ecb93e"],
+     
       }
     ]
   };
