@@ -6,7 +6,7 @@ import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
 import { GlobalContext, CourseQuizContext } from "../../../hook/GlobalHook";
 import {
-  FetchQuestionWhenSelectAction,
+  FetchQuestionWhenSelectActionStudio,
   ClearCreateQuizFieldAction
 } from "../../../actions";
 
@@ -186,7 +186,7 @@ function QuestionNumberHead(props) {
       mediaId: item.id,
       questionId: item.questionId
     });
-    FetchQuestionWhenSelectAction(GlobalHook, item);
+    FetchQuestionWhenSelectActionStudio(GlobalHook, item);
   }
 
   function handlePreviousClick() {

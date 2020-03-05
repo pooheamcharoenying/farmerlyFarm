@@ -30,6 +30,33 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
       });
   }
 
+  function FetchQuestionWhenSelectActionStudio (GlobalHook,questionId) {
+    GlobalHook.setGlobalLoading(true)
+  
+      const pushData = {
+      
+        questionId: questionId.questionId
+      };
+  
+      axios
+        .post("/api/quiz/free", pushData)
+        .then(res => {
+  
+         GlobalHook.setGloblaQuizQuestionName(res.data.data.questionName);
+         GlobalHook.setGloblaQuizQuestionField(res.data.data.questionField)
+         GlobalHook.setGloblaQuizAnswerField(res.data.data.answerField);
+         GlobalHook.setGloblaQuizAnswerType(res.data.data.answerType);
+         GlobalHook.setGloblaQuizAnswerCorrect(res.data.data.answerCorrect);
+         GlobalHook.setGloblaQuizExplainType( res.data.data.answerExplainType );
+         GlobalHook.setGloblaQuizExplainField(res.data.data.answerExplainField );
+         GlobalHook.setGlobalLoading(false)
+  
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
 
   function AddNewQuestionAction (GlobalHook) {
 
@@ -82,4 +109,4 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
     
   }
 
-  export {FetchQuestionWhenSelectAction,AddNewQuestionAction}
+  export {FetchQuestionWhenSelectAction,AddNewQuestionAction,FetchQuestionWhenSelectActionStudio}
