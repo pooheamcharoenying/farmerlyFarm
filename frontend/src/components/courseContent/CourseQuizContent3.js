@@ -330,7 +330,7 @@ function RestartQuiz(){
             height: "50px"
           }}
         >
-          <div className="bg-white w-auto p-3 rounded-lg">
+          <div className="bg-white w-auto p-3 rounded-lg border-dotted border-2">
             Remaining:{getRemainingTime}
           </div>
         </div>
@@ -392,16 +392,16 @@ function RestartQuiz(){
             >
               <FaCaretLeft />
             </button>
-            <div className="w-full flex items-center overflow-x-auto  max-w-4xl mx-auto bg-blue-200 justify-around">
+            <div className="w-full flex items-center overflow-x-auto  max-w-4xl mx-auto  justify-around">
               {getQuestionPool.map((item, index) => {
                 return (
                   <div
-                    className="bg-yellow-400 hover:bg-yellow-300 mx-2 rounded-full flex justify-center items-center text-xl cursor-pointer "
+                    className="bg-yellow-400 hover:bg-yellow-300 mx-2 rounded-full flex justify-center items-center text-xl cursor-pointer  border-dotted border-2"
                     style={{
                       minWidth: "40px",
                       minHeight: "40px",
                       backgroundColor:
-                        getSelectQuestion == index ? "green" : "yellow"
+                        getSelectQuestion == index ? "wheat" : "white"
                     }}
                     onClick={() => {
                       setSelectQuestion(index);
@@ -440,15 +440,15 @@ function RestartQuiz(){
                
                   return (
                     <div
-                      className=" mt-4 rounded-lg flex justify-center items-center cursor-pointer "
+                      className=" mt-4 rounded-lg flex justify-center items-center cursor-pointer border-dotted border-2"
                       style={{
                         minWidth: "200px",
                         minHeight: "40px",
                         display: item.id == "9999" ? "none" : "",
                         background:
                          getUserClick == item.content
-                            ? "pink"
-                            : "yellow"
+                            ? "lightblue"
+                            : "white"
                       }}
                       onClick={() => {
                         setUserClick(item.content);
@@ -470,7 +470,7 @@ function RestartQuiz(){
               />
             )}
             <div className="w-full flex  mt-8 flex-col items-center">
-              <button
+             {!getShowCorrectAns && <button
                 className="bg-red-600 p-2 text-white font-semibold rounded-lg "
                 style={{ maxWidth: "200px",background:getUserAnsBank[getQuestionPool[getSelectQuestion].questionId]?"gray":"lightgray" }}
                 onClick={() => {
@@ -481,14 +481,14 @@ function RestartQuiz(){
                 }}
               >
                 SUBMIT ANSWER
-              </button>
+              </button>}
 
           {  getShowCorrectAns &&   <div className="flex flex-col items-center"> <div
                 className="flex flex-col items-start mt-6 w-10/12"
                 style={{ minHeight: "50px" }}
               >
-               {!getUserAnsCheckStatus && <div className="text-white" style={{minWidth:"400px",background:"red"}}>Incorrect</div>}
-               {getUserAnsCheckStatus && <div className="text-white" style={{minWidth:"400px",background:"green"}}>Correct</div>}
+               {!getUserAnsCheckStatus && <div className="text-white bg-red-400 p-2 rounded-lg" style={{minWidth:"400px"}}>Incorrect</div>}
+               {getUserAnsCheckStatus && <div className="text-white bg-green-500 p-2 rounded-lg" style={{minWidth:"400px"}}>Correct</div>}
 
                 <div>
                   {GlobalHook.getGloblaQuizExplainType == "Text" ? (
@@ -537,12 +537,8 @@ function RestartQuiz(){
 
               {getSelectQuestion + 1 == getQuestionAmount && <button
                 className="bg-orange-500 p-2 text-white font-semibold rounded-lg mt-6"
-                onClick={() => {
-                
-                 
+                onClick={() => {                
                   ShowResult()
-                
-
                 }}
               >
                 View Results >
