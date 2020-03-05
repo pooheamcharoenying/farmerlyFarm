@@ -1,6 +1,7 @@
 import React,{useState,useContext,useEffect} from 'react'
 import { Rate,Progress,Input } from 'antd';
 import { GlobalContext } from "../../hook/GlobalHook";
+import {SetCourseReviewAction} from '../../actions'
 
 const { TextArea } = Input;
 
@@ -10,6 +11,8 @@ export default function CourseReviewContent() {
   const GlobalHook = useContext(GlobalContext);
 
   const [getCourseSubscripted,setCourseSubscripted] = useState(false)
+  const [getMyComment,setMyComment] = useState("")
+  const [getMyRating,setMyRating] = useState(0)
 
 
   useEffect(() => {
@@ -24,6 +27,11 @@ export default function CourseReviewContent() {
     }
   }, );
 
+  function handleSaveReviewClick(){
+    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating})
+    console.log("saveClick")
+  }
+
     return (
         <div className=" w-full flex flex-col items-center py-4 justify-start">
         <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-orange-500">
@@ -32,12 +40,15 @@ export default function CourseReviewContent() {
         <div className="flex flex-col text-center mb-6 md:mb-8 w-8/12">
         {getCourseSubscripted &&
         <div  className="flex flex-col">
-         <div className="text-left text-2xl font-semibold flex "><div className="mr-2">Your Rating : </div><Rate allowHalf defaultValue={3.5}/></div>
-        <div className="text-left text-2xl font-semibold flex mt-4"><div className="mr-2" style={{minWidth:"200px"}}>Your Review : </div><TextArea  placeholder="Typing Your Review Here"
-          autoSize={{ minRows: 2, maxRows: 6 }} /> 
+         <div className="text-left text-2xl font-semibold flex "><div className="mr-2">My Rating : </div><Rate allowHalf defaultValue={getMyRating} onChange={(e)=>setMyRating(e)}/></div>
+        <div className="text-left text-2xl font-semibold flex mt-4"><div className="mr-2" style={{minWidth:"200px"}}>My Review : </div>
+        <TextArea  placeholder="Typing Your Review Here"
+          autoSize={{ minRows: 2, maxRows: 6 }}
+          value={getMyComment} onChange={(e)=>{setMyComment(e.target.value)}}
+          /> 
          <button
           className="text-white bg-green-500 p-2 border-2 rounded border-green-600 hover:text-green-600 hover:bg-white ml-2 text-center flex justify-center items-center"
-          style={{width:"80px"}}>
+          style={{width:"80px"}} onClick={()=>handleSaveReviewClick()}>
         SAVE</button>
         </div>
         </div>

@@ -264,11 +264,11 @@ function DeleteCourseLessionAction(GlobalHook,courseSlug) {
     });
 }
 
-function SetCourseReviewAction(GlobalHook, courseSlug, ratingData) {
+function SetCourseReviewAction(GlobalHook, ratingData) {
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-    courseSlug: courseSlug,
+    courseSlug: GlobalHook.getGlobalCourseSlug,
     ratingData: ratingData
   };
 
