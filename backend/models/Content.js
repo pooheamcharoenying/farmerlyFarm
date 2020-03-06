@@ -18,7 +18,10 @@ const ContentSchema = new Schema({
    },
    CourseInfoTeacher:{
     type:String
-   }
+   },
+  courseReview:{
+    type: Array
+  }
 });
 
 module.exports = ContentSchema; 

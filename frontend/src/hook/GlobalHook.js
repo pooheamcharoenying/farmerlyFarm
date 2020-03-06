@@ -145,6 +145,9 @@ const Store = props => {
     setGlobalCourseInfoTeacherNew
   ] = useState("");
 
+  const [getGlobalCourseReviewPool, setGlobalCourseReviewPool] = useState([]);
+
+
   const [getGlobalStudioUploadFile, setGlobalStudioUploadFile] = useState(null);
 
   //Utility
@@ -337,7 +340,12 @@ const Store = props => {
     setGlobalCourseTag,
 
     getGlobalLessionSelectNew,
-    setGlobalLessionSelectNew
+    setGlobalLessionSelectNew,
+
+    getGlobalCourseReviewPool,
+    setGlobalCourseReviewPool
+
+
   };
 
   ////Data Wrap////

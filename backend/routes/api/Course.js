@@ -67,7 +67,7 @@ router.post(
       coursePublish: false,
       courseOwnerId: req.user.id,
       courseImageFileName:req.body.courseImageFileName,
-      courseReview:[]
+  
     });
 
     newCourse.save().then(newcourseData => {
@@ -83,7 +83,11 @@ router.post(
         );
         const newContent = new MatchContent({
           name: "plot",
-          contentStructure: []
+          contentStructure: [],
+          CourseInfoOverview:"",
+          CourseInfoStudent:"",
+          CourseInfoTeacher:"",
+          courseReview:[]
         });
 
         newContent.save();
@@ -198,15 +202,39 @@ router.post(
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
-    const adjustCourseSlug = req.body.courseSlug.toString();
+    const courseIdStr = req.body.courseId.toString();
+    const MatchContent = mongoose.model(
+      courseIdStr,
+      ContentSchema,
+      courseIdStr
+    );
 
-    Course.findOne({ courseSlug: adjustCourseSlug })
+    
+    
+    MatchContent.findOne({ name: "plot" })
       .then((courseData) =>{
-        courseData.courseReview.unshift(req.body.courseReview)
-        courseData.save()
-        res.status(200).json("success")
+       
+
+
+        const isUserReviewExist = courseData.courseReview
+          .map(data => data.user)
+          .indexOf(req.user.id);
+         if(isUserReviewExist == -1){
+          courseData.courseReview.unshift(req.body.courseReview)
+          courseData.save()
+          res.status(200).json(courseData.courseReview)
+         }else{
+
+          courseData.courseReview.splice(isUserReviewExist, 1)
+          courseData.courseReview.unshift(req.body.courseReview)
+          courseData.save()
+          res.status(200).json(courseData.courseReview)
+
+         }
+
+
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err);res.status(400)});
   }
 );
 

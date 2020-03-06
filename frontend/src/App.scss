@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Prompt:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 @import url('https://cdn.plyr.io/3.5.2/plyr.css');
 @import './quill.snow.css';
+@import './react-rating.scss';
+
 *{
     font-family: 'Prompt', sans-serif;
     /* Keyword values */
@@ -41,3 +43,4 @@ user-select: none;
     -webkit-line-clamp: 2; /* number of lines to show */
     -webkit-box-orient: vertical;
  }
+

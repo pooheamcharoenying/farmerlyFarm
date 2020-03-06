@@ -72,6 +72,9 @@ function getCourseContentAction(GlobalHook, courseSlug) {
         res.data.courseData[0].CourseInfoTeacher
       );
 
+      GlobalHook.setGlobalCourseReviewPool(
+        res.data.courseData[0].courseReview
+      );
       GlobalHook.setGlobalCourseName(res.data.courseName);
 
       GlobalHook.setGlobalcourseId(res.data.courseId)
@@ -268,13 +271,18 @@ function SetCourseReviewAction(GlobalHook, courseReview) {
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-    courseSlug: GlobalHook.getGlobalCourseSlug,
+    courseId: GlobalHook.getGlobalcourseId,
     courseReview: courseReview
   };
 
   axios
     .post("/api/course/setreview", pushData)
     .then(res => {
+      GlobalHook.setGlobalCourseReviewPool(
+        res.data.courseReview
+      );
+
+      console.log(res)
       GlobalHook.setGlobalLoading(false);
     })
     .catch(err => {

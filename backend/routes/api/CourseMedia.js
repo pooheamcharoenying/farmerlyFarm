@@ -20,7 +20,7 @@ router.post(
 
     Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
 
-      console.log(poolData)
+
       let courseId = poolData._id.toString();
 
       const adjustCourseIdMedia = courseId + "Media";
