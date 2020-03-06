@@ -47,6 +47,8 @@ export default function CourseQuizContent() {
           setisSubscription(true);
         }
       });
+    }else{
+      setisSubscription(false);
     }
   }, [GlobalHook.getGlobalUser]);
 

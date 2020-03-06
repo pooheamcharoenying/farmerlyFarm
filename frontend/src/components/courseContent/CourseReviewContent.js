@@ -10,25 +10,26 @@ const { TextArea } = Input;
 export default function CourseReviewContent() {
   const GlobalHook = useContext(GlobalContext);
 
-  const [getCourseSubscripted,setCourseSubscripted] = useState(false)
+  const [getisSubscription,setisSubscription] = useState(false)
   const [getMyComment,setMyComment] = useState("")
   const [getMyRating,setMyRating] = useState(0)
 
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser) {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
+        console.log(GlobalHook.getGlobalUser)
         if (data.courseId == GlobalHook.getGlobalcourseId) {
-          setCourseSubscripted(true)
-
-         
+          setisSubscription(true);
         }
       });
+    }else{
+      setisSubscription(false);
     }
   }, );
 
   function handleSaveReviewClick(){
-    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating})
+    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating,"user":GlobalHook.getGlobalUser._id})
     console.log("saveClick")
   }
 
@@ -38,7 +39,7 @@ export default function CourseReviewContent() {
           Rating & Review
         </div>
         <div className="flex flex-col text-center mb-6 md:mb-8 w-8/12">
-        {getCourseSubscripted &&
+        {getisSubscription &&
         <div  className="flex flex-col">
          <div className="text-left text-2xl font-semibold flex "><div className="mr-2">My Rating : </div><Rate allowHalf defaultValue={getMyRating} onChange={(e)=>setMyRating(e)}/></div>
         <div className="text-left text-2xl font-semibold flex mt-4"><div className="mr-2" style={{minWidth:"200px"}}>My Review : </div>

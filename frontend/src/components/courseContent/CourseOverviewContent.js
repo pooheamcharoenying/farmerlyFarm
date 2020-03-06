@@ -21,6 +21,9 @@ export default function StudioOverviewContent() {
             GlobalHook.setGlobalNotFirstLoadStatus(true);
             
           }
+        }else{
+          setCourseSubscripted(false)
+
         }
       });
     }

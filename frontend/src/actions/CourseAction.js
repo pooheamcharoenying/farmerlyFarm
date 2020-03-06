@@ -264,16 +264,16 @@ function DeleteCourseLessionAction(GlobalHook,courseSlug) {
     });
 }
 
-function SetCourseReviewAction(GlobalHook, ratingData) {
+function SetCourseReviewAction(GlobalHook, courseReview) {
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
     courseSlug: GlobalHook.getGlobalCourseSlug,
-    ratingData: ratingData
+    courseReview: courseReview
   };
 
   axios
-    .post("/api/course/status", pushData)
+    .post("/api/course/setreview", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
     })

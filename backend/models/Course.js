@@ -47,8 +47,8 @@ const CourseSchema = new Schema({
   courseOwnerId: {
     type: String
   },
-  courseRating :{
-    type: Object
+  courseReview:{
+    type: Array
   }
 });
 

@@ -7,9 +7,6 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-
 const UserSchema = require("../../models/User");
 const User = mongoose.model("user", UserSchema);
 

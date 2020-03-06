@@ -66,7 +66,8 @@ router.post(
       courseActive: false,
       coursePublish: false,
       courseOwnerId: req.user.id,
-      courseImageFileName:req.body.courseImageFileName
+      courseImageFileName:req.body.courseImageFileName,
+      courseReview:[]
     });
 
     newCourse.save().then(newcourseData => {
@@ -193,15 +194,15 @@ router.post(
 
 
 router.post(
-  "/setrating",
+  "/setreview",
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
     const adjustCourseSlug = req.body.courseSlug.toString();
 
-    Course.findOneAndUpdate({ courseSlug: adjustCourseSlug })
+    Course.findOne({ courseSlug: adjustCourseSlug })
       .then((courseData) =>{
-        courseData.courseRating.unshift(req.body.ratingData)
+        courseData.courseReview.unshift(req.body.courseReview)
         courseData.save()
         res.status(200).json("success")
       })

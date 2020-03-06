@@ -11,14 +11,16 @@ export default function CourseVideoContent() {
   const [getisSubscription, setisSubscription] = useState(false);
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser) {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
         if (data.courseId == GlobalHook.getGlobalcourseId) {
           setisSubscription(true);
         }
       });
+    }else{
+      setisSubscription(false);
     }
-  }, [GlobalHook.getGlobalUser,GlobalHook.getGlobalcourseId]);
+  }, );
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaVideo != "") {

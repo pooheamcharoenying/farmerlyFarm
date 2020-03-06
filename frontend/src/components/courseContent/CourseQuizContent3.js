@@ -47,21 +47,22 @@ export default function CourseQuizContent() {
     setModalQuizResultSummaryOpenStatus
   ] = useState(false);
 
-  const [getCourseSubscripted,setCourseSubscripted] = useState(false)
+  const [getisSubscription,setisSubscription] = useState(false)
+
+
 
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser) {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
         if (data.courseId == GlobalHook.getGlobalcourseId) {
-          setCourseSubscripted(true)
-
-         
+          setisSubscription(true);
         }
       });
+    }else{
+      setisSubscription(false);
     }
   }, );
-
 
 
   useEffect(() => {
@@ -373,7 +374,7 @@ export default function CourseQuizContent() {
     setModalQuizResultSummaryOpenStatus(true);
     CalSocreFinish()
 
-    if(GlobalHook.getGlobalToken && getCourseSubscripted){
+    if(GlobalHook.getGlobalToken && getisSubscription){
       LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
 
     }
