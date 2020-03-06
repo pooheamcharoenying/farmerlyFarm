@@ -6,7 +6,7 @@ import StudioVideoContent from "./StudioVideoContent";
 import StudioDocumentContent from "./StudioDocumentContent";
 import StudioQuizContent from "./StudioQuizContent";
 import StudioOverviewContent from "./StudioOverviewContent";
-import StudioStatisticContent from "./StudioStatisticContent";
+import StudioDashboardContent from "./StudioDashboardContent";
 
 import Blank from "./Blank";
 
@@ -29,8 +29,8 @@ export default function StudioContent() {
       case "Quiz":
         return <StudioQuizContent />;
         break;
-      case "Statistic":
-        return <StudioStatisticContent />;
+      case "Dashboard":
+        return <StudioDashboardContent />;
         break;
       case "Blank":
         return <Blank />;

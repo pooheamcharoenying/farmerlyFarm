@@ -1,18 +1,23 @@
 import React from "react";
 import {Menu, Dropdown,Avatar} from "antd";
-
-export default function StudioStatisticContent() {
+import AreaChart from './chart/AreaChart'
+import RadarChart from './chart/RadarChart'
+export default function StudioDashboardContent() {
   return (
     <div className=" h-full w-full flex flex-col items-center py-4 justify-start">
       <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-orange-500">
-        Statistic
+        Dashboard
       </div>
 
-    <div className="bg-gray-200 p-6 rounded-lg" style={{minHeight:"600px",width:"500px",overflowY:"auto"}}>
+<div className="flex flex-row flex-wrap justify-around w-full">
+  
+  
+  
+    <div className="bg-gray-200 p-6 rounded-lg mb-6" style={{minHeight:"600px",width:"500px",overflowY:"auto"}}>
     <div className="rounded-lg text-center text-white py-2 text-xl font-bold bg-purple-500 mx-auto" style={{width:"120px",maxHeight:"500px"}}>
         Student
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col">
      { [{
   "id": 1,
   "first_name": "Garrott",
@@ -87,6 +92,21 @@ export default function StudioStatisticContent() {
 
     </div>
 
+
+    <div className="bg-gray-200 p-6 rounded-lg" style={{minHeight:"600px",width:"auto",overflowY:"auto"}}>
+    <div className="rounded-lg text-center text-white py-2 text-xl font-bold bg-blue-500 mx-auto" style={{width:"120px",maxHeight:"500px"}}>
+        Statistic
+      </div>
+      <div className="mt-4 flex flex-col">
+      <AreaChart/>
+      <RadarChart/>
+
+        </div>
+
+    </div>
+
+
+    </div>
     </div>
   );
 }
