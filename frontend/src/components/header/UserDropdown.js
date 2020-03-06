@@ -39,8 +39,8 @@ const UserDropdown = () => {
        
         <Menu.Item key="3">
     
-          <div className="flex w-30 justify-start items-center text-gray-800" onClick={()=>history.push("/setting")}> <FaCog className="mr-2 text-black"/>
-          Setting</div>
+          <div className="flex w-30 justify-start items-center text-gray-800" onClick={()=>history.push("/dashboard")}> <FaCog className="mr-2 text-black"/>
+          Dashboard</div>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="4">

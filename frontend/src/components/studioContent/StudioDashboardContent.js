@@ -2,6 +2,7 @@ import React from "react";
 import {Menu, Dropdown,Avatar} from "antd";
 import AreaChart from './chart/AreaChart'
 import RadarChart from './chart/RadarChart'
+import RadialBarChart from './chart/RadialBarChart'
 export default function StudioDashboardContent() {
   return (
     <div className=" h-full w-full flex flex-col items-center py-4 justify-start">
@@ -99,7 +100,8 @@ export default function StudioDashboardContent() {
       </div>
       <div className="mt-4 flex flex-col">
       <AreaChart/>
-      <RadarChart/>
+      <div style={{minHeight:"25px"}}/>
+      <RadialBarChart/>
 
         </div>
 
