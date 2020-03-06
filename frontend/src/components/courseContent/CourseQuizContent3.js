@@ -9,7 +9,7 @@ import {
 import { Pie } from "react-chartjs-2";
 import { GlobalContext, CourseQuizContext } from "../../hook/GlobalHook";
 import TextEditor from "../../components/textEditor/TextEditor";
-import {LessionVisitedLogAction} from '../../actions'
+import { LessionVisitedLogAction,QuizLogAction } from "../../actions";
 
 import {
   FetchQuestionWhenSelectAction,
@@ -47,10 +47,7 @@ export default function CourseQuizContent() {
     setModalQuizResultSummaryOpenStatus
   ] = useState(false);
 
-  const [getisSubscription,setisSubscription] = useState(false)
-
-
-
+  const [getisSubscription, setisSubscription] = useState(false);
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
@@ -59,11 +56,10 @@ export default function CourseQuizContent() {
           setisSubscription(true);
         }
       });
-    }else{
+    } else {
       setisSubscription(false);
     }
-  }, );
-
+  });
 
   useEffect(() => {
     setAnsPool(shuffle(GlobalHook.getGloblaQuizAnswerField));
@@ -139,15 +135,12 @@ export default function CourseQuizContent() {
       GlobalHook,
       getQuestionPool[index].questionId
     );
-    setUserClick(null)
-    console.log(getUserAnsBank)
+    setUserClick(null);
+    console.log(getUserAnsBank);
 
-    if(getUserAnsBank[getQuestionPool[index].questionId]){
-      setUserClick(getUserAnsBank[getQuestionPool[index].questionId].ans)
-
+    if (getUserAnsBank[getQuestionPool[index].questionId]) {
+      setUserClick(getUserAnsBank[getQuestionPool[index].questionId].ans);
     }
-
-
   }
 
   function shuffle(array) {
@@ -181,42 +174,45 @@ export default function CourseQuizContent() {
 
   function UserAnsClick(content) {
     let oldUserAnsBank = getUserAnsBank;
-    oldUserAnsBank[getQuestionPool[getSelectQuestion].questionId] = {"ans":content};
+    oldUserAnsBank[getQuestionPool[getSelectQuestion].questionId] = {
+      ans: content
+    };
     setUserAnsBank(oldUserAnsBank);
   }
 
   function handleAnsSubmit() {
-
-   
     if (getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].ans) {
-    if (GlobalHook.getGlobalLessionSelect.mediaEtc1) {
-    
-      setShowCorrectAns(true);
-    } else {
-      setShowCorrectAns(false);
-      handleNextClick();
-      if (getSelectQuestion + 1 == getQuestionAmount) {
-        ShowResult();
+      if (GlobalHook.getGlobalLessionSelect.mediaEtc1) {
+        setShowCorrectAns(true);
+      } else {
+        setShowCorrectAns(false);
+        handleNextClick();
+        if (getSelectQuestion + 1 == getQuestionAmount) {
+          ShowResult();
+        }
       }
+      CalUserAnsStatus();
+    } else {
+      getUserAnsBank[
+        getQuestionPool[getSelectQuestion].questionId
+      ].result = null;
     }
-    CalUserAnsStatus();
-  }else{
-    getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].result = null
-    
   }
-
-}
 
   function CalUserAnsStatus() {
     if (
       GlobalHook.getGloblaQuizAnswerCorrect ==
       getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].ans
     ) {
-      getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].result = true
+      getUserAnsBank[
+        getQuestionPool[getSelectQuestion].questionId
+      ].result = true;
       setUserAnsCheckStatus(true);
     } else {
-      getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].result = false
-      
+      getUserAnsBank[
+        getQuestionPool[getSelectQuestion].questionId
+      ].result = false;
+
       setUserAnsCheckStatus(false);
     }
   }
@@ -304,19 +300,17 @@ export default function CourseQuizContent() {
         ]}
       >
         <div className="flex flex-col justify-center items-center mx-auto">
+          <Pie data={dataResult} />
 
-        <Pie data={dataResult} />
+          <div>ถูก{CalSocreFinish().correctAnswerAmount}</div>
+          <div>
+            ผิด
+            {GlobalHook.getGlobalLessionSelect.mediaEtc5 -
+              CalSocreFinish().correctAnswerAmount}
+          </div>
+          <div>จำนวนทำเสร็จ{CalSocreFinish().doneQuestionAmount}</div>
 
-<div>ถูก{CalSocreFinish().correctAnswerAmount}</div>
-<div>
-  ผิด
-  {GlobalHook.getGlobalLessionSelect.mediaEtc5 -
-    CalSocreFinish().correctAnswerAmount}
-</div>
-<div>จำนวนทำเสร็จ{CalSocreFinish().doneQuestionAmount}</div>
-
-<div>จำนวนข้อ{GlobalHook.getGlobalLessionSelect.mediaEtc5}</div>
-
+          <div>จำนวนข้อ{GlobalHook.getGlobalLessionSelect.mediaEtc5}</div>
         </div>
       </Modal>
     );
@@ -330,11 +324,10 @@ export default function CourseQuizContent() {
           CalSocreFinish().correctAnswerAmount,
           CalSocreFinish().doneQuestionAmount -
             CalSocreFinish().correctAnswerAmount,
-            GlobalHook.getGlobalLessionSelect.mediaEtc5 -
+          GlobalHook.getGlobalLessionSelect.mediaEtc5 -
             CalSocreFinish().doneQuestionAmount
         ],
-        backgroundColor: ["#88ee99", "#ff753e", "#ecb93e"],
-     
+        backgroundColor: ["#88ee99", "#ff753e", "#ecb93e"]
       }
     ]
   };
@@ -350,15 +343,11 @@ export default function CourseQuizContent() {
       doneQuestionAmount++;
     });
 
-
     return {
       correctAnswerAmount: correctAnswerAmount,
       doneQuestionAmount: doneQuestionAmount
     };
-
   }
-
-
 
   function RestartQuiz() {
     setModalQuizResultSummaryOpenStatus(false);
@@ -372,11 +361,14 @@ export default function CourseQuizContent() {
   }
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
-    CalSocreFinish()
+    CalSocreFinish();
 
-    if(GlobalHook.getGlobalToken && getisSubscription){
-      LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
-
+    if (GlobalHook.getGlobalToken && getisSubscription) {
+      LessionVisitedLogAction(
+        GlobalHook,
+        GlobalHook.getGlobalLessionSelect.mediaId
+      );
+     // QuizLogAction(GlobalHook,getUserAnsBank)
     }
   }
 
@@ -537,7 +529,7 @@ export default function CourseQuizContent() {
                       </div>
                     );
                   })}
-{/* 
+                  {/* 
                     <div
                         className=" mt-4 rounded-lg flex justify-center items-center cursor-pointer border-dotted border-2"
                         style={{
@@ -557,9 +549,11 @@ export default function CourseQuizContent() {
               ) : (
                 <TextArea
                   autoSize={{ minRows: 2, maxRows: 6 }}
-                  value={GlobalHook.getGlobalUserAnswerSelect}
+                  value={getUserClick}
                   onChange={e => {
-                    GlobalHook.setGlobalUserAnswerSelect(e.target.value);
+
+                    setUserClick(e.target.value);
+                    UserAnsClick(e.target.value);
                   }}
                 />
               )}

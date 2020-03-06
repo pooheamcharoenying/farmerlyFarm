@@ -231,7 +231,7 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
   GlobalHook.setGlobalLoading(false);
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
-    lessionId: mediaId
+    lessionId:  GlobalHook.getGlobalLessionSelect.mediaId
   };
 
   axios
@@ -245,11 +245,11 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
     });
 }
 
-function QuizLogAction(GlobalHook) {
+function QuizLogAction(GlobalHook,getUserAnsBank) {
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
     lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
-    quizData:GlobalHook.getGlobalUserAnswerPool
+    quizData:getUserAnsBank
   };
   axios
     .post("/api/user/quizlog", pushLogData)
