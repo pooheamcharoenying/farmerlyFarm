@@ -33,6 +33,9 @@ let myReview = GlobalHook.getGlobalCourseReviewPool.filter((item)=>item.user = G
 if(myReview[0]){
   setMyRating(myReview[0].rating)
   setMyComment(myReview[0].comment)
+}else{
+  setMyRating(0)
+  setMyComment("")
 }
 
 let R5Count = 0
