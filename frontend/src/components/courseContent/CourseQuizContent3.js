@@ -283,14 +283,14 @@ export default function CourseQuizContent() {
               Close
             </button>
 
-            <button
+            {/* <button
               onClick={() => {
                 setModalQuizResultSummaryOpenStatus(false);
               }}
               className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-400"
             >
               ReviewQuestion
-            </button>
+            </button> */}
 
             <button
               onClick={() => {
@@ -449,7 +449,7 @@ export default function CourseQuizContent() {
             </button>
             {GlobalHook.getGlobalToken && (
               <button
-                className="bg-yellow-500 p-2 rounded text-white hover:bg-yellow-400"
+                className="bg-orange-500 p-2 rounded text-white hover:bg-orange-400"
                 onClick={() => {
                   setModalQuizHistoryOpenStatus(true);
                 }}
@@ -475,7 +475,7 @@ export default function CourseQuizContent() {
               >
                 <FaCaretLeft />
               </button>
-              <div className="w-full flex items-center overflow-x-auto  max-w-4xl mx-auto  justify-around">
+              <div className="w-full flex items-center overflow-x-auto  max-w-4xl mx-auto  justify-around bg-gray-100 rounded-lg p-2">
                 {getQuestionPool.map((item, index) => {
                   return (
                     <div
