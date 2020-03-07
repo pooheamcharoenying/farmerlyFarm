@@ -4,7 +4,7 @@ import { FaTrashAlt, FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
 
 import { GlobalContext, NewContext } from "../../hook/GlobalHook";
-import QuestionHeadNumberDrag from "./quiz/QuestionHeadNumberDrag";
+import QuizHead from "./horizonDrag/QuizHead";
 import TextEditor from "./quiz/TextEditor";
 import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
 import VideoUpload from "./quiz/VideoUpload";
@@ -63,6 +63,12 @@ const StudioQuizContent = () => {
       setQuizDataPool(GlobalHook.getGlobalMediaQuiz);
     }
   }, [GlobalHook.getGlobalMediaQuiz]);
+
+  useEffect(() => {
+    if(GlobalHook.getGlobalLessionSelect){
+      setLessionName(GlobalHook.getGlobalLessionSelect.mediaName)
+    }
+  }, )
 
   useEffect(() => {
     setLessionName(getGlobalLessionSelectNew.mediaName);
@@ -177,7 +183,6 @@ const StudioQuizContent = () => {
     const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
     GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
 
-
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
 
@@ -187,11 +192,9 @@ const StudioQuizContent = () => {
   }
 
   function handleDeleteQuestion() {
-
     let oldQuizStructure = GlobalHook.getGlobalMediaQuiz;
     const { selfIndex } = GlobalHook.getGloblaQuizQuestionSelect;
     GlobalHook.setGloblaQuizQuestionSelect({});
-
 
     if (oldQuizStructure[selfIndex]) {
       oldQuizStructure.splice(selfIndex, 1);
@@ -203,7 +206,6 @@ const StudioQuizContent = () => {
 
   return (
     <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
-
       {/* //////////////////////HEAD////////// */}
       <div className="w-full flex mb-2  justify-center items-center">
         <FaCaretLeft
@@ -213,7 +215,7 @@ const StudioQuizContent = () => {
         />
 
         <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-          {getGlobalLessionSelectNew.mediaName}
+          {GlobalHook.getGlobalLessionSelect.mediaName}
         </div>
         <FaCaretRight
           className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -222,7 +224,7 @@ const StudioQuizContent = () => {
         />
       </div>
 
-    {/* ////////////////INFO////////////*/}
+      {/* ////////////////INFO////////////*/}
       <div className="flex flex-col text-center mb-4">
         <div className="flex items-baseline justify-center">
           <div className="font-bold text-lg mb-2">ชื่อบทเรียน</div>
@@ -281,7 +283,7 @@ const StudioQuizContent = () => {
 
         <div className="flex flex-col text-center">
           <div className="font-bold text-lg mb-2">เฉลยทันที</div>
-         
+
           <SwitchR
             className="self-center"
             onChange={e => setQuizSettingShowAns(e)}
@@ -293,7 +295,7 @@ const StudioQuizContent = () => {
       <div className="flex justify-around w-11/12 md:w-4/12 mb-4">
         <div className="flex flex-col text-center">
           <div className="font-bold text-lg mb-2">จับเวลาหรือไม่</div>
-        
+
           <SwitchR
             className="self-center"
             onChange={e => setQuizSettingTimeCount(e)}
@@ -315,7 +317,6 @@ const StudioQuizContent = () => {
       <div className="flex justify-around w-11/12 md:w-4/12 mb-8">
         <div className="flex flex-col text-center ">
           <div className="font-bold text-lg mb-2">สุ่มคำถามหรือไม่</div>
-      
 
           <SwitchR
             className="self-center"
@@ -342,14 +343,10 @@ const StudioQuizContent = () => {
 
       <div
         id="QuestionEditorZone"
-        className="w-11/12 md:w-10/12 flex flex-col bg-gray-200  h-auto rounded-lg border-dotted border-2 items-center"
+        className="w-11/12 md:w-10/12 flex flex-col bg-gray-200 rounded-lg border-dotted border-2 items-center"
       >
-  <div
-          id="QuestionEditorHead"
-          className=" w-full  bg-white mb-4"
-         
-        >
-          <QuestionHeadNumberDrag />
+        <div id="QuestionEditorHead" className=" w-full  bg-white mb-4">
+          <QuizHead />
         </div>
         {GlobalHook.getGloblaQuizQuestionSelect.questionId ? (
           <div
@@ -485,8 +482,8 @@ const StudioQuizContent = () => {
             </Tabs>
           )}
         </div>
-        </div>
-{/* QusionZone */}
+      </div>
+      {/* QusionZone */}
       {/* <div
         id="QuestionEditorZone"
         className="w-11/12 md:w-10/12 flex flex-col bg-gray-300  h-auto rounded-lg border-dotted border-2 items-center"
@@ -496,7 +493,7 @@ const StudioQuizContent = () => {
           className=" w-full  bg-white mb-4"
           style={{ minHeight: "50px" }}
         >
-          <QuestionHeadNumberDrag />
+          <QuizHead />
         </div>
 
         {GlobalHook.getGloblaQuizQuestionSelect.questionId ? (

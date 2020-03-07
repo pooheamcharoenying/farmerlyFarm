@@ -14,7 +14,7 @@ export default function StudioDashboardContent() {
   
   
   
-    <div className="bg-gray-200 p-6 rounded-lg mb-6" style={{minHeight:"600px",width:"500px",overflowY:"auto"}}>
+    <div className="bg-gray-200 p-6 rounded-lg mb-6" style={{minHeight:"600px",minWidth:"400px",width:"auto",overflowY:"auto"}}>
     <div className="rounded-lg text-center text-white py-2 text-xl font-bold bg-purple-500 mx-auto" style={{width:"120px",maxHeight:"500px"}}>
         Student
       </div>

@@ -18,7 +18,6 @@ export default function SideBarCourse() {
 
       
      const matchPool = GlobalHook.getGlobalCoursePool.filter((data)=>data._id == GlobalHook.getGlobalcourseId)
-     console.log(matchPool)
      if(matchPool[0]){
       setCoursePublishStatus(matchPool[0].coursePublish)
      }

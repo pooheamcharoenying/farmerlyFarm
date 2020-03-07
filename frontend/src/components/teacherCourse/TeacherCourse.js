@@ -30,12 +30,14 @@ export default function TeacherCourse() {
   }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool]);
 
   return (
-    <div className="bg-blue-300 flex flex-col py-10 items-center min-h-screen">
+    <div className="bg-blue-300 flex flex-col py-10 items-center min-h-screen w-full">
       <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6 relative">
         คอร์สที่ฉันสร้าง
         
       </div>
       <FabCreateCourse />
+
+      
       <ScrollContainer
         hideScrollbars={false}
         vertical={false}
