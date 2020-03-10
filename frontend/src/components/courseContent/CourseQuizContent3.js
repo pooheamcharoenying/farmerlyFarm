@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Input, message, Button, Modal, Tabs, Select, Table } from "antd";
+import moment from "moment";
 import {
   FaCheckCircle,
   FaTimesCircle,
@@ -31,6 +32,7 @@ export default function CourseQuizContent() {
   const [getShowTimeOutModal, setShowTimeOutModal] = useState(false);
   const [getSelectQuestion, setSelectQuestion] = useState(0);
   const [getSelectAns, setSelectAns] = useState("");
+  const [getQuizHistory, setQuizHistory] = useState([]);
 
   const [getQuestionPool, setQuestionPool] = useState();
   const [getAnsPool, setAnsPool] = useState([]);
@@ -377,10 +379,101 @@ export default function CourseQuizContent() {
     }
   }
 
+  useEffect(() => {
+    if (GlobalHook.getGlobalToken && getisSubscription) {
+      let user = GlobalHook.getGlobalUser;
+      const findCourseMatch = user.courseSubscription.filter(
+        data => data.courseId == GlobalHook.getGlobalcourseId
+      );
+      const findMatchLession = findCourseMatch[0].quizLog.filter(
+        data => data.lessionId == GlobalHook.getGlobalLessionSelect.mediaId
+      );
+console.log(GlobalHook.getGlobalLessionSelect.mediaId)
+console.log(findMatchLession)
+      setQuizHistory(findMatchLession);
+    }
+  }, [GlobalHook.getGlobalUser,getisSubscription,GlobalHook.getGlobalLessionSelect]);
+
+  const dataSource = getQuizHistory.map(data => ({
+    key: 1,
+    date: moment(parseInt(data.logTime)).format("DD/MM/YYYY HH:mm:ss"),
+    finish: data.quizData.done,
+    correct:  data.quizData.correct,
+    percentage:parseInt(( data.quizData.correct/data.quizData.totalAmount)*100)
+  }));
+
+  const columns = [
+    {
+      title: "วันที่/เวลา",
+      dataIndex: "date",
+      key: "date"
+    },
+
+    {
+      title: "ทำเสร็จ(ข้อ)",
+      dataIndex: "finish",
+      key: "finish",
+      sorter: (a, b) => a.finish - b.finish
+    },
+    {
+      title: "ทำถูก(ข้อ)",
+      dataIndex: "correct",
+      key: "correct"
+    },
+    {
+      title: "เปอร์เซ็นทำถูก",
+      dataIndex: "percentage",
+      key: "percentage"
+    }
+  ];
+
+  
+  function RenderQuizHistory() {
+    return (
+      <Modal
+        visible={getModalQuizHistoryOpenStatus}
+        title="QuizHistory"
+        onOk={() => setModalQuizHistoryOpenStatus(false)}
+        onCancel={() => {
+          setModalQuizHistoryOpenStatus(false);
+        }}
+        footer={[
+          <div className="w-full flex justify-center">
+            <button
+              onClick={() => setModalQuizHistoryOpenStatus(false)}
+              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+            >
+              Close
+            </button>
+          </div>
+        ]}
+      >
+        <div
+          className="flex flex-col items-center mx-auto"
+          style={{ maxWidth: "300px" }}
+        >
+          <div
+            style={{
+              maxWidth: "400px",
+              height: "300px"
+            }}
+          >
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              className="overflow-y-scroll"
+              style={{ maxHeight: "300px", width: "auto",minWidth:"400px" }}
+            />
+          </div>
+        </div>
+      </Modal>
+    );
+  }
   return (
     <>
       {RenderQuizTimeOut()}
       {RenderQuizResultSummary()}
+      {RenderQuizHistory()}
       <div className="min-h-full h-auto w-full flex flex-col items-center justify-start py-4">
         {/* HEAD */}
         <div className="w-full flex mb-2  justify-center items-center">
