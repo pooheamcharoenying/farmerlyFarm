@@ -272,11 +272,19 @@ export default function CourseQuizContent() {
         }}
         footer={[
           <div className="w-full flex justify-center">
+             <button
+              onClick={() => {
+                RestartQuiz();
+              }}
+              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
+            >
+              Restart
+            </button>
             <button
               onClick={() => setModalQuizResultSummaryOpenStatus(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
-              Close
+              Review Question
             </button>
 
             {/* <button
@@ -288,29 +296,22 @@ export default function CourseQuizContent() {
               ReviewQuestion
             </button> */}
 
-            <button
-              onClick={() => {
-                RestartQuiz();
-              }}
-              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
-            >
-              Restart
-            </button>
+           
           </div>
         ]}
       >
         <div className="flex flex-col justify-center items-center mx-auto">
           <Pie data={dataResult} />
 
-          <div>ถูก{CalSocreFinish().correctAnswerAmount}</div>
+          {/* <div>ถูก {CalSocreFinish().correctAnswerAmount}</div>
           <div>
             ผิด
-            {GlobalHook.getGlobalLessionSelect.mediaEtc5 -
+             {GlobalHook.getGlobalLessionSelect.mediaEtc5 -
               CalSocreFinish().correctAnswerAmount}
           </div>
-          <div>จำนวนทำเสร็จ{CalSocreFinish().doneQuestionAmount}</div>
+          <div>จำนวนทำเสร็จ {CalSocreFinish().doneQuestionAmount}</div>
 
-          <div>จำนวนข้อ{GlobalHook.getGlobalLessionSelect.mediaEtc5}</div>
+          <div>จำนวนข้อmทั้งหมด {GlobalHook.getGlobalLessionSelect.mediaEtc5}</div> */}
         </div>
       </Modal>
     );
@@ -324,10 +325,9 @@ export default function CourseQuizContent() {
           CalSocreFinish().correctAnswerAmount,
           CalSocreFinish().doneQuestionAmount -
             CalSocreFinish().correctAnswerAmount,
-          GlobalHook.getGlobalLessionSelect.mediaEtc5 -
-            CalSocreFinish().doneQuestionAmount
+            getQuestionAmount -  CalSocreFinish().doneQuestionAmount
         ],
-        backgroundColor: ["#88ee99", "#ff753e", "#ecb93e"]
+        backgroundColor: ["#c6f1d6", "#ff8080", "#ffba92"]
       }
     ]
   };
@@ -345,7 +345,7 @@ export default function CourseQuizContent() {
 
     return {
       correctAnswerAmount: correctAnswerAmount,
-      doneQuestionAmount: doneQuestionAmount
+      doneQuestionAmount: doneQuestionAmount,
     };
   }
 
@@ -361,14 +361,19 @@ export default function CourseQuizContent() {
   }
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
-    CalSocreFinish();
+    clearInterval(countdown)
 
     if (GlobalHook.getGlobalToken && getisSubscription) {
       LessionVisitedLogAction(
         GlobalHook,
         GlobalHook.getGlobalLessionSelect.mediaId
       );
-     // QuizLogAction(GlobalHook,getUserAnsBank)
+      let QuizLogData = {
+        "correct":CalSocreFinish().correctAnswerAmount,
+        "done":CalSocreFinish().doneQuestionAmount -
+      CalSocreFinish().correctAnswerAmount,
+    "totalAmount":getQuestionAmount}
+      QuizLogAction(GlobalHook,QuizLogData)
     }
   }
 

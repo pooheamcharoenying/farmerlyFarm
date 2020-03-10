@@ -245,11 +245,11 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
     });
 }
 
-function QuizLogAction(GlobalHook,getUserAnsBank) {
+function QuizLogAction(GlobalHook,QuizLogData) {
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
     lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
-    quizData:getUserAnsBank
+    quizData:QuizLogData
   };
   axios
     .post("/api/user/quizlog", pushLogData)

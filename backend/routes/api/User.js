@@ -270,25 +270,15 @@ router.post(
           .map(data => data.courseId)
           .indexOf(req.body.courseId);
         if (user.courseSubscription[findCourseMatch] != undefined) {
-          // const isLessIdExist = user.courseSubscription[findCourseMatch].quizLog
-          //   .map(data => data.lessionId)
-          //   .indexOf(req.body.lessionId);
-          // console.log("999");
-          // console.log(req.body.logTime);
-          //console.log(isLessIdExist)
+        
           user.courseSubscription[findCourseMatch].quizLog.unshift({
             lessionId: req.body.lessionId,
             quizData: req.body.quizData,
             logTime: Date.now()
           });
-          //  if(isLessIdExist == -1){
-          //   user.courseSubscription[findCourseMatch].quizLog.unshift({ lessionId: req.body.lessionId,quizData:[] });
-
-          //  }else{
-          //   user.courseSubscription[findCourseMatch].quizLog.push({})
-          //   //user.courseSubscription[findCourseMatch].courseLog[isLessIdExist].lessionId =  req.body.lessionId
-          //  }
-          user.save().then(user => res.json(user));
+        
+         
+         user.save().then(user => res.json(user));
         }
       })
       .catch(err => console.log(err));
