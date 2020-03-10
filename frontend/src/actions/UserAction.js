@@ -260,6 +260,21 @@ function QuizLogAction(GlobalHook,QuizLogData) {
       console.log(err);
     });
 }
+async function GetUserByIdAction(uid) {
+  const pushData = {
+    uid
+  };
+  console.log(uid)
+  await axios
+    .post("/api/user/getuserbyid", pushData)
+    .then(res => {
+    return("res.data")
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 
 // function ResetPassAction(GlobalHook){
 //   GlobalHook.setGlobalShowLoginModal(false);
@@ -271,4 +286,4 @@ function QuizLogAction(GlobalHook,QuizLogData) {
 
 // }
 
-export { LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction,LessionVisitedLogAction,QuizLogAction,ResetPassAction };
+export { LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction,LessionVisitedLogAction,QuizLogAction,ResetPassAction,GetUserByIdAction };

@@ -218,16 +218,19 @@ router.post(
 
         const isUserReviewExist = courseData.courseReview
           .map(data => data.user)
-          .indexOf(req.user.id);
+          .indexOf(req.body.courseReview.user);
          if(isUserReviewExist == -1){
           courseData.courseReview.unshift(req.body.courseReview)
           courseData.save()
+          console.log(courseData.courseReview)
           res.status(200).json(courseData.courseReview)
          }else{
 
           courseData.courseReview.splice(isUserReviewExist, 1)
           courseData.courseReview.unshift(req.body.courseReview)
           courseData.save()
+          console.log(courseData.courseReview)
+
           res.status(200).json(courseData.courseReview)
 
          }

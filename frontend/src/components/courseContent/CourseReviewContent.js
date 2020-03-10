@@ -3,7 +3,7 @@ import { Rate,Progress,Input } from 'antd';
 import Rater from 'react-rater'
 import { GlobalContext } from "../../hook/GlobalHook";
 import {SetCourseReviewAction} from '../../actions'
-
+import CommentPlate from './CommentPlate'
 const { TextArea } = Input;
 
 
@@ -93,7 +93,8 @@ setAverageRating(((R5Count*5+R4Count*4+R3Count*3+R2Count*2+R1Count*1)/RTotalCoun
   }, );
 
   function handleSaveReviewClick(){
-    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating,"user":GlobalHook.getGlobalUser._id,"name":GlobalHook.getGlobalCurrentUser.displayName})
+    // console.log(GlobalHook.getGlobalCurrentUser)
+    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating,"user":GlobalHook.getGlobalUser._id})
   }
 
     return (
@@ -155,12 +156,21 @@ setAverageRating(((R5Count*5+R4Count*4+R3Count*3+R2Count*2+R1Count*1)/RTotalCoun
           
         {getReviewPool.map((item,index)=>{
 
+          //  console.log(item)
+
+      // return(
+      // <div key={index} className="flex flex-col w-8/12 bg-white items-start p-2 mt-4 rounded-lg">
+      //   <div className="flex"><div className="font-medium mr-2">{item.name}</div>  <Rate disabled defaultValue={item.rating} className="flex-1"/></div>
+      //   <div className="text-left mt-2">{item.comment}</div>
+      //   </div>
+      //     )
+
       return(
-      <div key={index} className="flex flex-col w-8/12 bg-white items-start p-2 mt-4 rounded-lg">
-        <div className="flex"><div className="font-medium mr-2">{item.name}</div>  <Rate disabled defaultValue={item.rating} className="flex-1"/></div>
-        <div className="text-left mt-2">{item.comment}</div>
-        </div>
-          )
+         <CommentPlate item={item}/>
+        // <div/>
+      
+      )
+
           })}
 
        

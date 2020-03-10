@@ -24,6 +24,7 @@
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "firebase-admin": "^8.9.2",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",

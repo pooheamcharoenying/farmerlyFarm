@@ -5,9 +5,16 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-
+const admin = require('firebase-admin');
 
 const UserSchema = require("../../models/User");
+
+var serviceAccount = require("../../studysabaiapp-firebase-adminsdk-uqhjc-63ba1c8102.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://studysabaiapp.firebaseio.com"
+});
 const User = mongoose.model("user", UserSchema);
 
 router.get("/test", (req, res) => res.json({ msg: "Users Works" }));
@@ -17,7 +24,6 @@ router.post("/getToken", (req, res) => {
   const uid = req.body.uid
   const payload = { id: uid }
   User.findOne({ uid }).then(user => {
-console.log(user)
     if (user) {
       jwt.sign(
         { id: user._id },
@@ -62,13 +68,10 @@ console.log(user)
 
 router.post("/register", (req, res) => {
   const uid = req.body.uid
-  console.log("regis")
-  console.log(uid)
 
   User.findOne({ uid }).then(user => {
 
     if (user) {
-      console.log("user")
     }else{
       const newUser = new User({
         uid:uid,
@@ -153,7 +156,6 @@ router.post("/login", (req, res) => {
 
   const uid = req.body.uid
 
-  console.log(uid)
 
   // Find user by email
   User.findOne({ uid }).then(user => {
@@ -322,8 +324,6 @@ router.post(
           //     }else{
 
           //    }
-          console.log("777");
-          console.log(req.body.QID);
           //res.json(findMatchLession)
           user.save().then(user => res.json(user));
         }
@@ -332,5 +332,27 @@ router.post(
   }
 );
 
+router.post(
+  "/getuserbyid",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+
+    User.findById(req.user.id)
+    .then(user => {
+      admin.auth().getUser(user.uid)
+      .then(function(userRecord) {
+    res.status(200).json(userRecord.toJSON())
+    
+      })
+      .catch(function(error) {
+        console.log('Error fetching user data:', error);
+        res.status(400).json(error)
+      });
+    })
+
+   
+
+  }
+);
 
 module.exports = router;

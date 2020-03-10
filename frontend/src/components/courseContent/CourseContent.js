@@ -1,6 +1,6 @@
 import React, { useContext,useState,useEffect } from "react";
 import CourseVideoContent from "./CourseVideoContent";
-import CourseQuizContent from "./CourseQuizContent3";
+import CourseQuizContent from "./CourseQuizContent";
 import CourseDocumentContent from "./CourseDocumentContent";
 import CourseOverviewContent from "./CourseOverviewContent";
 import CourseReviewContent from "./CourseReviewContent";
