@@ -1,9 +1,23 @@
-import React from "react";
+import React,{useEffect,useState,useContext} from "react";
 import {Menu, Dropdown,Avatar} from "antd";
+import { GlobalContext } from "../../hook/GlobalHook";
+
+import SubscriptorPlate from './SubscriptorPlate'
 import AreaChart from './chart/AreaChart'
 import RadarChart from './chart/RadarChart'
 import RadialBarChart from './chart/RadialBarChart'
 export default function StudioDashboardContent() {
+  const GlobalHook = useContext(GlobalContext);
+
+
+  const [getReviewPool,setReviewPool] = useState([])
+
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCourseReviewPool) {
+      setReviewPool(GlobalHook.getGlobalCourseReviewPool)
+
+    }
+  }, [GlobalHook.getGlobalCourseReviewPool])
 
   const mockUser = [{
     "id": 1,
@@ -90,6 +104,12 @@ export default function StudioDashboardContent() {
           </div>
           )
       })}
+      {/* {getReviewPool.map((item,index)=>{
+
+      return(
+        <SubscriptorPlate item={item}/>
+            )
+        })} */}
 
 </div>
 
