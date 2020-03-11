@@ -162,7 +162,6 @@ setAverageRating(((R5Count*5+R4Count*4+R3Count*3+R2Count*2+R1Count*1)/RTotalCoun
           
         {getReviewPool.map((item,index)=>{
 
-            console.log(item)
 
       // return(
       // <div key={index} className="flex flex-col w-8/12 bg-white items-start p-2 mt-4 rounded-lg">

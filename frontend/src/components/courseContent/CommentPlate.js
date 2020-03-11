@@ -5,7 +5,6 @@ import { Rate,Progress,Input,Avatar } from 'antd';
 export default function CommentPlate({item}) {
     const [getdata, setData] = useState({});
     const [isLoading, setLoading] = useState(false);
-console.log(item)
     useEffect(() => {
         (async () => {
           setLoading(true);
@@ -13,7 +12,6 @@ console.log(item)
           setLoading(false);
           setData(response.data);
 
-          console.log(response)
         })();
       }, []);
 
