@@ -166,6 +166,10 @@ const Store = props => {
 
   const [getStartedQuiz, setStartedQuiz] = useState(false);
 
+  const [getGlobalCourseFee,setGlobalCourseFee] = useState(true)
+  const [getGlobalCoursePrice,setGlobalCoursePrice] = useState(null)
+  
+
   ///Generate GlobalHook///
   const GlobalHook = {
     getGlobalToken,
@@ -343,7 +347,13 @@ const Store = props => {
     setGlobalLessionSelectNew,
 
     getGlobalCourseReviewPool,
-    setGlobalCourseReviewPool
+    setGlobalCourseReviewPool,
+
+    getGlobalCourseFee,
+    setGlobalCourseFee,
+
+    getGlobalCoursePrice,
+    setGlobalCoursePrice
 
 
   };
