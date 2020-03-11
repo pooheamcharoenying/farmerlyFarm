@@ -108,6 +108,7 @@ const SubDragStudio = ({
   }
 
   function handleClickAfterLeave(item, index) {
+    GlobalHook.setGlobalMessage("ClearAll")
     GlobalHook.setGlobalStudioUploadFile(null);
     GlobalHook.setGlobalMediaVideo(null);
     GlobalHook.setGlobalShowSideBarStatus(false);
@@ -158,6 +159,8 @@ const SubDragStudio = ({
    }, [GlobalHook.getPrevNextStatus])
 
   function LessionSelect(item, index) {
+    ClearCreateQuizFieldAction(GlobalHook);
+    GlobalHook.setGlobalMessage("ClearAll")
 
     GlobalHook.setGlobalStudioUploadFile(null);
     GlobalHook.setGlobalMediaVideo(null);

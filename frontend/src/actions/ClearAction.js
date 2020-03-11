@@ -17,8 +17,10 @@ function ClearCreateLessionAction(GlobalHook){
   GlobalHook.setGlobalMediaDocument("")
   GlobalHook.setGlobalMediaQuiz("")
   GlobalHook.setGlobalMediaNew("")
+  GlobalHook.setGlobalMediaQuiz([])
 }
 function ClearCreateQuizFieldAction(GlobalHook){
+  GlobalHook.setGlobalMediaQuiz([])
  GlobalHook.setGloblaQuizQuestionName("");
  GlobalHook.setGloblaQuizQuestionField("");
   GlobalHook.setGloblaQuizAnswerType("MultipleChoice");

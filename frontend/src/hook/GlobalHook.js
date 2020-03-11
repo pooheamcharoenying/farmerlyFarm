@@ -132,6 +132,8 @@ const Store = props => {
   const [getGlobalCourseInfoStudent, setGlobalCourseInfoStudent] = useState("");
   const [getGlobalCourseInfoTeacher, setGlobalCourseInfoTeacher] = useState("");
 
+  const [getGlobalMessage,setGlobalMessage] = useState(null)
+
   const [
     getGlobalCourseInfoOverviewNew,
     setGlobalCourseInfoOverviewNew
@@ -353,7 +355,10 @@ const Store = props => {
     setGlobalCourseFee,
 
     getGlobalCoursePrice,
-    setGlobalCoursePrice
+    setGlobalCoursePrice,
+
+    getGlobalMessage,
+    setGlobalMessage
 
 
   };

@@ -58,6 +58,22 @@ const StudioQuizContent = () => {
 
   const [getQuizDataPool, setQuizDataPool] = useState([{ mock: "1" }]);
 
+
+  useEffect(() => {
+   if( GlobalHook.getGlobalMessage == "ClearAll"){
+    setInitStateSettingAmountPass(null)
+    setQuizSettingShowAns(null)
+    setQuizSettingTimeCount(null)
+    setQuizSettingRandom(null)
+    setQuizSettingAmountRandom(null)
+    setTimeout(() => {
+      GlobalHook.setGlobalMessage(null)
+      
+      
+    }, 1000);
+
+   }
+  }, [GlobalHook.getGlobalMessage]);
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
       setQuizDataPool(GlobalHook.getGlobalMediaQuiz);
