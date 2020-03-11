@@ -310,6 +310,7 @@ const StudioQuizContent = () => {
             onChange={e => setLessionTime(e.target.value)}
             suffix="นาที"
             style={{ maxWidth: "100px" }}
+            disabled={!getQuizSettingTimeCount}
           />
         </div>
       </div>
@@ -333,6 +334,7 @@ const StudioQuizContent = () => {
             defaultValue="1"
             onChange={e => setQuizSettingAmountRandom(e)}
             value={getQuizSettingAmountRandom}
+            disabled={!getQuizSettingRandom}
           >
             {getQuizDataPool.map((temp, index) => (
               <Option value={index + 1}>{index + 1}</Option>
