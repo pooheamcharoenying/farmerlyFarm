@@ -23,23 +23,26 @@ export default function CourseReviewContent() {
   const [getR1Count,setR1Count] = useState(0)
   const [getAverageRating,setAverageRating] = useState(0)
 
-useEffect(() => {
- console.log(GlobalHook.getGlobalCourseReviewPool)
-}, )
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCourseReviewPool) {
+    
+      let myReview = GlobalHook.getGlobalCourseReviewPool.filter((item)=>item.user = GlobalHook.getGlobalUser._id)
+      if(myReview[0]){
+        setMyRating(myReview[0].rating)
+        setMyComment(myReview[0].comment)
+      }else{
+        setMyRating(0)
+        setMyComment("")
+      }
+    }
+  }, [GlobalHook.getGlobalCourseReviewPool,GlobalHook.getGlobalUser]);
 
   useEffect(() => {
     setReviewPool(GlobalHook.getGlobalCourseReviewPool)
-    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCourseReviewPool) {
+    if (GlobalHook.getGlobalCourseReviewPool) {
     
-let myReview = GlobalHook.getGlobalCourseReviewPool.filter((item)=>item.user = GlobalHook.getGlobalUser._id)
 
-if(myReview[0]){
-  setMyRating(myReview[0].rating)
-  setMyComment(myReview[0].comment)
-}else{
-  setMyRating(0)
-  setMyComment("")
-}
+
 
 let R5Count = 0
 let R4Count = 0
