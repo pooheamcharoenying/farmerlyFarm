@@ -67,6 +67,8 @@ router.post(
       coursePublish: false,
       courseOwnerId: req.user.id,
       courseImageFileName:req.body.courseImageFileName,
+      courseFee:req.body.courseFee,
+      coursePrice:req.body.coursePrice
   
     });
 
@@ -181,7 +183,9 @@ router.post(
         courseSubject: req.body.courseSubject,
         courseImage: req.body.courseImage,
         courseTag: req.body.courseTag,
-        courseImageFileName: req.body.courseImageFileName
+        courseImageFileName: req.body.courseImageFileName,
+        coursePrice:req.body.coursePrice,
+        courseFee:req.body.courseFee
       },
       { new: true },
       (err, doc) => {

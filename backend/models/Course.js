@@ -46,6 +46,12 @@ const CourseSchema = new Schema({
   },
   courseOwnerId: {
     type: String
+  },
+  courseFee: {
+    type: String
+  },
+  coursePrice: {
+    type: String
   }
 });
 

@@ -104,7 +104,9 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseTag: GlobalHook.getGlobalCourseTag,
     courseDescription: GlobalHook.getGlobalCourseDescription,
     courseSlug: courseSlug,
-    courseImageFileName:GlobalHook.getGlobalcourseImageFileName
+    courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
+    coursePrice:GlobalHook.getGlobalCoursePrice,
+    courseFee:GlobalHook.getGlobalCourseFee
   };
 
   axios
@@ -163,7 +165,6 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
     .then(res => {
       GlobalHook.setGlobalLoading(false);
   
-
       GlobalHook.setGlobalCourseSubject(res.data.courseSubject)
       GlobalHook.setGlobalCourseLevel(res.data.courseLevel)
       GlobalHook.setGlobalCourseTeacher(res.data.courseTeacher)
@@ -171,6 +172,9 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalCourseImage(res.data.courseImage)
       GlobalHook.setGlobalCourseTag(res.data.courseTag)
       GlobalHook.setGlobalcourseImageFileName(res.data.courseImageFileName)
+      GlobalHook.setGlobalCourseFee(res.data.courseFee)
+      GlobalHook.setGlobalCoursePrice(res.data.coursePrice)
+      
 
     })
     .catch(err => {
@@ -194,8 +198,12 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseSubject: GlobalHook.getGlobalCourseSubject,
         courseImage: GlobalHook.getGlobalCourseImage,
         courseTag: GlobalHook.getGlobalCourseTag,
-        courseImageFileName:GlobalHook.getGlobalcourseImageFileName
+        courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
+        coursePrice:GlobalHook.getGlobalCoursePrice,
+        courseFee:GlobalHook.getGlobalCourseFee
   };
+
+  console.log(pushData)
 
   axios
     .post("/api/course/update", pushData)
@@ -203,7 +211,7 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
       GlobalHook.setGlobalLoading(false);
 
       setModalOpenStatus(false)
-     window.location.href = `/teacher/${NewCourseSlug}`;
+    window.location.href = `/teacher/${NewCourseSlug}`;
 
 
     })
@@ -283,7 +291,6 @@ function SetCourseReviewAction(GlobalHook, courseReview) {
         res.data.courseReview
       );
 
-      console.log(res)
       GlobalHook.setGlobalLoading(false);
     })
     .catch(err => {

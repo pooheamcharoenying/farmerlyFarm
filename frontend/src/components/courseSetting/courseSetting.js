@@ -8,7 +8,8 @@ import {
   Spin,
   Progress,
   message,
-  Icon
+  Icon,
+  Switch
 } from "antd";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
@@ -332,6 +333,31 @@ export default function FabCreateCourse() {
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
             </div>
+
+            <div className="flex flex-col text-center my-4">
+            <div className="font-bold text mb-2"> Course Fees</div>
+           
+           <div>
+
+            <Switch
+                defaultChecked={GlobalHook.getGlobalCourseFee}
+                checkedChildren="Free"
+                unCheckedChildren="Paid"
+                onClick={e =>
+                  GlobalHook.setGlobalCourseFee(e)
+                }
+              />
+         {!GlobalHook.getGlobalCourseFee && <Input
+            className="self-center ml-4"
+            value={GlobalHook.getGlobalCoursePrice}
+            onChange={e => GlobalHook.setGlobalCoursePrice(e.target.value)}
+            suffix="บาท"
+            style={{ maxWidth: "100px" }}
+           
+          />}
+          </div>
+          </div>
+
           </div>
         </div>
       </Modal>
