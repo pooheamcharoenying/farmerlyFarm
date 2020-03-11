@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Progress, message,Modal } from "antd";
+import { Progress, message,Modal,Icon } from "antd";
 import { GlobalContext } from "../../hook/GlobalHook";
 import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
@@ -44,7 +44,7 @@ export default function SideBarCourse() {
     return (
       <Modal
         visible={getShowCourseFeeAlertModal}
-        title="Pay"
+       
         onOk={() => setShowCourseFeeAlertModal(false)}
         onCancel={() => {
           setShowCourseFeeAlertModal(false);
@@ -55,24 +55,52 @@ export default function SideBarCourse() {
               onClick={() => setShowCourseFeeAlertModal(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
-              Close
+              Cancel
             </button>
 
             <button
               onClick={() => {
                 setShowCourseFeeAlertModal(false);
+        CourseSubscriptionAction(GlobalHook);
+
                message.success("Payment Successfull")
               }}
               className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             >
-              Pay
+              Complete Payment
             </button>
 
           
           </div>
         ]}
       >
-        Pay
+        <div className="flex flex-col items-center">
+          <div className="font-bold text-2xl text-black mb-4">CHECKOUT</div>
+          {/* <div className="mt-4 text-xl font-medium">คอร์ส: {GlobalHook.getGlobalCourseName}</div>
+          <img src={ GlobalHook.getGlobalCourseImage}/> */}
+
+<div style={{minWidth:"200px",maxWidth:"200px",maxHeight:"360px",minHeight:"360px"}} className="bg-white flex flex-col shadow-lg rounded-lg relative ">
+        <div className="bg-gray-500 absolute inset-0 opacity-0 hover:opacity-25"></div>
+        <img className="w-full object-cover rounded-lg rounded-b-none" style={{minHeight:"180px",maxHeight:"180px"}} src={GlobalHook.getGlobalCourseImage || "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"}/>
+        <div className="text-xl mt-2 font-bold text-gray-900 px-2 capitalize text2line" style={{minHeight:"60px",maxHeight:"60px"}}>
+           {GlobalHook.getGlobalCourseName || ""}
+        </div>
+        <div className="px-2 mt-2 text2line " style={{minHeight:"40px",maxHeight:"40px"}}>
+        {GlobalHook.getGlobalCourseDescription || ""}
+        </div>
+        <div className="px-2 mt-2 flex items-center truncate" style={{minHeight:"20px",maxHeight:"20px"}}>
+        <Icon type="user" /><div className="truncate ml-1">{  GlobalHook.getGlobalCourseTeacher || ""}</div> 
+        </div>
+        <div className="flex justify-between px-2 my-2" style={{minHeight:"20px",maxHeight:"20px"}}>
+            <div className="flex items-center truncate"><Icon type="stock" /><div className="truncate ml-1">{GlobalHook.getGlobalCourseLevel || ""}</div> </div>
+            <div className="flex items-center truncate"><Icon type="wallet" /><div className="truncate ml-1">{GlobalHook.getGlobalCourseSubject || ""}</div> </div>
+        </div>
+        
+    </div>
+
+          <div className="mt-4 font-semibold">Total: {GlobalHook.getGlobalCoursePrice} บาท</div>
+        </div>
+        
       </Modal>
     );
   }
