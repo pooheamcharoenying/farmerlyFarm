@@ -373,6 +373,7 @@ router.get("/:courseSlug", async (req, res) => {
 
     MatchCourse.find()
       .then(courseData => {
+        console.log(courseData[0].courseReview)
         res.status(200).json({ courseData, courseName: poolData.courseName,courseId });
       })
       .catch(err => console.log(err));

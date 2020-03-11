@@ -334,13 +334,16 @@ router.post(
 
 router.post(
   "/getuserbyid",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
 
-    User.findById(req.user.id)
+  (req, res) => {
+    User.findById(req.body.ouid)
     .then(user => {
+
+      console.log(user)
       admin.auth().getUser(user.uid)
       .then(function(userRecord) {
+
+        console.log(userRecord.toJSON())
     res.status(200).json(userRecord.toJSON())
     
       })

@@ -23,11 +23,14 @@ export default function CourseReviewContent() {
   const [getR1Count,setR1Count] = useState(0)
   const [getAverageRating,setAverageRating] = useState(0)
 
+useEffect(() => {
+ console.log(GlobalHook.getGlobalCourseReviewPool)
+}, )
 
   useEffect(() => {
-
+    setReviewPool(GlobalHook.getGlobalCourseReviewPool)
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCourseReviewPool) {
-      setReviewPool(GlobalHook.getGlobalCourseReviewPool)
+    
 let myReview = GlobalHook.getGlobalCourseReviewPool.filter((item)=>item.user = GlobalHook.getGlobalUser._id)
 
 if(myReview[0]){
@@ -94,7 +97,7 @@ setAverageRating(((R5Count*5+R4Count*4+R3Count*3+R2Count*2+R1Count*1)/RTotalCoun
 
   function handleSaveReviewClick(){
     // console.log(GlobalHook.getGlobalCurrentUser)
-    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating,"user":GlobalHook.getGlobalUser._id})
+    SetCourseReviewAction(GlobalHook,{"comment":getMyComment,"rating":getMyRating,"iuser":GlobalHook.getGlobalUser._id})
   }
 
     return (
@@ -156,7 +159,7 @@ setAverageRating(((R5Count*5+R4Count*4+R3Count*3+R2Count*2+R1Count*1)/RTotalCoun
           
         {getReviewPool.map((item,index)=>{
 
-          //  console.log(item)
+            console.log(item)
 
       // return(
       // <div key={index} className="flex flex-col w-8/12 bg-white items-start p-2 mt-4 rounded-lg">

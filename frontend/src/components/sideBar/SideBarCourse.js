@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Progress } from "antd";
+import { Progress, message,Modal } from "antd";
 import { GlobalContext } from "../../hook/GlobalHook";
 import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
@@ -9,6 +9,7 @@ export default function SideBarCourse() {
   const [getMainCourseLength, setMainCourseLength] = useState(0);
   
   const [getisSubscription, setisSubscription] = useState(false);
+  const [getShowCourseFeeAlertModal,setShowCourseFeeAlertModal] = useState(false)
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
@@ -28,9 +29,54 @@ export default function SideBarCourse() {
       GlobalHook.setGlobalShowLoginModal(true);
       GlobalHook.setGlobalLoginTab("Signup");
     } else {
-      CourseSubscriptionAction(GlobalHook);
+      console.log(GlobalHook.getGlobalCourseFee)
+      if(GlobalHook.getGlobalCourseFee == "true"){
+        CourseSubscriptionAction(GlobalHook);
+      }else{
+      //  alert("เสียตัง " + GlobalHook.getGlobalCoursePrice)
+      setShowCourseFeeAlertModal(true)
+
+      }
     }
   }
+
+  function RenderCourseFeeAlert() {
+    return (
+      <Modal
+        visible={getShowCourseFeeAlertModal}
+        title="Pay"
+        onOk={() => setShowCourseFeeAlertModal(false)}
+        onCancel={() => {
+          setShowCourseFeeAlertModal(false);
+        }}
+        footer={[
+          <div className="w-full flex justify-center">
+            <button
+              onClick={() => setShowCourseFeeAlertModal(false)}
+              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+            >
+              Close
+            </button>
+
+            <button
+              onClick={() => {
+                setShowCourseFeeAlertModal(false);
+               message.success("Payment Successfull")
+              }}
+              className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
+            >
+              Pay
+            </button>
+
+          
+          </div>
+        ]}
+      >
+        Pay
+      </Modal>
+    );
+  }
+
   useEffect(() => {
     if (GlobalHook.getGlobalUser&&GlobalHook.getGlobalCourseStructure&&GlobalHook.getGlobalcourseId) {
       var mainlength = 0;
@@ -68,6 +114,7 @@ export default function SideBarCourse() {
         
       }}
     >
+      {RenderCourseFeeAlert()}
       <div
         className="bg-blue-300 flex flex-col px-6 w-full "
         style={{ minHeight: "150px" }}

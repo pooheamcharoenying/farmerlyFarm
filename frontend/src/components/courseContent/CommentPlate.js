@@ -5,13 +5,15 @@ import { Rate,Progress,Input,Avatar } from 'antd';
 export default function CommentPlate({item}) {
     const [getdata, setData] = useState({});
     const [isLoading, setLoading] = useState(false);
-
+console.log(item)
     useEffect(() => {
         (async () => {
           setLoading(true);
-          const response = await axios.post("/api/user/getuserbyid", {"uid":item.user})
+          const response = await axios.post("/api/user/getuserbyid", {"ouid":item.iuser})
           setLoading(false);
           setData(response.data);
+
+          console.log(response)
         })();
       }, []);
 

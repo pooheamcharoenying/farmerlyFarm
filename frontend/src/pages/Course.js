@@ -6,7 +6,7 @@ import { useParams} from "react-router";
 import Header from "../components/header/HeaderCourse"
 import SideBar from "../components/sideBar/SideBarCourse"
 import CourseContent from "../components/courseContent/CourseContent"
-import {getCourseContentAction} from '../actions'
+import {getCourseContentAction,GetCourseSettingAction} from '../actions'
 import {GlobalContext} from '../hook/GlobalHook'
 export default function Course() {
   let { courseSlug } = useParams();
@@ -16,6 +16,7 @@ export default function Course() {
   useEffect(() => {
   
          getCourseContentAction(GlobalHook,courseSlug)
+         GetCourseSettingAction(GlobalHook,courseSlug)
   
       GlobalHook.setGlobalCourseSlug(courseSlug)
     }, [])

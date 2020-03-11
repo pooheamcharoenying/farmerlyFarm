@@ -79,7 +79,7 @@ function getCourseContentAction(GlobalHook, courseSlug) {
 
       GlobalHook.setGlobalcourseId(res.data.courseId)
       GlobalHook.setGlobalLoading(false);
-
+console.log( res.data.courseData[0])
       localStorage.setItem(
         "InitStructure",
         JSON.stringify(res.data.courseData[0].contentStructure)
@@ -203,7 +203,6 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseFee:GlobalHook.getGlobalCourseFee
   };
 
-  console.log(pushData)
 
   axios
     .post("/api/course/update", pushData)
