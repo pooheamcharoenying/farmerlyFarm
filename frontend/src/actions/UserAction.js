@@ -117,7 +117,7 @@ async function SignUpAction(GlobalHook,userData){
       
         data.user.updateProfile({
           displayName: userData.name,
-          photoURL:'https://i.ya-webdesign.com/images/profile-avatar-png-9.png'
+          photoURL:''
         })
 
         console.log(data.user.uid)

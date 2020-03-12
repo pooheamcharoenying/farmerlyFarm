@@ -1,6 +1,6 @@
 import React,{useContext,useEffect,useState} from 'react';
 import {Menu, Dropdown,Avatar} from "antd";
-
+import AvatarR from 'react-avatar';
 import {
   
     FaCog,
@@ -15,18 +15,21 @@ import {GlobalContext} from '../../hook/GlobalHook'
 
 const UserDropdown = () => {
   const GlobalHook = useContext(GlobalContext)
-  const [getAvatar,setAvatar] = useState("")
+  const [getAvatar,setAvatar] = useState(null)
+  const [getName,setName] = useState("")
+
   let history = useHistory();
 
   useEffect(() => {
     if(GlobalHook.getGlobalCurrentUser){
    setAvatar(GlobalHook.getGlobalCurrentUser.photoURL)
-
+   setName(GlobalHook.getGlobalCurrentUser.displayName)
 
     }
   }, [GlobalHook.getGlobalCurrentUser]);
 
 
+ 
     
     const menu = (
         <Menu>
@@ -59,7 +62,7 @@ const UserDropdown = () => {
       className="flex"
     >
       
-      <Avatar size={40} className="cursor-pointer" src={getAvatar}/>
+      {(getAvatar) ?<Avatar size={40} className="cursor-pointer" src={getAvatar}/>:<AvatarR className="cursor-pointer" name={getName} size="50" round/>}
       
     
     </Dropdown>

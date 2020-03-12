@@ -31,6 +31,7 @@
     "react": "^16.12.0",
     "react-apexcharts": "^1.3.5",
     "react-app-rewired": "^2.1.5",
+    "react-avatar": "^3.9.2",
     "react-beautiful-dnd": "^11.0.4",
     "react-bottom-scroll-listener": "^3.0.0",
     "react-chartjs-2": "^2.8.0",

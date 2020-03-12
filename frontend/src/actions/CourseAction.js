@@ -79,7 +79,6 @@ function getCourseContentAction(GlobalHook, courseSlug) {
 
       GlobalHook.setGlobalcourseId(res.data.courseId)
       GlobalHook.setGlobalLoading(false);
-console.log( res.data)
       localStorage.setItem(
         "InitStructure",
         JSON.stringify(res.data.courseData[0].contentStructure)
