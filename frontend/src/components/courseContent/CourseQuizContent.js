@@ -138,7 +138,6 @@ export default function CourseQuizContent() {
       getQuestionPool[index].questionId
     );
     setUserClick(null);
-    console.log(getUserAnsBank);
 
     if (getUserAnsBank[getQuestionPool[index].questionId]) {
       setUserClick(getUserAnsBank[getQuestionPool[index].questionId].ans);
