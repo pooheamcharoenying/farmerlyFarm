@@ -104,25 +104,27 @@ if(itemsPool[0]){
   GlobalHook.setGlobalShowSideBarStatus(false)
  setStartedQuiz(false)
   GlobalHook.setGlobalUserAnswerSelect(null)
-    GlobalHook.setGlobalLessionSelect({
-      selfIndex: index,
-      mediaId: item.mediaId,
-      mediaType: item.type,
-      mediaName: item.title,
-      mediaPreview: item.preview,
-      sectionName: mainItem.content,
-      mediaTime: item.time,
-      mediaEtc1:item.etc1,
-      mediaEtc2:item.etc2,
-      mediaEtc3:item.etc3,
-      mediaEtc4:item.etc4,
-      mediaEtc5:item.etc5
-    });
+    
 
     if(item.preview){
+      GlobalHook.setGlobalLessionSelect({
+        selfIndex: index,
+        mediaId: item.mediaId,
+        mediaType: item.type,
+        mediaName: item.title,
+        mediaPreview: item.preview,
+        sectionName: mainItem.content,
+        mediaTime: item.time,
+        mediaEtc1:item.etc1,
+        mediaEtc2:item.etc2,
+        mediaEtc3:item.etc3,
+        mediaEtc4:item.etc4,
+        mediaEtc5:item.etc5
+      });
       GetMediaFreeAction(GlobalHook,item.mediaId)
     }else{
-      GetMediaFreeAction(GlobalHook,item.mediaId)
+alert("lock")
+      // GetMediaFreeAction(GlobalHook,item.mediaId)
 
     }
     GlobalHook.setGlobalStatusCode("resetCounter")
