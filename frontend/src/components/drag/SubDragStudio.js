@@ -263,8 +263,8 @@ const SubDragStudio = ({
                                   <div className="ml-4">{item.time} mins</div>
                                   <div className="ml-4"> <FaLock
                                   style={{
-                                    color: "#a45503",
-                                    display: item.preview
+                                    color: "#778899",
+                                    display: !item.preview
                                       ? "inline-block"
                                       : "none"
                                   }}

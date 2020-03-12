@@ -3,6 +3,7 @@ import { Input,Popover } from "antd";
 import ReactQuill from "react-quill";
 import {FaTrashAlt} from 'react-icons/fa'
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import SwitchR from "react-switch";
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {SaveAllAction,CheckMutateAction} from "../../actions"
@@ -19,6 +20,9 @@ const StudioDocumentContent = () => {
   const [getInitStateName,setInitStateName] = useState("")
   const [getInitStateTime,setInitStateTime] = useState("")
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
+  const [getInitStatePreview, setInitStatePreview] = useState(null);
+  const [getLessionPreview, setLessionPreview] = useState(null);
+
 
 
 useEffect(() => {
@@ -33,6 +37,8 @@ useEffect(() => {
     setLessionTime(GlobalHook.getGlobalLessionSelect.mediaTime)
     setInitStateTime(GlobalHook.getGlobalLessionSelect.mediaTime)
 
+    setLessionPreview(GlobalHook.getGlobalLessionSelect.mediaPreview)
+    setInitStatePreview(GlobalHook.getGlobalLessionSelect.mediaPreview)
 
  }, [GlobalHook.getGlobalLessionSelect])
 
@@ -54,12 +60,14 @@ useEffect(() => {
     if(oldCourseStructure[parentIndex] && getLessionName){
       (oldCourseStructure[parentIndex].subItems)[selfIndex].title = getLessionName;
       (oldCourseStructure[parentIndex].subItems)[selfIndex].time = getLessionTime;
+      (oldCourseStructure[parentIndex].subItems)[selfIndex].preview = getLessionPreview;
+
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
       GlobalHook.setGlobalCourseStructureNew(oldCourseStructure);
 
     }
     
-    }, [getLessionName,getLessionTime])
+    }, [getLessionName,getLessionTime,getLessionPreview])
 
 
     useEffect(() => {
@@ -74,6 +82,9 @@ useEffect(() => {
 
     }, [getLessionTime])
 
+    useEffect(() => {
+      CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
+    }, [getLessionPreview]);
 
     useEffect(() => {
    if(GlobalHook.getGlobalStatusCode == "CreateNewLession"){
@@ -165,6 +176,16 @@ useEffect(() => {
           ระยะเวลาบทเรียน
           </div>
           <Input value={getLessionTime} onChange={(e)=>setLessionTime(e.target.value)} suffix="นาที" style={{width:"100px"}}/>
+        </div>
+
+        <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">Lession Preview</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => setLessionPreview(e)}
+            checked={getLessionPreview}
+          />
+        
         </div>
 
         <div className="w-11/12 md:w-10/12">

@@ -206,7 +206,7 @@ if(itemsPool[0]){
                                 <div className="ml-4"> <FaLock
                                   style={{
                                     color: "#a45503",
-                                    display: item.preview
+                                    display: !item.preview
                                       ? "inline-block"
                                       : "none"
                                   }}
@@ -214,7 +214,7 @@ if(itemsPool[0]){
 
                                 <div className="ml-4"> <FaCheckCircle
                                   style={{
-                                    color: "#96C221",
+                                    color: "#778899",
                                     display: getIsLessionVisitedFn(item)
                                       ? "inline-block"
                                       : "none"

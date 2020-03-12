@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import {
   Input,
   Button,
-  Upload,
+  Switch,
   Icon,
   Progress,
   Popover,
@@ -14,6 +14,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import tus from "tus-js-client";
 import axios from "axios";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import SwitchR from "react-switch";
 import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
 import { SaveAllAction, CheckMutateAction } from "../../actions";
@@ -35,9 +36,12 @@ const StudioVideoContent = () => {
 
   const [getLessionTime, setLessionTime] = useState("");
   const [getLessionName, setLessionName] = useState("");
+  const [getLessionPreview, setLessionPreview] = useState(null);
+
   const [getInitStateVideo, setInitStateVideo] = useState("");
   const [getInitStateName, setInitStateName] = useState("");
   const [getInitStateTime, setInitStateTime] = useState("");
+  const [getInitStatePreview, setInitStatePreview] = useState(null);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
   const [getVideoData, setVideoData] = useState(null);
   const [getUploadingShow, setUploadingShow] = useState(null);
@@ -69,7 +73,11 @@ const StudioVideoContent = () => {
     setLessionTime(GlobalHook.getGlobalLessionSelect.mediaTime);
     setInitStateTime(GlobalHook.getGlobalLessionSelect.mediaTime);
     setVideoFileName(GlobalHook.getGlobalLessionSelect.mediaEtc1);
+    setLessionPreview(GlobalHook.getGlobalLessionSelect.mediaPreview)
+    setInitStatePreview(GlobalHook.getGlobalLessionSelect.mediaPreview)
+
   }, [GlobalHook.getGlobalLessionSelect]);
+
 
   useEffect(() => {
     var oldCourseStructure = GlobalHook.getGlobalCourseStructure;
@@ -83,10 +91,11 @@ const StudioVideoContent = () => {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].etc1 = getVideoFileName;
+      oldCourseStructure[parentIndex].subItems[selfIndex].preview = getLessionPreview;
 
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
     }
-  }, [getLessionName, getLessionTime, getVideoFileName]);
+  }, [getLessionName, getLessionTime, getVideoFileName,getLessionPreview]);
 
 
 
@@ -97,6 +106,10 @@ const StudioVideoContent = () => {
   useEffect(() => {
     CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
   }, [getLessionTime]);
+
+  useEffect(() => {
+    CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
+  }, [getLessionPreview]);
 
   function handleDeleteLession() {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
@@ -267,6 +280,17 @@ const StudioVideoContent = () => {
             style={{ width: "100px" }}
           />
         </div>
+
+        <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">Lession Preview</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => setLessionPreview(e)}
+            checked={getLessionPreview}
+          />
+        
+        </div>
+
 
         <div className="flex flex-col text-center mb-6 justify-center w-full items-center">
           <div className="font-bold text-lg mb-2 flex justify-center">

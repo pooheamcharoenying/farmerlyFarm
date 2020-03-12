@@ -33,8 +33,8 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
-  const [getCourseFee,setCourseFee] = useState(true)
-  const [getCoursePrice,setCoursePrice] = useState(null)
+  const [getCourseFee, setCourseFee] = useState(true);
+  const [getCoursePrice, setCoursePrice] = useState(null);
 
   const {
     acceptedFiles,
@@ -64,7 +64,6 @@ export default function FabCreateCourse() {
       setImageData(data);
 
       GlobalHook.setGlobalCourseImage(data);
- 
     });
   }
 
@@ -104,7 +103,7 @@ export default function FabCreateCourse() {
             setUploadingShow(false);
           } else {
             setUploadingShow("done");
-    
+
             resolve(
               `https://studysabaiapp.sgp1.digitaloceanspaces.com/${file.name}`
             );
@@ -307,43 +306,38 @@ export default function FabCreateCourse() {
             </div>
 
             <div className="flex flex-col text-center my-4">
-            <div className="font-bold text mb-2">Tags</div>
-            <TextArea
-              onChange={e =>
-                GlobalHook.setGlobalCourseTag(e.target.value)
-              }
-              value={GlobalHook.getGlobalCourseTag}
-              autoSize={{ minRows: 3, maxRows: 5 }}
-            />
-          </div>
-
-          <div className="flex flex-col text-center my-4">
-            <div className="font-bold text mb-2"> Course Fees</div>
-           
-           <div>
-
-            <Switch
-                defaultChecked={GlobalHook.getGlobalCourseFee}
-                checkedChildren="Free"
-                unCheckedChildren="Paid"
-                onClick={e =>
-                  GlobalHook.setGlobalCourseFee(e)
-                }
+              <div className="font-bold text mb-2">Tags</div>
+              <TextArea
+                onChange={e => GlobalHook.setGlobalCourseTag(e.target.value)}
+                value={GlobalHook.getGlobalCourseTag}
+                autoSize={{ minRows: 3, maxRows: 5 }}
               />
-         {!GlobalHook.getGlobalCourseFee && <Input
-            className="self-center ml-4"
-            value={GlobalHook.getGlobalCoursePrice}
-            onChange={e => GlobalHook.setGlobalCoursePrice(e.target.value)}
-            suffix="บาท"
-            style={{ maxWidth: "100px" }}
-           
-          />}
-          </div>
-          </div>
+            </div>
 
+            <div className="flex flex-col text-center my-4">
+              <div className="font-bold text mb-2"> Course Fees</div>
 
+              <div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalCourseFee}
+                  checkedChildren="Free"
+                  unCheckedChildren="Paid"
+                  onClick={e => GlobalHook.setGlobalCourseFee(e)}
+                />
+                {!GlobalHook.getGlobalCourseFee && (
+                  <Input
+                    className="self-center ml-4"
+                    value={GlobalHook.getGlobalCoursePrice}
+                    onChange={e =>
+                      GlobalHook.setGlobalCoursePrice(e.target.value)
+                    }
+                    suffix="บาท"
+                    style={{ maxWidth: "100px" }}
+                  />
+                )}
+              </div>
+            </div>
           </div>
-
         </div>
       </Modal>
     );
@@ -355,14 +349,13 @@ export default function FabCreateCourse() {
         <button
           onClick={() => {
             setModalOpenStatus(true);
-            GlobalHook.setGlobalCourseSubject("Mathematic")
-      GlobalHook.setGlobalCourseLevel("ประถม")
-      GlobalHook.setGlobalCourseTeacher("")
-      GlobalHook.setGlobalCourseDescription("")
-      GlobalHook.setGlobalCourseImage("")
-      GlobalHook.setGlobalcourseImageFileName("")
-      GlobalHook.setGlobalCourseTag("")
-
+            GlobalHook.setGlobalCourseSubject("Mathematic");
+            GlobalHook.setGlobalCourseLevel("ประถม");
+            GlobalHook.setGlobalCourseTeacher("");
+            GlobalHook.setGlobalCourseDescription("");
+            GlobalHook.setGlobalCourseImage("");
+            GlobalHook.setGlobalcourseImageFileName("");
+            GlobalHook.setGlobalCourseTag("");
           }}
           className="bg-orange-600  text-white rounded-full flex justify-center items-center hover:bg-orange-500 "
           style={{ width: "60px", height: "60px", fontSize: "40px" }}
