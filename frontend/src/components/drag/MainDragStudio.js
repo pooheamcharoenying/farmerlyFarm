@@ -3,13 +3,17 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import uuid from "uuid";
 import { Button, Modal, Input, message, Select,Tooltip,Popover } from "antd";
 import { FaPlusCircle,FaEdit } from "react-icons/fa";
-import { GlobalContext } from "../../hook/GlobalHook";
+import { GlobalContext,NewContext } from "../../hook/GlobalHook";
+
 import { getItemStyle, getListStyle } from "./DragMainStyle";
 import SubDragStudio from "./SubDragStudio";
 import {ClearCreateLessionAction,SaveAllAction,CheckMutateAction} from '../../actions'
 const { Option } = Select;
 export default function MainDragStudio() {
   const GlobalHook = useContext(GlobalContext);
+  const [getGlobalLessionSelectNew, setGlobalLessionSelectNew] = useContext(
+    NewContext
+  );
   const [items, setitems] = useState([]);
   const [getModalTopicOpenStatus, setModalTopicOpenStatus] = useState(false);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
@@ -357,6 +361,7 @@ export default function MainDragStudio() {
   }
 
   function handleNewLessionCreate() {
+    GlobalHook.setGlobalMessage("ClearAll")
     const oldstate = [...items];
     oldstate.map((res, index) => {
       if (res.id == getLessionParent.id) {
@@ -399,6 +404,24 @@ export default function MainDragStudio() {
         setLessionType("Video");
         GlobalHook.setGlobalStatusCode("CreateNewLession")
         ClearCreateLessionAction(GlobalHook)
+        setGlobalLessionSelectNew({
+          parentIndex: getLessionParentIndex,
+          selfIndex:( oldstate[index].subItems.length) -1,
+          mediaId: mediaId,
+          mediaType: getLessionType,
+          mediaName: getLessionName,
+          mediaPreview: true,
+          sectionName: getLessionParent.content,
+          mediaTime: "",
+          mediaEtc1:true,
+          mediaEtc2:true,
+          mediaEtc3:true,
+          mediaEtc4:1,
+          mediaEtc5:1,
+          new:"new"
+        })
+
+        console.log(getLessionName)
       }
     });
   }

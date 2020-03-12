@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import { GlobalContext, NewContext } from "../../hook/GlobalHook";
 import StudioVideoContent from "./StudioVideoContent";
 import StudioDocumentContent from "./StudioDocumentContent";
-import StudioQuizContent from "./StudioQuizContent";
+import StudioQuizContent from "./StudioQuizContentO";
 import StudioOverviewContent from "./StudioOverviewContent";
 import StudioDashboardContent from "./StudioDashboardContent";
 
