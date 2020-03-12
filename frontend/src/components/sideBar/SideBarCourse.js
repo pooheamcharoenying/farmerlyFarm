@@ -34,7 +34,7 @@ export default function SideBarCourse() {
         CourseSubscriptionAction(GlobalHook);
       }else{
       //  alert("เสียตัง " + GlobalHook.getGlobalCoursePrice)
-      setShowCourseFeeAlertModal(true)
+      GlobalHook.setGlobalShowCourseFeeAlertModal(true)
 
       }
     }
@@ -43,16 +43,16 @@ export default function SideBarCourse() {
   function RenderCourseFeeAlert() {
     return (
       <Modal
-        visible={getShowCourseFeeAlertModal}
+        visible={GlobalHook.getGlobalShowCourseFeeAlertModal}
        
-        onOk={() => setShowCourseFeeAlertModal(false)}
+        onOk={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
         onCancel={() => {
-          setShowCourseFeeAlertModal(false);
+          GlobalHook.setGlobalShowCourseFeeAlertModal(false);
         }}
         footer={[
           <div className="w-full flex justify-center">
             <button
-              onClick={() => setShowCourseFeeAlertModal(false)}
+              onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
               Cancel
@@ -60,7 +60,7 @@ export default function SideBarCourse() {
 
             <button
               onClick={() => {
-                setShowCourseFeeAlertModal(false);
+                GlobalHook.setGlobalShowCourseFeeAlertModal(false);
         CourseSubscriptionAction(GlobalHook);
 
                message.success("Payment Successfull")

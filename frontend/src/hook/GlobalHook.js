@@ -171,6 +171,7 @@ const Store = props => {
   const [getGlobalCourseFee,setGlobalCourseFee] = useState(true)
   const [getGlobalCoursePrice,setGlobalCoursePrice] = useState(null)
   
+  const [getGlobalShowCourseFeeAlertModal,setGlobalShowCourseFeeAlertModal] = useState(false)
 
   ///Generate GlobalHook///
   const GlobalHook = {
@@ -358,7 +359,10 @@ const Store = props => {
     setGlobalCoursePrice,
 
     getGlobalMessage,
-    setGlobalMessage
+    setGlobalMessage,
+
+    getGlobalShowCourseFeeAlertModal,
+    setGlobalShowCourseFeeAlertModal
 
 
   };
