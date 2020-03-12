@@ -14,10 +14,6 @@ export default function MainDragStudio() {
   }, [GlobalHook.getGlobalCourseStructure]);
 
 
-  
-
-
-
   var sectionCounter = 1;
 
 

@@ -381,7 +381,6 @@ export default function MainDragStudio() {
           time: ""
         });
         setitems(oldstate);
-        console.log(oldstate)
 
       
         GlobalHook.setGlobalLessionSelect({
@@ -394,7 +393,7 @@ export default function MainDragStudio() {
           sectionName: getLessionParent.content,
           mediaTime: "",
           mediaEtc1:true,
-          mediaEtc2:true,
+          mediaEtc2:false,
           mediaEtc3:true,
           mediaEtc4:1,
           mediaEtc5:1,
@@ -416,7 +415,7 @@ export default function MainDragStudio() {
           sectionName: getLessionParent.content,
           mediaTime: "",
           mediaEtc1:true,
-          mediaEtc2:true,
+          mediaEtc2:false,
           mediaEtc3:true,
           mediaEtc4:1,
           mediaEtc5:1,
