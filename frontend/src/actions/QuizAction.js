@@ -42,6 +42,7 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
         .post("/api/quiz/free", pushData)
         .then(res => {
   
+        
          GlobalHook.setGloblaQuizQuestionName(res.data.data.questionName);
          GlobalHook.setGloblaQuizQuestionField(res.data.data.questionField)
          GlobalHook.setGloblaQuizAnswerField(res.data.data.answerField);
@@ -60,6 +61,10 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
 
   function AddNewQuestionAction (GlobalHook) {
 
+  let mockName = " "
+  mockName =  GlobalHook.getGloblaQuizQuestionName
+
+console.log(GlobalHook.getGloblaQuizQuestionName)
     const pushData = {
             questionId: GlobalHook.getGloblaQuizQuestionSelect.questionId,
             questionName: GlobalHook.getGloblaQuizQuestionName,
@@ -76,6 +81,8 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
             courseSlug:GlobalHook.getGlobalCourseSlug
            
     };
+
+    console.log(pushData)
 
     axios
       .post("/api/quiz/", pushData)

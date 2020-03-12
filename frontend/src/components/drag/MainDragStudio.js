@@ -381,6 +381,8 @@ export default function MainDragStudio() {
           time: ""
         });
         setitems(oldstate);
+        console.log(oldstate)
+
       
         GlobalHook.setGlobalLessionSelect({
           parentIndex: getLessionParentIndex,

@@ -48,6 +48,7 @@ const [getUnSaveAlertStatus, setUnSaveAlertStatus] = useState(false);
 
 useEffect(() => {
   GlobalHook.setGlobalMediaNew(items);
+  console.log(items)
 }, [items]);
 
 useEffect(() => {
@@ -212,6 +213,7 @@ function renderAddQuestionModal() {
 
     const initSelfIndex = oldstate.length - 1;
 
+    
     ClearCreateQuizFieldAction(GlobalHook);
     GlobalHook.setGloblaQuizQuestionSelect({
       selfIndex: initSelfIndex,

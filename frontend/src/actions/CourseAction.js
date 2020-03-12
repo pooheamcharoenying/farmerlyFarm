@@ -132,6 +132,8 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
     mediaId: mediaId
   };
 
+  console.log(pushData)
+
   axios
     .post("/api/coursemedia/free", pushData)
     .then(res => {
@@ -145,6 +147,8 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
       } else if (res.data.data.mediaType == "Quiz") {
         GlobalHook.setGlobalMediaQuiz(res.data.data.mediaContent);
       }
+
+      console.log(res.data)
     
     })
     .catch(err => {

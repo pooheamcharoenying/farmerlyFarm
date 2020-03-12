@@ -117,61 +117,57 @@ const StudioQuizContent = () => {
   }, [getGlobalLessionSelectNew]);
 
 
-  useEffect(() => {
-    console.log(getGlobalLessionSelectNew)
-  }, );
-
   
 
 
   //Mutate
-  // useEffect(() => {
-  //   CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
-  // }, [getLessionName]);
+  useEffect(() => {
+    CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
+  }, [getLessionName]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
-  // }, [getLessionTime]);
+  useEffect(() => {
+    CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
+  }, [getLessionTime]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(
-  //     GlobalHook,
-  //     getInitStateSettingShowAns,
-  //     getQuizSettingShowAns
-  //   );
-  // }, [getQuizSettingShowAns]);
+  useEffect(() => {
+    CheckMutateAction(
+      GlobalHook,
+      getInitStateSettingShowAns,
+      getQuizSettingShowAns
+    );
+  }, [getQuizSettingShowAns]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(
-  //     GlobalHook,
-  //     getInitStateSettingTimeCount,
-  //     getQuizSettingTimeCount
-  //   );
-  // }, [getQuizSettingTimeCount]);
+  useEffect(() => {
+    CheckMutateAction(
+      GlobalHook,
+      getInitStateSettingTimeCount,
+      getQuizSettingTimeCount
+    );
+  }, [getQuizSettingTimeCount]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(
-  //     GlobalHook,
-  //     getInitStateSettingRandom,
-  //     getQuizSettingRandom
-  //   );
-  // }, [getQuizSettingRandom]);
+  useEffect(() => {
+    CheckMutateAction(
+      GlobalHook,
+      getInitStateSettingRandom,
+      getQuizSettingRandom
+    );
+  }, [getQuizSettingRandom]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(
-  //     GlobalHook,
-  //     getInitStateSettingAmountPass,
-  //     getQuizSettingAmountPass
-  //   );
-  // }, [getQuizSettingAmountPass]);
+  useEffect(() => {
+    CheckMutateAction(
+      GlobalHook,
+      getInitStateSettingAmountPass,
+      getQuizSettingAmountPass
+    );
+  }, [getQuizSettingAmountPass]);
 
-  // useEffect(() => {
-  //   CheckMutateAction(
-  //     GlobalHook,
-  //     getInitStateSettingAmountRandom,
-  //     getQuizSettingAmountRandom
-  //   );
-  // }, [getQuizSettingAmountRandom]);
+  useEffect(() => {
+    CheckMutateAction(
+      GlobalHook,
+      getInitStateSettingAmountRandom,
+      getQuizSettingAmountRandom
+    );
+  }, [getQuizSettingAmountRandom]);
 
   useEffect(() => {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;

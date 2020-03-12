@@ -15,12 +15,12 @@ function ClearCreateLessionAction(GlobalHook){
   ClearCreateQuizFieldAction(GlobalHook)
   GlobalHook.setGlobalMediaVideo("")
   GlobalHook.setGlobalMediaDocument("")
-  GlobalHook.setGlobalMediaQuiz("")
-  GlobalHook.setGlobalMediaNew("")
+  //GlobalHook.setGlobalMediaQuiz("")
+ //GlobalHook.setGlobalMediaNew("")
   GlobalHook.setGlobalMediaQuiz([])
 }
 function ClearCreateQuizFieldAction(GlobalHook){
-  GlobalHook.setGlobalMediaQuiz([])
+  // GlobalHook.setGlobalMediaQuiz([])
  GlobalHook.setGloblaQuizQuestionName("");
  GlobalHook.setGloblaQuizQuestionField("");
   GlobalHook.setGloblaQuizAnswerType("MultipleChoice");

@@ -53,6 +53,7 @@ function SaveMediaContent (GlobalHook){
       "mediaContent":GlobalHook.getGlobalMediaNew,
       courseSlug:GlobalHook.getGlobalCourseSlug
   }
+  console.log(pushMediadata)
 
 
 axios
