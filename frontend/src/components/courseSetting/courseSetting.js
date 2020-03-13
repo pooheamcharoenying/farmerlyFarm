@@ -12,12 +12,13 @@ import {
   Switch,
   Tag
 } from "antd";
+import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
 import { useParams } from "react-router";
-import Autocomplete from '@celebryts/react-autocomplete-tags'
-import ReactTags from 'react-tag-autocomplete'
+import Autocomplete from "@celebryts/react-autocomplete-tags";
+import ReactTags from "react-tag-autocomplete";
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
@@ -40,34 +41,16 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
-  const [getTagsEnglish,setTagsEnglish] = useState( [ 
-      { id: 3, name: "Math" },
-      { id: 4, name: "Thai" }
-    ])
-    const [getTagsThai,setTagsThai] = useState( [ 
-      { id: 3, name: "คณิต" },
-      { id: 4, name: "ไทย" }
-    ])
+  const [getTagsEnglish, setTagsEnglish] = useState([]);
+  const [getTagsThai, setTagsThai] = useState([]);
 
-
-  const [getSuggestionsEnglish,setSuggestionsEnglish] = useState(
-    [
-      { id: 3, name: "Math" },
-      { id: 4, name: "Thai" },
-      { id: 5, name: "Coding" },
-
-    ])
-    const [getSuggestionsThai,setSuggestionsThai] = useState(
-      [
-        { id: 3, name: "คณิต" },
-        { id: 4, name: "ไทย" },
-        { id: 5, name: "โปรแกรม" },
-  
-      ])
+  const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
+  const [getSuggestionsThai, setSuggestionsThai] = useState([]);
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
   }, []);
+
   const {
     acceptedFiles,
     getRootProps,
@@ -93,7 +76,6 @@ export default function FabCreateCourse() {
     handleImageTransform(file);
   }
   function handleImageTransform(raw) {
- 
     UploadAction(raw).then(data => {
       setUploadingShow("uploading");
       setImageData(data);
@@ -147,35 +129,50 @@ export default function FabCreateCourse() {
     });
   }
 
+  function handleDelete(i) {
+    const tagsEng = getTagsEnglish.slice(0);
+    const tagsThai = getTagsThai.slice(0);
 
+    tagsEng.splice(i, 1);
+    tagsThai.splice(i, 1);
 
-  function handleDelete (i) {
-    const tagsEng = getTagsEnglish.slice(0)
-    const tagsThai = getTagsThai.slice(0)
-
-    tagsEng.splice(i, 1)
-    tagsThai.splice(i, 1)
-
-    setTagsEnglish(tagsEng)
-    setTagsThai(tagsThai)
-
+    setTagsEnglish(tagsEng);
+    setTagsThai(tagsThai);
   }
 
-  function handleAddition (tag) {
-    if(tag.id){
-      const tagsEng = [].concat(getTagsEnglish, getSuggestionsEnglish.filter((item)=>item.id== tag.id))
-      const tagsThai = [].concat(getTagsThai, getSuggestionsThai.filter((item)=>item.id== tag.id))
-  
-      setTagsEnglish(tagsEng)
-      setTagsThai(tagsThai)
-    }else{
-      alert("add custom new tag")
+  function handleAddition(tag) {
+    if (tag.id) {
+      const tagsEng = [].concat(
+        getTagsEnglish,
+        getSuggestionsEnglish.filter(item => item.id == tag.id)
+      );
+      const tagsThai = [].concat(
+        getTagsThai,
+        getSuggestionsThai.filter(item => item.id == tag.id)
+      );
+
+      setTagsEnglish(tagsEng);
+      setTagsThai(tagsThai);
+    } else {
+      alert("add custom new tag");
     }
-  
   }
 
-  function handleInputChangeEnglish(query) {
-   
+  function handleInputChange(query) {
+    axios
+      .post(`/api/tag/gettag/`, { tag: query })
+      .then(res => {
+        let matchTagSuggestEnglish = [];
+        let matchTagSuggestThai = [];
+
+        res.data.map(item => {
+          matchTagSuggestEnglish.push({ id: item._id, name: item.english });
+          matchTagSuggestThai.push({ id: item._id, name: item.thai });
+        });
+        setSuggestionsEnglish(matchTagSuggestEnglish);
+        setSuggestionsThai(matchTagSuggestThai);
+      })
+      .catch(err => console.log(err));
   }
   // ///THAI
   // function handleDeleteThai (i) {
@@ -185,15 +182,7 @@ export default function FabCreateCourse() {
 
   // }
 
-  function handleAdditionThai (tag) {
-    const tags = [].concat(getTagsThai, tag)
-    setTagsThai(tags)
-  }
-
-  function handleInputChangeThai(query) {
-   
-  }
-
+  function handleInputChangeThai(query) {}
 
   function CreateCoursePopUp() {
     return (
@@ -403,87 +392,48 @@ export default function FabCreateCourse() {
               <div className="font-bold text mb-2">Tags</div>
 
               <ReactTags
-        tags={getTagsEnglish}
-        suggestions={getSuggestionsEnglish}
-        handleDelete={(e)=>handleDelete(e)}
-        handleAddition={(e)=>handleAddition(e)}
-        minQueryLength ={1}
-        handleInputChange ={(e)=>handleInputChangeEnglish(e)}
-      
-        />
-         <ReactTags
-        tags={getTagsThai}
-        suggestions={getSuggestionsThai}
-        handleDelete={(e)=>handleDelete(e)}
-        handleAddition={(e)=>handleAddition(e)}
-        minQueryLength ={1}
-        handleInputChange ={(e)=>handleInputChangeThai(e)}
-        />
-              {/* <div>
-        {getTags.map((tag, index) => {
-          const isLongTag = tag.length > 20;
-          const tagElem = (
-            <Tag key={tag} closable={index !== 0} onClose={() => handleClose(tag)}>
-              {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-            </Tag>
-          );
-          return isLongTag ? (
-            <Tooltip title={tag} key={tag}>
-              {tagElem}
-            </Tooltip>
-          ) : (
-            tagElem
-          );
-        })}
-        {getinputVisible && (
-          <Input
-            
-            type="text"
-            size="small"
-            style={{ width: 78 }}
-            value={getinputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputConfirm}
-            onPressEnter={handleInputConfirm}
-          />
-        )}
-        {!getinputVisible && (
-          <Tag className="site-tag-plus" onClick={showInput}>
-            New Tag
-          </Tag>
-        )} */}
-      {/* </div> */}
-              {/* <TextArea
-                onChange={e => GlobalHook.setGlobalCourseTag(e.target.value)}
-                value={GlobalHook.getGlobalCourseTag}
-                autoSize={{ minRows: 3, maxRows: 5 }}
-              /> */}
+                tags={getTagsEnglish}
+                suggestions={getSuggestionsEnglish}
+                handleDelete={e => handleDelete(e)}
+                handleAddition={e => handleAddition(e)}
+                minQueryLength={1}
+                handleInputChange={e => handleInputChange(e)}
+                placeholder={"Add English Tags"}
+              />
+              <ReactTags
+                tags={getTagsThai}
+                suggestions={getSuggestionsThai}
+                handleDelete={e => handleDelete(e)}
+                handleAddition={e => handleAddition(e)}
+                minQueryLength={1}
+                handleInputChange={e => handleInputChange(e)}
+                placeholder={"Add Thai Tags"}
+              />
             </div>
 
             <div className="flex flex-col text-center my-4">
-            <div className="font-bold text mb-2"> Course Fees</div>
-           
-           <div>
+              <div className="font-bold text mb-2"> Course Fees</div>
 
-            <Switch
-                defaultChecked={GlobalHook.getGlobalCourseFee}
-                checkedChildren="Free"
-                unCheckedChildren="Paid"
-                onClick={e =>
-                  GlobalHook.setGlobalCourseFee(e)
-                }
-              />
-         {!GlobalHook.getGlobalCourseFee && <Input
-            className="self-center ml-4"
-            value={GlobalHook.getGlobalCoursePrice}
-            onChange={e => GlobalHook.setGlobalCoursePrice(e.target.value)}
-            suffix="บาท"
-            style={{ maxWidth: "100px" }}
-           
-          />}
-          </div>
-          </div>
-
+              <div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalCourseFee}
+                  checkedChildren="Free"
+                  unCheckedChildren="Paid"
+                  onClick={e => GlobalHook.setGlobalCourseFee(e)}
+                />
+                {!GlobalHook.getGlobalCourseFee && (
+                  <Input
+                    className="self-center ml-4"
+                    value={GlobalHook.getGlobalCoursePrice}
+                    onChange={e =>
+                      GlobalHook.setGlobalCoursePrice(e.target.value)
+                    }
+                    suffix="บาท"
+                    style={{ maxWidth: "100px" }}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </Modal>

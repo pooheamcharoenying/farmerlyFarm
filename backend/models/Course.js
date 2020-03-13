@@ -29,7 +29,7 @@ const CourseSchema = new Schema({
     type: String
   },
   courseTag: {
-    type: String
+    type: Object
   },
   courseActive: {
     type: Boolean
