@@ -9,13 +9,15 @@ import {
   Progress,
   message,
   Icon,
-  Switch
+  Switch,
+  Tag
 } from "antd";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
 import { useParams } from "react-router";
-
+import Autocomplete from '@celebryts/react-autocomplete-tags'
+import ReactTags from 'react-tag-autocomplete'
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
@@ -38,6 +40,30 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
+  const [getTagsEnglish,setTagsEnglish] = useState( [ 
+      { id: 3, name: "Math" },
+      { id: 4, name: "Thai" }
+    ])
+    const [getTagsThai,setTagsThai] = useState( [ 
+      { id: 3, name: "คณิต" },
+      { id: 4, name: "ไทย" }
+    ])
+
+
+  const [getSuggestionsEnglish,setSuggestionsEnglish] = useState(
+    [
+      { id: 3, name: "Math" },
+      { id: 4, name: "Thai" },
+      { id: 5, name: "Coding" },
+
+    ])
+    const [getSuggestionsThai,setSuggestionsThai] = useState(
+      [
+        { id: 3, name: "คณิต" },
+        { id: 4, name: "ไทย" },
+        { id: 5, name: "โปรแกรม" },
+  
+      ])
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -121,6 +147,54 @@ export default function FabCreateCourse() {
     });
   }
 
+
+
+  function handleDelete (i) {
+    const tagsEng = getTagsEnglish.slice(0)
+    const tagsThai = getTagsThai.slice(0)
+
+    tagsEng.splice(i, 1)
+    tagsThai.splice(i, 1)
+
+    setTagsEnglish(tagsEng)
+    setTagsThai(tagsThai)
+
+  }
+
+  function handleAddition (tag) {
+    if(tag.id){
+      const tagsEng = [].concat(getTagsEnglish, getSuggestionsEnglish.filter((item)=>item.id== tag.id))
+      const tagsThai = [].concat(getTagsThai, getSuggestionsThai.filter((item)=>item.id== tag.id))
+  
+      setTagsEnglish(tagsEng)
+      setTagsThai(tagsThai)
+    }else{
+      alert("add custom new tag")
+    }
+  
+  }
+
+  function handleInputChangeEnglish(query) {
+   
+  }
+  // ///THAI
+  // function handleDeleteThai (i) {
+  //   const tags = getTagsThai.slice(0)
+  //   tags.splice(i, 1)
+  //   setTagsThai(tags)
+
+  // }
+
+  function handleAdditionThai (tag) {
+    const tags = [].concat(getTagsThai, tag)
+    setTagsThai(tags)
+  }
+
+  function handleInputChangeThai(query) {
+   
+  }
+
+
   function CreateCoursePopUp() {
     return (
       <Modal
@@ -155,9 +229,9 @@ export default function FabCreateCourse() {
           className="flex flex-col justify-center items-center mx-auto"
           style={{ maxWidth: "300px" }}
           onKeyPress={event => {
-            if (event.key === "Enter") {
-              SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus);
-            }
+            // if (event.key === "Enter") {
+            //   SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus);
+            // }
           }}
         >
           <div className="flex flex-col text-center mb-4">
@@ -327,11 +401,63 @@ export default function FabCreateCourse() {
             </div>
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2">Tags</div>
-              <TextArea
+
+              <ReactTags
+        tags={getTagsEnglish}
+        suggestions={getSuggestionsEnglish}
+        handleDelete={(e)=>handleDelete(e)}
+        handleAddition={(e)=>handleAddition(e)}
+        minQueryLength ={1}
+        handleInputChange ={(e)=>handleInputChangeEnglish(e)}
+      
+        />
+         <ReactTags
+        tags={getTagsThai}
+        suggestions={getSuggestionsThai}
+        handleDelete={(e)=>handleDelete(e)}
+        handleAddition={(e)=>handleAddition(e)}
+        minQueryLength ={1}
+        handleInputChange ={(e)=>handleInputChangeThai(e)}
+        />
+              {/* <div>
+        {getTags.map((tag, index) => {
+          const isLongTag = tag.length > 20;
+          const tagElem = (
+            <Tag key={tag} closable={index !== 0} onClose={() => handleClose(tag)}>
+              {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+            </Tag>
+          );
+          return isLongTag ? (
+            <Tooltip title={tag} key={tag}>
+              {tagElem}
+            </Tooltip>
+          ) : (
+            tagElem
+          );
+        })}
+        {getinputVisible && (
+          <Input
+            
+            type="text"
+            size="small"
+            style={{ width: 78 }}
+            value={getinputValue}
+            onChange={handleInputChange}
+            onBlur={handleInputConfirm}
+            onPressEnter={handleInputConfirm}
+          />
+        )}
+        {!getinputVisible && (
+          <Tag className="site-tag-plus" onClick={showInput}>
+            New Tag
+          </Tag>
+        )} */}
+      {/* </div> */}
+              {/* <TextArea
                 onChange={e => GlobalHook.setGlobalCourseTag(e.target.value)}
                 value={GlobalHook.getGlobalCourseTag}
                 autoSize={{ minRows: 3, maxRows: 5 }}
-              />
+              /> */}
             </div>
 
             <div className="flex flex-col text-center my-4">

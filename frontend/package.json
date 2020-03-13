@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "private": true,
   "dependencies": {
+    "@celebryts/react-autocomplete-tags": "^1.0.0",
     "@fullhuman/postcss-purgecss": "^1.3.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -47,6 +48,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
     "react-switch": "^5.0.1",
+    "react-tag-autocomplete": "^5.12.1",
     "recharts": "^2.0.0-beta.1",
     "styled-components": "^4.4.1",
     "tailwindcss": "^1.1.4",
