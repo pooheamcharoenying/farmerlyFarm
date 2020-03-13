@@ -68,7 +68,9 @@ router.post(
       courseOwnerId: req.user.id,
       courseImageFileName:req.body.courseImageFileName,
       courseFee:req.body.courseFee,
-      coursePrice:req.body.coursePrice
+      coursePrice:req.body.coursePrice,
+      courseTagEnglish:req.body.courseTagEnglish,
+      courseTagThai:req.body.courseTagThai
   
     });
 
@@ -185,7 +187,9 @@ router.post(
         courseTag: req.body.courseTag,
         courseImageFileName: req.body.courseImageFileName,
         coursePrice:req.body.coursePrice,
-        courseFee:req.body.courseFee
+        courseFee:req.body.courseFee,
+        courseTagEnglish:req.body.courseTagEnglish,
+        courseTagThai:req.body.courseTagThai
       },
       { new: true },
       (err, doc) => {

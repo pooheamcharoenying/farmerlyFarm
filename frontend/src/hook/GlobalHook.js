@@ -45,6 +45,9 @@ const Store = props => {
   const [getGlobalcourseId, setGlobalcourseId] = useState("");
   const [getGlobalCourseTag, setGlobalCourseTag] = useState("");
 
+  const [getGlobalCourseTagThai, setGlobalCourseTagThai] = useState([]);
+  const [getGlobalCourseTagEnglish, setGlobalCourseTagEnglish] = useState([]);
+
   const [getGlobalLessionSelect, setGlobalLessionSelect] = useState({});
 
   const [getGlobalLessionSelectNew, setGlobalLessionSelectNew] = useState({});
@@ -345,6 +348,12 @@ const Store = props => {
 
     getGlobalCourseTag,
     setGlobalCourseTag,
+
+    getGlobalCourseTagThai,
+    setGlobalCourseTagThai,
+
+    getGlobalCourseTagEnglish,
+    setGlobalCourseTagEnglish,
 
     getGlobalLessionSelectNew,
     setGlobalLessionSelectNew,

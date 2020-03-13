@@ -106,7 +106,9 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseSlug: courseSlug,
     courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
     coursePrice:GlobalHook.getGlobalCoursePrice,
-    courseFee:GlobalHook.getGlobalCourseFee
+    courseFee:GlobalHook.getGlobalCourseFee,
+    courseTagThai:GlobalHook.getGlobalCourseTagThai,
+    courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish
   };
 
   axios
@@ -176,6 +178,8 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalcourseImageFileName(res.data.courseImageFileName)
       GlobalHook.setGlobalCourseFee(res.data.courseFee)
       GlobalHook.setGlobalCoursePrice(res.data.coursePrice)
+      GlobalHook.setGlobalCourseTagEnglish(res.data.courseTagEnglish)
+      GlobalHook.setGlobalCourseTagThai(res.data.courseTagThai)
       
 
     })
@@ -202,7 +206,9 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseTag: GlobalHook.getGlobalCourseTag,
         courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
         coursePrice:GlobalHook.getGlobalCoursePrice,
-        courseFee:GlobalHook.getGlobalCourseFee
+        courseFee:GlobalHook.getGlobalCourseFee,
+        courseTagThai:GlobalHook.getGlobalCourseTagThai,
+        courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish
   };
 
 

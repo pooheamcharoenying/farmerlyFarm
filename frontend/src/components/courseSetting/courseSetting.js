@@ -41,8 +41,8 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
-  const [getTagsEnglish, setTagsEnglish] = useState([]);
-  const [getTagsThai, setTagsThai] = useState([]);
+  // const [getTagsEnglish, setTagsEnglish] = useState([]);
+  // const [ GlobalHook.getGlobalCourseTagThai,  GlobalHook.setGlobalCourseTagThai] = useState([]);
 
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
@@ -50,6 +50,25 @@ export default function FabCreateCourse() {
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
   }, []);
+
+  // useEffect(() => {
+  //   if(GlobalHook.getGlobalCourseTagEnglish){
+
+  //   }
+  //   console.log(GlobalHook.getGlobalCourseTagEnglish)
+  // }, []);
+
+  // useEffect(() => {
+  //   GlobalHook.setGlobalCourseTagEnglish(GlobalHook.getGlobalCourseTagEnglish)
+  // }, [GlobalHook.getGlobalCourseTagEnglish]);
+
+  // useEffect(() => {
+  //    GlobalHook.setGlobalCourseTagThai(GlobalHook.getGlobalCourseTagThai)
+  // }, []);
+
+  // useEffect(() => {
+  //   GlobalHook.setGlobalCourseTagThai( GlobalHook.getGlobalCourseTagThai)
+  // }, [ GlobalHook.getGlobalCourseTagThai]);
 
   const {
     acceptedFiles,
@@ -130,29 +149,29 @@ export default function FabCreateCourse() {
   }
 
   function handleDelete(i) {
-    const tagsEng = getTagsEnglish.slice(0);
-    const tagsThai = getTagsThai.slice(0);
+    const tagsEng = GlobalHook.getGlobalCourseTagEnglish.slice(0);
+    const tagsThai =  GlobalHook.getGlobalCourseTagThai.slice(0);
 
     tagsEng.splice(i, 1);
     tagsThai.splice(i, 1);
 
-    setTagsEnglish(tagsEng);
-    setTagsThai(tagsThai);
+    GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+     GlobalHook.setGlobalCourseTagThai(tagsThai);
   }
 
   function handleAddition(tag) {
     if (tag.id) {
       const tagsEng = [].concat(
-        getTagsEnglish,
+        GlobalHook.getGlobalCourseTagEnglish,
         getSuggestionsEnglish.filter(item => item.id == tag.id)
       );
       const tagsThai = [].concat(
-        getTagsThai,
+         GlobalHook.getGlobalCourseTagThai,
         getSuggestionsThai.filter(item => item.id == tag.id)
       );
 
-      setTagsEnglish(tagsEng);
-      setTagsThai(tagsThai);
+      GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+       GlobalHook.setGlobalCourseTagThai(tagsThai);
     } else {
       alert("add custom new tag");
     }
@@ -176,9 +195,9 @@ export default function FabCreateCourse() {
   }
   // ///THAI
   // function handleDeleteThai (i) {
-  //   const tags = getTagsThai.slice(0)
+  //   const tags =  GlobalHook.getGlobalCourseTagThai.slice(0)
   //   tags.splice(i, 1)
-  //   setTagsThai(tags)
+  //    GlobalHook.setGlobalCourseTagThai(tags)
 
   // }
 
@@ -392,7 +411,7 @@ export default function FabCreateCourse() {
               <div className="font-bold text mb-2">Tags</div>
 
               <ReactTags
-                tags={getTagsEnglish}
+                tags={GlobalHook.getGlobalCourseTagEnglish}
                 suggestions={getSuggestionsEnglish}
                 handleDelete={e => handleDelete(e)}
                 handleAddition={e => handleAddition(e)}
@@ -401,7 +420,7 @@ export default function FabCreateCourse() {
                 placeholder={"Add English Tags"}
               />
               <ReactTags
-                tags={getTagsThai}
+                tags={ GlobalHook.getGlobalCourseTagThai}
                 suggestions={getSuggestionsThai}
                 handleDelete={e => handleDelete(e)}
                 handleAddition={e => handleAddition(e)}

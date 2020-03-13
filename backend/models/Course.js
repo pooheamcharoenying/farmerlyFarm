@@ -52,6 +52,12 @@ const CourseSchema = new Schema({
   },
   coursePrice: {
     type: String
+  },
+  courseTagEnglish: {
+    type: Array
+  },
+  courseTagThai: {
+    type: Array
   }
 });
 
