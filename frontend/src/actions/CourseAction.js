@@ -84,6 +84,7 @@ function getCourseContentAction(GlobalHook, courseSlug) {
         JSON.stringify(res.data.courseData[0].contentStructure)
       );
 
+      console.log(res.data)
     })
     .catch(err => console.log(err));
 }

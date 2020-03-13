@@ -19,6 +19,7 @@ function SaveCourseStructure(GlobalHook){
     courseStructure: GlobalHook.getGlobalCourseStructureNew,
     courseSlug:GlobalHook.getGlobalCourseSlug
   };
+  console.log(pushData)
   GlobalHook.setGlobalCourseInfoOverview(GlobalHook.getGlobalCourseInfoOverviewNew)
   GlobalHook.setGlobalCourseInfoStudent(GlobalHook.getGlobalCourseInfoStudentNew)
   GlobalHook.setGlobalCourseInfoTeacher(GlobalHook.getGlobalCourseInfoTeacherNew)

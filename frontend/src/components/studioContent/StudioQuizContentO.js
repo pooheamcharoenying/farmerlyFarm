@@ -172,7 +172,7 @@ const StudioQuizContent = () => {
   useEffect(() => {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
-    if (oldCourseStructure[parentIndex] && getLessionName && getLessionTime) {
+    if (oldCourseStructure[parentIndex] && getLessionName) {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].title = getLessionName;
@@ -192,6 +192,8 @@ const StudioQuizContent = () => {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].etc5 = getQuizSettingAmountRandom;
+    
+      // console.log(oldCourseStructure)
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
     }
   }, [
@@ -288,7 +290,7 @@ const StudioQuizContent = () => {
 
         <Input
           value={getLessionName}
-          onChange={e => setLessionName(e.target.value)}
+          onChange={e => {setLessionName(e.target.value)}}
         />
       </div>
 

@@ -369,12 +369,12 @@ export default function CourseQuizContent() {
         GlobalHook,
         GlobalHook.getGlobalLessionSelect.mediaId
       );
-      let QuizLogData = {
-        "correct":CalSocreFinish().correctAnswerAmount,
-        "done":CalSocreFinish().doneQuestionAmount -
-      CalSocreFinish().correctAnswerAmount,
-    "totalAmount":getQuestionAmount}
-      QuizLogAction(GlobalHook,QuizLogData)
+    //   let QuizLogData = {
+    //     "correct":CalSocreFinish().correctAnswerAmount,
+    //     "done":CalSocreFinish().doneQuestionAmount -
+    //   CalSocreFinish().correctAnswerAmount,
+    // "totalAmount":getQuestionAmount}
+      QuizLogAction(GlobalHook,getUserAnsBank)
     }
   }
 
