@@ -14,6 +14,8 @@ import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
 import SwitchR from "react-switch";
+import ReactTags from "react-tag-autocomplete";
+import axios from "axios";
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
@@ -35,7 +37,8 @@ export default function FabCreateCourse() {
   const [getImageFileName, setImageFileName] = useState("");
   const [getCourseFee, setCourseFee] = useState(true);
   const [getCoursePrice, setCoursePrice] = useState(null);
-
+  const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
+  const [getSuggestionsThai, setSuggestionsThai] = useState([]);
   const {
     acceptedFiles,
     getRootProps,
@@ -111,7 +114,51 @@ export default function FabCreateCourse() {
         });
     });
   }
+  function handleDelete(i) {
+    const tagsEng = GlobalHook.getGlobalCourseTagEnglish.slice(0);
+    const tagsThai =  GlobalHook.getGlobalCourseTagThai.slice(0);
 
+    tagsEng.splice(i, 1);
+    tagsThai.splice(i, 1);
+
+    GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+     GlobalHook.setGlobalCourseTagThai(tagsThai);
+  }
+
+  function handleAddition(tag) {
+    if (tag.id) {
+      const tagsEng = [].concat(
+        GlobalHook.getGlobalCourseTagEnglish,
+        getSuggestionsEnglish.filter(item => item.id == tag.id)
+      );
+      const tagsThai = [].concat(
+         GlobalHook.getGlobalCourseTagThai,
+        getSuggestionsThai.filter(item => item.id == tag.id)
+      );
+
+      GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+       GlobalHook.setGlobalCourseTagThai(tagsThai);
+    } else {
+      alert("add custom new tag");
+    }
+  }
+
+  function handleInputChange(query) {
+    axios
+      .post(`/api/tag/gettag/`, { tag: query })
+      .then(res => {
+        let matchTagSuggestEnglish = [];
+        let matchTagSuggestThai = [];
+
+        res.data.map(item => {
+          matchTagSuggestEnglish.push({ id: item._id, name: item.english });
+          matchTagSuggestThai.push({ id: item._id, name: item.thai });
+        });
+        setSuggestionsEnglish(matchTagSuggestEnglish);
+        setSuggestionsThai(matchTagSuggestThai);
+      })
+      .catch(err => console.log(err));
+  }
   function CreateCoursePopUp() {
     return (
       <Modal
@@ -307,10 +354,23 @@ export default function FabCreateCourse() {
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2">Tags</div>
-              <TextArea
-                onChange={e => GlobalHook.setGlobalCourseTag(e.target.value)}
-                value={GlobalHook.getGlobalCourseTag}
-                autoSize={{ minRows: 3, maxRows: 5 }}
+              <ReactTags
+                tags={GlobalHook.getGlobalCourseTagEnglish}
+                suggestions={getSuggestionsEnglish}
+                handleDelete={e => handleDelete(e)}
+                handleAddition={e => handleAddition(e)}
+                minQueryLength={1}
+                handleInputChange={e => handleInputChange(e)}
+                placeholder={"Add English Tags"}
+              />
+              <ReactTags
+                tags={ GlobalHook.getGlobalCourseTagThai}
+                suggestions={getSuggestionsThai}
+                handleDelete={e => handleDelete(e)}
+                handleAddition={e => handleAddition(e)}
+                minQueryLength={1}
+                handleInputChange={e => handleInputChange(e)}
+                placeholder={"Add Thai Tags"}
               />
             </div>
 

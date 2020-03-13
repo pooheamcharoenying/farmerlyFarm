@@ -41,8 +41,7 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
-  // const [getTagsEnglish, setTagsEnglish] = useState([]);
-  // const [ GlobalHook.getGlobalCourseTagThai,  GlobalHook.setGlobalCourseTagThai] = useState([]);
+
 
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
@@ -51,24 +50,6 @@ export default function FabCreateCourse() {
     GetCourseSettingAction(GlobalHook, courseSlug);
   }, []);
 
-  // useEffect(() => {
-  //   if(GlobalHook.getGlobalCourseTagEnglish){
-
-  //   }
-  //   console.log(GlobalHook.getGlobalCourseTagEnglish)
-  // }, []);
-
-  // useEffect(() => {
-  //   GlobalHook.setGlobalCourseTagEnglish(GlobalHook.getGlobalCourseTagEnglish)
-  // }, [GlobalHook.getGlobalCourseTagEnglish]);
-
-  // useEffect(() => {
-  //    GlobalHook.setGlobalCourseTagThai(GlobalHook.getGlobalCourseTagThai)
-  // }, []);
-
-  // useEffect(() => {
-  //   GlobalHook.setGlobalCourseTagThai( GlobalHook.getGlobalCourseTagThai)
-  // }, [ GlobalHook.getGlobalCourseTagThai]);
 
   const {
     acceptedFiles,
@@ -193,13 +174,7 @@ export default function FabCreateCourse() {
       })
       .catch(err => console.log(err));
   }
-  // ///THAI
-  // function handleDeleteThai (i) {
-  //   const tags =  GlobalHook.getGlobalCourseTagThai.slice(0)
-  //   tags.splice(i, 1)
-  //    GlobalHook.setGlobalCourseTagThai(tags)
 
-  // }
 
   function handleInputChangeThai(query) {}
 
