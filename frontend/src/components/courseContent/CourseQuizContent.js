@@ -349,7 +349,34 @@ export default function CourseQuizContent() {
     let questionAmount = 0;
     let UserAnswerPool = getUserAnsBank;
     Object.values(UserAnswerPool).forEach(value => {
-      console.log(value)
+     
+      if (value.result == true) {
+        correctAnswerAmount++;
+      }else if(value.result == false){
+        inCorrectAnswerAmount++;
+      }else{
+        skipAnsAmount++;
+      }
+      questionAmount++;
+    });
+
+    return {
+      correctAnswerAmount,
+      inCorrectAnswerAmount,
+      skipAnsAmount,
+      questionAmount
+    };
+  }
+
+  function CalSocreResult(data) {
+    //console.log(data)
+    let correctAnswerAmount = 0;
+    let inCorrectAnswerAmount = 0;
+    let skipAnsAmount = 0;
+    let questionAmount = 0;
+    let UserAnswerPool = data;
+    Object.values(UserAnswerPool).forEach(value => {
+     
       if (value.result == true) {
         correctAnswerAmount++;
       }else if(value.result == false){
@@ -371,7 +398,7 @@ export default function CourseQuizContent() {
   function ResetUserAnsBank() {
     let UserAnsInitBank = {};
     getQuestionPool.map(item => {
-      UserAnsInitBank[item.questionId] = {};
+      UserAnsInitBank[item.questionId] = {"Z":"Z"};
 
     });
     setUserAnsBank(UserAnsInitBank);
@@ -404,6 +431,7 @@ export default function CourseQuizContent() {
     }
   }
 
+
   useEffect(() => {
     if (GlobalHook.getGlobalToken && getisSubscription) {
       let user = GlobalHook.getGlobalUser;
@@ -422,15 +450,16 @@ export default function CourseQuizContent() {
     GlobalHook.getGlobalLessionSelect
   ]);
 
-  const dataSource = getQuizHistory.map(data => ({
-    key: 1,
+  const dataSource = getQuizHistory.map((data,index) => ({
+    key: index,
     date: moment(parseInt(data.logTime)).format("DD/MM/YYYY HH:mm:ss"),
-    finish: data.quizData.done,
-    correct: data.quizData.correct,
+    finish: CalSocreResult(data.quizData).questionAmount - CalSocreResult(data.quizData).skipAnsAmount,
+    correct: CalSocreResult(data.quizData).correctAnswerAmount,
     percentage: parseInt(
-      (data.quizData.correct / data.quizData.totalAmount) * 100
+      (CalSocreResult(data.quizData).correctAnswerAmount / CalSocreResult(data.quizData).questionAmount) * 100
     )
   }));
+
 
   const columns = [
     {

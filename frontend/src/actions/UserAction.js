@@ -246,6 +246,7 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
 }
 
 function QuizLogAction(GlobalHook,QuizLogData) {
+  console.log(QuizLogData)
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
     lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
