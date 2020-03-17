@@ -10,7 +10,7 @@ import {
 import { Pie } from "react-chartjs-2";
 import { GlobalContext, CourseQuizContext } from "../../hook/GlobalHook";
 import TextEditor from "../textEditor/TextEditor";
-import { LessionVisitedLogAction,QuizLogAction } from "../../actions";
+import { LessionVisitedLogAction, QuizLogAction } from "../../actions";
 
 import {
   FetchQuestionWhenSelectAction,
@@ -142,7 +142,11 @@ export default function CourseQuizContent() {
     if (getUserAnsBank[getQuestionPool[index].questionId]) {
       setUserClick(getUserAnsBank[getQuestionPool[index].questionId].ans);
     }
+ 
+
   }
+
+
 
   function shuffle(array) {
     var currentIndex = array.length,
@@ -179,6 +183,7 @@ export default function CourseQuizContent() {
       ans: content
     };
     setUserAnsBank(oldUserAnsBank);
+    console.log(getUserAnsBank)
   }
 
   function handleAnsSubmit() {
@@ -273,7 +278,7 @@ export default function CourseQuizContent() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-             <button
+            <button
               onClick={() => {
                 RestartQuiz();
               }}
@@ -296,8 +301,6 @@ export default function CourseQuizContent() {
             >
               ReviewQuestion
             </button> */}
-
-           
           </div>
         ]}
       >
@@ -326,7 +329,7 @@ export default function CourseQuizContent() {
           CalSocreFinish().correctAnswerAmount,
           CalSocreFinish().doneQuestionAmount -
             CalSocreFinish().correctAnswerAmount,
-            getQuestionAmount -  CalSocreFinish().doneQuestionAmount
+          getQuestionAmount - CalSocreFinish().doneQuestionAmount
         ],
         backgroundColor: ["#c6f1d6", "#ff8080", "#ffba92"]
       }
@@ -346,7 +349,7 @@ export default function CourseQuizContent() {
 
     return {
       correctAnswerAmount: correctAnswerAmount,
-      doneQuestionAmount: doneQuestionAmount,
+      doneQuestionAmount: doneQuestionAmount
     };
   }
 
@@ -362,19 +365,19 @@ export default function CourseQuizContent() {
   }
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
-    clearInterval(countdown)
+    clearInterval(countdown);
 
     if (GlobalHook.getGlobalToken && getisSubscription) {
       LessionVisitedLogAction(
         GlobalHook,
         GlobalHook.getGlobalLessionSelect.mediaId
       );
-    //   let QuizLogData = {
-    //     "correct":CalSocreFinish().correctAnswerAmount,
-    //     "done":CalSocreFinish().doneQuestionAmount -
-    //   CalSocreFinish().correctAnswerAmount,
-    // "totalAmount":getQuestionAmount}
-      QuizLogAction(GlobalHook,getUserAnsBank)
+      //   let QuizLogData = {
+      //     "correct":CalSocreFinish().correctAnswerAmount,
+      //     "done":CalSocreFinish().doneQuestionAmount -
+      //   CalSocreFinish().correctAnswerAmount,
+      // "totalAmount":getQuestionAmount}
+      QuizLogAction(GlobalHook, getUserAnsBank);
     }
   }
 
@@ -387,18 +390,23 @@ export default function CourseQuizContent() {
       const findMatchLession = findCourseMatch[0].quizLog.filter(
         data => data.lessionId == GlobalHook.getGlobalLessionSelect.mediaId
       );
-console.log(GlobalHook.getGlobalLessionSelect.mediaId)
-console.log(findMatchLession)
+
       setQuizHistory(findMatchLession);
     }
-  }, [GlobalHook.getGlobalUser,getisSubscription,GlobalHook.getGlobalLessionSelect]);
+  }, [
+    GlobalHook.getGlobalUser,
+    getisSubscription,
+    GlobalHook.getGlobalLessionSelect
+  ]);
 
   const dataSource = getQuizHistory.map(data => ({
     key: 1,
     date: moment(parseInt(data.logTime)).format("DD/MM/YYYY HH:mm:ss"),
     finish: data.quizData.done,
-    correct:  data.quizData.correct,
-    percentage:parseInt(( data.quizData.correct/data.quizData.totalAmount)*100)
+    correct: data.quizData.correct,
+    percentage: parseInt(
+      (data.quizData.correct / data.quizData.totalAmount) * 100
+    )
   }));
 
   const columns = [
@@ -426,7 +434,6 @@ console.log(findMatchLession)
     }
   ];
 
-  
   function RenderQuizHistory() {
     return (
       <Modal
@@ -461,7 +468,7 @@ console.log(findMatchLession)
               dataSource={dataSource}
               columns={columns}
               className="overflow-y-scroll"
-              style={{ maxHeight: "300px", width: "auto",minWidth:"400px" }}
+              style={{ maxHeight: "300px", width: "auto", minWidth: "400px" }}
             />
           </div>
         </div>
@@ -512,7 +519,10 @@ console.log(findMatchLession)
             className="bg-white w-11/12 md:w-10/12 flex flex-col items-center justify-center rounded-lg border-dotted border-2 py-6"
             style={{ minHeight: "60vh" }}
           >
-            <div className="mb-6 text-lg"> Quiz: {GlobalHook.getGlobalLessionSelect.mediaName}</div>
+            <div className="mb-6 text-lg">
+              {" "}
+              Quiz: {GlobalHook.getGlobalLessionSelect.mediaName}
+            </div>
             <div className="mb-6">จำนวน {getQuestionAmount} ข้อ</div>
             {GlobalHook.getGlobalLessionSelect.mediaEtc2 && (
               <div className="mb-6">
@@ -591,6 +601,7 @@ console.log(findMatchLession)
                 className="text-5xl ml-4 "
                 onClick={() => {
                   handleNextClick();
+               
                 }}
               >
                 <FaCaretRight />
@@ -627,29 +638,13 @@ console.log(findMatchLession)
                       </div>
                     );
                   })}
-                  {/* 
-                    <div
-                        className=" mt-4 rounded-lg flex justify-center items-center cursor-pointer border-dotted border-2"
-                        style={{
-                          minWidth: "200px",
-                          minHeight: "40px",
-                          background:
-                            getUserClick == "Don't Know" ? "lightblue" : "white"
-                        }}
-                        onClick={() => {
-                          setUserClick("Don't Know");
-                          UserAnsClick("Don't Know");
-                        }}
-                      >
-                        Don't Know
-                      </div> */}
+                
                 </div>
               ) : (
                 <TextArea
                   autoSize={{ minRows: 2, maxRows: 6 }}
                   value={getUserClick}
                   onChange={e => {
-
                     setUserClick(e.target.value);
                     UserAnsClick(e.target.value);
                   }}

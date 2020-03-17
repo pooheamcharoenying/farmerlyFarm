@@ -10,7 +10,8 @@ import {
   message,
   Icon,
   Switch,
-  Tag
+  Tag,
+  Popover
 } from "antd";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
@@ -52,7 +53,6 @@ export default function FabCreateCourse() {
   const [getAddNewTag, setAddNewTag] = useState("");
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
-
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -279,14 +279,52 @@ export default function FabCreateCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            <button
+
+          <Popover
+              content={
+                <div className="flex w-full justify-center">
+                  <div
+                    className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
+                    onClick={() => {
+                  
+                      setShowConfirmDel(false);
+                      DeleteCourseLessionAction(GlobalHook, courseSlug);
+                    }}
+                  >
+                    Delete
+                  </div>{" "}
+                  <div
+                    className="text-gray-600 hover:text-gray-500 cursor-pointer"
+                    onClick={() => {
+                      setShowConfirmDel(false);
+                    }}
+                  >
+                    cancel
+                  </div>
+                </div>
+              }
+              title="Are you sure to delete this Course?"
+              trigger="click"
+              visible={getShowConfirmDel}
+              onVisibleChange={() => setShowConfirmDel(!getShowConfirmDel)}
+            >
+              <div
+             
+              className="bg-red-500 text-white p-2 rounded hover:bg-red-400 cursor-pointer mr-4"
+            >
+              Delete Course
+            </div>
+            </Popover>
+
+
+            {/* <button
               onClick={() => {
                 DeleteCourseLessionAction(GlobalHook, courseSlug);
               }}
               className="bg-red-500 text-white p-2 rounded hover:bg-red-400"
             >
               Delete Course
-            </button>
+            </button> */}
             <button
               onClick={() =>
                 SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus)

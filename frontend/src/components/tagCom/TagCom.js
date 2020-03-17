@@ -154,7 +154,7 @@ export default function TagCom(props) {
       <>
       {RenderAddNewTagModal()}
     <div className="flex flex-col text-center my-4 bg-white">
-      <div className="font-bold text mb-2">Tags</div>
+      <div className="font-bold text mb-2 flex justify-around w-full bg-red-200"><div className="mr-2">Tags</div></div>
 
       <ReactTags
         tags={props.InTagEnglish}
