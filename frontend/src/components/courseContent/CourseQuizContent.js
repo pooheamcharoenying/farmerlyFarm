@@ -322,6 +322,7 @@ export default function CourseQuizContent() {
           <div>จำนวนทำเสร็จ {CalSocreFinish().doneQuestionAmount}</div>
 
           <div>จำนวนข้อmทั้งหมด {GlobalHook.getGlobalLessionSelect.mediaEtc5}</div> */}
+          <div>จำนวนข้อทั้งหมด {CalSocreFinish().questionAmount}</div>
         </div>
       </Modal>
     );
@@ -333,9 +334,8 @@ export default function CourseQuizContent() {
       {
         data: [
           CalSocreFinish().correctAnswerAmount,
-          CalSocreFinish().doneQuestionAmount -
-            CalSocreFinish().correctAnswerAmount,
-          getQuestionAmount - CalSocreFinish().doneQuestionAmount
+          CalSocreFinish().inCorrectAnswerAmount,
+          CalSocreFinish().skipAnsAmount
         ],
         backgroundColor: ["#c6f1d6", "#ff8080", "#ffba92"]
       }
@@ -344,18 +344,27 @@ export default function CourseQuizContent() {
 
   function CalSocreFinish() {
     let correctAnswerAmount = 0;
-    let doneQuestionAmount = 0;
+    let inCorrectAnswerAmount = 0;
+    let skipAnsAmount = 0;
+    let questionAmount = 0;
     let UserAnswerPool = getUserAnsBank;
     Object.values(UserAnswerPool).forEach(value => {
-      if (value.result) {
+      console.log(value)
+      if (value.result == true) {
         correctAnswerAmount++;
+      }else if(value.result == false){
+        inCorrectAnswerAmount++;
+      }else{
+        skipAnsAmount++;
       }
-      doneQuestionAmount++;
+      questionAmount++;
     });
 
     return {
-      correctAnswerAmount: correctAnswerAmount,
-      doneQuestionAmount: doneQuestionAmount
+      correctAnswerAmount,
+      inCorrectAnswerAmount,
+      skipAnsAmount,
+      questionAmount
     };
   }
 
@@ -363,7 +372,7 @@ export default function CourseQuizContent() {
     let UserAnsInitBank = {};
     getQuestionPool.map(item => {
       UserAnsInitBank[item.questionId] = {};
-      console.log(item.questionId);
+
     });
     setUserAnsBank(UserAnsInitBank);
   }
