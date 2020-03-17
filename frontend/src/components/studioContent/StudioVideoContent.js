@@ -18,6 +18,7 @@ import SwitchR from "react-switch";
 import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
 import { SaveAllAction, CheckMutateAction } from "../../actions";
+import TagCom from '../tagCom/TagCom'
 
 const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
 
@@ -302,6 +303,9 @@ const StudioVideoContent = () => {
           />
         
         </div>
+
+        <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
+
 
 
         <div className="flex flex-col text-center mb-6 justify-center w-full items-center">

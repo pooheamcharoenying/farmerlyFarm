@@ -13,6 +13,8 @@ import {
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import AWS from "aws-sdk";
+import TagCom from '../tagCom/TagCom'
+
 import SwitchR from "react-switch";
 import ReactTags from "react-tag-autocomplete";
 import axios from "axios";
@@ -352,7 +354,10 @@ export default function FabCreateCourse() {
               )}
             </div>
 
-            <div className="flex flex-col text-center my-4">
+            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
+
+
+            {/* <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2">Tags</div>
               <ReactTags
                 tags={GlobalHook.getGlobalCourseTagEnglish}
@@ -372,7 +377,7 @@ export default function FabCreateCourse() {
                 handleInputChange={e => handleInputChange(e)}
                 placeholder={"Add Thai Tags"}
               />
-            </div>
+            </div> */}
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>

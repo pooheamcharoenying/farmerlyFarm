@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Input, Switch, Select, Tabs, Popover } from "antd";
 import { FaTrashAlt, FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
+import TagCom from '../tagCom/TagCom'
 
 import { GlobalContext, NewContext } from "../../hook/GlobalHook";
 import QuizHead from "./horizonDrag/QuizHead";
@@ -376,6 +377,7 @@ const StudioQuizContent = () => {
           </Select>
         </div>
       </div>
+      <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
       <div
         id="QuestionEditorZone"

@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import {FaTrashAlt} from 'react-icons/fa'
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
+import TagCom from '../tagCom/TagCom'
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {SaveAllAction,CheckMutateAction} from "../../actions"
@@ -187,6 +188,7 @@ useEffect(() => {
           />
         
         </div>
+        <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
         <div className="w-11/12 md:w-10/12">
           <ReactQuill
