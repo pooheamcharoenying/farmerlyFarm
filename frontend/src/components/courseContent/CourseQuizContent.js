@@ -124,18 +124,18 @@ export default function CourseQuizContent() {
       }
 
       setQuestionPool(FinalQuizBank);
-     // InitUserAnsBank(FinalQuizBank)
+      // InitUserAnsBank(FinalQuizBank)
       FetchQuestionWhenSelectAction(GlobalHook, FinalQuizBank[0].questionId);
     }
   }, [GlobalHook.getGlobalMediaQuiz]);
 
-  function InitUserAnsBank(FinalQuizBank){
-    let UserAnsInitBank = {}
-    FinalQuizBank.map((item)=>{
-      UserAnsInitBank[item.questionId] = {}
-      console.log(item.questionId)
-    })
-    setUserAnsBank(UserAnsInitBank)
+  function InitUserAnsBank(FinalQuizBank) {
+    let UserAnsInitBank = {};
+    FinalQuizBank.map(item => {
+      UserAnsInitBank[item.questionId] = {};
+      console.log(item.questionId);
+    });
+    setUserAnsBank(UserAnsInitBank);
   }
   function handleQuizSelect(index) {
     setShowCorrectAns(false);
@@ -151,11 +151,7 @@ export default function CourseQuizContent() {
     if (getUserAnsBank[getQuestionPool[index].questionId]) {
       setUserClick(getUserAnsBank[getQuestionPool[index].questionId].ans);
     }
- 
-
   }
-
-
 
   function shuffle(array) {
     var currentIndex = array.length,
@@ -188,14 +184,13 @@ export default function CourseQuizContent() {
 
   function UserAnsClick(content) {
     let oldUserAnsBank = getUserAnsBank;
-    console.log(getUserAnsBank)
+    console.log(getUserAnsBank);
     oldUserAnsBank[getQuestionPool[getSelectQuestion].questionId] = {
       ans: content
     };
     setUserAnsBank(oldUserAnsBank);
-    console.log(getUserAnsBank)
+    console.log(getUserAnsBank);
   }
-
 
   function handleAnsSubmit() {
     if (getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].ans) {
@@ -364,24 +359,21 @@ export default function CourseQuizContent() {
     };
   }
 
-  function ResetUserAnsBank(){
-  
-      let UserAnsInitBank = {}
-      getQuestionPool.map((item)=>{
-        UserAnsInitBank[item.questionId] = {}
-        console.log(item.questionId)
-      })
-      setUserAnsBank(UserAnsInitBank)
-    
-   
+  function ResetUserAnsBank() {
+    let UserAnsInitBank = {};
+    getQuestionPool.map(item => {
+      UserAnsInitBank[item.questionId] = {};
+      console.log(item.questionId);
+    });
+    setUserAnsBank(UserAnsInitBank);
   }
   function RestartQuiz() {
     setModalQuizResultSummaryOpenStatus(false);
     setShowTimeOutModal(false);
     GlobalHook.setGlobalStatusCode("resetUserClicker");
     setStartedQuiz(false);
-    ResetUserAnsBank()
- 
+    ResetUserAnsBank();
+
     setShowCorrectAns(false);
     setUserClick(null);
   }
@@ -563,7 +555,7 @@ export default function CourseQuizContent() {
                   getQuestionPool[0].questionId
                 );
                 setSelectQuestion(0);
-                ResetUserAnsBank()
+                ResetUserAnsBank();
                 setUserClick(null);
               }}
             >
@@ -623,7 +615,6 @@ export default function CourseQuizContent() {
                 className="text-5xl ml-4 "
                 onClick={() => {
                   handleNextClick();
-               
                 }}
               >
                 <FaCaretRight />
@@ -660,7 +651,6 @@ export default function CourseQuizContent() {
                       </div>
                     );
                   })}
-                
                 </div>
               ) : (
                 <TextArea
