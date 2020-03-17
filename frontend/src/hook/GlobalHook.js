@@ -56,6 +56,7 @@ const Store = props => {
   const [getGlobalCourseTagThaiQuiz, setGlobalCourseTagThaiQuiz] = useState([]);
   const [getGlobalCourseTagEnglishQuiz, setGlobalCourseTagEnglishQuiz] = useState([]);
 
+  const [getLessionTagSameAsCourseStatus,setLessionTagSameAsCourseStatus] = useState(true)
 
 
 
@@ -186,6 +187,8 @@ const Store = props => {
   const [getGlobalCoursePrice,setGlobalCoursePrice] = useState(null)
   
   const [getGlobalShowCourseFeeAlertModal,setGlobalShowCourseFeeAlertModal] = useState(false)
+  const [getQuizTagSameAsLessionStatus,setQuizTagSameAsLessionStatus] = useState(true)
+
 
   ///Generate GlobalHook///
   const GlobalHook = {
@@ -394,7 +397,13 @@ const Store = props => {
     setGlobalCourseTagThaiQuiz,
 
     getGlobalCourseTagEnglishQuiz,
-    setGlobalCourseTagEnglishQuiz
+    setGlobalCourseTagEnglishQuiz,
+
+    getLessionTagSameAsCourseStatus,
+    setLessionTagSameAsCourseStatus,
+
+    getQuizTagSameAsLessionStatus,
+    setQuizTagSameAsLessionStatus
 
 
   };

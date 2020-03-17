@@ -42,7 +42,8 @@ router.post(
             answerExplainType: req.body.answerExplainType,
             answerExplainField: req.body.answerExplainField,
             quizTagEnglish: req.body.quizTagEnglish,
-            quizTagThai: req.body.quizTagThai
+            quizTagThai: req.body.quizTagThai,
+            quizTagStatus: req.body.quizTagStatus
           
         },
         { new: true, upsert: true },

@@ -52,6 +52,7 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
          GlobalHook.setGloblaQuizExplainField(res.data.data.answerExplainField );
          GlobalHook.setGlobalCourseTagThaiQuiz(res.data.data.quizTagThai)
          GlobalHook.setGlobalCourseTagEnglishQuiz(res.data.data.quizTagEnglish)
+         GlobalHook.setQuizTagSameAsLessionStatus(res.data.data.quizTagStatus)
   
          GlobalHook.setGlobalLoading(false)
 
@@ -82,7 +83,8 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
             mediaId:GlobalHook.getGlobalLessionSelect.mediaId,
             courseSlug:GlobalHook.getGlobalCourseSlug,
             quizTagEnglish: GlobalHook.getGlobalCourseTagEnglishQuiz,
-            quizTagThai:  GlobalHook.getGlobalCourseTagThaiQuiz
+            quizTagThai:  GlobalHook.getGlobalCourseTagThaiQuiz,
+            quizTagStatus:GlobalHook.getQuizTagSameAsLessionStatus
            
     };
 

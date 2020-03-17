@@ -54,7 +54,8 @@ function SaveMediaContent (GlobalHook){
       "mediaContent":GlobalHook.getGlobalMediaNew,
       "courseSlug":GlobalHook.getGlobalCourseSlug,
       "mediaTagEnglish":GlobalHook.getGlobalCourseTagEnglishLession,
-      "mediaTagThai":GlobalHook.getGlobalCourseTagThaiLession
+      "mediaTagThai":GlobalHook.getGlobalCourseTagThaiLession,
+      "mediaTagStatus":GlobalHook.getLessionTagSameAsCourseStatus
   }
 
 

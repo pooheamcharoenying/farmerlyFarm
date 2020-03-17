@@ -170,6 +170,7 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
 
       GlobalHook.setGlobalCourseTagEnglishLession(res.data.data.mediaTagEnglish)
       GlobalHook.setGlobalCourseTagThaiLession(res.data.data.mediaTagThai)
+      GlobalHook.setLessionTagSameAsCourseStatus(res.data.data.mediaTagStatus)
 
     
     })

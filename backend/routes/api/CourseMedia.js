@@ -38,7 +38,8 @@ router.post(
         mediaContent: req.body.mediaContent,
         mediaName: req.body.mediaName,
         mediaTagEnglish:req.body.mediaTagEnglish,
-        mediaTagThai:req.body.mediaTagThai
+        mediaTagThai:req.body.mediaTagThai,
+        mediaTagStatus:req.body.mediaTagStatus
       },
       { new: true, upsert: true },
       (err, doc) => {

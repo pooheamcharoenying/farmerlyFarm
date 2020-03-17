@@ -377,8 +377,18 @@ const StudioQuizContent = () => {
           </Select>
         </div>
       </div>
-      <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>
 
+      <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Course</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => GlobalHook.setLessionTagSameAsCourseStatus(e)}
+            checked={GlobalHook.getLessionTagSameAsCourseStatus}
+          />
+        
+        </div>
+
+       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
 
       <div
         id="QuestionEditorZone"
@@ -449,7 +459,19 @@ const StudioQuizContent = () => {
                 }
               />
             </div>
-            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiQuiz} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishQuiz} OutTagThai={GlobalHook.setGlobalCourseTagThaiQuiz} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishQuiz}/>
+           
+
+            <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Lession</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => GlobalHook.setQuizTagSameAsLessionStatus(e)}
+            checked={GlobalHook.getQuizTagSameAsLessionStatus}
+          />
+        
+        </div>
+
+       {!GlobalHook.getQuizTagSameAsLessionStatus &&  <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiQuiz} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishQuiz} OutTagThai={GlobalHook.setGlobalCourseTagThaiQuiz} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishQuiz}/>}
 
             <div className="w-full md:w-10/12 flex flex-col  mb-4">
               <div className="font-bold text-lg mb-2 text-center">

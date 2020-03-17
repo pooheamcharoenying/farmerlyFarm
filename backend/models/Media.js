@@ -30,6 +30,10 @@ const MediaSchema = new Schema({
   mediaTagThai:{
     type: Array
   },
+  mediaTagStatus:{
+    type:Boolean,
+    default:true
+  }
 });
 
 module.exports = MediaSchema; 

@@ -57,6 +57,10 @@ const QuizSchema = new Schema({
   quizTagThai:{
     type: Array
   },
+  quizTagStatus:{
+    type: Boolean,
+    default:true
+  },
 });
 
 module.exports = QuizSchema; 
