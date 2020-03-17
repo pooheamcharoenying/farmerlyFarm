@@ -98,18 +98,25 @@ const StudioVideoContent = () => {
   }, [getLessionName, getLessionTime, getVideoFileName,getLessionPreview]);
 
 
-
+  // Pooh Edited this to
   useEffect(() => {
-    CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
+    console.log("panabalabe")
+    //CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
+    if (GlobalHook.getMutantStatus == true) {
+      GlobalHook.setMutantStatus(false)
+    } else {
+      GlobalHook.setMutantStatus(true)
+    }
+
   }, [getLessionName]);
 
-  useEffect(() => {
-    CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
-  }, [getLessionTime]);
+  // useEffect(() => {
+  //   CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
+  // }, [getLessionTime]);
 
-  useEffect(() => {
-    CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
-  }, [getLessionPreview]);
+  // useEffect(() => {
+  //   CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
+  // }, [getLessionPreview]);
 
   function handleDeleteLession() {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
@@ -211,6 +218,9 @@ const StudioVideoContent = () => {
       setUploadingShow(false);
     }
   }, [GlobalHook.getGlobalLessionSelect]);
+
+
+  
   return (
     <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
     <div className="w-full flex mb-2  justify-center items-center">
@@ -221,7 +231,7 @@ const StudioVideoContent = () => {
       />
 
       <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-        {GlobalHook.getGlobalLessionSelect.mediaName}
+        {getLessionName}
       </div>
       <FaCaretRight
         className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -267,7 +277,9 @@ const StudioVideoContent = () => {
 
           <Input
             value={getLessionName}
-            onChange={e => setLessionName(e.target.value)}
+            onChange={e => 
+              setLessionName(e.target.value)
+            }
           />
         </div>
 

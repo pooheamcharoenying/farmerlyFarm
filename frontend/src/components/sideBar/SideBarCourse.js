@@ -138,7 +138,7 @@ export default function SideBarCourse() {
       style={{
         display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
         overflowY: "scroll",
-        maxHeight:"100vh"
+        maxHeight:"120vh"
         
       }}
     >

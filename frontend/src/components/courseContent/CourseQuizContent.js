@@ -512,6 +512,7 @@ console.log(findMatchLession)
             className="bg-white w-11/12 md:w-10/12 flex flex-col items-center justify-center rounded-lg border-dotted border-2 py-6"
             style={{ minHeight: "60vh" }}
           >
+            <div className="mb-6 text-lg"> Quiz: {GlobalHook.getGlobalLessionSelect.mediaName}</div>
             <div className="mb-6">จำนวน {getQuestionAmount} ข้อ</div>
             {GlobalHook.getGlobalLessionSelect.mediaEtc2 && (
               <div className="mb-6">

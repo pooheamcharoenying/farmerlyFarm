@@ -83,6 +83,32 @@ export default function AllCourse() {
           Coding
         </div>
       </Menu.Item>
+
+      <Menu.Item key="Art">
+        <div className="flex w-30 justify-start items-center text-gray-700">
+          {" "}
+          <FaCode className="mr-2 text-black" />
+          Art
+        </div>
+      </Menu.Item>
+
+      <Menu.Item key="Music">
+        <div className="flex w-30 justify-start items-center text-gray-700">
+          {" "}
+          <FaCode className="mr-2 text-black" />
+          Music
+        </div>
+      </Menu.Item>
+
+      <Menu.Item key="Social Science">
+        <div className="flex w-30 justify-start items-center text-gray-700">
+          {" "}
+          <FaCode className="mr-2 text-black" />
+          Social Science
+        </div>
+      </Menu.Item>
+
+
     </Menu>
   );
 
@@ -144,33 +170,41 @@ export default function AllCourse() {
           >
             ทั้งหมด
           </button>
+
+
           <button
             className="rounded-lg  text-center p-2 mr-4"
             style={{
               flex: 1,
               background:
-                GlobalHook.getGlobalCourseSubjectFilter == "Physics"
+                GlobalHook.getGlobalCourseSubjectFilter == "Science"
                   ? "#3182ce"
                   : "#e2e8f0"
             }}
-            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Physics")}
+            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Science")}
           >
-            Physics
+            Science
           </button>
+
+
+
+
+
+
           <button
             className="rounded-lg  text-center p-2 mr-4"
             style={{
               flex: 1,
               background:
-                GlobalHook.getGlobalCourseSubjectFilter == "Mathematic"
+                GlobalHook.getGlobalCourseSubjectFilter == "Math"
                   ? "#3182ce"
                   : "#e2e8f0"
             }}
             onClick={() =>
-              GlobalHook.setGlobalCourseSubjectFilter("Mathematic")
+              GlobalHook.setGlobalCourseSubjectFilter("Math")
             }
           >
-            Mathematic
+            Math
           </button>
           <button
             className="rounded-lg  text-center p-2 mr-4"
@@ -198,7 +232,78 @@ export default function AllCourse() {
           >
             Robotics
           </button>
+
+
+          <button
+            className="rounded-lg  text-center p-2 mr-4"
+            style={{
+              flex: 1,
+              background:
+                GlobalHook.getGlobalCourseSubjectFilter == "Social Science"
+                  ? "#3182ce"
+                  : "#e2e8f0"
+            }}
+            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Social Science")}
+          >
+            Social Science
+          </button>
+
+          <button
+            className="rounded-lg  text-center p-2 mr-4"
+            style={{
+              flex: 1,
+              background:
+                GlobalHook.getGlobalCourseSubjectFilter == "Art"
+                  ? "#3182ce"
+                  : "#e2e8f0"
+            }}
+            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Art")}
+          >
+            Art
+          </button>
+
+
+
+          <button
+            className="rounded-lg  text-center p-2 mr-4"
+            style={{
+              flex: 1,
+              background:
+                GlobalHook.getGlobalCourseSubjectFilter == "Music"
+                  ? "#3182ce"
+                  : "#e2e8f0"
+            }}
+            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Music")}
+          >
+            Music
+          </button>
+
+          <button
+            className="rounded-lg  text-center p-2 mr-4"
+            style={{
+              flex: 1,
+              background:
+                GlobalHook.getGlobalCourseSubjectFilter == "Other"
+                  ? "#3182ce"
+                  : "#e2e8f0"
+            }}
+            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("Other")}
+          >
+            Other
+          </button>          
+
+
         </div>
+
+
+
+
+
+
+
+
+
+
 
         <div
           className=" justify-around mb-4 px-10 hidden md:flex"

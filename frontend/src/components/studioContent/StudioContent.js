@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import { GlobalContext, NewContext } from "../../hook/GlobalHook";
 import StudioVideoContent from "./StudioVideoContent";
 import StudioDocumentContent from "./StudioDocumentContent";
-import StudioQuizContent from "./StudioQuizContentO";
+import StudioQuizContent from "./StudioQuizContentPooh";
 import StudioOverviewContent from "./StudioOverviewContent";
 import StudioDashboardContent from "./StudioDashboardContent";
 
@@ -42,6 +42,8 @@ export default function StudioContent() {
   }
   return (
     <div className="bg-gray-100 flex-1 mt-16" style={{ overflowY: "auto" }}>
+
+      {console.log("main content")}
       {RenderStudioContentSwitch()}
       {GlobalHook.getGlobalShowSideBarStatus ? (
         <div className="absolute inset-0 min-h-screen min-w-full bg-black opacity-50 z-20 md:hidden" />

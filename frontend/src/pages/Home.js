@@ -6,11 +6,23 @@ import MyCourse from "../components/myCourse/MyCourse";
 import AllCourse from "../components/allCourse/AllCourse";
 import Footer from "../components/footer/Footer";
 import { getCoursePoolAction } from "../actions";
+import { getSubjectCategories } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 export default function Home() {
   const GlobalHook = useContext(GlobalContext);
   useEffect(() => {
     getCoursePoolAction(GlobalHook);
+    var subjectsData = "hobo"
+
+
+    getSubjectCategories().then(data => {
+      console.log('banobagen')
+      console.log(data)
+      subjectsData = data;
+      console.log(subjectsData)
+    })
+
+
   }, []);
 
   return (
