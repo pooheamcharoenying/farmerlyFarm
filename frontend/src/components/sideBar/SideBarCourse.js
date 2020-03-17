@@ -3,6 +3,7 @@ import { Progress, message,Modal,Icon } from "antd";
 import { GlobalContext } from "../../hook/GlobalHook";
 import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
+import './poohStyle.css'
 export default function SideBarCourse() {
   const GlobalHook = useContext(GlobalContext);
   const [getuserCouresLogLength, setuserCouresLogLength] = useState(0);
@@ -134,11 +135,11 @@ export default function SideBarCourse() {
 
   return (
     <div
-      className=" bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex"
+      className=" w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex pooh"
       style={{
         display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
         overflowY: "scroll",
-        maxHeight:"120vh"
+        // maxHeight:"120vh"
         
       }}
     >

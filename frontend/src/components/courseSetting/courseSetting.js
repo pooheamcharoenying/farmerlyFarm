@@ -41,10 +41,17 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
+  const [getModalAddNewTagOpenStatus,setModalAddNewTagOpenStatus] = useState(false)
+
 
 
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
+
+  const [getAddNewTag, setAddNewTag] = useState("");
+  const [getNewTagEnglish, setNewTagEnglish] = useState("");
+  const [getNewTagThai, setNewTagThai] = useState("");
+
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -140,7 +147,7 @@ export default function FabCreateCourse() {
      GlobalHook.setGlobalCourseTagThai(tagsThai);
   }
 
-  function handleAddition(tag) {
+  function handleAddition(tag,lang) {
     if (tag.id) {
       const tagsEng = [].concat(
         GlobalHook.getGlobalCourseTagEnglish,
@@ -152,9 +159,18 @@ export default function FabCreateCourse() {
       );
 
       GlobalHook.setGlobalCourseTagEnglish(tagsEng);
-       GlobalHook.setGlobalCourseTagThai(tagsThai);
+      GlobalHook.setGlobalCourseTagThai(tagsThai);
     } else {
-      alert("add custom new tag");
+     
+      setModalAddNewTagOpenStatus(true)
+     if(lang == "Eng"){
+      setNewTagEnglish(tag.name)
+
+     }else{
+      setNewTagThai(tag.name)
+
+     }
+      
     }
   }
 
@@ -176,7 +192,63 @@ export default function FabCreateCourse() {
   }
 
 
-  function handleInputChangeThai(query) {}
+  function RenderAddNewTagModal() {
+    return (
+      <Modal
+        visible={getModalAddNewTagOpenStatus}
+        title="Add New Tag"
+        onOk={() => setModalAddNewTagOpenStatus(false)}
+        onCancel={() => {
+          setModalAddNewTagOpenStatus(false);
+        }}
+        footer={[
+          <div className="w-full flex justify-center">
+            <button
+              onClick={() => setModalAddNewTagOpenStatus(false)}
+              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => {setModalAddNewTagOpenStatus(false);SaveNewTagAction()}}
+              className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
+            >
+              Save
+            </button>
+
+  
+          </div>
+        ]}
+      >
+        <div className="flex flex-col justify-center items-center mx-auto">
+          <div>
+            <div>English</div>
+          <Input
+              placeholder=""
+              value={getNewTagEnglish}
+              onChange={(e)=>setNewTagEnglish(e.target.value)}
+
+            />
+          </div>
+          <div className="mt-4">
+            <div>Thai</div>
+          <Input
+              placeholder=""
+              value={getNewTagThai}
+              onChange={(e)=>setNewTagThai(e.target.value)}
+            />
+          </div>
+      
+
+       
+          </div>
+      </Modal>
+    );
+  }
+
+  function SaveNewTagAction(){
+    alert("new Tag Save")
+  }
 
   function CreateCoursePopUp() {
     return (
@@ -389,19 +461,21 @@ export default function FabCreateCourse() {
                 tags={GlobalHook.getGlobalCourseTagEnglish}
                 suggestions={getSuggestionsEnglish}
                 handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e)}
+                handleAddition={e => handleAddition(e,"Eng")}
                 minQueryLength={1}
                 handleInputChange={e => handleInputChange(e)}
                 placeholder={"Add English Tags"}
+                allowNew={true}
               />
               <ReactTags
                 tags={ GlobalHook.getGlobalCourseTagThai}
                 suggestions={getSuggestionsThai}
                 handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e)}
+                handleAddition={e => handleAddition(e,"Tha")}
                 minQueryLength={1}
                 handleInputChange={e => handleInputChange(e)}
                 placeholder={"Add Thai Tags"}
+                allowNew={true}
               />
             </div>
 
@@ -436,6 +510,7 @@ export default function FabCreateCourse() {
   return (
     <>
       {CreateCoursePopUp()}
+      {RenderAddNewTagModal()}
       <Icon
         className="text-bold mr-6 cursor-pointer"
         type="setting"
