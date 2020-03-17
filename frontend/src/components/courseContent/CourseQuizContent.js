@@ -39,6 +39,7 @@ export default function CourseQuizContent() {
   const [getUserAnsBank, setUserAnsBank] = useState({});
   const [getShowCorrectAns, setShowCorrectAns] = useState(false);
   const [getAnsSubtmited, setAnsSubtmited] = useState(false);
+  const [getIsReviewQuestion,setIsReviewQuestion] = useState(false)
 
   const [getUserClick, setUserClick] = useState("");
 
@@ -293,7 +294,7 @@ export default function CourseQuizContent() {
               Restart
             </button>
             <button
-              onClick={() => setModalQuizResultSummaryOpenStatus(false)}
+              onClick={() => {setModalQuizResultSummaryOpenStatus(false);setIsReviewQuestion(true)}}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
               Review Question
@@ -404,6 +405,7 @@ export default function CourseQuizContent() {
     setUserAnsBank(UserAnsInitBank);
   }
   function RestartQuiz() {
+    setIsReviewQuestion(false)
     setModalQuizResultSummaryOpenStatus(false);
     setShowTimeOutModal(false);
     GlobalHook.setGlobalStatusCode("resetUserClicker");
@@ -427,7 +429,10 @@ export default function CourseQuizContent() {
       //     "done":CalSocreFinish().doneQuestionAmount -
       //   CalSocreFinish().correctAnswerAmount,
       // "totalAmount":getQuestionAmount}
-      QuizLogAction(GlobalHook, getUserAnsBank);
+      if(!getIsReviewQuestion){
+        QuizLogAction(GlobalHook, getUserAnsBank);
+
+      }
     }
   }
 
@@ -526,6 +531,20 @@ export default function CourseQuizContent() {
         </div>
       </Modal>
     );
+  }
+
+  function CalShowAnsOrNot(){
+    if(getIsReviewQuestion){
+        return true
+    }else{
+      if(getShowCorrectAns){
+          return true
+      }else{
+        return false
+      }
+    }
+    
+    
   }
   return (
     <>
@@ -701,7 +720,7 @@ export default function CourseQuizContent() {
                 />
               )}
               <div className="w-full flex  mt-8 flex-col items-center">
-                {!getShowCorrectAns && (
+                {!CalShowAnsOrNot() && (
                   <button
                     className="bg-red-600 p-2 text-white font-semibold rounded-lg "
                     style={{
@@ -726,7 +745,7 @@ export default function CourseQuizContent() {
                   </button>
                 )}
 
-                {getShowCorrectAns && (
+                {CalShowAnsOrNot() && (
                   <div className="flex flex-col items-center">
                     {" "}
                     <div
@@ -784,6 +803,7 @@ export default function CourseQuizContent() {
                         )}
                       </div>
                     </div>
+                    {!getIsReviewQuestion && <>
                     {getSelectQuestion + 1 != getQuestionAmount && (
                       <button
                         className="bg-blue-500 p-2 text-white font-semibold rounded-lg mt-6"
@@ -794,6 +814,9 @@ export default function CourseQuizContent() {
                         Next Question >
                       </button>
                     )}
+                    </>
+                      }
+                   {!getIsReviewQuestion && <>
                     {getSelectQuestion + 1 == getQuestionAmount && (
                       <button
                         className="bg-orange-500 p-2 text-white font-semibold rounded-lg mt-6"
@@ -802,6 +825,17 @@ export default function CourseQuizContent() {
                         }}
                       >
                         View Results >
+                      </button>
+                    )}
+                    </>}
+                    {getIsReviewQuestion && (
+                        <button
+                        onClick={() => {
+                          RestartQuiz();
+                        }}
+                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
+                      >
+                        Restart
                       </button>
                     )}
                   </div>
