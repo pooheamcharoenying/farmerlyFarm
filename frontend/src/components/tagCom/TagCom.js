@@ -38,6 +38,7 @@ export default function TagCom(props) {
   }
 
   function handleAddition(tag, lang) {
+    GlobalHook.setMutantStatus(true)
     if (tag.id) {
       const tagsEng = [].concat(
         props.InTagEnglish,

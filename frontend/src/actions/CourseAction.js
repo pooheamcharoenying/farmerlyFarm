@@ -168,6 +168,9 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
         GlobalHook.setGlobalMediaQuiz(res.data.data.mediaContent);
       }
 
+      GlobalHook.setGlobalCourseTagEnglishLession(res.data.data.mediaTagEnglish)
+      GlobalHook.setGlobalCourseTagThaiLession(res.data.data.mediaTagThai)
+
     
     })
     .catch(err => {

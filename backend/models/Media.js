@@ -23,7 +23,13 @@ const MediaSchema = new Schema({
   mediaUpdate: {
     type: Date,
     default: Date.now
-  }
+  },
+  mediaTagEnglish:{
+    type: Array
+  },
+  mediaTagThai:{
+    type: Array
+  },
 });
 
 module.exports = MediaSchema; 

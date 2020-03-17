@@ -48,6 +48,12 @@ const Store = props => {
   const [getGlobalCourseTagThai, setGlobalCourseTagThai] = useState([]);
   const [getGlobalCourseTagEnglish, setGlobalCourseTagEnglish] = useState([]);
 
+
+  const [getGlobalCourseTagThaiLession, setGlobalCourseTagThaiLession] = useState([]);
+  const [getGlobalCourseTagEnglishLession, setGlobalCourseTagEnglishLession] = useState([]);
+
+
+
   const [getGlobalLessionSelect, setGlobalLessionSelect] = useState({});
 
   const [getGlobalLessionSelectNew, setGlobalLessionSelectNew] = useState({});
@@ -371,7 +377,13 @@ const Store = props => {
     setGlobalMessage,
 
     getGlobalShowCourseFeeAlertModal,
-    setGlobalShowCourseFeeAlertModal
+    setGlobalShowCourseFeeAlertModal,
+
+    getGlobalCourseTagThaiLession,
+    setGlobalCourseTagThaiLession,
+
+    getGlobalCourseTagEnglishLession,
+    setGlobalCourseTagEnglishLession
 
 
   };

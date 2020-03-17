@@ -496,7 +496,7 @@ export default function FabCreateCourse() {
                 allowNew={true}
               />
             </div> */}
-            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
+            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>
