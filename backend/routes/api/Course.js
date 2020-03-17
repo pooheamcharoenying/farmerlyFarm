@@ -11,6 +11,8 @@ const Course = mongoose.model("course", CourseSchema);
 const UserSchema = require("../../models/User");
 const User = mongoose.model("user", UserSchema);
 
+const SubjectSchema = require("../../models/Subject");
+const Subject = mongoose.model("subject", SubjectSchema);
 ///////
 
 //////
@@ -19,11 +21,27 @@ router.get("/test", (req, res) => res.json({ msg: "Course Works" }));
 
 //GetCourse
 router.get("/", async (req, res) => {
+  console.log('hhhhhhhhhhhhhoooooooooooommmmmmmmmmmmmmmmmmmmmmmeeeeeeeeeeeeeeeeeeeeeee')
+
   Course.find({courseActive:true,coursePublish:true})
     .then(data => {
       res.status(200).json(data);
+      // console.log('course')
+      // console.log(data)
     })
     .catch(err => console.log(err));
+});
+
+//GetSubjects
+router.get("/subjects", async (req, res) => {
+
+  Subject.find()
+  .then(data => {
+    res.status(200).json(data);
+    console.log('subject')
+    console.log(data)
+  })
+  .catch(err => console.log(err));
 });
 
 //GetCourse

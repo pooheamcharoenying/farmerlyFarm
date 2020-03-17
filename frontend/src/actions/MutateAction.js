@@ -4,9 +4,9 @@ function CheckMutateAction(GlobalHook,initState,changeState){
    
     if(initState == changeState){
         if (GlobalHook.getGlobalLessionSelect.new == "new") {
-             
-        GlobalHook.setMutantStatus(true)
+            GlobalHook.setMutantStatus(true)
         }else{
+            console.log("eureka!!!")
             GlobalHook.setMutantStatus(false)
         }
     }else{

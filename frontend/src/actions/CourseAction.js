@@ -12,6 +12,24 @@ function getCoursePoolAction(GlobalHook) {
     .catch(err => console.log(err));
 }
 
+function getSubjectCategories() {
+  return axios
+    .get("/api/course/subjects")
+    .then(response => {
+      // returning the data here allows the caller to get it through another .then(...)
+      return response.data
+  })
+  // axios
+  //   .get("/api/course/subjects")
+  //   .then(res => {
+  //     console.log("fetching subjects")
+  //     console.log(res.data)
+  //     result =  res.data
+  //     inputVar = res.data
+  //   })
+  //   .catch(err => console.log(err));
+  }
+
 function getCoursePoolAllAction(GlobalHook) {
   GlobalHook.setGlobalLoading(true);
   axios
@@ -312,5 +330,6 @@ export {
   UpdataCoursepublishAction,
   GetCourseSettingAction,
   SaveCourseSetting,
-  SetCourseReviewAction
+  SetCourseReviewAction,
+  getSubjectCategories,
 };

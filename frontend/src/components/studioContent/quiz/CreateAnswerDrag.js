@@ -53,26 +53,41 @@ function CreateAnswerDrag() {
 
  
   useEffect(() => {
+    console.log('bonobo 1')
     GlobalHook.setGloblaQuizAnswerFieldNew(items)
     
   }, [items]);
 
   useEffect(() => {
+    console.log('bonobo 2')
+    console.log(GlobalHook.getGloblaQuizAnswerField)
     if (GlobalHook.getGloblaQuizAnswerField) {
       setitems(GlobalHook.getGloblaQuizAnswerField);
     }
   }, [GlobalHook.getGloblaQuizAnswerField]);
 
   function handleDeleteChoice(selfIndex){
+    console.log('deleting')
+    console.log(items)
+    const tempItems = items;
+
+    tempItems.splice(selfIndex,1)
+    console.log(tempItems)
+    setitems(tempItems);
+    console.log(items)
+    GlobalHook.setGloblaQuizAnswerField(items)
+
     let oldtype = GlobalHook.getGloblaQuizAnswerType
     GlobalHook.setGloblaQuizAnswerType("Temp")
-    let oldChoiceStructure = items
-  
-      oldChoiceStructure.splice(selfIndex, 1)
+    // let oldChoiceStructure = items
+    //   console.log('deleting')
+    //   console.log(items)  
+    //   oldChoiceStructure.splice(selfIndex, 1)
 
 
+    //    console.log(oldChoiceStructure)
       
-      setitems(oldChoiceStructure);
+    //   setitems(oldChoiceStructure);
       setTimeout(() => {
        GlobalHook.setGloblaQuizAnswerType(oldtype)
         
@@ -167,6 +182,8 @@ function CreateAnswerDrag() {
         }
       ]
     });
+    console.log('create answer')
+    console.log(oldstate)
     setitems(oldstate);
     
   }

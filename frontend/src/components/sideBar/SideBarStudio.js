@@ -1,3 +1,4 @@
+
 import React,{useContext,useEffect,useState} from 'react'
 import {Modal,Switch,Icon} from 'antd'
 import CourseSetting from '../courseSetting/courseSetting'
@@ -111,7 +112,7 @@ export default function SideBarCourse() {
         style={{
           display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
           overflowY: "scroll",
-          maxHeight:"100vh"
+          maxHeight:"120vh"
           
         }}
       >
