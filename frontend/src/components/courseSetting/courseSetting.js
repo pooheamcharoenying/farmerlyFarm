@@ -19,6 +19,7 @@ import AWS from "aws-sdk";
 import { useParams } from "react-router";
 import Autocomplete from "@celebryts/react-autocomplete-tags";
 import ReactTags from "react-tag-autocomplete";
+import TagCom from '../tagCom/TagCom'
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
@@ -471,7 +472,7 @@ export default function FabCreateCourse() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col text-center my-4">
+            {/* <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2">Tags</div>
 
               <ReactTags
@@ -494,7 +495,8 @@ export default function FabCreateCourse() {
                 placeholder={"Add Thai Tags"}
                 allowNew={true}
               />
-            </div>
+            </div> */}
+            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>
