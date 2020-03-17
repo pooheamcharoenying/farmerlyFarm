@@ -247,7 +247,24 @@ export default function FabCreateCourse() {
   }
 
   function SaveNewTagAction(){
-    alert("new Tag Save")
+  
+    axios
+    .post(`/api/tag/addtag/`, { english: getNewTagEnglish,thai: getNewTagThai })
+    .then(res => {
+      const tagsEng = [].concat(
+        GlobalHook.getGlobalCourseTagEnglish,
+        [{ id: res.data._id, name: getNewTagEnglish }]
+      );
+      const tagsThai = [].concat(
+         GlobalHook.getGlobalCourseTagThai,
+         [{ id: res.data._id, name: getNewTagThai }]
+      );
+
+      GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+      GlobalHook.setGlobalCourseTagThai(tagsThai);
+     console.log(res.data)
+    })
+    .catch(err => console.log(err));
   }
 
   function CreateCoursePopUp() {
