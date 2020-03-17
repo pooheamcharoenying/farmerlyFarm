@@ -61,8 +61,9 @@ const UserDropdown = () => {
       placement="bottomLeft"
       className="flex"
     >
+      <Avatar size={40} className="cursor-pointer" src={"https://i.ya-webdesign.com/images/profile-avatar-png-9.png"}/>
       
-      {(getAvatar) ?<Avatar size={40} className="cursor-pointer" src={getAvatar}/>:<AvatarR className="cursor-pointer" name={getName} size="50" round/>}
+      {/* {(getAvatar) ?<Avatar size={40} className="cursor-pointer" src={getAvatar}/>:<AvatarR className="cursor-pointer" name={getName} size="50" round/>} */}
       
     
     </Dropdown>
