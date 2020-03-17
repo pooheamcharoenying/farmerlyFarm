@@ -51,6 +51,12 @@ const QuizSchema = new Schema({
   answerExplainField: {
     type: Object
   },
+  quizTagEnglish:{
+    type: Array
+  },
+  quizTagThai:{
+    type: Array
+  },
 });
 
 module.exports = QuizSchema; 

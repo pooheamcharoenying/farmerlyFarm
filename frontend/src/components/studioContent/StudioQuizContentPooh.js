@@ -449,6 +449,7 @@ const StudioQuizContent = () => {
                 }
               />
             </div>
+            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiQuiz} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishQuiz} OutTagThai={GlobalHook.setGlobalCourseTagThaiQuiz} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishQuiz}/>
 
             <div className="w-full md:w-10/12 flex flex-col  mb-4">
               <div className="font-bold text-lg mb-2 text-center">

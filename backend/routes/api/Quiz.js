@@ -40,7 +40,9 @@ router.post(
             teacherId: user._id,
             mediaId:req.body.mediaId,
             answerExplainType: req.body.answerExplainType,
-            answerExplainField: req.body.answerExplainField
+            answerExplainField: req.body.answerExplainField,
+            quizTagEnglish: req.body.quizTagEnglish,
+            quizTagThai: req.body.quizTagThai
           
         },
         { new: true, upsert: true },

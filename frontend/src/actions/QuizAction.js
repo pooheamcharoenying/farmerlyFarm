@@ -50,8 +50,11 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
          GlobalHook.setGloblaQuizAnswerCorrect(res.data.data.answerCorrect);
          GlobalHook.setGloblaQuizExplainType( res.data.data.answerExplainType );
          GlobalHook.setGloblaQuizExplainField(res.data.data.answerExplainField );
-         GlobalHook.setGlobalLoading(false)
+         GlobalHook.setGlobalCourseTagThaiQuiz(res.data.data.quizTagThai)
+         GlobalHook.setGlobalCourseTagEnglishQuiz(res.data.data.quizTagEnglish)
   
+         GlobalHook.setGlobalLoading(false)
+
         })
         .catch(err => {
           console.log(err);
@@ -64,7 +67,6 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
   let mockName = " "
   mockName =  GlobalHook.getGloblaQuizQuestionName
 
-console.log(GlobalHook.getGloblaQuizQuestionName)
     const pushData = {
             questionId: GlobalHook.getGloblaQuizQuestionSelect.questionId,
             questionName: GlobalHook.getGloblaQuizQuestionName,
@@ -78,7 +80,9 @@ console.log(GlobalHook.getGloblaQuizQuestionName)
             sectionName: GlobalHook.getGlobalLessionSelect.sectionName,
             lessionName: GlobalHook.getGlobalLessionSelect.mediaName,
             mediaId:GlobalHook.getGlobalLessionSelect.mediaId,
-            courseSlug:GlobalHook.getGlobalCourseSlug
+            courseSlug:GlobalHook.getGlobalCourseSlug,
+            quizTagEnglish: GlobalHook.getGlobalCourseTagEnglishQuiz,
+            quizTagThai:  GlobalHook.getGlobalCourseTagThaiQuiz
            
     };
 
