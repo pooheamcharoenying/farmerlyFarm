@@ -510,30 +510,7 @@ export default function FabCreateCourse() {
                 </div>
               )}
             </div>
-            {/* <div className="flex flex-col text-center my-4">
-              <div className="font-bold text mb-2">Tags</div>
-
-              <ReactTags
-                tags={GlobalHook.getGlobalCourseTagEnglish}
-                suggestions={getSuggestionsEnglish}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e,"Eng")}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add English Tags"}
-                allowNew={true}
-              />
-              <ReactTags
-                tags={ GlobalHook.getGlobalCourseTagThai}
-                suggestions={getSuggestionsThai}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e,"Tha")}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add Thai Tags"}
-                allowNew={true}
-              />
-            </div> */}
+           
             <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
             <div className="flex flex-col text-center my-4">

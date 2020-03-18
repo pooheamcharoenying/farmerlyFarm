@@ -38,15 +38,25 @@ export default function TagCom(props) {
   }
 
   function handleAddition(tag, lang) {
+    const tagTemp = tag
+    
+ 
     GlobalHook.setMutantStatus(true)
     if (tag.id) {
+      let flittedSuggestEnglish = getSuggestionsEnglish.filter(item => item.id == tagTemp.id)
+    flittedSuggestEnglish[0].name= `${flittedSuggestEnglish[0].subject} - ${flittedSuggestEnglish[0].name}`
+
+
+    let flittedSuggestThai = getSuggestionsThai.filter(item => item.id == tagTemp.id)
+    flittedSuggestThai[0].name= `${flittedSuggestThai[0].subject} - ${flittedSuggestThai[0].name}`
+
       const tagsEng = [].concat(
         props.InTagEnglish,
-        getSuggestionsEnglish.filter(item => item.id == tag.id)
+        flittedSuggestEnglish
       );
       const tagsThai = [].concat(
         props.InTagThai,
-        getSuggestionsThai.filter(item => item.id == tag.id)
+        flittedSuggestThai
       );
 
       props.OutTagEnglish(tagsEng);
@@ -65,15 +75,22 @@ export default function TagCom(props) {
     axios
       .post(`/api/tag/gettag/`, { tag: query })
       .then(res => {
+        console.log(res.data)
         let matchTagSuggestEnglish = [];
         let matchTagSuggestThai = [];
 
         res.data.map(item => {
-          matchTagSuggestEnglish.push({ id: item._id, name: item.english });
-          matchTagSuggestThai.push({ id: item._id, name: item.thai });
+          console.log(item.subject)
+          console.log(item.english)
+
+    
+          matchTagSuggestEnglish.push({ id: item._id, name: item.english,subject:item.subject });
+          matchTagSuggestThai.push({ id: item._id, name: item.thai,subject:item.subject });
         });
         setSuggestionsEnglish(matchTagSuggestEnglish);
         setSuggestionsThai(matchTagSuggestThai);
+
+
       })
       .catch(err => console.log(err));
   }
