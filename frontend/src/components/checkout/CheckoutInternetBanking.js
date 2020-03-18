@@ -3,7 +3,7 @@ import Script from "react-load-script";
 
 import "./Checkout.css";
 
-import { publicKey } from ".../../confidential/keys";
+import { publicKey } from "../../confidential/keys";
 
 let OmiseCard
 
@@ -12,7 +12,7 @@ export class CheckoutInternetBanking extends Component {
     OmiseCard = window.OmiseCard
     OmiseCard.configure({
       publicKey,
-      frameLabel: "Sabai Shop",
+      frameLabel: "Studysabai",
       submitLabel: "PAY NOW",
       currency: "thb"
     });
@@ -37,9 +37,10 @@ export class CheckoutInternetBanking extends Component {
     const { cart, createInternetBankingCharge } = this.props;
     OmiseCard.open({
       frameDescription: "Invoice #3847",
-      amount: cart.amount,
+      amount: this.props.amount,
       onCreateTokenSuccess: token => {
-        createInternetBankingCharge(cart.email, cart.name, cart.amount, token);
+        createInternetBankingCharge(this.props.iuid, this.props.courseId, this.props.amount, token);
+    
       },
       onFormClosed: () => {}
     });
@@ -60,11 +61,13 @@ export class CheckoutInternetBanking extends Component {
           onLoad={this.handleScriptLoad}
         />
         <form>
+
+          
           <button
             id="internet-banking"
-            className="btn internet-banking"
+            className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             type="button"
-            disabled={cart.amount === 0}
+            
             onClick={this.handleClick}
           >
             Pay with Internet Banking / Others
