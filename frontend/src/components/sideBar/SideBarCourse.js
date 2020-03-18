@@ -6,6 +6,7 @@ import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
 import "./poohStyle.css";
 import CheckoutInternetBanking from "../checkout/CheckoutInternetBanking";
+import CheckoutCreditcard from "../checkout/CheckoutCreditCard";
 
 
 
@@ -100,12 +101,7 @@ export default function SideBarCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            <button
-              onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
-              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
-            >
-              Cancel
-            </button>
+           
 
             {/* <button
               onClick={() => {
@@ -121,6 +117,16 @@ export default function SideBarCourse() {
          
             <CheckoutInternetBanking amount={GlobalHook.getGlobalCoursePrice} courseId={GlobalHook.getGlobalcourseId} iuid={getUserId}
           createInternetBankingCharge={createInternetBankingCharge}/>
+
+<CheckoutCreditcard amount={GlobalHook.getGlobalCoursePrice} courseId={GlobalHook.getGlobalcourseId} iuid={getUserId}
+          createInternetBankingCharge={createInternetBankingCharge}/>
+
+<button
+              onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
+              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+            >
+              Cancel
+            </button>
           </div>
         ]}
       >

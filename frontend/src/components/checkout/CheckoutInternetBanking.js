@@ -70,7 +70,7 @@ export class CheckoutInternetBanking extends Component {
             
             onClick={this.handleClick}
           >
-            Pay with Internet Banking / Others
+            Pay with Internet Banking 
           </button>
         </form>
       </div>
