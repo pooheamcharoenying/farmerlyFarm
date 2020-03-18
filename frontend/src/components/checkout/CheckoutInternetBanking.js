@@ -37,7 +37,7 @@ export class CheckoutInternetBanking extends Component {
     const { cart, createInternetBankingCharge } = this.props;
     OmiseCard.open({
       frameDescription: "Invoice #3847",
-      amount: this.props.amount,
+      amount: this.props.amount*100,
       onCreateTokenSuccess: token => {
         createInternetBankingCharge(this.props.iuid, this.props.courseId, this.props.amount, token);
     
