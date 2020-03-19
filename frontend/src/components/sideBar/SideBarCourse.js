@@ -61,7 +61,7 @@ export default function SideBarCourse() {
     try {
       const res = await axios({
         method: "POST",
-        url: "/api/checkout/creditCard",
+        url: "/api/payment/creditCard",
         data: { "email":getUserEmail,"iuid":getUserId, courseId, amount, token,pmid:getUserPMid },
         headers: {
           "Content-Type": "application/json"
@@ -70,7 +70,7 @@ export default function SideBarCourse() {
 
       if (res.data) {
         GlobalHook.setGlobalShowCourseFeeAlertModal(false);
-        CourseSubscriptionAction(GlobalHook);
+       // CourseSubscriptionAction(GlobalHook);
     
         message.success("Payment Successfull");
       }
