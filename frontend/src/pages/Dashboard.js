@@ -23,6 +23,8 @@ export default function Dashboard() {
 
   const [getEmail, setEmail] = useState("")
   const [getName, setName] = useState("")
+  const [getrpid, setrpid] = useState(null)
+
 
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function Dashboard() {
       setName(GlobalHook.getGlobalCurrentUser.displayName)
 
       setEmail(GlobalHook.getGlobalCurrentUser.email)
+      setrpid(GlobalHook.getGlobalCurrentUser.rpid)
 
     }
   }, [GlobalHook.getGlobalCurrentUser]);
@@ -59,7 +62,8 @@ export default function Dashboard() {
             <button
               onClick={() => {
                 setSetupTeacherPaymentModalOpenStatus(false);
-                CreateTeacherPaymentAction(getName,getEmail,GlobalHook)
+                CreateTeacherPaymentAction(GlobalHook,getName,getEmail,getrpid)
+               
               }}
               className="bg-yellow-400 text-black p-2 rounded hover:bg-yellow-300"
             >

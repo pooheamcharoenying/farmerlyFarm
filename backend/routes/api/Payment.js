@@ -12,22 +12,22 @@ const omise = require("omise")({
   });
 
 
-router.post("/recipienttransfer",
-passport.authenticate("jwt", { session: false }),
- async (req, res) => {
-  await omise.transfers.create({'amount': '10000', 'recipient': 'recp_test_5j9h81xja30msdybwlg'}, function(err, transfer) {
-      if(err){
-          res.status(400).json(err)
-          console.log(err)
-        }else{
-            console.log(transfer)
-            res.status(200).json(transfer)
-            /* Response. */
-        }
+// router.post("/recipienttransfer",
+// passport.authenticate("jwt", { session: false }),
+//  async (req, res) => {
+//   await omise.transfers.create({'amount': '10000', 'recipient': 'recp_test_5j9h81xja30msdybwlg'}, function(err, transfer) {
+//       if(err){
+//           res.status(400).json(err)
+//           console.log(err)
+//         }else{
+//             console.log(transfer)
+//             res.status(200).json(transfer)
+//             /* Response. */
+//         }
    
-  });
- }
-)
+//   });
+//  }
+// )
 
 router.post(
     "/addTeacherPayment",
@@ -45,8 +45,13 @@ router.post(
         },
         { new: true },
         (err, data) => {
-        
-          CreateRecipient(name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,res)
+        if(req.user.rpid){
+            UpdateOmiseRecipient(req,res,name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,req.user.rpid)
+
+        }else{
+            CreateRecipient(req,res,name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName)
+            
+        }
           if (err) {
             res.status(400).json(err)
             console.log("Something wrong when updating data!");
@@ -56,7 +61,8 @@ router.post(
     }
   );
 
-  async function CreateRecipient(name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,res){
+  async function CreateRecipient(req,res,name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName){
+    
     await omise.recipients.create({
         'name': name,
         'email': email,
@@ -72,11 +78,97 @@ router.post(
               console.log(err)
             }else{
                 console.log(resp)
-                res.status(200).json(resp)
+                UpdateRecipientId(req,res,resp.id)
+               
                 /* Response. */
             }
        
       });
   }
+
+
+
+  async function UpdateRecipientId(req,res,rpid){
+
+    await User.findOneAndUpdate(
+        { _id: req.user.id},
+        {
+          rpid: rpid,
+         
+        },
+        { new: true },
+        (err, doc) => {
+          res.status(200).json(doc);
+          if (err) {
+            res.status(400).json(err)
+            console.log("Something wrong when updating data!");
+          }
+        }
+      )
+  }
+
+
+
+  async function UpdateOmiseRecipient(req,res,name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,rpid){
+    // console.log(rpid)
+    
+    await omise.recipients.update(rpid,
+ 
+        {
+          'name': name,
+          'email': email,
+          'bank_account': {
+            'brand': teacherPayment_AccountBank,
+            'number': teacherPayment_AccountNumber,
+            'name': teacherPayment_AccountHolderName
+          }
+      }, function(err, resp) {
+          if(err){
+              res.status(400).json(err)
+              console.log(err)
+            }else{
+                console.log(resp)
+              
+               
+                /* Response. */
+            }
+       
+      });
+  }
+
+
+
+
+//   router.post(
+//     "/updateTeacherPayment",
+//     passport.authenticate("jwt", { session: false }),
+  
+//     async (req, res) => {
+//         const {name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName} = req.body
+
+//         await omise.recipients.update(req.body.rpid,
+ 
+//           {
+//             'name': name,
+//             'email': email,
+//             'bank_account': {
+//               'brand': teacherPayment_AccountBank,
+//               'number': teacherPayment_AccountNumber,
+//               'name': teacherPayment_AccountHolderName
+//             }
+//         }, function(err, resp){
+//             if(err){
+//                 res.status(400).json(err)
+//                 console.log(err)
+//               }else{
+//                   console.log(resp)
+//                   UpdateRecipientId(req,res,resp.id)
+                 
+//                   /* Response. */
+//               }
+//         });
+//     }
+//   );
+
 
 module.exports = router;

@@ -14,6 +14,9 @@ const UserSchema = new Schema({
   pmid: {
     type: String
   },
+  rpid: {
+    type: String
+  },
   courseSubscription: [
     {
       courseId: {
