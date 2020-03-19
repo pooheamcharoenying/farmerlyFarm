@@ -94,7 +94,8 @@ export default function MyCourse() {
            
               key={i}
               className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
-              onClick={() => history.push(`/course/${courseData.courseSlug}`)}
+              // onClick={() => history.push(`/course/${courseData.courseSlug}`)}
+              onClick={()=>window.location.href=`/course/${courseData.courseSlug}`}
             >
               <CourseCard courseData={courseData} />
             </div>

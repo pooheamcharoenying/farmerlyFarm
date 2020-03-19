@@ -1,14 +1,14 @@
 
 @media only screen and (max-width: 2400px){
     .responsiveSideBarHeight{
-        background-color: green;
+        /* background-color: green; */
         height: calc(100vh - 65px);
     }
 }
 
 @media only screen and (max-width: 1200px){
     .responsiveSideBarHeight{
-        background-color: blue;
+        /* background-color: blue; */
         height: calc(100vh - 65px);
     }
 }
@@ -16,14 +16,14 @@
 
 @media only screen and (max-width: 760px){
     .responsiveSideBarHeight{
-        background-color: red;
+        /* background-color: red; */
         height: calc(100vh - 65px);
     }
 }
 
 @media only screen and (max-width: 600px){
     .responsiveSideBarHeight{
-        background-color: darkred;
+        /* background-color: darkred; */
         height: calc(100vh - 65px);
     }
 }

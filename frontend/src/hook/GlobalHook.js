@@ -48,6 +48,18 @@ const Store = props => {
   const [getGlobalCourseTagThai, setGlobalCourseTagThai] = useState([]);
   const [getGlobalCourseTagEnglish, setGlobalCourseTagEnglish] = useState([]);
 
+
+  const [getGlobalCourseTagThaiLession, setGlobalCourseTagThaiLession] = useState([]);
+  const [getGlobalCourseTagEnglishLession, setGlobalCourseTagEnglishLession] = useState([]);
+
+
+  const [getGlobalCourseTagThaiQuiz, setGlobalCourseTagThaiQuiz] = useState([]);
+  const [getGlobalCourseTagEnglishQuiz, setGlobalCourseTagEnglishQuiz] = useState([]);
+
+  const [getLessionTagSameAsCourseStatus,setLessionTagSameAsCourseStatus] = useState(true)
+
+
+
   const [getGlobalLessionSelect, setGlobalLessionSelect] = useState({});
 
   const [getGlobalLessionSelectNew, setGlobalLessionSelectNew] = useState({});
@@ -175,6 +187,8 @@ const Store = props => {
   const [getGlobalCoursePrice,setGlobalCoursePrice] = useState(null)
   
   const [getGlobalShowCourseFeeAlertModal,setGlobalShowCourseFeeAlertModal] = useState(false)
+  const [getQuizTagSameAsLessionStatus,setQuizTagSameAsLessionStatus] = useState(true)
+
 
   const [getGlobalVimeoId, setGlobalVimeoId] = useState("")
 
@@ -186,8 +200,8 @@ const Store = props => {
     getGlobalUser,
     setGlobalUser,
 
-    getMutantStatus: getMutantStatus,
-    setMutantStatus: setMutantStatus,
+    getMutantStatus,
+    setMutantStatus,
 
     getGlobalShowSideBarStatus,
     setGlobalShowSideBarStatus,
@@ -376,7 +390,25 @@ const Store = props => {
     setGlobalVimeoId,
 
     getGlobalShowCourseFeeAlertModal,
-    setGlobalShowCourseFeeAlertModal
+    setGlobalShowCourseFeeAlertModal,
+
+    getGlobalCourseTagThaiLession,
+    setGlobalCourseTagThaiLession,
+
+    getGlobalCourseTagEnglishLession,
+    setGlobalCourseTagEnglishLession,
+
+    getGlobalCourseTagThaiQuiz,
+    setGlobalCourseTagThaiQuiz,
+
+    getGlobalCourseTagEnglishQuiz,
+    setGlobalCourseTagEnglishQuiz,
+
+    getLessionTagSameAsCourseStatus,
+    setLessionTagSameAsCourseStatus,
+
+    getQuizTagSameAsLessionStatus,
+    setQuizTagSameAsLessionStatus
 
 
   };

@@ -52,7 +52,10 @@ function SaveMediaContent (GlobalHook){
       "mediaPreview":mediaPreview,
 
       "mediaContent":GlobalHook.getGlobalMediaNew,
-      courseSlug:GlobalHook.getGlobalCourseSlug
+      "courseSlug":GlobalHook.getGlobalCourseSlug,
+      "mediaTagEnglish":GlobalHook.getGlobalCourseTagEnglishLession,
+      "mediaTagThai":GlobalHook.getGlobalCourseTagThaiLession,
+      "mediaTagStatus":GlobalHook.getLessionTagSameAsCourseStatus
   }
 
 

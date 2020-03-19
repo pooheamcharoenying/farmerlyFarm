@@ -23,6 +23,16 @@ const MediaSchema = new Schema({
   mediaUpdate: {
     type: Date,
     default: Date.now
+  },
+  mediaTagEnglish:{
+    type: Array
+  },
+  mediaTagThai:{
+    type: Array
+  },
+  mediaTagStatus:{
+    type:Boolean,
+    default:true
   }
 });
 

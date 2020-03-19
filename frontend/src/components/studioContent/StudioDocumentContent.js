@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import {FaTrashAlt} from 'react-icons/fa'
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
+import TagCom from '../tagCom/TagCom'
 
 import { GlobalContext } from "../../hook/GlobalHook";
 import {SaveAllAction,CheckMutateAction} from "../../actions"
@@ -194,6 +195,17 @@ useEffect(() => {
           />
         
         </div>
+        <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Course</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => GlobalHook.setLessionTagSameAsCourseStatus(e)}
+            checked={GlobalHook.getLessionTagSameAsCourseStatus}
+          />
+        
+        </div>
+
+       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
 
         <div className="w-11/12 md:w-10/12">
           <ReactQuill

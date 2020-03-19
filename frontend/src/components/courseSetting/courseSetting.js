@@ -10,7 +10,8 @@ import {
   message,
   Icon,
   Switch,
-  Tag
+  Tag,
+  Popover
 } from "antd";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
@@ -19,6 +20,7 @@ import AWS from "aws-sdk";
 import { useParams } from "react-router";
 import Autocomplete from "@celebryts/react-autocomplete-tags";
 import ReactTags from "react-tag-autocomplete";
+import TagCom from '../tagCom/TagCom'
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
@@ -51,7 +53,6 @@ export default function FabCreateCourse() {
   const [getAddNewTag, setAddNewTag] = useState("");
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
-
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -278,14 +279,52 @@ export default function FabCreateCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            <button
+
+          <Popover
+              content={
+                <div className="flex w-full justify-center">
+                  <div
+                    className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
+                    onClick={() => {
+                  
+                      setShowConfirmDel(false);
+                      DeleteCourseLessionAction(GlobalHook, courseSlug);
+                    }}
+                  >
+                    Delete
+                  </div>{" "}
+                  <div
+                    className="text-gray-600 hover:text-gray-500 cursor-pointer"
+                    onClick={() => {
+                      setShowConfirmDel(false);
+                    }}
+                  >
+                    cancel
+                  </div>
+                </div>
+              }
+              title="Are you sure to delete this Course?"
+              trigger="click"
+              visible={getShowConfirmDel}
+              onVisibleChange={() => setShowConfirmDel(!getShowConfirmDel)}
+            >
+              <div
+             
+              className="bg-red-500 text-white p-2 rounded hover:bg-red-400 cursor-pointer mr-4"
+            >
+              Delete Course
+            </div>
+            </Popover>
+
+
+            {/* <button
               onClick={() => {
                 DeleteCourseLessionAction(GlobalHook, courseSlug);
               }}
               className="bg-red-500 text-white p-2 rounded hover:bg-red-400"
             >
               Delete Course
-            </button>
+            </button> */}
             <button
               onClick={() =>
                 SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus)
@@ -471,30 +510,8 @@ export default function FabCreateCourse() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col text-center my-4">
-              <div className="font-bold text mb-2">Tags</div>
-
-              <ReactTags
-                tags={GlobalHook.getGlobalCourseTagEnglish}
-                suggestions={getSuggestionsEnglish}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e,"Eng")}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add English Tags"}
-                allowNew={true}
-              />
-              <ReactTags
-                tags={ GlobalHook.getGlobalCourseTagThai}
-                suggestions={getSuggestionsThai}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e,"Tha")}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add Thai Tags"}
-                allowNew={true}
-              />
-            </div>
+           
+            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>

@@ -290,7 +290,7 @@ export default function MainDragStudio() {
           preview: "",
           mediaId: uuid.v4(),
           date: Date.now(),
-          time: "",
+          time: "10",
           etc1: "",
           etc2: "",
           etc3: "",
@@ -378,7 +378,7 @@ export default function MainDragStudio() {
           etc4: 1,
           etc5: 1,
           date: Date.now(),
-          time: ""
+          time: "10"
         });
         setitems(oldstate);
 
@@ -391,7 +391,7 @@ export default function MainDragStudio() {
           mediaName: getLessionName,
           mediaPreview: true,
           sectionName: getLessionParent.content,
-          mediaTime: "",
+          mediaTime: "10",
           mediaEtc1:true,
           mediaEtc2:false,
           mediaEtc3:true,
@@ -413,7 +413,7 @@ export default function MainDragStudio() {
           mediaName: getLessionName,
           mediaPreview: true,
           sectionName: getLessionParent.content,
-          mediaTime: "",
+          mediaTime: "10",
           mediaEtc1:true,
           mediaEtc2:false,
           mediaEtc3:true,

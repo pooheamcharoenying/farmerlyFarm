@@ -19,6 +19,8 @@ import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
 import { SaveAllAction, CheckMutateAction, MoveVimeoVideoToFolder } from "../../actions";
 
+import TagCom from '../tagCom/TagCom'
+
 const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
 
 const headerPost = {
@@ -47,6 +49,7 @@ const StudioVideoContent = () => {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getVideoFileName, setVideoFileName] = useState("");
+  const [getLessionTagSameAsCourseStatus,setLessionTagSameAsCourseStatus] = useState(true)
 
   const {
     acceptedFiles,
@@ -312,6 +315,20 @@ const StudioVideoContent = () => {
           />
         
         </div>
+
+        <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Course</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => GlobalHook.setLessionTagSameAsCourseStatus(e)}
+            checked={GlobalHook.getLessionTagSameAsCourseStatus}
+          />
+        
+        </div>
+
+       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
+
+
 
 
         <div className="flex flex-col text-center mb-6 justify-center w-full items-center">

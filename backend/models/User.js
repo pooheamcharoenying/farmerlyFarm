@@ -11,6 +11,9 @@ const UserSchema = new Schema({
     type:String,
     default:"user"
   },
+  pmid:{
+    type:String
+  },
   courseSubscription: [
     {
       courseId: {

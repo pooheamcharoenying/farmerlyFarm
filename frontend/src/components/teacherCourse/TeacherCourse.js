@@ -68,7 +68,8 @@ export default function TeacherCourse() {
               />
             </div>
             <div
-              onClick={() => history.push(`/teacher/${courseData.courseSlug}`)}
+              // onClick={() => history.push(`/teacher/${courseData.courseSlug}`)}
+              onClick={()=>window.location.href=`/teacher/${courseData.courseSlug}`}
             >
               <CourseCard courseData={courseData} />
             </div>
