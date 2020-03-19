@@ -10,33 +10,6 @@ const omise = require("omise")({
   secretKey: "skey_test_5j97yq3adxxgt4e9pxs"
 });
 
-// router.post("/internetbank",
-//  async (req, res) => {
-//     try {
-//         const { iuid, courseId, amount, token } = req.body;
-    
-//         let ttx =  "iuid@fdfd.com"
-//         const customer = await omise.customers.create({
-//           ttx,
-//           description: `${courseId}`,
-//           card: token
-//         });
-    
-//         const charge = await omise.charges.create({
-//           amount: amount,
-//           currency: "thb",
-//           customer: customer.id
-//         });
-    
-//         res.status(200).json({
-//           authorizeUri: charge.authorize_uri,
-//           status: charge.status,
-//           amount: charge.amount / 100
-//         });
-//       } catch (err) {
-//         console.log(err);
-//       }
-// });
 
 router.post("/creditCard",
 passport.authenticate("jwt", { session: false }),
@@ -113,4 +86,28 @@ passport.authenticate("jwt", { session: false }),
 
   
 });
+
+
+
+router.post("/creditRecipient",
+passport.authenticate("jwt", { session: false }),
+ async (req, res) => {
+  await omise.recipients.create({
+    'name': 'NSomchai Prasert',
+    'email': 'Nsomchai.prasert@example.com',
+    'type': 'individual',
+    'bank_account': {
+      'brand': 'bbl',
+      'number': '1234567890',
+      'name': 'NSOMCHAI PRASERT'
+    }
+  }, function(err, resp) {
+    console.log(resp)
+    res.status(200).json(resp)
+    /* Response. */
+  });
+ }
+)
+
+
 module.exports = router;

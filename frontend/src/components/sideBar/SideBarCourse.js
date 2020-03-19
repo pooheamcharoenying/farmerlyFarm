@@ -57,35 +57,6 @@ export default function SideBarCourse() {
     }
   }, [GlobalHook.getGlobalCourseFee, GlobalHook.getGlobalcourseId]);
 
-  function createInternetBankingCharge(iuid, courseId, amount, token) {
-    // GlobalHook.setGlobalShowCourseFeeAlertModal(false);
-    // CourseSubscriptionAction(GlobalHook);
-
-    // message.success("Payment Successfull");
-
-    // console.log(iuid)
-    // console.log(courseId)
-    // console.log(amount)
-    // console.log(token)
-    // console.log("procress")
-    // try {
-    //   const res = await axios({
-    //     method: "POST",
-    //     url: "/api/checkout/internetbank",
-    //     data: { iuid, courseId, amount, token },
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     }
-    //   });
-
-    //   if (res.data) {
-    //    console.log(res.data)
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // }
-  }
-
 
   async function createCreditCardCharge  (courseId, amount, token)  {
     try {
@@ -119,24 +90,7 @@ export default function SideBarCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            {/* <button
-              onClick={() => {
-                GlobalHook.setGlobalShowCourseFeeAlertModal(false);
-                CourseSubscriptionAction(GlobalHook);
-
-                message.success("Payment Successfull");
-              }}
-              className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
-            >
-              Complete Payment
-            </button> */}
-
-            {/* <CheckoutInternetBanking
-              amount={GlobalHook.getGlobalCoursePrice}
-              courseId={GlobalHook.getGlobalcourseId}
-              iuid={getUserId}
-              createInternetBankingCharge={createInternetBankingCharge}
-            /> */}
+           
               <button
               onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"

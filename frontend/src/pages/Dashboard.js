@@ -38,7 +38,10 @@ const GlobalHook = useContext(GlobalContext)
       <div className="mt-4 flex flex-col">
           <AvatarSetting/>
           <ProfileSetting/>
-
+          <div className="rounded-lg text-center text-black py-2  font-bold bg-yellow-400 mx-auto cursor-pointer" style={{width:"320px",maxHeight:"500px"}}>
+          Setup Teacher Payment
+      </div>
+        
 </div>
 
     </div>
