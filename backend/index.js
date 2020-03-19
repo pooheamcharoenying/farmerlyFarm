@@ -85,4 +85,16 @@ if (!isDev && cluster.isMaster) {
       }: listening on port ${PORT}`
     );
   });
+
+  // var bodyParser = require('body-parser')
+  // var jsonParser = bodyParser.json()
+  // // recieve post data from client
+  // app.post('/api/course/poohtest', jsonParser, (req, res) => {
+  //   console.log("submission recieved")
+  //   console.log(req.body)
+    
+  // })  
+
+
 }
+

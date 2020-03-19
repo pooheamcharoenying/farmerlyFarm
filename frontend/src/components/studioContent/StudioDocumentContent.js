@@ -71,17 +71,24 @@ useEffect(() => {
     }, [getLessionName,getLessionTime,getLessionPreview])
 
 
-    useEffect(() => {
-      CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
+    // useEffect(() => {
+    //   CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
+    // }, [getLessionName])
 
-    }, [getLessionName])
-
+      // Pooh Edited this to
+  useEffect(() => {
+    //CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
+    console.log('bla bla black sheep')
+    if (GlobalHook.getMutantStatus == true) {
+      GlobalHook.setMutantStatus(false)
+    } else {
+      GlobalHook.setMutantStatus(true)
+    }
+  }, [getLessionName, getLessionTime]);
     
-    useEffect(() => {
-      CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
-
-
-    }, [getLessionTime])
+    // useEffect(() => {
+    //   CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
+    // }, [getLessionTime])
 
     useEffect(() => {
       CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
@@ -141,7 +148,7 @@ useEffect(() => {
       />
 
       <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-        {GlobalHook.getGlobalLessionSelect.mediaName}
+        {getLessionName}
       </div>
       <FaCaretRight
         className="hover:text-gray-700 text-gray-900 cursor-pointer"

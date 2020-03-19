@@ -4,7 +4,8 @@ import axios from "axios";
 import { GlobalContext } from "../../hook/GlobalHook";
 import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
-import "./poohStyle.css";
+import './SideBarCourse.css'
+
 import CheckoutInternetBanking from "../checkout/CheckoutInternetBanking";
 import CheckoutCreditcard from "../checkout/CheckoutCreditCard";
 
@@ -210,7 +211,7 @@ export default function SideBarCourse() {
 
   return (
     <div
-      className=" w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex pooh"
+      className=" w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex responsiveSideBarHeight"
       style={{
         display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
         overflowY: "scroll"

@@ -5,8 +5,11 @@ const passport = require("passport");
 const CourseSchema = require("../../models/Course");
 const ContentSchema = require("../../models/Content");
 const MediaSchema = require("../../models/Media");
+const QuizSchema = require("../../models/Quiz");
 /////////
 const Course = mongoose.model("course", CourseSchema);
+
+const Quiz = mongoose.model("quiz", QuizSchema);
 
 const UserSchema = require("../../models/User");
 const User = mongoose.model("user", UserSchema);
@@ -32,9 +35,129 @@ router.get("/", async (req, res) => {
     .catch(err => console.log(err));
 });
 
+
+// delete all question items in quiz
+router.post("/deleteQuizQuestions", (req, res) => {
+  console.log(req.body) 
+  const id = req.body.mediaId;
+  console.log('deleting questions in quiz')
+  Quiz.deleteMany({mediaId: id})
+    .then(data => {
+      console.log('quiz result 1')
+      console.log(data )
+    })
+    .catch(err => console.log(err)); 
+});
+
+const axios = require('axios').default;
+const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
+const headerPost = {
+  Accept: "application/vnd.vimeo.*+json;version=3.4",
+  Authorization: `bearer ${accessToken}`,
+  "Content-Type": "application/json"
+};
+
+// move uploaded vimeo video to correct course folder
+router.post("/moveVideoFolder", (req, res) => {
+    console.log('send request to vimeo server')
+    console.log(req.body)
+  
+    axios({
+      method: "put",
+      url: 'https://api.vimeo.com/me/projects/' + req.body.videoFolderId + '/videos/' + req.body.videoId,
+      headers: headerPost,
+      data: {
+      }
+    })
+      .then(res => {
+          console.log('video moved to folder')
+          console.log(res)
+      })
+      .catch(err => {
+        message.error("video move to folder Error, Try Again");
+        console.log(err);
+      });  
+});
+
+// tell Vimeo to create new course video folder
+router.post("/createVimeoFolder", (req, res) => {
+  console.log('send request to vimeo server')
+  console.log(req.body)
+
+  var tempCourseSlug = req.body.courseSlug;
+  axios({
+    method: "post",
+    url: 'https://api.vimeo.com/me/projects',
+    headers: headerPost,
+    data: {
+      name: req.body.folderName
+    }
+  })
+    .then(res => {
+        console.log('vimeo folder successfully created')
+        const folderId = res.data.uri.replace("/users/98773046/projects/", "")
+        console.log(folderId)
+        console.log(req.body.courseName)
+        Course.findOneAndUpdate( {courseName: req.body.courseName}, { courseVimeoId: folderId },function(err, result) {
+          if (err) {
+            console.log('error')
+          } else {
+            console.log('success')
+            console.log(result)
+          }
+        });
+    })
+    .catch(err => {
+      message.error("video move to folder Error, Try Again");
+      console.log(err);
+    });  
+});
+
+// tell Vimeo to change folder name (not complete yet)
+router.post("/editVimeoFolderName", (req, res) => {
+  console.log('editing vimeo folder name')
+  console.log(req.body.folderName)
+  axios({
+    method: "patch",
+    url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+    headers: headerPost,
+    data: {
+      name: req.body.folderName
+    }
+  })
+    .then(res => {
+        console.log('vimeo folder name sucessfully edited')
+    })
+    .catch(err => {
+      message.error("folder name change error");
+      console.log(err);
+    });  
+});
+
+// tell Vimeo to delete video
+router.post("/deleteVimeoVideo", (req, res) => {
+  console.log('editing vimeo folder name')
+  console.log(req.body.folderName)
+  axios({
+    method: "patch",
+    url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+    headers: headerPost,
+    data: {
+      name: req.body.folderName
+    }
+  })
+    .then(res => {
+        console.log('vimeo folder name sucessfully edited')
+    })
+    .catch(err => {
+      message.error("folder name change error");
+      console.log(err);
+    });  
+});
+
+
 //GetSubjects
 router.get("/subjects", async (req, res) => {
-
   Subject.find()
   .then(data => {
     res.status(200).json(data);
@@ -88,7 +211,8 @@ router.post(
       courseFee:req.body.courseFee,
       coursePrice:req.body.coursePrice,
       courseTagEnglish:req.body.courseTagEnglish,
-      courseTagThai:req.body.courseTagThai
+      courseTagThai:req.body.courseTagThai,
+      courseVimeoId: req.body.courseVimeoId
   
     });
 
@@ -145,20 +269,50 @@ router.post(
   (req, res) => {
     const adjustCourseSlug = (req.body.courseSlug).toString();
 
-    Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
-      let courseId = poolData._id.toString();
-    const adjustMediaName = courseId + "Media";
-    const adjustMediaNameStr = adjustMediaName.toString();
+    Course.findOne({ courseSlug: adjustCourseSlug })
+      .then(poolData => {
+        let courseId = poolData._id.toString();
+        const adjustMediaName = courseId + "Media";
+        const adjustMediaNameStr = adjustMediaName.toString();
 
-    Course.deleteOne({ courseSlug: adjustCourseSlug }, function(err) {
-      res.status(200).json("success");
-      if (err) return handleError(err);
+        // delete course from database
+        Course.deleteOne({ courseSlug: adjustCourseSlug }, function(err) {
+          res.status(200).json("success");
+          if (err) return handleError(err);
 
-      mongoose.connection.db.dropCollection(courseId);
-      mongoose.connection.db.dropCollection(adjustMediaNameStr);
-    });
-  
-}).catch(err => console.log(err));
+          mongoose.connection.db.dropCollection(courseId);
+          mongoose.connection.db.dropCollection(adjustMediaNameStr);
+        });
+
+        // delete vimeo folder and videos in it
+        console.log('preparing to delete vimeo folder')
+        axios({
+          method: "delete",
+          url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+          headers: headerPost,
+          data: {
+            should_delete_clips: true
+          }
+        })
+          .then(res => {
+              console.log('vimeo folder sucessfully delete')
+          })
+          .catch(err => {
+            message.error("vimeo folder delete error");
+            console.log(err);
+          });  
+
+        // detele all questions from course
+        console.log('prepare to delete all qeuestions in course')
+        Quiz.deleteMany({courseSlug: req.body.courseSlug})
+          .then(data => {
+            console.log('deleted all questions from course')
+            console.log(data)
+          })
+          .catch(err => console.log(err)); 
+
+      })
+      .catch(err => console.log(err));
   }
 );
 

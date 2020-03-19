@@ -222,6 +222,7 @@ function renderAddQuestionModal() {
       new: "new"
     });
     GlobalHook.setGloblaQuizQuestionName(getQuestionName);
+    console.log('new question created!!!!!!!!!!!')
   }
 
   function handleQuizSelect(item, index) {

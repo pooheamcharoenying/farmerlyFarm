@@ -13,6 +13,7 @@ import AdminRoute from './AdminRoute'
 function RouterMain() {
 
   return (  
+    <div style={{overflow:"hidden"}}>
     <Router>
       <Switch>
 
@@ -27,6 +28,8 @@ function RouterMain() {
         
       </Switch>
     </Router>
+    </div>
+
  
   );
 }

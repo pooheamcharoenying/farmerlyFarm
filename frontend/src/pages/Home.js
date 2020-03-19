@@ -15,12 +15,12 @@ export default function Home() {
     var subjectsData = "hobo"
 
 
-    getSubjectCategories().then(data => {
-      console.log('banobagen')
-      console.log(data)
-      subjectsData = data;
-      console.log(subjectsData)
-    })
+    // getSubjectCategories().then(data => {
+    //   console.log('banobagen')
+    //   console.log(data)
+    //   subjectsData = data;
+    //   console.log(subjectsData)
+    // })
 
 
   }, []);
