@@ -42,11 +42,9 @@ export default function SideBarCourse() {
       GlobalHook.setGlobalShowLoginModal(true);
       GlobalHook.setGlobalLoginTab("Signup");
     } else {
-      console.log(GlobalHook.getGlobalCourseFee);
       if (GlobalHook.getGlobalCourseFee == "true") {
         CourseSubscriptionAction(GlobalHook);
       } else {
-        //  alert("เสียตัง " + GlobalHook.getGlobalCoursePrice)
         GlobalHook.setGlobalShowCourseFeeAlertModal(true);
       }
     }
