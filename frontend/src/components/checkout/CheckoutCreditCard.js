@@ -36,12 +36,12 @@ export class Checkout extends Component {
   };
 
   omiseCardHandler = () => {
-    const { createInternetBankingCharge } = this.props;
+    const { createCreditCardCharge } = this.props;
     OmiseCard.open({
-      frameDescription: "Invoice #3847",
+      frameDescription: this.props.courseId,
       amount: this.props.amount*100,
       onCreateTokenSuccess: token => {
-        createInternetBankingCharge(this.props.iuid, this.props.courseId, this.props.amount, token);
+        createCreditCardCharge(this.props.courseId, this.props.amount*100, token);
       },
       onFormClosed: () => {}
     });
@@ -49,12 +49,16 @@ export class Checkout extends Component {
 
   handleClick = e => {
     e.preventDefault();
-    this.creditCardConfigure();
-    this.omiseCardHandler();
+    if(this.props.pmid){
+      this.props.createCreditCardCharge(this.props.courseId, this.props.amount*100, "token");
+    }else{
+      this.creditCardConfigure();
+      this.omiseCardHandler();
+    }
+   
   };
 
   render() {
-    const { cart } = this.props;
 
     return (
       <div className="own-form">

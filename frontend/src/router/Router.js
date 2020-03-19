@@ -15,7 +15,7 @@ function RouterMain() {
   return (  
     <Router>
       <Switch>
-        {console.log("routing")}
+
         <Route exact path="/" component={Home}/>
         <Route exact path="/course/" component={Home}/>
         <Route exact path="/course/:courseSlug" component={Course}/>
@@ -24,6 +24,7 @@ function RouterMain() {
         <Route exact path="/teacher/:courseSlug" component={Studio}/>
         <Route exact path="/admin" component={Admin}/>
         <Route path="*" component={Home} />
+        
       </Switch>
     </Router>
  

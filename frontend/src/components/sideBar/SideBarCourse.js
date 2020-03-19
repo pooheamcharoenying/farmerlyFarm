@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Progress, message, Modal, Icon } from "antd";
-import axios from 'axios'
+import axios from "axios";
 import { GlobalContext } from "../../hook/GlobalHook";
 import Drag from "../drag/MainDragCourse";
 import { CourseSubscriptionAction } from "../../actions";
@@ -8,11 +8,7 @@ import "./poohStyle.css";
 import CheckoutInternetBanking from "../checkout/CheckoutInternetBanking";
 import CheckoutCreditcard from "../checkout/CheckoutCreditCard";
 
-
-
-
 export default function SideBarCourse() {
-
   const GlobalHook = useContext(GlobalContext);
   const [getuserCouresLogLength, setuserCouresLogLength] = useState(0);
   const [getMainCourseLength, setMainCourseLength] = useState(0);
@@ -21,11 +17,15 @@ export default function SideBarCourse() {
   const [getShowCourseFeeAlertModal, setShowCourseFeeAlertModal] = useState(
     false
   );
-  const [getUserId,setUserId] = useState("")
+  const [getUserId, setUserId] = useState("");
+  const [getUserEmail, setUserEmail] = useState("");
+  const [getUserPMid, setUserPMid] = useState(null);
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
-      setUserId(GlobalHook.getGlobalUser._id)
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId &&GlobalHook.getGlobalCurrentUser) {
+      setUserEmail(GlobalHook.getGlobalCurrentUser.email)
+      setUserId(GlobalHook.getGlobalCurrentUser.uid);
+      setUserPMid(GlobalHook.getGlobalUser.pmid)
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
         if (data.courseId == GlobalHook.getGlobalcourseId) {
           setisSubscription(true);
@@ -51,19 +51,17 @@ export default function SideBarCourse() {
     }
   }
 
-  let cart =  {}
+  let cart = {};
   useEffect(() => {
-    if( GlobalHook.getGlobalCourseFee){
-
+    if (GlobalHook.getGlobalCourseFee) {
     }
-  
-  }, [ GlobalHook.getGlobalCourseFee, GlobalHook.getGlobalcourseId])
-  
-    function createInternetBankingCharge(iuid, courseId, amount, token) {
-    GlobalHook.setGlobalShowCourseFeeAlertModal(false);
-    CourseSubscriptionAction(GlobalHook);
+  }, [GlobalHook.getGlobalCourseFee, GlobalHook.getGlobalcourseId]);
 
-    message.success("Payment Successfull");
+  function createInternetBankingCharge(iuid, courseId, amount, token) {
+    // GlobalHook.setGlobalShowCourseFeeAlertModal(false);
+    // CourseSubscriptionAction(GlobalHook);
+
+    // message.success("Payment Successfull");
 
     // console.log(iuid)
     // console.log(courseId)
@@ -86,11 +84,31 @@ export default function SideBarCourse() {
     // } catch (err) {
     //   console.log(err);
     // }
+  }
+
+
+  async function createCreditCardCharge  (courseId, amount, token)  {
+    try {
+      const res = await axios({
+        method: "POST",
+        url: "/api/checkout/creditCard",
+        data: { "email":getUserEmail,"iuid":getUserId, courseId, amount, token,pmid:getUserPMid },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (res.data) {
+        GlobalHook.setGlobalShowCourseFeeAlertModal(false);
+        CourseSubscriptionAction(GlobalHook);
+    
+        message.success("Payment Successfull");
+      }
+    } catch (err) {
+      message.error("Payment Fail");
+      console.log(err);
+    }
   };
-
-
-
-
   function RenderCourseFeeAlert() {
     return (
       <Modal
@@ -101,8 +119,6 @@ export default function SideBarCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-           
-
             {/* <button
               onClick={() => {
                 GlobalHook.setGlobalShowCourseFeeAlertModal(false);
@@ -114,24 +130,31 @@ export default function SideBarCourse() {
             >
               Complete Payment
             </button> */}
-         
-            <CheckoutInternetBanking amount={GlobalHook.getGlobalCoursePrice} courseId={GlobalHook.getGlobalcourseId} iuid={getUserId}
-          createInternetBankingCharge={createInternetBankingCharge}/>
 
-<CheckoutCreditcard amount={GlobalHook.getGlobalCoursePrice} courseId={GlobalHook.getGlobalcourseId} iuid={getUserId}
-          createInternetBankingCharge={createInternetBankingCharge}/>
-
-<button
+            {/* <CheckoutInternetBanking
+              amount={GlobalHook.getGlobalCoursePrice}
+              courseId={GlobalHook.getGlobalcourseId}
+              iuid={getUserId}
+              createInternetBankingCharge={createInternetBankingCharge}
+            /> */}
+              <button
               onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
               Cancel
             </button>
+            <CheckoutCreditcard
+              amount={GlobalHook.getGlobalCoursePrice}
+              courseId={GlobalHook.getGlobalcourseId}
+              createCreditCardCharge={createCreditCardCharge}
+              pmid={getUserPMid}
+            />
+
+           
           </div>
         ]}
       >
         <div className="flex flex-col items-center">
-        
           <div className="font-bold text-2xl text-black mb-4">CHECKOUT</div>
 
           <div

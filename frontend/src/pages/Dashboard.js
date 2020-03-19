@@ -36,7 +36,7 @@ const GlobalHook = useContext(GlobalContext)
         Profile
       </div>
       <div className="mt-4 flex flex-col">
- <AvatarSetting/>
+          <AvatarSetting/>
           <ProfileSetting/>
 
 </div>
