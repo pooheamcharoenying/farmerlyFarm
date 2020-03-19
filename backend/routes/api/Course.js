@@ -164,7 +164,7 @@ router.get("/subjects", async (req, res) => {
     console.log('subject')
     console.log(data)
   })
-  .catch(err => console.log(err));
+  .catch(err => {console.log(err);res.status(400).json(err)});
 });
 
 //GetCourse

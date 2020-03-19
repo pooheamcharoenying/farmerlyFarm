@@ -18,7 +18,7 @@ function getSubjectCategories() {
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
       return response.data
-  })
+  }).catch(err => console.log(err));
 }
 
 function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
