@@ -8,8 +8,10 @@ import QuizHead from "./horizonDrag/QuizHead";
 import TextEditor from "./quiz/TextEditor";
 import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
 import VideoUpload from "./quiz/VideoUpload";
-import { SaveAllAction, CheckMutateAction } from "../../actions";
+import { SaveAllAction, CheckMutateAction, deleteQuestionsInQuiz, SaveCourseStructureOnly } from "../../actions";
 import TextEditorComp from "../textEditor/TextEditor";
+
+
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -32,6 +34,10 @@ const StudioQuizContent = () => {
   const [getQuizSettingRandom, setQuizSettingRandom] = useState(
     getGlobalLessionSelectNew.mediaEtc3
   );
+
+  const [getLessionPreview, setLessionPreview] = useState(GlobalHook.getGlobalLessionSelect.mediaPreview);
+
+
   const [getQuizSettingAmountPass, setQuizSettingAmountPass] = useState(1);
   const [getQuizSettingAmountRandom, setQuizSettingAmountRandom] = useState(1);
   const [getShowConfirmDel, setShowConfirmDel] = useState(false);
@@ -59,11 +65,18 @@ const StudioQuizContent = () => {
   const [getQuizDataPool, setQuizDataPool] = useState([{ mock: "1" }]);
 
 
+
+
   useEffect(() => {
-    if (GlobalHook.getGlobalMediaQuiz) {
-      setQuizDataPool(GlobalHook.getGlobalMediaQuiz);
+    console.log('supersaiya')
+    console.log(GlobalHook.getGlobalMediaNew)
+    if(GlobalHook.getGlobalMediaNew){
+      console.log('beijita')
+      setQuizDataPool(GlobalHook.getGlobalMediaNew);
+
     }
-  }, [GlobalHook.getGlobalMediaQuiz]);
+
+  }, [GlobalHook.getGlobalMediaNew]);
 
   // useEffect(() => {
   //   if(GlobalHook.getGlobalLessionSelect){
@@ -114,6 +127,8 @@ const StudioQuizContent = () => {
 
     setQuizSettingAmountRandom(getGlobalLessionSelectNew.mediaEtc5);
     setInitStateSettingAmountRandom(getGlobalLessionSelectNew.mediaEtc5);
+
+
   }, [getGlobalLessionSelectNew]);
 
 
@@ -128,11 +143,11 @@ const StudioQuizContent = () => {
     } else {
       GlobalHook.setMutantStatus(true)
     }
-  }, [getLessionName]);
+  }, [getLessionName, getLessionPreview, getLessionTime]);
 
-  useEffect(() => {
-    CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
-  }, [getLessionTime]);
+  // useEffect(() => {
+  //   CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
+  // }, [getLessionTime]);
 
   useEffect(() => {
     CheckMutateAction(
@@ -175,6 +190,7 @@ const StudioQuizContent = () => {
   }, [getQuizSettingAmountRandom]);
 
   useEffect(() => {
+    console.log('woonaanaa')
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
     if (oldCourseStructure[parentIndex] && getLessionName) {
@@ -182,6 +198,7 @@ const StudioQuizContent = () => {
         selfIndex
       ].title = getLessionName;
       oldCourseStructure[parentIndex].subItems[selfIndex].time = getLessionTime;
+      oldCourseStructure[parentIndex].subItems[selfIndex].preview = getLessionPreview;
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].etc1 = getQuizSettingShowAns;
@@ -209,19 +226,30 @@ const StudioQuizContent = () => {
     getQuizSettingTimeCount,
     getQuizSettingRandom,
     getQuizSettingAmountRandom,
-    getGlobalLessionSelectNew
+    getGlobalLessionSelectNew,
+    getLessionPreview
   ]);
 
   function handleDeleteLession() {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = getGlobalLessionSelectNew;
+
+    console.log('banoffee')
+    console.log(parentIndex)
+    console.log(oldCourseStructure[parentIndex].subItems[selfIndex].mediaId)
+
+    deleteQuestionsInQuiz(oldCourseStructure[parentIndex].subItems[selfIndex].mediaId);
+
     GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
 
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
+      console.log('check global')
+      console.log(oldCourseStructure)
 
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
-      SaveAllAction(GlobalHook);
+
+      SaveCourseStructureOnly(GlobalHook);
     }
   }
 
@@ -298,6 +326,16 @@ const StudioQuizContent = () => {
           onChange={e => {setLessionName(e.target.value)}}
         />
       </div>
+
+      <div className="flex flex-col text-center mb-6 justify-center">
+          <div className="font-bold text-lg mb-2">Lession Preview</div>
+          <SwitchR
+            className="self-center"
+            onChange={e => setLessionPreview(e)}
+            checked={getLessionPreview}
+          />
+        
+        </div>
 
       <div className="flex justify-around w-10/12 md:w-4/12 mb-4">
         <div className="flex flex-col text-center">

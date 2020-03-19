@@ -8,6 +8,8 @@ import StudioQuizContent from "./StudioQuizContentPooh";
 import StudioOverviewContent from "./StudioOverviewContent";
 import StudioDashboardContent from "./StudioDashboardContent";
 
+import './StudioContent.css'
+
 import Blank from "./Blank";
 
 import { SaveAllAction } from "../../actions";
@@ -41,7 +43,7 @@ export default function StudioContent() {
     }
   }
   return (
-    <div className="bg-gray-100 flex-1 mt-16" style={{ overflowY: "auto" }}>
+    <div className="bg-gray-100 flex-1 mt-16 responsiveCourseHeight" >
 
       {console.log("main content")}
       {RenderStudioContentSwitch()}

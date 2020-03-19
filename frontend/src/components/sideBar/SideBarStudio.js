@@ -7,6 +7,8 @@ import Drag from '../drag/MainDragStudio'
 
 import {UpdataCoursepublishAction} from '../../actions'
 
+import './SideBarStudio.css'
+
 export default function SideBarCourse() {
     const GlobalHook = useContext(GlobalContext)
 
@@ -108,7 +110,7 @@ export default function SideBarCourse() {
       <>
       {RenderUnSaveAlert()}
       <div
-        className=" bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex"
+        className=" bg-gray-300 w-10/12 md:w-5/12 pb-64 xl:w-3/12 mt-16 fixed md:relative top-0 left-0  flex-col z-30 hidden md:flex responsiveSideBarHeight"
         style={{
           display: GlobalHook.getGlobalShowSideBarStatus ? "flex" : "",
           overflowY: "scroll",
@@ -162,7 +164,7 @@ export default function SideBarCourse() {
         </div>
   
         <Drag />
-        <div style={{minHeight:"60px"}}></div>
+        {/* <div style={{minHeight:"60px"}}></div> */}
       </div>
       </>
     

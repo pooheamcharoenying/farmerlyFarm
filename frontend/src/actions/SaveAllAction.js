@@ -69,4 +69,35 @@ axios
   });
 }
 
-export { SaveAllAction };
+
+function SaveCourseStructureOnly(GlobalHook){
+  console.log("hello saving course structure only")
+  GlobalHook.setMutantStatus(false)
+  // GlobalHook.setGlobalLoading(true);
+
+  const pushData = {
+    CourseInfoOverview: GlobalHook.getGlobalCourseInfoOverviewNew,
+    CourseInfoStudent: GlobalHook.getGlobalCourseInfoStudentNew,
+    CourseInfoTeacher: GlobalHook.getGlobalCourseInfoTeacherNew,
+    courseStructure: GlobalHook.getGlobalCourseStructureNew,
+    courseSlug:GlobalHook.getGlobalCourseSlug
+  };
+  console.log(pushData)
+  GlobalHook.setGlobalCourseInfoOverview(GlobalHook.getGlobalCourseInfoOverviewNew)
+  GlobalHook.setGlobalCourseInfoStudent(GlobalHook.getGlobalCourseInfoStudentNew)
+  GlobalHook.setGlobalCourseInfoTeacher(GlobalHook.getGlobalCourseInfoTeacherNew)
+
+  axios
+    .post(`/api/course/structureUpdate`, pushData)
+    .then(res => {
+      localStorage.setItem("InitStructure", JSON.stringify((GlobalHook.getGlobalCourseStructureNew)))
+
+    })
+    .catch(err => {
+      console.log(err);
+      message.error("Saving Error")
+    });
+}
+
+
+export { SaveAllAction, SaveCourseStructureOnly };

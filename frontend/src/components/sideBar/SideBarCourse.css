@@ -1,32 +1,29 @@
 
-
-
-
 @media only screen and (max-width: 2400px){
-    .pooh{
+    .responsiveSideBarHeight{
         background-color: green;
-        max-height: 100vh;
+        height: calc(100vh - 65px);
     }
 }
 
 @media only screen and (max-width: 1200px){
-    .pooh{
+    .responsiveSideBarHeight{
         background-color: blue;
-        max-height: 100vh;
+        height: calc(100vh - 65px);
     }
 }
 
 
 @media only screen and (max-width: 760px){
-    .pooh{
+    .responsiveSideBarHeight{
         background-color: red;
-        max-height: 84vh;
+        height: calc(100vh - 65px);
     }
 }
 
 @media only screen and (max-width: 600px){
-    .pooh{
+    .responsiveSideBarHeight{
         background-color: darkred;
-        max-height: 84vh;
+        height: calc(100vh - 65px);
     }
 }

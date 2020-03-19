@@ -12,6 +12,9 @@ const Quiz = mongoose.model("quiz", QuizSchema);
 const Course = mongoose.model("course", CourseSchema);
 
 
+
+
+
 ///ADD Quiz
 router.post(
     "/",

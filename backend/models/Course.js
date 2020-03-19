@@ -58,6 +58,9 @@ const CourseSchema = new Schema({
   },
   courseTagThai: {
     type: Array
+  },
+  courseVimeoId: {
+    type: String
   }
 });
 

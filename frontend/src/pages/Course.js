@@ -23,7 +23,7 @@ export default function Course() {
 
   return (
 
-    <div className="flex relative  overflow-hidden">
+    <div className="flex relative  overflow-hidden" style={{backgroundColor:"amber", overflow:"hidden"}}>
       <Helmet><title>Studysabai-Course</title></Helmet>
       <Header/>
 

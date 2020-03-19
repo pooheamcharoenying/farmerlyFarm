@@ -17,7 +17,7 @@ import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
 import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
-import { SaveAllAction, CheckMutateAction } from "../../actions";
+import { SaveAllAction, CheckMutateAction, MoveVimeoVideoToFolder } from "../../actions";
 
 const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
 
@@ -100,15 +100,13 @@ const StudioVideoContent = () => {
 
   // Pooh Edited this to
   useEffect(() => {
-    console.log("panabalabe")
     //CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
     if (GlobalHook.getMutantStatus == true) {
       GlobalHook.setMutantStatus(false)
     } else {
       GlobalHook.setMutantStatus(true)
     }
-
-  }, [getLessionName]);
+  }, [getLessionName, getLessionTime]);
 
   // useEffect(() => {
   //   CheckMutateAction(GlobalHook, getInitStateTime, getLessionTime);
@@ -122,7 +120,7 @@ const StudioVideoContent = () => {
     let oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
     GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
-
+    console.log('video lesson deleted')
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
 
@@ -132,7 +130,13 @@ const StudioVideoContent = () => {
         url: `https://api.vimeo.com/videos/${GlobalHook.getGlobalMediaVideo}`,
         headers: headerDelete,
         data: {}
-      }).catch(err => console.log(err));
+      })
+        .then(res => {
+          console.log('vimeo video deleted')
+        })
+        .catch(err => console.log(err));
+      
+      
       SaveAllAction(GlobalHook);
     }
   }
@@ -152,7 +156,7 @@ const StudioVideoContent = () => {
 
     axios({
       method: "post",
-      url: `https://api.vimeo.com/me/videos`,
+      url: `https://api.vimeo.com/me/videos/`,
       headers: headerPost,
       data: {
         upload: {
@@ -166,8 +170,12 @@ const StudioVideoContent = () => {
         const newVideoCode = res.data.uri.replace("/videos/", "");
 
         setVideoData(newVideoCode);
+        console.log('viddy code')
+        console.log(newVideoCode)
 
         TusUpload(res);
+
+
       })
       .catch(err => {
         message.error("Upload Error, Try Again");
@@ -206,12 +214,14 @@ const StudioVideoContent = () => {
       onSuccess: function() {
         console.log("Download %s from %s", upload.file.name, upload.url);
         setUploadingShow("done");
+        MoveVimeoVideoToFolder(response,GlobalHook)
       }
     });
 
     // Start the upload
     upload.start();
   }
+
 
   useEffect(() => {
     if (GlobalHook.getGlobalLessionSelect.new == "new") {

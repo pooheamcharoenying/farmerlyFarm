@@ -176,6 +176,8 @@ const Store = props => {
   
   const [getGlobalShowCourseFeeAlertModal,setGlobalShowCourseFeeAlertModal] = useState(false)
 
+  const [getGlobalVimeoId, setGlobalVimeoId] = useState("")
+
   ///Generate GlobalHook///
   const GlobalHook = {
     getGlobalToken,
@@ -369,6 +371,9 @@ const Store = props => {
 
     getGlobalMessage,
     setGlobalMessage,
+
+    getGlobalVimeoId,
+    setGlobalVimeoId,
 
     getGlobalShowCourseFeeAlertModal,
     setGlobalShowCourseFeeAlertModal

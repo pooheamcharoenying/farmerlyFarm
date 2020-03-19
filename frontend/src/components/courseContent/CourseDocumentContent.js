@@ -106,7 +106,7 @@ export default function CourseDocumentContent() {
         />
       </div> */}
 
-        <div style={{ height: "100vh", overflowY: "scroll" }}>
+        <div >
             <ReactQuill
               value={getEditorData || ""}
               theme="snow"

@@ -1,0 +1,33 @@
+
+@media only screen and (max-width: 2400px){
+    .responsiveCourseHeight{
+        background-color: green;
+        height: calc(100vh - 65px);
+        overflow-y: scroll;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .responsiveCourseHeight{
+        background-color: blue;
+        height: calc(100vh - 65px);
+        overflow-y: scroll;
+    }
+}
+
+
+@media only screen and (max-width: 760px){
+    .responsiveCourseHeight{
+        background-color: red;
+        height: calc(100vh - 65px);
+        overflow-y: scroll;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .responsiveCourseHeight{
+        background-color: darkred;
+        height: calc(100vh - 65px);
+        overflow-y: scroll;
+    }
+}
