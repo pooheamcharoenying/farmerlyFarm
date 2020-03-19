@@ -89,25 +89,5 @@ passport.authenticate("jwt", { session: false }),
 
 
 
-router.post("/creditRecipient",
-passport.authenticate("jwt", { session: false }),
- async (req, res) => {
-  await omise.recipients.create({
-    'name': 'NSomchai Prasert',
-    'email': 'Nsomchai.prasert@example.com',
-    'type': 'individual',
-    'bank_account': {
-      'brand': 'bbl',
-      'number': '1234567890',
-      'name': 'NSOMCHAI PRASERT'
-    }
-  }, function(err, resp) {
-    console.log(resp)
-    res.status(200).json(resp)
-    /* Response. */
-  });
- }
-)
-
 
 module.exports = router;

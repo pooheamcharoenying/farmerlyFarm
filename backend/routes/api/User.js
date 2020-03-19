@@ -86,12 +86,9 @@ router.post("/register", (req, res) => {
       }
     })
     .catch(err => res.status(404).json(err));
-
 });
 
 router.post("/login", (req, res) => {
-
-
   const uid = req.body.uid;
 
   // Find user by email
@@ -114,8 +111,6 @@ router.post("/login", (req, res) => {
           });
         }
       );
-
-    
     })
     .catch(err => {
       res.status(404).json(errors);
@@ -155,7 +150,6 @@ router.post(
           ].courseLog
             .map(data => data.lessionId)
             .indexOf(req.body.lessionId);
-
 
           if (isLessIdExist == -1) {
             user.courseSubscription[findCourseMatch].courseLog.unshift({
@@ -210,7 +204,6 @@ router.post(
           .map(data => data.courseName)
           .indexOf(req.body.courseName);
         if (user.courseSubscription[findCourseMatch] != undefined) {
-
           const isLessIdExist = user.courseSubscription[findCourseMatch].quizLog
             .map(data => data.logTime)
             .indexOf(req.body.logTime);
@@ -224,7 +217,7 @@ router.post(
             userAns: req.body.userAns,
             userAnsStatus: req.body.userAnsStatus
           });
-       
+
           user.save().then(user => res.json(user));
         }
       })
@@ -242,7 +235,6 @@ router.post(
         .auth()
         .getUser(user.uid)
         .then(function(userRecord) {
-          console.log(userRecord.toJSON());
           res.status(200).json(userRecord.toJSON());
         })
         .catch(function(error) {
@@ -252,5 +244,7 @@ router.post(
     });
   }
 );
+
+
 
 module.exports = router;

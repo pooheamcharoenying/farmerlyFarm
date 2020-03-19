@@ -11,31 +11,6 @@ const omise = require("omise")({
     secretKey: process.env.OMISE_SECRET_KEY
   });
 
-router.post("/creditRecipient",
-passport.authenticate("jwt", { session: false }),
- async (req, res) => {
-  await omise.recipients.create({
-    'name': 'NSomchai Prasert',
-    'email': 'Nsomchai.prasert@example.com',
-    'type': 'individual',
-    'bank_account': {
-      'brand': 'bbl',
-      'number': '1234567890',
-      'name': 'NSOMCHAI PRASERT'
-    }
-  }, function(err, resp) {
-      if(err){
-          res.status(400).json(err)
-          console.log(err)
-        }else{
-            console.log(resp)
-            res.status(200).json(resp)
-            /* Response. */
-        }
-   
-  });
- }
-)
 
 router.post("/recipienttransfer",
 passport.authenticate("jwt", { session: false }),
@@ -54,5 +29,54 @@ passport.authenticate("jwt", { session: false }),
  }
 )
 
+router.post(
+    "/addTeacherPayment",
+    passport.authenticate("jwt", { session: false }),
+  
+    (req, res) => {
+        const {name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName} = req.body
+      User.findOneAndUpdate(
+        { _id: req.user.id},
+        {
+            teacherPayment_AccountHolderName: req.body.teacherPayment_AccountHolderName,
+            teacherPayment_AccountNumber: req.body.teacherPayment_AccountNumber,
+            teacherPayment_AccountBank: req.body.teacherPayment_AccountBank
+         
+        },
+        { new: true },
+        (err, data) => {
+        
+          CreateRecipient(name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,res)
+          if (err) {
+            res.status(400).json(err)
+            console.log("Something wrong when updating data!");
+          }
+        }
+      )
+    }
+  );
+
+  async function CreateRecipient(name,email,teacherPayment_AccountBank,teacherPayment_AccountNumber,teacherPayment_AccountHolderName,res){
+    await omise.recipients.create({
+        'name': name,
+        'email': email,
+        'type': 'individual',
+        'bank_account': {
+          'brand': teacherPayment_AccountBank,
+          'number': teacherPayment_AccountNumber,
+          'name': teacherPayment_AccountHolderName
+        }
+      }, function(err, resp) {
+          if(err){
+              res.status(400).json(err)
+              console.log(err)
+            }else{
+                console.log(resp)
+                res.status(200).json(resp)
+                /* Response. */
+            }
+       
+      });
+  }
 
 module.exports = router;

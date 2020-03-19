@@ -21,21 +21,24 @@ export default function Dashboard() {
     getCoursePoolAction(GlobalHook);
   }, []);
 
+  const [getEmail, setEmail] = useState("")
+  const [getName, setName] = useState("")
+
+
+  useEffect(() => {
+    if (GlobalHook.getGlobalCurrentUser) {
+      setName(GlobalHook.getGlobalCurrentUser.displayName)
+
+      setEmail(GlobalHook.getGlobalCurrentUser.email)
+
+    }
+  }, [GlobalHook.getGlobalCurrentUser]);
+
   function onChange(value) {
-    console.log(`selected ${value}`);
+    GlobalHook.setGlobalTeacherPayment_AccountBank(value)
   }
 
-  function onBlur() {
-    console.log("blur");
-  }
 
-  function onFocus() {
-    console.log("focus");
-  }
-
-  function onSearch(val) {
-    console.log("search:", val);
-  }
   function SetupTeacherPaymentModal() {
     return (
       <Modal
@@ -56,7 +59,7 @@ export default function Dashboard() {
             <button
               onClick={() => {
                 setSetupTeacherPaymentModalOpenStatus(false);
-                CreateTeacherPaymentAction(GlobalHook)
+                CreateTeacherPaymentAction(getName,getEmail,GlobalHook)
               }}
               className="bg-yellow-400 text-black p-2 rounded hover:bg-yellow-300"
             >
@@ -68,8 +71,8 @@ export default function Dashboard() {
         <div>
           <div className="mt-2">Payment</div>
 
-          <Input className="mt-2" placeholder="Account Holder Name" />
-          <Input className="mt-2" placeholder="Account Number" />
+          <Input className="mt-2" placeholder="Account Holder Name" value={GlobalHook.getGlobalTeacherPayment_AccountHolderName} onChange={(e)=>{GlobalHook.setGlobalTeacherPayment_AccountHolderName(e.target.value)}}/>
+          <Input className="mt-2" placeholder="Account Number" value={GlobalHook.getGlobalTeacherPayment_AccountNumber}  onChange={(e)=>{GlobalHook.setGlobalTeacherPayment_AccountNumber(e.target.value)}}/>
           <Select
             showSearch
             className="mt-2"
@@ -77,9 +80,7 @@ export default function Dashboard() {
             placeholder="Select Bank"
             optionFilterProp="children"
             onChange={onChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onSearch={onSearch}
+            value={GlobalHook.getGlobalTeacherPayment_AccountBank}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }

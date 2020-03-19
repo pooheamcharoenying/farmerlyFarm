@@ -192,6 +192,11 @@ const Store = props => {
 
   const [getGlobalVimeoId, setGlobalVimeoId] = useState("")
 
+  const [getGlobalTeacherPayment_AccountBank,setGlobalTeacherPayment_AccountBank] = useState("kbank")
+  const [getGlobalTeacherPayment_AccountHolderName,setGlobalTeacherPayment_AccountHolderName] = useState("")
+  const [getGlobalTeacherPayment_AccountNumber,setGlobalTeacherPayment_AccountNumber] = useState("")
+
+
   ///Generate GlobalHook///
   const GlobalHook = {
     getGlobalToken,
@@ -408,7 +413,17 @@ const Store = props => {
     setLessionTagSameAsCourseStatus,
 
     getQuizTagSameAsLessionStatus,
-    setQuizTagSameAsLessionStatus
+    setQuizTagSameAsLessionStatus,
+
+    getGlobalTeacherPayment_AccountBank,
+    setGlobalTeacherPayment_AccountBank,
+
+    getGlobalTeacherPayment_AccountHolderName,
+    setGlobalTeacherPayment_AccountHolderName,
+
+    getGlobalTeacherPayment_AccountNumber,
+    setGlobalTeacherPayment_AccountNumber
+
 
 
   };
@@ -441,11 +456,18 @@ if(uid){
         Cookies.set("globalToken", res.data.token, { expires: 7 });
 
         setGlobalUser(res.data.user);
+
+        
         localStorage.setItem("globalUser", JSON.stringify(res.data.user));
 
         axios.defaults.headers.common["Authorization"] = res.data.token;
 
         setGlobalLoading(false);
+
+
+        GlobalHook.setGlobalTeacherPayment_AccountHolderName(res.data.user.teacherPayment_AccountHolderName)
+        GlobalHook.setGlobalTeacherPayment_AccountNumber(res.data.user.teacherPayment_AccountNumber)
+        GlobalHook.setGlobalTeacherPayment_AccountBank(res.data.user.teacherPayment_AccountBank)
       })
       .catch(err => {
         console.log(err);
