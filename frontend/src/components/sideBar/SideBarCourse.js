@@ -70,7 +70,7 @@ export default function SideBarCourse() {
 
       if (res.data) {
         GlobalHook.setGlobalShowCourseFeeAlertModal(false);
-       // CourseSubscriptionAction(GlobalHook);
+        CourseSubscriptionAction(GlobalHook);
     
         message.success("Payment Successfull");
       }
