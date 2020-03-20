@@ -155,9 +155,6 @@ function getCourseContentAction(GlobalHook, courseSlug) {
 
 function CreateCourseAction(GlobalHook, setModalOpenStatus) {
 
-  console.log('creating new course --------------------------------------')
-
-
 
   setModalOpenStatus(false);
   GlobalHook.setGlobalLoading(true);
@@ -178,7 +175,9 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseFee:GlobalHook.getGlobalCourseFee,
     courseTagThai:GlobalHook.getGlobalCourseTagThai,
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
-    courseVimeoId: "defualt"
+    courseVimeoId: "defualt",
+    coursePublic:true,
+    courseSchool:false
   };
 
   axios

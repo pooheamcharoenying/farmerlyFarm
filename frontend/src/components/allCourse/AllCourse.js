@@ -19,8 +19,11 @@ export default function AllCourse() {
     GlobalHook.getGlobalCourseLevelFilter
   ]);
 
+
+
   function GenCourseFilted() {
-    let courseData = GlobalHook.getGlobalCoursePool;
+    const courseData = GlobalHook.getGlobalCoursePool.filter((data)=> data.coursePublic)
+    // let courseData = getcourseMatchPool;
     setFiltedCourseData(courseData);
     var NewFiltedSubjectPool;
     if (GlobalHook.getGlobalCourseSubjectFilter == "ทั้งหมด") {

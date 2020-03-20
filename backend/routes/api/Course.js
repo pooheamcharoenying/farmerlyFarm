@@ -217,6 +217,8 @@ router.post(
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
+
+    console.log(req.body)
     const newCourse = new Course({
       courseSlug: req.body.courseSlug,
       courseName: req.body.courseName,
@@ -236,7 +238,9 @@ router.post(
       coursePrice: req.body.coursePrice,
       courseTagEnglish: req.body.courseTagEnglish,
       courseTagThai: req.body.courseTagThai,
-      courseVimeoId: req.body.courseVimeoId
+      courseVimeoId: req.body.courseVimeoId,
+      coursePublic:req.body.coursePublic,
+      courseSchool:req.body.courseSchool
     });
 
     newCourse.save().then(newcourseData => {
