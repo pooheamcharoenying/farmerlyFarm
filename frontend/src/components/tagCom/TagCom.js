@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import ReactTags from "react-tag-autocomplete";
 import { GlobalContext } from "../../hook/GlobalHook";
+import {getSubjectCategories} from '../../actions'
 
 export default function TagCom(props) {
   const GlobalHook = useContext(GlobalContext);
@@ -25,6 +26,17 @@ export default function TagCom(props) {
 
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
+
+  const [getSubjectPool,setSubjectPool] = useState([])
+
+  const [getSelectedSubject,setSelectedSubject] = useState("Mathematic")
+
+  useEffect(() => {
+    getSubjectCategories().then(data => {
+      const hhol = data.map((item)=>item.english)
+      setSubjectPool(hhol)
+     }).catch(err => console.log(err));
+  }, [])
 
   function handleDelete(i) {
     const tagsEng = props.InTagEnglish.slice(0);
@@ -125,6 +137,19 @@ export default function TagCom(props) {
         ]}
       >
         <div className="flex flex-col justify-center items-center mx-auto">
+          <div className="flex mb-4">
+        <label for="subject" className="font-semibold mr-4">Choose Subject :</label>
+        <select id="subject" value={getSelectedSubject} onClick={(e)=>setSelectedSubject(e.target.value)}>
+          {getSubjectPool.map((item)=>{
+            return <option value={item}>{item}</option>
+
+          }
+          )}
+  
+          </select>
+          </div>
+
+          
           <div>
             <div>English</div>
             <Input
@@ -150,19 +175,24 @@ export default function TagCom(props) {
     axios
       .post(`/api/tag/addtag/`, {
         english: getNewTagEnglish,
-        thai: getNewTagThai
+        thai: getNewTagThai,
+        subject:getSelectedSubject
       })
       .then(res => {
         const tagsEng = [].concat(props.InTagEnglish, [
-          { id: res.data._id, name: getNewTagEnglish }
+          { id: res.data._id, name: `${getSelectedSubject} - ${getNewTagEnglish}` }
         ]);
         const tagsThai = [].concat(props.InTagThai, [
-          { id: res.data._id, name: getNewTagThai }
+          { id: res.data._id, name: `${getSelectedSubject} - ${getNewTagThai}` }
         ]);
 
         props.OutTagEnglish(tagsEng);
         props.OutTagThai(tagsThai);
         console.log(res.data);
+
+      
+  
+
       })
       .catch(err => console.log(err));
   }
