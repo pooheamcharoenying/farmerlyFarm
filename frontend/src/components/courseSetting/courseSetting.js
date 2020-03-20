@@ -54,6 +54,9 @@ export default function FabCreateCourse() {
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
 
+  const [getSchoolState,setSchoolState] = useState(false)
+
+
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
   }, []);
@@ -78,6 +81,18 @@ export default function FabCreateCourse() {
       UploadBtnClick(acceptedFiles[0]);
     }
   }, [acceptedFiles]);
+
+  useEffect(() => {
+    if(GlobalHook.getGlobalUser){
+      if(GlobalHook.getGlobalUser.role == "admin"){
+       setSchoolState(true)
+      }
+      if(GlobalHook.getGlobalUser.role == "school"){
+       setSchoolState(true)
+      }
+    }
+   }, [GlobalHook.getGlobalUser]);
+   
 
   function UploadBtnClick(file) {
     setUploadingShow("initing");
@@ -536,6 +551,33 @@ export default function FabCreateCourse() {
                 )}
               </div>
             </div>
+
+            {getSchoolState&&<div className="flex flex-col text-center my-4">
+              <div className="flex mb-2">
+              <div className="font-bold text mr-2">Public Course</div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalPublicCourseStatus}
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  onClick={e => GlobalHook.setGlobalPublicCourseStatus(e)}
+                />
+             
+              </div>
+
+              <div className="flex">
+              <div className="font-bold text mr-2">School Course</div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
+                />
+             
+              </div>
+
+              
+            </div>}
+
           </div>
         </div>
       </Modal>

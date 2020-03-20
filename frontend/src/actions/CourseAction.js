@@ -176,8 +176,8 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseTagThai:GlobalHook.getGlobalCourseTagThai,
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
     courseVimeoId: "defualt",
-    coursePublic:true,
-    courseSchool:false
+    coursePublic:GlobalHook.getGlobalPublicCourseStatus,
+    courseSchool:GlobalHook.getGlobalSchoolCourseStatus
   };
 
   axios
@@ -261,6 +261,12 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalCourseTagEnglish(res.data.courseTagEnglish)
       GlobalHook.setGlobalCourseTagThai(res.data.courseTagThai)
       GlobalHook.setGlobalVimeoId(res.data.courseVimeoId)
+      GlobalHook.setGlobalPublicCourseStatus(res.data.coursePublic)
+      GlobalHook.setGlobalSchoolCourseStatus(res.data.courseSchool)
+
+      console.log("Fetch Course Setting")
+      console.log(res.data)
+
 
     })
     .catch(err => {
@@ -289,7 +295,9 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseFee:GlobalHook.getGlobalCourseFee,
         courseTagThai:GlobalHook.getGlobalCourseTagThai,
         courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
-        courseVimeoId:GlobalHook.getGlobalVimeoId
+        courseVimeoId:GlobalHook.getGlobalVimeoId,
+        coursePublic:GlobalHook.getGlobalPublicCourseStatus,
+        courseSchool:GlobalHook.getGlobalSchoolCourseStatus
   };
 
 

@@ -41,6 +41,7 @@ export default function FabCreateCourse() {
   const [getCoursePrice, setCoursePrice] = useState(null);
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
+  const [getSchoolState,setSchoolState] = useState(false)
   const {
     acceptedFiles,
     getRootProps,
@@ -58,6 +59,17 @@ export default function FabCreateCourse() {
       UploadBtnClick(acceptedFiles[0]);
     }
   }, [acceptedFiles]);
+
+  useEffect(() => {
+   if(GlobalHook.getGlobalUser){
+     if(GlobalHook.getGlobalUser.role == "admin"){
+      setSchoolState(true)
+     }
+     if(GlobalHook.getGlobalUser.role == "school"){
+      setSchoolState(true)
+     }
+   }
+  }, [GlobalHook.getGlobalUser]);
 
   function UploadBtnClick(file) {
     setUploadingShow("initing");
@@ -191,6 +203,10 @@ export default function FabCreateCourse() {
             }
           }}
         >
+
+          
+
+
           <div className="flex flex-col text-center mb-4">
             <div className="font-bold text mb-2">ชื่อคอร์ส</div>
             <Input
@@ -199,6 +215,8 @@ export default function FabCreateCourse() {
               onChange={e => GlobalHook.setGlobalCourseName(e.target.value)}
             />
           </div>
+
+          
 
           <div className="flex flex-col text-center mb-4">
             <div className="font-bold text mb-2">วิชาเรียน</div>
@@ -357,27 +375,6 @@ export default function FabCreateCourse() {
             <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
 
 
-            {/* <div className="flex flex-col text-center my-4">
-              <div className="font-bold text mb-2">Tags</div>
-              <ReactTags
-                tags={GlobalHook.getGlobalCourseTagEnglish}
-                suggestions={getSuggestionsEnglish}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e)}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add English Tags"}
-              />
-              <ReactTags
-                tags={ GlobalHook.getGlobalCourseTagThai}
-                suggestions={getSuggestionsThai}
-                handleDelete={e => handleDelete(e)}
-                handleAddition={e => handleAddition(e)}
-                minQueryLength={1}
-                handleInputChange={e => handleInputChange(e)}
-                placeholder={"Add Thai Tags"}
-              />
-            </div> */}
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>
@@ -402,6 +399,34 @@ export default function FabCreateCourse() {
                 )}
               </div>
             </div>
+
+
+            {getSchoolState&&<div className="flex flex-col text-center my-4">
+              <div className="flex mb-2">
+              <div className="font-bold text mr-2">Public Course</div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalPublicCourseStatus}
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  onClick={e => GlobalHook.setGlobalPublicCourseStatus(e)}
+                />
+             
+              </div>
+
+              <div className="flex">
+              <div className="font-bold text mr-2">School Course</div>
+                <Switch
+                  defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
+                />
+             
+              </div>
+
+              
+            </div>}
+
           </div>
         </div>
       </Modal>

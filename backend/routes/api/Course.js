@@ -403,7 +403,9 @@ router.post(
         coursePrice: req.body.coursePrice,
         courseFee: req.body.courseFee,
         courseTagEnglish: req.body.courseTagEnglish,
-        courseTagThai: req.body.courseTagThai
+        courseTagThai: req.body.courseTagThai,
+        coursePublic:req.body.coursePublic,
+        courseSchool:req.body.courseSchool
       },
       { new: true },
       (err, doc) => {

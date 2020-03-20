@@ -201,6 +201,8 @@ const Store = props => {
   const [getGlobalTeacherPayment_AccountHolderName,setGlobalTeacherPayment_AccountHolderName] = useState("")
   const [getGlobalTeacherPayment_AccountNumber,setGlobalTeacherPayment_AccountNumber] = useState("")
 
+  const [getGlobalPublicCourseStatus,setGlobalPublicCourseStatus] = useState(true)
+  const [getGlobalSchoolCourseStatus,setGlobalSchoolCourseStatus] = useState(false)
 
   ///Generate GlobalHook///
   const GlobalHook = {
@@ -430,7 +432,14 @@ const Store = props => {
     setGlobalTeacherPayment_AccountHolderName,
 
     getGlobalTeacherPayment_AccountNumber,
-    setGlobalTeacherPayment_AccountNumber
+    setGlobalTeacherPayment_AccountNumber,
+
+    getGlobalPublicCourseStatus,
+    setGlobalPublicCourseStatus,
+
+    getGlobalSchoolCourseStatus,
+    setGlobalSchoolCourseStatus
+
 
 
 
