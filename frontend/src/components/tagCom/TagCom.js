@@ -15,11 +15,13 @@ import {
 import axios from "axios";
 import ReactTags from "react-tag-autocomplete";
 import { GlobalContext } from "../../hook/GlobalHook";
-import {getSubjectCategories} from '../../actions'
+import { getSubjectCategories } from "../../actions";
 
 export default function TagCom(props) {
   const GlobalHook = useContext(GlobalContext);
-  const [getModalAddNewTagOpenStatus,setModalAddNewTagOpenStatus] = useState(false)
+  const [getModalAddNewTagOpenStatus, setModalAddNewTagOpenStatus] = useState(
+    false
+  );
 
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
@@ -27,16 +29,18 @@ export default function TagCom(props) {
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
 
-  const [getSubjectPool,setSubjectPool] = useState([])
+  const [getSubjectPool, setSubjectPool] = useState([]);
 
-  const [getSelectedSubject,setSelectedSubject] = useState("Mathematic")
+  const [getSelectedSubject, setSelectedSubject] = useState("Mathematic");
 
   useEffect(() => {
-    getSubjectCategories().then(data => {
-      const hhol = data.map((item)=>item.english)
-      setSubjectPool(hhol)
-     }).catch(err => console.log(err));
-  }, [])
+    getSubjectCategories()
+      .then(data => {
+        const hhol = data.map(item => item.english);
+        setSubjectPool(hhol);
+      })
+      .catch(err => console.log(err));
+  }, []);
 
   function handleDelete(i) {
     const tagsEng = props.InTagEnglish.slice(0);
@@ -50,26 +54,22 @@ export default function TagCom(props) {
   }
 
   function handleAddition(tag, lang) {
-    const tagTemp = tag
-    
- 
-    GlobalHook.setMutantStatus(true)
+    const tagTemp = tag;
+
+    GlobalHook.setMutantStatus(true);
     if (tag.id) {
-      let flittedSuggestEnglish = getSuggestionsEnglish.filter(item => item.id == tagTemp.id)
-    flittedSuggestEnglish[0].name= `${flittedSuggestEnglish[0].subject} - ${flittedSuggestEnglish[0].name}`
-
-
-    let flittedSuggestThai = getSuggestionsThai.filter(item => item.id == tagTemp.id)
-    flittedSuggestThai[0].name= `${flittedSuggestThai[0].subject} - ${flittedSuggestThai[0].name}`
-
-      const tagsEng = [].concat(
-        props.InTagEnglish,
-        flittedSuggestEnglish
+      let flittedSuggestEnglish = getSuggestionsEnglish.filter(
+        item => item.id == tagTemp.id
       );
-      const tagsThai = [].concat(
-        props.InTagThai,
-        flittedSuggestThai
+      flittedSuggestEnglish[0].name = `${flittedSuggestEnglish[0].subject} - ${flittedSuggestEnglish[0].name}`;
+
+      let flittedSuggestThai = getSuggestionsThai.filter(
+        item => item.id == tagTemp.id
       );
+      flittedSuggestThai[0].name = `${flittedSuggestThai[0].subject} - ${flittedSuggestThai[0].name}`;
+
+      const tagsEng = [].concat(props.InTagEnglish, flittedSuggestEnglish);
+      const tagsThai = [].concat(props.InTagThai, flittedSuggestThai);
 
       props.OutTagEnglish(tagsEng);
       props.OutTagThai(tagsThai);
@@ -87,22 +87,27 @@ export default function TagCom(props) {
     axios
       .post(`/api/tag/gettag/`, { tag: query })
       .then(res => {
-        console.log(res.data)
+        console.log(res.data);
         let matchTagSuggestEnglish = [];
         let matchTagSuggestThai = [];
 
         res.data.map(item => {
-          console.log(item.subject)
-          console.log(item.english)
+          console.log(item.subject);
+          console.log(item.english);
 
-    
-          matchTagSuggestEnglish.push({ id: item._id, name: item.english,subject:item.subject });
-          matchTagSuggestThai.push({ id: item._id, name: item.thai,subject:item.subject });
+          matchTagSuggestEnglish.push({
+            id: item._id,
+            name: item.english,
+            subject: item.subject
+          });
+          matchTagSuggestThai.push({
+            id: item._id,
+            name: item.thai,
+            subject: item.subject
+          });
         });
         setSuggestionsEnglish(matchTagSuggestEnglish);
         setSuggestionsThai(matchTagSuggestThai);
-
-
       })
       .catch(err => console.log(err));
   }
@@ -138,18 +143,20 @@ export default function TagCom(props) {
       >
         <div className="flex flex-col justify-center items-center mx-auto">
           <div className="flex mb-4">
-        <label for="subject" className="font-semibold mr-4">Choose Subject :</label>
-        <select id="subject" value={getSelectedSubject} onClick={(e)=>setSelectedSubject(e.target.value)}>
-          {getSubjectPool.map((item)=>{
-            return <option value={item}>{item}</option>
-
-          }
-          )}
-  
-          </select>
+            <label for="subject" className="font-semibold mr-4">
+              Choose Subject :
+            </label>
+            <select
+              id="subject"
+              value={getSelectedSubject}
+              onClick={e => setSelectedSubject(e.target.value)}
+            >
+              {getSubjectPool.map(item => {
+                return <option value={item}>{item}</option>;
+              })}
+            </select>
           </div>
 
-          
           <div>
             <div>English</div>
             <Input
@@ -176,11 +183,14 @@ export default function TagCom(props) {
       .post(`/api/tag/addtag/`, {
         english: getNewTagEnglish,
         thai: getNewTagThai,
-        subject:getSelectedSubject
+        subject: getSelectedSubject
       })
       .then(res => {
         const tagsEng = [].concat(props.InTagEnglish, [
-          { id: res.data._id, name: `${getSelectedSubject} - ${getNewTagEnglish}` }
+          {
+            id: res.data._id,
+            name: `${getSelectedSubject} - ${getNewTagEnglish}`
+          }
         ]);
         const tagsThai = [].concat(props.InTagThai, [
           { id: res.data._id, name: `${getSelectedSubject} - ${getNewTagThai}` }
@@ -189,41 +199,39 @@ export default function TagCom(props) {
         props.OutTagEnglish(tagsEng);
         props.OutTagThai(tagsThai);
         console.log(res.data);
-
-      
-  
-
       })
       .catch(err => console.log(err));
   }
 
   return (
-      <>
+    <>
       {RenderAddNewTagModal()}
-    <div className="flex flex-col text-center my-4 bg-white">
-      <div className="font-bold text mb-2 flex justify-around w-full "><div className="mr-2">Tags</div></div>
+      <div className="flex flex-col text-center my-4 bg-white">
+        <div className="font-bold text mb-2 flex justify-around w-full ">
+          <div className="mr-2">Tags</div>
+        </div>
 
-      <ReactTags
-        tags={props.InTagEnglish}
-        suggestions={getSuggestionsEnglish}
-        handleDelete={e => handleDelete(e)}
-        handleAddition={e => handleAddition(e, "Eng")}
-        minQueryLength={1}
-        handleInputChange={e => handleInputChange(e)}
-        placeholder={"Add English Tags"}
-        allowNew={true}
-      />
-      <ReactTags
-        tags={props.InTagThai}
-        suggestions={getSuggestionsThai}
-        handleDelete={e => handleDelete(e)}
-        handleAddition={e => handleAddition(e, "Tha")}
-        minQueryLength={1}
-        handleInputChange={e => handleInputChange(e)}
-        placeholder={"Add Thai Tags"}
-        allowNew={true}
-      />
-    </div>
+        <ReactTags
+          tags={props.InTagEnglish}
+          suggestions={getSuggestionsEnglish}
+          handleDelete={e => handleDelete(e)}
+          handleAddition={e => handleAddition(e, "Eng")}
+          minQueryLength={1}
+          handleInputChange={e => handleInputChange(e)}
+          placeholder={"Add English Tags"}
+          allowNew={true}
+        />
+        <ReactTags
+          tags={props.InTagThai}
+          suggestions={getSuggestionsThai}
+          handleDelete={e => handleDelete(e)}
+          handleAddition={e => handleAddition(e, "Tha")}
+          minQueryLength={1}
+          handleInputChange={e => handleInputChange(e)}
+          placeholder={"Add Thai Tags"}
+          allowNew={true}
+        />
+      </div>
     </>
   );
 }
