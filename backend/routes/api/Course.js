@@ -16,6 +16,12 @@ const User = mongoose.model("user", UserSchema);
 
 const SubjectSchema = require("../../models/Subject");
 const Subject = mongoose.model("subject", SubjectSchema);
+
+const SubjectLevelSchema = require("../../models/SubjectLevel");
+
+console.log('subjectlevelschema')
+console.log(SubjectLevelSchema)
+const Level = mongoose.model("levels", SubjectLevelSchema);
 ///////
 
 //////
@@ -161,10 +167,22 @@ router.get("/subjects", async (req, res) => {
   Subject.find()
   .then(data => {
     res.status(200).json(data);
-    console.log('subject')
+    // console.log('subject')
+    // console.log(data)
+  })
+  .catch(err => {console.log(err);res.status(400).json(err)});
+});
+
+//GetSubjects
+router.get("/subjectLevels", async (req, res) => {
+
+  Level.find()
+  .then(data => {
+    console.log('getting subject levels')
+    res.status(200).json(data);
     console.log(data)
   })
-  .catch(err => console.log(err));
+  .catch(err => {console.log(err);res.status(400).json(err)});
 });
 
 //GetCourse

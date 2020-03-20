@@ -37,6 +37,7 @@
     "omise": "^0.6.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "reactstrap": "^8.4.1",
     "uuid": "^3.3.3",
     "validator": "^12.1.0",
     "woke-dyno": "^0.0.4"

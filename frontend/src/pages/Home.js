@@ -11,15 +11,21 @@ import { GlobalContext } from "../hook/GlobalHook";
 export default function Home() {
   const GlobalHook = useContext(GlobalContext);
   useEffect(() => {
+
+    console.log('starting home ..................................................')
     getCoursePoolAction(GlobalHook);
     var subjectsData = "hobo"
 
 
-    // getSubjectCategories().then(data => {
+    // getSubjectCategories()
+    // .then(data => {
     //   console.log('banobagen')
     //   console.log(data)
     //   subjectsData = data;
     //   console.log(subjectsData)
+    // })
+    // .catch(error => {
+    //   console.log(error)
     // })
 
 

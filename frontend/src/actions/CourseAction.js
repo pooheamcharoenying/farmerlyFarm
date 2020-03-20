@@ -21,6 +21,16 @@ function getSubjectCategories() {
   })
 }
 
+function getSubjectLevels() {
+  console.log('getting subject levels')
+  return axios
+    .get("/api/course/subjectLevels")
+    .then(response => {
+      // returning the data here allows the caller to get it through another .then(...)
+      return response.data
+  })
+}
+
 function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
   console.log('creating new vimeo folder')  
   console.log(courseName)
@@ -419,6 +429,7 @@ export {
   SaveCourseSetting,
   SetCourseReviewAction,
   getSubjectCategories,
+  getSubjectLevels,
   deleteQuestionsInQuiz,
   MoveVimeoVideoToFolder,
 };
