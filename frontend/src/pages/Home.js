@@ -16,10 +16,10 @@ export default function Home() {
 
 
     getSubjectCategories().then(data => {
-      console.log('banobagen')
-      console.log(data)
+     // console.log('banobagen')
+      //console.log(data)
       subjectsData = data;
-      console.log(subjectsData)
+      //console.log(subjectsData)
     }).catch(err => console.log(err));
 
 

@@ -57,7 +57,7 @@ const CourseCatDropdown = ({showTitle}) => {
       placement="bottomLeft"
       className="focus:border-gray-300 "
     >
-      <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 " >
+      <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 px-2" >
         <FaTh className="mr-2 text-gray-700" />
 {showTitle&&"Courses"}
         

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Input, Button } from "antd";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch,FaSchool, FaSave } from "react-icons/fa";
 import { GlobalContext } from "../../hook/GlobalHook";
 
 import CourseCatDropdown from "./CourseCatDropdown";
@@ -51,7 +51,17 @@ export default function HeaderHome() {
             className=" hidden md:flex justify-end ml-10 h-full"
             style={{ flex: 1 }}
           >
+
+            
+           {GlobalHook.getGlobalToken && <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" >
+            <FaSchool className="mr-2 text-gray-700" />
+            School
+        
+      </button>}
+
             <CourseCatDropdown showTitle />
+
+            
 
             <Search
               placeholder="ค้นหา คอร์ส"
