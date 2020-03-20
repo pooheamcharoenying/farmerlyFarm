@@ -61,7 +61,7 @@ router.post(
           },
           { new: true },
           (err, doc) => {
-            TransferToRecipient(req, res, courseId, charge.net);
+            TransferToRecipient(req, res, courseId, charge.amount*0.7);
 
             // res.status(200).json({
             //   authorizeUri: charge.authorize_uri,
