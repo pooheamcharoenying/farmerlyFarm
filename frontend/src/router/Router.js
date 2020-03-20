@@ -13,10 +13,8 @@ import AdminRoute from './AdminRoute'
 function RouterMain() {
 
   return (  
-    <div style={{overflow:"hidden"}}>
     <Router>
       <Switch>
-
         <Route exact path="/" component={Home}/>
         <Route exact path="/course/" component={Home}/>
         <Route exact path="/course/:courseSlug" component={Course}/>
@@ -24,11 +22,9 @@ function RouterMain() {
         <Route exact path="/teacher" component={Teacher}/>
         <Route exact path="/teacher/:courseSlug" component={Studio}/>
         <Route exact path="/admin" component={Admin}/>
-        <Route path="*" component={Home} />
-        
+        <Route path="*" component={Home} />        
       </Switch>
     </Router>
-    </div>
 
  
   );
