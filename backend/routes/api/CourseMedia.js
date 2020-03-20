@@ -18,42 +18,42 @@ router.post(
   (req, res) => {
     const adjustCourseSlug = req.body.courseSlug.toString();
 
-    Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
+    Course.findOne({ courseSlug: adjustCourseSlug })
+      .then(poolData => {
+        let courseId = poolData._id.toString();
 
+        const adjustCourseIdMedia = courseId + "Media";
+        const MatchMedia = mongoose.model(
+          adjustCourseIdMedia,
+          MediaSchema,
+          adjustCourseIdMedia
+        );
 
-      let courseId = poolData._id.toString();
-
-      const adjustCourseIdMedia = courseId + "Media";
-    const MatchMedia = mongoose.model(
-      adjustCourseIdMedia,
-      MediaSchema,
-      adjustCourseIdMedia
-    );
-
-    MatchMedia.findOneAndUpdate(
-      { mediaId: req.body.mediaId },
-      {
-        mediaType: req.body.mediaType,
-        mediaPreview: req.body.mediaPreview,
-        mediaContent: req.body.mediaContent,
-        mediaName: req.body.mediaName,
-        mediaTagEnglish:req.body.mediaTagEnglish,
-        mediaTagThai:req.body.mediaTagThai,
-        mediaTagStatus:req.body.mediaTagStatus
-      },
-      { new: true, upsert: true },
-      (err, doc) => {
-        if (err) {
-          console.log("Something wrong when updating data!");
-        }
-        res.status(200).json(doc);
-      }
-    );
-
-    }).catch((err)=>console.log(err))
-
-  
-
+        MatchMedia.findOneAndUpdate(
+          { mediaId: req.body.mediaId },
+          {
+            mediaType: req.body.mediaType,
+            mediaPreview: req.body.mediaPreview,
+            mediaContent: req.body.mediaContent,
+            mediaName: req.body.mediaName,
+            mediaTagEnglish: req.body.mediaTagEnglish,
+            mediaTagThai: req.body.mediaTagThai,
+            mediaTagStatus: req.body.mediaTagStatus
+          },
+          { new: true, upsert: true },
+          (err, doc) => {
+            if (err) {
+              console.log("Something wrong when updating data!");
+              res.status(400).json(err);
+            }
+            res.status(200).json(doc);
+          }
+        );
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 
@@ -76,9 +76,7 @@ router.post(
 //       adjustCourseIdMedia
 //     );
 
-
 //     }).catch((err)=>console.log(err))
-
 
 //     const adjustCourseName = req.body.courseName.replace(/\s/g, "-");
 //     const adjustCourseNameStr = adjustCourseName.toString();
@@ -100,14 +98,14 @@ router.post(
 //       var mock =0
 //       /////
 //       await user.courseSubscription.map(data => {
-       
+
 //           if (data.courseName == adjustCourseNameStr) {
 //             mock =1
 //             MatchMedia.findOne({ mediaId: req.body.mediaId }).then(doc => {
 //               res.status(200).json({"status":"200","data":doc});
-             
+
 //             });
-           
+
 //           }
 //         })
 //           // //////
@@ -117,19 +115,19 @@ router.post(
 //               mock =1
 //               MatchMedia.findOne({ mediaId: req.body.mediaId }).then(doc => {
 //                 res.status(200).json({"status":"200","data":doc});
-               
+
 //               });
-           
+
 //             }
 //             //////
 //           });
-          
+
 //         if(mock == 0){
-          
+
 //               res.status(200).json({"status":"401","data":''});
-           
-//           }  
-   
+
+//           }
+
 //     })
 //   }
 // });
@@ -137,23 +135,30 @@ router.post(
 router.post("/free", async (req, res) => {
   const adjustCourseSlug = req.body.courseSlug.toString();
 
-  Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
-    let courseId = poolData._id.toString();
+  Course.findOne({ courseSlug: adjustCourseSlug })
+    .then(poolData => {
+      let courseId = poolData._id.toString();
 
-    const adjustCourseIdMedia = courseId + "Media";
-  const MatchMedia = mongoose.model(
-    adjustCourseIdMedia,
-    MediaSchema,
-    adjustCourseIdMedia
-  );
+      const adjustCourseIdMedia = courseId + "Media";
+      const MatchMedia = mongoose.model(
+        adjustCourseIdMedia,
+        MediaSchema,
+        adjustCourseIdMedia
+      );
 
-  MatchMedia.findOne({ mediaId: req.body.mediaId }).then(doc => {
-    res.status(200).json({"status":"200","data":doc});
-  }).catch((err)=>console.log(err))
-  }).catch((err)=>console.log(err))
-
-
-  
+      MatchMedia.findOne({ mediaId: req.body.mediaId })
+        .then(doc => {
+          res.status(200).json({ status: "200", data: doc });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 // //Mock Get Media
@@ -166,11 +171,11 @@ router.post("/free", async (req, res) => {
 //     MediaSchema,
 //     adjustMediaName
 //   );
- 
+
 //     MatchMedia.findOne({ mediaId: req.body.mediaId }).then(doc => {
 //       res.status(200).json({"status":"200","data":doc});
 //     }).catch((err)=>console.log(err))
-  
+
 // });
 
 module.exports = router;

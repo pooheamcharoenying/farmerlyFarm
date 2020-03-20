@@ -129,7 +129,7 @@ router.post(
 
         user.save().then(user => res.json(user));
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err);res.status(400).json(err)});
   }
 );
 
@@ -189,7 +189,7 @@ router.post(
           user.save().then(user => res.json(user));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err);res.status(400).json(err)});
   }
 );
 
@@ -221,7 +221,7 @@ router.post(
           user.save().then(user => res.json(user));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err);res.status(400).json(err)});
   }
 );
 

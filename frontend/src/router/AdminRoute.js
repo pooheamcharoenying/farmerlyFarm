@@ -1,26 +1,125 @@
-import React, { Fragment,useContext } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { Fragment,useContext, useState,useEffect } from 'react'
+import {Route, Redirect } from 'react-router-dom'
 import {GlobalContext} from '../hook/GlobalHook'
+import Firebase from "../hook/firebase";
+export default function AdminRoute ({component: Component, ...rest}){
+    const GlobalHook = useContext(GlobalContext)
+    const [getReadyStatus,setReadyStatus] = useState(false)
+    const [getGlobalCurrentUser, setGlobalCurrentUser] = useState();
+    const [firebaseInitialized, setFirebaseInitialized] = useState(false)
+    useEffect(() => {
+      Firebase.auth().onAuthStateChanged(setGlobalCurrentUser);
+    }, []);
 
-export default function AdminRoute (props){
-    const GlobalHook =useContext(GlobalContext)
-
-    function RoleCheck (){
-        if(GlobalHook.getGlobalToken){
-            if(GlobalHook.getGlobalUser && GlobalHook.getGlobalUser.role == "admin"){
-                return props.children
-            }else{
-                return <Redirect to="/" />
-            }
-        }else{
-            return <Redirect to="/" />
-        }
+    function isInitialized() {
+		return new Promise(resolve => {
+			Firebase.auth.onAuthStateChanged(resolve)
+		})
     }
-return(
+    
+    function UUI() {
+		return new Promise(resolve => {
+			GlobalHook.getGlobalUser = resolve
+		})
+	}
 
 
-    <Fragment>
-      {RoleCheck()}
-    </Fragment>
-)
+  
+    useEffect(() => {
+      console.log(GlobalHook.getGlobalUserAuth)
+      console.log(getGlobalCurrentUser)
+      console.log(firebaseInitialized)
+    }, );
+
+    
+    if(isInitialized  ){
+        if(getGlobalCurrentUser){
+            if(GlobalHook.getGlobalUser){
+                return(
+                    <Route {...rest} render={props => (
+                        GlobalHook.getGlobalUser.role == "admin" ?
+                            <Component {...props} />
+                        : <Redirect to="/" />
+                    )} />
+                )
+            }
+            
+        }else{
+            return( <div>Done Wait</div>)
+        }
+        
+       
+    
+
+
+        
+        //return(<div>Done Wait</div>)
+    }else{
+        return(<div>Loading</div>)
+
+    }
+
+
+ 
+
+
+
+    // function RoleCheck (){
+        
+    //     if(GlobalHook.getGlobalToken){
+    //         setReadyStatus(true)
+    //         if(GlobalHook.getGlobalUser && GlobalHook.getGlobalUser.role == "admin"){
+    //             return props.children
+    //         }else{
+    //             return <Redirect to="/" />
+    //         }
+    //     }
+    // }
+
+    // async function CalState(){
+    //     const gg = await Firebase.auth().onAuthStateChanged()
+    //     return gg
+    // }
+    // if(getGlobalCurrentUser == undefined){
+    //     // return (<Redirect to="/" />)
+
+    //     return(<div>undefined</div>)
+    // }else{
+    //     if(GlobalHook.getGlobalUser){
+    //         console.log("notNull")
+
+    //         // if(GlobalHook.getGlobalUser.role == "admin"){
+    //         //     return props.children
+    //         // }else{
+    //         //     return <Redirect to="/" />
+    //         // }
+    //         return(<div>notNull</div>)
+    //     }else{
+    //         console.log("issnull")
+    //         return(<div>issnull</div>)
+    //     }
+        
+    // }
+
+    // if(getReadyStatus){
+    //     return(
+    //         RoleCheck()
+    //     )
+    // }else{
+    //     return(
+    //         // <Redirect to="/" />
+    //         RoleCheck()
+    //     )  
+    // }
+
+    // if(GlobalHook.getGlobalUser){
+    //     return props.children
+    // }else{
+        
+    // }
+
+   // return(<div>55</div>)
+
+
+  
 }

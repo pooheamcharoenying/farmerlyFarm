@@ -16,11 +16,16 @@ const Store = props => {
     Firebase.auth().onAuthStateChanged(setGlobalCurrentUser);
   }, []);
 
+  // useEffect(() => {
+  //  console.log(getGlobalCurrentUser)
+  // }, );
+
  
 
   //User
   const [getGlobalToken, setGlobalToken] = useState(null);
   const [getGlobalUser, setGlobalUser] = useState(null);
+  const [getGlobalUserAuth, setGlobalUserAuth] = useState(null);
 
   //Common
   const [getGlobalShowSideBarStatus, setGlobalShowSideBarStatus] = useState(
@@ -204,6 +209,9 @@ const Store = props => {
 
     getGlobalUser,
     setGlobalUser,
+
+    getGlobalUserAuth,
+    setGlobalUserAuth,
 
     getMutantStatus,
     setMutantStatus,
@@ -456,6 +464,7 @@ if(uid){
         Cookies.set("globalToken", res.data.token, { expires: 7 });
 
         setGlobalUser(res.data.user);
+        setGlobalUserAuth(res.data.user);
 
         
         localStorage.setItem("globalUser", JSON.stringify(res.data.user));

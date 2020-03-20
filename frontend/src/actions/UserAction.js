@@ -184,9 +184,9 @@ async function ResetPassAction (GlobalHook,email){
 //     })
 //     .catch(err => console.log(err));
 // }
-function LogoutAction(GlobalHook) {
+async function LogoutAction(GlobalHook) {
   
-  Firebase.auth().signOut();
+  await Firebase.auth().signOut();
   Cookies.remove("globalToken");
   localStorage.removeItem("globalUser");
   localStorage.removeItem("uid");
