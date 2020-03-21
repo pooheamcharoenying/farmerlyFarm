@@ -3,11 +3,12 @@
 @import url('https://cdn.plyr.io/3.5.2/plyr.css');
 @import './quill.snow.css';
 @import './react-rating.scss';
-$theme-colors: (
-    "primary": #3182ce,
-    "success": #2f855a
-);
-@import "~bootstrap/scss/bootstrap";
+// $theme-colors: (
+//     "primary": #3182ce,
+//     "success": #2f855a
+// );
+// @import "~bootstrap/scss/bootstrap";
+
 
 *{
     font-family: 'Prompt', sans-serif;
