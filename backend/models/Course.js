@@ -61,6 +61,12 @@ const CourseSchema = new Schema({
   },
   courseVimeoId: {
     type: String
+  },
+  courseSchool:{
+    type:Boolean
+  },
+  coursePublic:{
+    type:Boolean
   }
 });
 

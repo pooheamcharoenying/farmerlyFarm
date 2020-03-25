@@ -101,25 +101,6 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
       });
   }
 
-  function handlequizpool() {
-    // const pushLogData = {
-    //   courseName: GlobalHook.getglobalCourseName,
-    //   lessionId: GlobalHook.getglobalCourseLessionSelect.mediaId,
-    //   QID: getMainQuizID.QuestionId,
-    //   userAns: getUserAns,
-    //   logTime: getLocalLessionTime,
-    //   userAnsStatus:getUserAnsStatus
-    // };
-
-    // axios
-    //   .post("/api/user/quizpool", pushLogData)
-    //   .then(res => {
-
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    
-  }
+ 
 
   export {FetchQuestionWhenSelectAction,AddNewQuestionAction,FetchQuestionWhenSelectActionStudio}

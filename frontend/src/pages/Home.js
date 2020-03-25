@@ -5,8 +5,7 @@ import Banner from "../components/banner/Banner";
 import MyCourse from "../components/myCourse/MyCourse";
 import AllCourse from "../components/allCourse/AllCourse";
 import Footer from "../components/footer/Footer";
-import { getCoursePoolAction } from "../actions";
-import { getSubjectCategories } from "../actions";
+import { getCoursePoolAction,getSubjectCategories } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 export default function Home() {
   const GlobalHook = useContext(GlobalContext);
@@ -17,6 +16,7 @@ export default function Home() {
     var subjectsData = "hobo"
 
 
+<<<<<<< HEAD
     // getSubjectCategories()
     // .then(data => {
     //   console.log('banobagen')
@@ -27,6 +27,14 @@ export default function Home() {
     // .catch(error => {
     //   console.log(error)
     // })
+=======
+    getSubjectCategories().then(data => {
+     // console.log('banobagen')
+      //console.log(data)
+      subjectsData = data;
+      //console.log(subjectsData)
+    }).catch(err => console.log(err));
+>>>>>>> master
 
 
   }, []);

@@ -40,7 +40,7 @@ function getSubjectMenu() {
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
       return response.data
-  })
+  }).catch(err => console.log(err));
 }
 
 function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
@@ -177,9 +177,6 @@ function getCourseContentAction(GlobalHook, courseSlug) {
 
 function CreateCourseAction(GlobalHook, setModalOpenStatus) {
 
-  console.log('creating new course --------------------------------------')
-
-
 
   setModalOpenStatus(false);
   GlobalHook.setGlobalLoading(true);
@@ -200,8 +197,14 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseFee:GlobalHook.getGlobalCourseFee,
     courseTagThai:GlobalHook.getGlobalCourseTagThai,
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
+<<<<<<< HEAD
     courseTagSubject:GlobalHook.getGlobalCourseTagSubject,
     courseVimeoId: "defualt"
+=======
+    courseVimeoId: "defualt",
+    coursePublic:GlobalHook.getGlobalPublicCourseStatus,
+    courseSchool:GlobalHook.getGlobalSchoolCourseStatus
+>>>>>>> master
   };
 
   console.log('see creation data')
@@ -288,6 +291,12 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalCourseTagEnglish(res.data.courseTagEnglish)
       GlobalHook.setGlobalCourseTagThai(res.data.courseTagThai)
       GlobalHook.setGlobalVimeoId(res.data.courseVimeoId)
+      GlobalHook.setGlobalPublicCourseStatus(res.data.coursePublic)
+      GlobalHook.setGlobalSchoolCourseStatus(res.data.courseSchool)
+
+      console.log("Fetch Course Setting")
+      console.log(res.data)
+
 
     })
     .catch(err => {
@@ -316,7 +325,9 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         courseFee:GlobalHook.getGlobalCourseFee,
         courseTagThai:GlobalHook.getGlobalCourseTagThai,
         courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
-        courseVimeoId:GlobalHook.getGlobalVimeoId
+        courseVimeoId:GlobalHook.getGlobalVimeoId,
+        coursePublic:GlobalHook.getGlobalPublicCourseStatus,
+        courseSchool:GlobalHook.getGlobalSchoolCourseStatus
   };
 
 

@@ -79,8 +79,11 @@ export default function AllCourse() {
     GlobalHook.getGlobalCourseLevelFilter
   ]);
 
+
+
   function GenCourseFilted() {
-    let courseData = GlobalHook.getGlobalCoursePool;
+    const courseData = GlobalHook.getGlobalCoursePool.filter((data)=> data.coursePublic)
+    // let courseData = getcourseMatchPool;
     setFiltedCourseData(courseData);
 
     console.log('pooh filter')

@@ -4,15 +4,18 @@ const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
   _Id: Schema.Types.ObjectId,
-  uid:{
-    type:String
+  uid: {
+    type: String
   },
-  role:{
-    type:String,
-    default:"user"
+  role: {
+    type: String,
+    default: "user"
   },
-  pmid:{
-    type:String
+  pmid: {
+    type: String
+  },
+  rpid: {
+    type: String
   },
   courseSubscription: [
     {
@@ -36,10 +39,10 @@ const UserSchema = new Schema({
             type: String
           },
           quizData: {
-            type:Object
+            type: Object
           },
-          logTime:{
-           type:String
+          logTime: {
+            type: String
           }
         }
       ]
@@ -55,6 +58,15 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  teacherPayment_AccountHolderName: {
+    type: String
+  },
+  teacherPayment_AccountNumber: {
+    type: String
+  },
+  teacherPayment_AccountBank: {
+    type: String
   }
 });
 

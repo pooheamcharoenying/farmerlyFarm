@@ -10,33 +10,6 @@ const omise = require("omise")({
   secretKey: "skey_test_5j97yq3adxxgt4e9pxs"
 });
 
-// router.post("/internetbank",
-//  async (req, res) => {
-//     try {
-//         const { iuid, courseId, amount, token } = req.body;
-    
-//         let ttx =  "iuid@fdfd.com"
-//         const customer = await omise.customers.create({
-//           ttx,
-//           description: `${courseId}`,
-//           card: token
-//         });
-    
-//         const charge = await omise.charges.create({
-//           amount: amount,
-//           currency: "thb",
-//           customer: customer.id
-//         });
-    
-//         res.status(200).json({
-//           authorizeUri: charge.authorize_uri,
-//           status: charge.status,
-//           amount: charge.amount / 100
-//         });
-//       } catch (err) {
-//         console.log(err);
-//       }
-// });
 
 router.post("/creditCard",
 passport.authenticate("jwt", { session: false }),
@@ -113,4 +86,8 @@ passport.authenticate("jwt", { session: false }),
 
   
 });
+
+
+
+
 module.exports = router;

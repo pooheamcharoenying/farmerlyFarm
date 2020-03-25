@@ -20,16 +20,7 @@ export class Checkout extends Component {
 
   creditCardConfigure = () => {
     OmiseCard.configure({
-      defaultPaymentMethod: "credit_card",
-      otherPaymentMethods: [
-        "internet_banking",
-        "bill_payment_tesco_lotus",
-        "alipay",
-        "pay_easy",
-        "net_banking",
-        "convenience_store"
-      ]
-    
+      defaultPaymentMethod: "credit_card"
     });
     OmiseCard.configureButton("#credit-card");
     OmiseCard.attach();

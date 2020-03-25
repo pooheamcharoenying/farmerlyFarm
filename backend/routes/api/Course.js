@@ -32,32 +32,39 @@ router.get("/test", (req, res) => res.json({ msg: "Course Works" }));
 
 //GetCourse
 router.get("/", async (req, res) => {
-  console.log('hhhhhhhhhhhhhoooooooooooommmmmmmmmmmmmmmmmmmmmmmeeeeeeeeeeeeeeeeeeeeeee')
+  console.log(
+    "hhhhhhhhhhhhhoooooooooooommmmmmmmmmmmmmmmmmmmmmmeeeeeeeeeeeeeeeeeeeeeee"
+  );
 
-  Course.find({courseActive:true,coursePublish:true})
+  Course.find({ courseActive: true, coursePublish: true })
     .then(data => {
       res.status(200).json(data);
       // console.log('course')
       // console.log(data)
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
-
 
 // delete all question items in quiz
 router.post("/deleteQuizQuestions", (req, res) => {
-  console.log(req.body) 
+  console.log(req.body);
   const id = req.body.mediaId;
-  console.log('deleting questions in quiz')
-  Quiz.deleteMany({mediaId: id})
+  console.log("deleting questions in quiz");
+  Quiz.deleteMany({ mediaId: id })
     .then(data => {
-      console.log('quiz result 1')
-      console.log(data )
+      console.log("quiz result 1");
+      console.log(data);
     })
-    .catch(err => console.log(err)); 
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
-const axios = require('axios').default;
+const axios = require("axios").default;
 const accessToken = "dbaa8374efa89cf873fbe48e6fd7be3e";
 const headerPost = {
   Accept: "application/vnd.vimeo.*+json;version=3.4",
@@ -67,112 +74,134 @@ const headerPost = {
 
 // move uploaded vimeo video to correct course folder
 router.post("/moveVideoFolder", (req, res) => {
-    console.log('send request to vimeo server')
-    console.log(req.body)
-  
-    axios({
-      method: "put",
-      url: 'https://api.vimeo.com/me/projects/' + req.body.videoFolderId + '/videos/' + req.body.videoId,
-      headers: headerPost,
-      data: {
-      }
-    })
-      .then(res => {
-          console.log('video moved to folder')
-          console.log(res)
-      })
-      .catch(err => {
-        message.error("video move to folder Error, Try Again");
-        console.log(err);
-      });  
-});
+  console.log("send request to vimeo server");
+  console.log(req.body);
 
-// tell Vimeo to create new course video folder
-router.post("/createVimeoFolder", (req, res) => {
-  console.log('send request to vimeo server')
-  console.log(req.body)
-
-  var tempCourseSlug = req.body.courseSlug;
   axios({
-    method: "post",
-    url: 'https://api.vimeo.com/me/projects',
+    method: "put",
+    url:
+      "https://api.vimeo.com/me/projects/" +
+      req.body.videoFolderId +
+      "/videos/" +
+      req.body.videoId,
     headers: headerPost,
-    data: {
-      name: req.body.folderName
-    }
+    data: {}
   })
     .then(res => {
-        console.log('vimeo folder successfully created')
-        const folderId = res.data.uri.replace("/users/98773046/projects/", "")
-        console.log(folderId)
-        console.log(req.body.courseName)
-        Course.findOneAndUpdate( {courseName: req.body.courseName}, { courseVimeoId: folderId },function(err, result) {
-          if (err) {
-            console.log('error')
-          } else {
-            console.log('success')
-            console.log(result)
-          }
-        });
+      console.log("video moved to folder");
+      console.log(res);
     })
     .catch(err => {
       message.error("video move to folder Error, Try Again");
       console.log(err);
-    });  
+      res.status(400).json(err);
+    });
+});
+
+// tell Vimeo to create new course video folder
+router.post("/createVimeoFolder", (req, res) => {
+  console.log("send request to vimeo server");
+  console.log(req.body);
+
+  var tempCourseSlug = req.body.courseSlug;
+  axios({
+    method: "post",
+    url: "https://api.vimeo.com/me/projects",
+    headers: headerPost,
+    data: {
+      name: req.body.folderName
+    }
+  })
+    .then(res => {
+      console.log("vimeo folder successfully created");
+      const folderId = res.data.uri.replace("/users/98773046/projects/", "");
+      console.log(folderId);
+      console.log(req.body.courseName);
+      Course.findOneAndUpdate(
+        { courseName: req.body.courseName },
+        { courseVimeoId: folderId },
+        function(err, result) {
+          if (err) {
+            console.log("error");
+          } else {
+            console.log("success");
+            console.log(result);
+          }
+        }
+      );
+    })
+    .catch(err => {
+      message.error("video move to folder Error, Try Again");
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 // tell Vimeo to change folder name (not complete yet)
 router.post("/editVimeoFolderName", (req, res) => {
-  console.log('editing vimeo folder name')
-  console.log(req.body.folderName)
+  console.log("editing vimeo folder name");
+  console.log(req.body.folderName);
   axios({
     method: "patch",
-    url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+    url: "https://api.vimeo.com/me/projects/" + req.body.vimeoId,
     headers: headerPost,
     data: {
       name: req.body.folderName
     }
   })
     .then(res => {
-        console.log('vimeo folder name sucessfully edited')
+      console.log("vimeo folder name sucessfully edited");
     })
     .catch(err => {
       message.error("folder name change error");
       console.log(err);
-    });  
+      res.status(400).json(err);
+    });
 });
 
 // tell Vimeo to delete video
 router.post("/deleteVimeoVideo", (req, res) => {
-  console.log('editing vimeo folder name')
-  console.log(req.body.folderName)
+  console.log("editing vimeo folder name");
+  console.log(req.body.folderName);
   axios({
     method: "patch",
-    url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+    url: "https://api.vimeo.com/me/projects/" + req.body.vimeoId,
     headers: headerPost,
     data: {
       name: req.body.folderName
     }
   })
     .then(res => {
-        console.log('vimeo folder name sucessfully edited')
+      console.log("vimeo folder name sucessfully edited");
     })
     .catch(err => {
       message.error("folder name change error");
       console.log(err);
-    });  
+      res.status(400).json(err);
+    });
 });
-
 
 //GetSubjects
 router.get("/subjects", async (req, res) => {
   Subject.find()
+<<<<<<< HEAD
   .then(data => {
     res.status(200).json(data);
     console.log('subject data')
     console.log(data)
   })
   .catch(err => {console.log(err);res.status(400).json(err)});
+=======
+    .then(data => {
+      res.status(200).json(data);
+      console.log("subject");
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+>>>>>>> master
 });
 
 
@@ -196,18 +225,22 @@ router.get("/all", async (req, res) => {
     .then(data => {
       res.status(200).json(data);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
-
 //GetCourse
-router.post("/getcoursesetting",
- (req, res) => {
-  Course.findOne({courseSlug:req.body.courseSlug})
+router.post("/getcoursesetting", (req, res) => {
+  Course.findOne({ courseSlug: req.body.courseSlug })
     .then(data => {
       res.status(200).json(data);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 ///create Course
@@ -216,6 +249,8 @@ router.post(
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
+
+    console.log(req.body)
     const newCourse = new Course({
       courseSlug: req.body.courseSlug,
       courseName: req.body.courseName,
@@ -230,13 +265,14 @@ router.post(
       courseActive: false,
       coursePublish: false,
       courseOwnerId: req.user.id,
-      courseImageFileName:req.body.courseImageFileName,
-      courseFee:req.body.courseFee,
-      coursePrice:req.body.coursePrice,
-      courseTagEnglish:req.body.courseTagEnglish,
-      courseTagThai:req.body.courseTagThai,
-      courseVimeoId: req.body.courseVimeoId
-  
+      courseImageFileName: req.body.courseImageFileName,
+      courseFee: req.body.courseFee,
+      coursePrice: req.body.coursePrice,
+      courseTagEnglish: req.body.courseTagEnglish,
+      courseTagThai: req.body.courseTagThai,
+      courseVimeoId: req.body.courseVimeoId,
+      coursePublic:req.body.coursePublic,
+      courseSchool:req.body.courseSchool
     });
 
     newCourse.save().then(newcourseData => {
@@ -253,10 +289,10 @@ router.post(
         const newContent = new MatchContent({
           name: "plot",
           contentStructure: [],
-          CourseInfoOverview:"",
-          CourseInfoStudent:"",
-          CourseInfoTeacher:"",
-          courseReview:[]
+          CourseInfoOverview: "",
+          CourseInfoStudent: "",
+          CourseInfoTeacher: "",
+          courseReview: []
         });
 
         newContent.save();
@@ -278,7 +314,10 @@ router.post(
           .then(newuser =>
             res.status(200).json({ newUser: newuser, newCourse: newcourseData })
           )
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
       });
     });
   }
@@ -290,7 +329,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
-    const adjustCourseSlug = (req.body.courseSlug).toString();
+    const adjustCourseSlug = req.body.courseSlug.toString();
 
     Course.findOne({ courseSlug: adjustCourseSlug })
       .then(poolData => {
@@ -308,34 +347,40 @@ router.post(
         });
 
         // delete vimeo folder and videos in it
-        console.log('preparing to delete vimeo folder')
+        console.log("preparing to delete vimeo folder");
         axios({
           method: "delete",
-          url: 'https://api.vimeo.com/me/projects/' + req.body.vimeoId,
+          url: "https://api.vimeo.com/me/projects/" + req.body.vimeoId,
           headers: headerPost,
           data: {
             should_delete_clips: true
           }
         })
           .then(res => {
-              console.log('vimeo folder sucessfully delete')
+            console.log("vimeo folder sucessfully delete");
           })
           .catch(err => {
             message.error("vimeo folder delete error");
             console.log(err);
-          });  
+            res.status(400).json(err);
+          });
 
         // detele all questions from course
-        console.log('prepare to delete all qeuestions in course')
-        Quiz.deleteMany({courseSlug: req.body.courseSlug})
+        console.log("prepare to delete all qeuestions in course");
+        Quiz.deleteMany({ courseSlug: req.body.courseSlug })
           .then(data => {
-            console.log('deleted all questions from course')
-            console.log(data)
+            console.log("deleted all questions from course");
+            console.log(data);
           })
-          .catch(err => console.log(err)); 
-
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 
@@ -345,7 +390,10 @@ router.get("/category/:category", async (req, res) => {
     .then(data => {
       res.status(200).json(data);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
   // res.json({ msg: req.params.cat })
 });
 
@@ -357,7 +405,10 @@ router.get("/search/:keyword", async (req, res) => {
       .then(data => {
         res.status(200).json(data);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 });
 
@@ -381,10 +432,12 @@ router.post(
         courseImage: req.body.courseImage,
         courseTag: req.body.courseTag,
         courseImageFileName: req.body.courseImageFileName,
-        coursePrice:req.body.coursePrice,
-        courseFee:req.body.courseFee,
-        courseTagEnglish:req.body.courseTagEnglish,
-        courseTagThai:req.body.courseTagThai
+        coursePrice: req.body.coursePrice,
+        courseFee: req.body.courseFee,
+        courseTagEnglish: req.body.courseTagEnglish,
+        courseTagThai: req.body.courseTagThai,
+        coursePublic:req.body.coursePublic,
+        courseSchool:req.body.courseSchool
       },
       { new: true },
       (err, doc) => {
@@ -395,10 +448,12 @@ router.post(
       }
     )
       .then(data => res.status(200).json("success"))
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
-
 
 router.post(
   "/setreview",
@@ -412,36 +467,29 @@ router.post(
       courseIdStr
     );
 
-    
-    
     MatchContent.findOne({ name: "plot" })
-      .then((courseData) =>{
-       
-
-
+      .then(courseData => {
         const isUserReviewExist = courseData.courseReview
           .map(data => data.iuser)
           .indexOf(req.body.courseReview.iuser);
-         if(isUserReviewExist == -1){
-          courseData.courseReview.unshift(req.body.courseReview)
-          courseData.save()
-          res.status(200).json(courseData.courseReview)
-         }else{
+        if (isUserReviewExist == -1) {
+          courseData.courseReview.unshift(req.body.courseReview);
+          courseData.save();
+          res.status(200).json(courseData.courseReview);
+        } else {
+          courseData.courseReview.splice(isUserReviewExist, 1);
+          courseData.courseReview.unshift(req.body.courseReview);
+          courseData.save();
 
-          courseData.courseReview.splice(isUserReviewExist, 1)
-          courseData.courseReview.unshift(req.body.courseReview)
-          courseData.save()
-
-          res.status(200).json(courseData.courseReview)
-
-         }
-
-
+          res.status(200).json(courseData.courseReview);
+        }
       })
-      .catch(err => {console.log(err);res.status(400)});
+      .catch(err => {
+        console.log(err);
+        res.status(400);
+      });
   }
 );
-
 
 //Update ActiveStatus
 router.post(
@@ -461,11 +509,15 @@ router.post(
         res.status(200).json("success");
         if (err) {
           console.log("Something wrong when updating data!");
+          res.status(400).json(err);
         }
       }
     )
       .then(data => res.status(200).json("success"))
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 
@@ -491,7 +543,10 @@ router.post(
       }
     )
       .then(data => res.status(200).json("success"))
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 
@@ -511,7 +566,10 @@ router.post(
           Course.courseSubscriptor.unshift({ userId: user._id });
           Course.save().then(data => res.status(200).json("sucess"));
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
     });
   }
 );
@@ -524,39 +582,40 @@ router.post(
   (req, res) => {
     const adjustCourseSlug = req.body.courseSlug.toString();
 
+    Course.findOne({ courseSlug: adjustCourseSlug })
+      .then(poolData => {
+        let courseId = poolData._id.toString();
 
-    Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
-      let courseId = poolData._id.toString();
+        const MatchContent = mongoose.model(courseId, ContentSchema, courseId);
 
-    const MatchContent = mongoose.model(
-      courseId,
-      ContentSchema,
-      courseId
-    );
-
-    
-    MatchContent.findOneAndUpdate(
-      { name: "plot" },
-      {
-        contentStructure: req.body.courseStructure,
-        CourseInfoOverview: req.body.CourseInfoOverview,
-        CourseInfoStudent: req.body.CourseInfoStudent,
-        CourseInfoTeacher: req.body.CourseInfoTeacher
-      },
-      { new: true },
-      (err, doc) => {
-        if (err) {
-          console.log("Something wrong when updating data!");
-        }
-      }
-    )
-      .then(data => {res.status(200).json("success");console.log(data)})
-      .catch(err => console.log(err));
-
-
-
-    }).catch(err => {console.log(err);res.status(400).json(err)});
-
+        MatchContent.findOneAndUpdate(
+          { name: "plot" },
+          {
+            contentStructure: req.body.courseStructure,
+            CourseInfoOverview: req.body.CourseInfoOverview,
+            CourseInfoStudent: req.body.CourseInfoStudent,
+            CourseInfoTeacher: req.body.CourseInfoTeacher
+          },
+          { new: true },
+          (err, doc) => {
+            if (err) {
+              console.log("Something wrong when updating data!");
+            }
+          }
+        )
+          .then(data => {
+            res.status(200).json("success");
+            console.log(data);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 
@@ -564,17 +623,24 @@ router.post(
 router.get("/:courseSlug", async (req, res) => {
   const adjustCourseSlug = req.params.courseSlug.toString();
 
-  Course.findOne({ courseSlug: adjustCourseSlug }).then(poolData => {
-    let courseId = poolData._id.toString();
-    const MatchCourse = mongoose.model(courseId, ContentSchema, courseId);
+  Course.findOne({ courseSlug: adjustCourseSlug })
+    .then(poolData => {
+      let courseId = poolData._id.toString();
+      const MatchCourse = mongoose.model(courseId, ContentSchema, courseId);
 
-    MatchCourse.find()
-      .then(courseData => {
-        console.log(courseData[0].courseReview)
-        res.status(200).json({ courseData, courseName: poolData.courseName,courseId });
-      })
-      .catch(err => console.log(err));
-  }).catch(err => {console.log(err);res.status(400).json(err)});
+      MatchCourse.find()
+        .then(courseData => {
+          console.log(courseData[0].courseReview);
+          res
+            .status(200)
+            .json({ courseData, courseName: poolData.courseName, courseId });
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 module.exports = router;

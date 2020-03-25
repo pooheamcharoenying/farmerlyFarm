@@ -16,11 +16,16 @@ const Store = props => {
     Firebase.auth().onAuthStateChanged(setGlobalCurrentUser);
   }, []);
 
+  // useEffect(() => {
+  //  console.log(getGlobalCurrentUser)
+  // }, );
+
  
 
   //User
   const [getGlobalToken, setGlobalToken] = useState(null);
   const [getGlobalUser, setGlobalUser] = useState(null);
+  const [getGlobalUserAuth, setGlobalUserAuth] = useState(null);
 
   //Common
   const [getGlobalShowSideBarStatus, setGlobalShowSideBarStatus] = useState(
@@ -192,6 +197,13 @@ const Store = props => {
 
   const [getGlobalVimeoId, setGlobalVimeoId] = useState("")
 
+  const [getGlobalTeacherPayment_AccountBank,setGlobalTeacherPayment_AccountBank] = useState("kbank")
+  const [getGlobalTeacherPayment_AccountHolderName,setGlobalTeacherPayment_AccountHolderName] = useState("")
+  const [getGlobalTeacherPayment_AccountNumber,setGlobalTeacherPayment_AccountNumber] = useState("")
+
+  const [getGlobalPublicCourseStatus,setGlobalPublicCourseStatus] = useState(true)
+  const [getGlobalSchoolCourseStatus,setGlobalSchoolCourseStatus] = useState(false)
+
   ///Generate GlobalHook///
   const GlobalHook = {
     getGlobalToken,
@@ -199,6 +211,9 @@ const Store = props => {
 
     getGlobalUser,
     setGlobalUser,
+
+    getGlobalUserAuth,
+    setGlobalUserAuth,
 
     getMutantStatus,
     setMutantStatus,
@@ -408,7 +423,24 @@ const Store = props => {
     setLessionTagSameAsCourseStatus,
 
     getQuizTagSameAsLessionStatus,
-    setQuizTagSameAsLessionStatus
+    setQuizTagSameAsLessionStatus,
+
+    getGlobalTeacherPayment_AccountBank,
+    setGlobalTeacherPayment_AccountBank,
+
+    getGlobalTeacherPayment_AccountHolderName,
+    setGlobalTeacherPayment_AccountHolderName,
+
+    getGlobalTeacherPayment_AccountNumber,
+    setGlobalTeacherPayment_AccountNumber,
+
+    getGlobalPublicCourseStatus,
+    setGlobalPublicCourseStatus,
+
+    getGlobalSchoolCourseStatus,
+    setGlobalSchoolCourseStatus
+
+
 
 
   };
@@ -441,11 +473,19 @@ if(uid){
         Cookies.set("globalToken", res.data.token, { expires: 7 });
 
         setGlobalUser(res.data.user);
+        setGlobalUserAuth(res.data.user);
+
+        
         localStorage.setItem("globalUser", JSON.stringify(res.data.user));
 
         axios.defaults.headers.common["Authorization"] = res.data.token;
 
         setGlobalLoading(false);
+
+
+        GlobalHook.setGlobalTeacherPayment_AccountHolderName(res.data.user.teacherPayment_AccountHolderName)
+        GlobalHook.setGlobalTeacherPayment_AccountNumber(res.data.user.teacherPayment_AccountNumber)
+        GlobalHook.setGlobalTeacherPayment_AccountBank(res.data.user.teacherPayment_AccountBank)
       })
       .catch(err => {
         console.log(err);
