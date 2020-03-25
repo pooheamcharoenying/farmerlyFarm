@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import CourseCard from "../courseCard/CourseCard";
 import { GlobalContext } from "../../hook/GlobalHook";
 
-import { getSubjectCategories, getSubjectLevels } from "../../actions";
+import { getSubjectCategories, getSubjectLevels, getSubjectMenu } from "../../actions";
 
 import './AllCourse.css'
 import Dropdown from "../dropDown/DropDown";
@@ -18,22 +18,16 @@ import ReactDOM from 'react-dom';
 export default function AllCourse() {
   const GlobalHook = useContext(GlobalContext);
   const [getFiltedCourseData, setFiltedCourseData] = useState([]);
+
+
+  
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
   const [getSubjects, setSubjects] = useState([]);
   const [getLevels, setLevels] = useState([]);
 
-  const [getDropdownSubjects, setDropdownSubjects] = useState(false);
-  const [getDropdownLevels, setDropdownLevels] = useState(false);
-
 
   let history = useHistory();
-  var subjects = []
 
-  const targetRef = createRef();
-
-
-  useLayoutEffect( () => {
-    setDimensions(targetRef.current.getClientBoundingRect())
-  }, [targetRef.current])
 
   useEffect(() => {
     console.log('getting subjects')
@@ -42,8 +36,9 @@ export default function AllCourse() {
       .then(data => {
         console.log('banobagen')
         console.log(data)
+
         setSubjects(data)
-        setDropdownSubjects("Choose Subject")
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
       })
       .catch(error => {
         console.log(error)
@@ -52,15 +47,25 @@ export default function AllCourse() {
     getSubjectLevels()
       .then(data => {
         console.log('show levels')
-        console.log(data[0])
-        setLevels(data[0].LevelsThai)
-        console.log('get levels')
-        console.log(getLevels)
-        setDropdownLevels("Choose Level")
+        console.log(data)
+        for (var x of data) {
+          if (x.type == "levelmenu") {
+            console.log('level menu found')
+            console.log(x)
+            setLevels(x.menu)
+          }
+          if (x.type == "subjectmenu") {
+            console.log('subject menu found')
+            console.log(x)
+            setSubjectMenu(x.menu)
+          }
+        }
+        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
       })
       .catch(error => {
         console.log(error)
       })
+
 
 
 
@@ -75,28 +80,51 @@ export default function AllCourse() {
   ]);
 
   function GenCourseFilted() {
-    console.log('filter search result')
-    console.log(GlobalHook.getGlobalCourseSubjectFilter)
-    console.log(GlobalHook.getGlobalCourseLevelFilter)
     let courseData = GlobalHook.getGlobalCoursePool;
     setFiltedCourseData(courseData);
-    var NewFiltedSubjectPool;
-    if (GlobalHook.getGlobalCourseSubjectFilter == "ทั้งหมด") {
-      NewFiltedSubjectPool = courseData;
-    } else {
-      let NewFiltedSubject = courseData.filter(
-        data => data.courseSubject == GlobalHook.getGlobalCourseSubjectFilter
-      );
-      NewFiltedSubjectPool = NewFiltedSubject;
+
+    console.log('pooh filter')
+    console.log(GlobalHook.getGlobalCourseLevelFilter)
+
+
+    var displayFilteredCats = []
+    
+    for (var subject of getSubjects) {
+      // console.log(subject.category)
+      if (subject.category.length > 0) {
+        for (var subcat of subject.category) {
+          if (subcat == GlobalHook.getGlobalCourseSubjectFilter) {
+            displayFilteredCats.push(subject)
+          }
+        }
+      }
+    }
+
+    var subjectFilterResult = [];
+    for (var filtercat of displayFilteredCats) {
+      let minifilter = courseData.filter(
+        data => data.courseSubject == filtercat.english
+      );      
+      if (minifilter.length > 0) {
+        console.log('match found')
+        for (var item of minifilter) {
+          subjectFilterResult.push(item)
+        }
+      }
+    }
+    console.log('conclusion')
+    console.log(subjectFilterResult)
+
+    if (GlobalHook.getGlobalCourseSubjectFilter == "All Subjects")  {
+      subjectFilterResult = courseData;
     }
 
     if (GlobalHook.getGlobalCourseLevelFilter == "ทั้งหมด") {
-      setFiltedCourseData(NewFiltedSubjectPool);
+      setFiltedCourseData(subjectFilterResult);
     } else {
-      let NewFiltedLevel = NewFiltedSubjectPool.filter(
+      let NewFiltedLevel = subjectFilterResult.filter(
         data => data.courseLevel == GlobalHook.getGlobalCourseLevelFilter
       );
-
       setFiltedCourseData(NewFiltedLevel);
     }
   }
@@ -105,120 +133,23 @@ export default function AllCourse() {
     GlobalHook.setGlobalCourseSubjectFilter(val.key);
   }
 
-  function handleCourseLevelListClick(val) {
-    GlobalHook.setGlobalCourseLevelFilter(val.key);
-  }
-  const CourseCatList = (
-    <Menu onClick={handleCourseCatListClick}>
-      <Menu.Item key="Mathematic">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaCalculator className="mr-2 text-black" />
-          Mathematicffffffff
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-
-      <Menu.Item key="Physics">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaAtom className="mr-2 text-black" />
-          Physics
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="Robotics">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaRobot className="mr-2 text-black" />
-          Robotics
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="Coding">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaCode className="mr-2 text-black" />
-          Coding
-        </div>
-      </Menu.Item>
-
-      <Menu.Item key="Art">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaCode className="mr-2 text-black" />
-          Art
-        </div>
-      </Menu.Item>
-
-      <Menu.Item key="Music">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaCode className="mr-2 text-black" />
-          Music
-        </div>
-      </Menu.Item>
-
-      <Menu.Item key="Social Science">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          <FaCode className="mr-2 text-black" />
-          Social Science
-        </div>
-      </Menu.Item>
-
-
-    </Menu>
-  );
-
-  const CourseLevelList = (
-    <Menu onClick={handleCourseLevelListClick}>
-      <Menu.Item key="Mathematic">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          ประถม
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="Physics">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          มัธยมต้น
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="Robotics">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          มัธยมปลาย
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="Coding">
-        <div className="flex w-30 justify-start items-center text-gray-700">
-          {" "}
-          มหาวิทยาลัย
-        </div>
-      </Menu.Item>
-    </Menu>
-  );
-
   function renderSubjectCat(subjectItem) {
     return (
       <div>
         <button
           className="rounded-lg  text-center p-2 mr-4"
           style={{
+            height: "50px",
             width: "100px",
             flex: 1,
             background:
-              GlobalHook.getGlobalCourseSubjectFilter == subjectItem.english
+              GlobalHook.getGlobalCourseSubjectFilter == subjectItem.menuEnglish
                 ? "#3182ce"
                 : "#e2e8f0"
           }}
-          onClick={() => GlobalHook.setGlobalCourseSubjectFilter(subjectItem.english)}
+          onClick={() => GlobalHook.setGlobalCourseSubjectFilter(subjectItem.menuEnglish)}
         >
-          {subjectItem.thai}
+          {subjectItem.menuThai}
         </button>
       </div>
     )
@@ -227,43 +158,35 @@ export default function AllCourse() {
   function renderLevels(levelItem) {
     return (
       <div>
-          <button
-            className="rounded-lg  text-center p-2 mr-4"
-            style={{
-              width: "150px",
-              flex: 1,
-              background:
-                GlobalHook.getGlobalCourseLevelFilter == levelItem
-                  ? "#2f855a"
-                  : "#e2e8f0"
-            }}
-            onClick={() => GlobalHook.setGlobalCourseLevelFilter(levelItem)}
-          >
-            {levelItem}
-          </button>
+        <button
+          // className="rounded-lg  text-center p-2 mr-4"
+          className="rounded-lg  text-center p-2 mr-4"
+          style={{
+            width: "150px",
+            flex: 1,
+            background:
+              GlobalHook.getGlobalCourseLevelFilter == levelItem.menuThai
+                ? "#2f855a"
+                : "#e2e8f0"
+          }}
+          onClick={() => GlobalHook.setGlobalCourseLevelFilter(levelItem.menuThai)}
+        >
+          {levelItem.menuThai}
+        </button>
       </div>
     )
   }
 
   function renderSubjectCatDropDown() {
-    const tempVar = getSubjects;
+    const tempVar = getSubjectMenu;
 
 
     return (
       <div styles={{}}>
-        {console.log( 'princess' )}
-        {console.log( getSubjects )}
-        
-        <Dropdown targetRef='UniqueElementIdentifier' options={tempVar}></Dropdown>
+        {console.log('princess')}
+        {console.log(tempVar)}
 
-        {/* <DropdownButton title={getDropdownSubjects}>
-            <Dropdown.Item   onClick={() => { setDropdownSubjects("ทั้งหมด"); GlobalHook.setGlobalCourseSubjectFilter("ทั้งหมด"); }} style={{backgroundColor:"green"}}> ทั้งหมด </Dropdown.Item>
-            {getSubjects.map(subjectItem => (
-              <>
-                <Dropdown.Item onClick={() => { setDropdownSubjects(subjectItem.english); GlobalHook.setGlobalCourseSubjectFilter(subjectItem.english); }}> {subjectItem.english} </Dropdown.Item>
-              </>
-            ))}
-        </DropdownButton> */}
+        <Dropdown options={tempVar} title={"Choose Subject"} color={"#3182ce"}></Dropdown>
       </div>
     )
   }
@@ -272,17 +195,8 @@ export default function AllCourse() {
   function renderLevelsDropDown() {
     const tempVar = getLevels;
     return (
-      <div   >
-
-        <Dropdown options={tempVar} ></Dropdown>
-        {/* <DropdownButton title={getDropdownLevels} variant="success" >
-          {getLevels.map(levelItem => (
-            <>
-              <Dropdown.Item onClick={() => { setDropdownLevels(levelItem); GlobalHook.setGlobalCourseLevelFilter(levelItem); }}> {levelItem} </Dropdown.Item>
-            </>
-          ))}
-
-        </DropdownButton> */}
+      <div>
+        <Dropdown options={tempVar} title={"Choose Level"} color={"#2f855a"}></Dropdown>
       </div>
     )
   }
@@ -307,25 +221,9 @@ export default function AllCourse() {
           style={{ width: "77%" }}
         >
 
-          <button
-            className="rounded-lg  text-center p-2 mr-4"
-            style={{
-              flex: 1,
-              background:
-                GlobalHook.getGlobalCourseSubjectFilter == "ทั้งหมด"
-                  ? "#3182ce"
-                  : "#e2e8f0"
-            }}
-            onClick={() => GlobalHook.setGlobalCourseSubjectFilter("ทั้งหมด")}
-          >
-            ทั้งหมด
-          </button>
-
-          {console.log('checking subject')}
-          {console.log(getSubjects)}
-          {getSubjects.map(subjectItem => (
+          {getSubjectMenu.map(subjectItem => (
             <div>
-              {(subjectItem.superCat) ? renderSubjectCat(subjectItem) : ''}
+              { renderSubjectCat(subjectItem) }
             </div>
           ))}
 
@@ -337,6 +235,7 @@ export default function AllCourse() {
           className=" justify-around mb-4 px-10 hidden md:flex"
           style={{ width: "77%" }}
         >
+
           {getLevels.map(levelItem => (
             <div>
               {renderLevels(levelItem)}
@@ -356,11 +255,11 @@ export default function AllCourse() {
           className=" justify-around mb-6 px-10 flex flex-col md:hidden"
           style={{ width: "77%" }}
         >
-          <div style={{ marginLeft: "15%" }}>
+          <div style={{ marginLeft: "10%" }}>
             {renderSubjectCatDropDown()}
           </div>
 
-          <div style={{ marginLeft: "14%" }}>
+          <div style={{ marginLeft: "10%", marginTop: "20px" }}>
             {renderLevelsDropDown()}
           </div>
         </div>

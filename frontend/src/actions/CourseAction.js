@@ -17,6 +17,8 @@ function getSubjectCategories() {
     .get("/api/course/subjects")
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
+      console.log('pooh subject')
+      console.log(response.data)
       return response.data
   })
 }
@@ -25,6 +27,16 @@ function getSubjectLevels() {
   console.log('getting subject levels')
   return axios
     .get("/api/course/subjectLevels")
+    .then(response => {
+      // returning the data here allows the caller to get it through another .then(...)
+      return response.data
+  })
+}
+
+function getSubjectMenu() {
+  console.log('getting subject levels')
+  return axios
+    .get("/api/course/subjectMenu")
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
       return response.data
@@ -188,8 +200,12 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseFee:GlobalHook.getGlobalCourseFee,
     courseTagThai:GlobalHook.getGlobalCourseTagThai,
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
+    courseTagSubject:GlobalHook.getGlobalCourseTagSubject,
     courseVimeoId: "defualt"
   };
+
+  console.log('see creation data')
+  console.log(pushData)
 
   axios
     .post("/api/course/create", pushData)
@@ -205,7 +221,7 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
       CreateVimeoFolder(GlobalHook.getGlobalCourseName, GlobalHook.getGlobalCourseTeacher, GlobalHook.getGlobalCourseName)
 
 
-      window.location.href = `/teacher/${courseSlug}`;
+      // window.location.href = `/teacher/${courseSlug}`;
 
 
     })
@@ -322,14 +338,7 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
         console.log(error);
       });
 
-
-
-
-
-
       window.location.href = `/teacher/${NewCourseSlug}`;
-
-
     })
     .catch(err => {
       console.log(err);
@@ -430,6 +439,7 @@ export {
   SetCourseReviewAction,
   getSubjectCategories,
   getSubjectLevels,
+  getSubjectMenu,
   deleteQuestionsInQuiz,
   MoveVimeoVideoToFolder,
 };

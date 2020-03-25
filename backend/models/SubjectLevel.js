@@ -5,11 +5,14 @@ const Schema = mongoose.Schema;
 const SubjectLevelSchema = new Schema({
   _Id: Schema.Types.ObjectId,
 
-  LevelsThai:  {
-    type: Array
-  },
-  LevelsEnglish: {
-    type: Array
+  menu: {
+    type: Array ,
+    menuThai: {
+      type: String
+    },
+    menuEnglish: {
+      type: String
+    },
   },
 
 });

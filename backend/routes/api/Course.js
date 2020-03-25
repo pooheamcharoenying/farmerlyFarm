@@ -15,12 +15,14 @@ const UserSchema = require("../../models/User");
 const User = mongoose.model("user", UserSchema);
 
 const SubjectSchema = require("../../models/Subject");
-const Subject = mongoose.model("subject", SubjectSchema);
+const Subject = mongoose.model("subjects", SubjectSchema);
+
+const SubjectMenuSchema = require("../../models/Menu");
+console.log('SubjectMenuSchema')
+console.log(SubjectMenuSchema)
+const Menu = mongoose.model("menu", SubjectMenuSchema);
 
 const SubjectLevelSchema = require("../../models/SubjectLevel");
-
-console.log('subjectlevelschema')
-console.log(SubjectLevelSchema)
 const Level = mongoose.model("levels", SubjectLevelSchema);
 ///////
 
@@ -167,23 +169,26 @@ router.get("/subjects", async (req, res) => {
   Subject.find()
   .then(data => {
     res.status(200).json(data);
-    // console.log('subject')
+    console.log('subject data')
+    console.log(data)
+  })
+  .catch(err => {console.log(err);res.status(400).json(err)});
+});
+
+
+
+//GetSubjects Levls
+router.get("/subjectLevels", async (req, res) => {
+
+  Level.find()
+  .then(data => {
+    // console.log('getting subject levels')
+    res.status(200).json(data);
     // console.log(data)
   })
   .catch(err => {console.log(err);res.status(400).json(err)});
 });
 
-//GetSubjects
-router.get("/subjectLevels", async (req, res) => {
-
-  Level.find()
-  .then(data => {
-    console.log('getting subject levels')
-    res.status(200).json(data);
-    console.log(data)
-  })
-  .catch(err => {console.log(err);res.status(400).json(err)});
-});
 
 //GetCourse
 router.get("/all", async (req, res) => {
