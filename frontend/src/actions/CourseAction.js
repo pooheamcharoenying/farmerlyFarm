@@ -197,14 +197,9 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseFee:GlobalHook.getGlobalCourseFee,
     courseTagThai:GlobalHook.getGlobalCourseTagThai,
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
-<<<<<<< HEAD
-    courseTagSubject:GlobalHook.getGlobalCourseTagSubject,
-    courseVimeoId: "defualt"
-=======
     courseVimeoId: "defualt",
     coursePublic:GlobalHook.getGlobalPublicCourseStatus,
     courseSchool:GlobalHook.getGlobalSchoolCourseStatus
->>>>>>> master
   };
 
   console.log('see creation data')
@@ -338,18 +333,20 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
       setModalOpenStatus(false)
 
       console.log( GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher)
+
       axios.post('/api/course/editVimeoFolderName', {
         folderName: GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher,
         vimeoId: GlobalHook.getGlobalVimeoId
       })
       .then(function (response) {
         console.log(response);
+        window.location.href = `/teacher/${NewCourseSlug}`;
       })
       .catch(function (error) {
         console.log(error);
       });
 
-      window.location.href = `/teacher/${NewCourseSlug}`;
+
     })
     .catch(err => {
       console.log(err);

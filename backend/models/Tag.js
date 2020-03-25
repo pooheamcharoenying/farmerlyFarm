@@ -8,6 +8,9 @@ const TagSchema = new Schema({
   },
   thai: {
     type: String
+  },
+  subject: {
+    type: String
   }
 });
 

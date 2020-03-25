@@ -26,7 +26,9 @@ import {
   ClearCreateCourseFieldAction,
   SaveCourseSetting,
   GetCourseSettingAction,
-  DeleteCourseLessionAction
+  DeleteCourseLessionAction,
+  getSubjectCategories,
+  getSubjectLevels,
 } from "../../actions";
 
 const { TextArea } = Input;
@@ -43,7 +45,7 @@ export default function FabCreateCourse() {
   const [getUploadingShow, setUploadingShow] = useState(null);
   const [uploadPercentage, setuploadPercent] = useState();
   const [getImageFileName, setImageFileName] = useState("");
-  const [getModalAddNewTagOpenStatus,setModalAddNewTagOpenStatus] = useState(false)
+  const [getModalAddNewTagOpenStatus, setModalAddNewTagOpenStatus] = useState(false)
 
 
 
@@ -54,7 +56,7 @@ export default function FabCreateCourse() {
   const [getNewTagEnglish, setNewTagEnglish] = useState("");
   const [getNewTagThai, setNewTagThai] = useState("");
 
-  const [getSchoolState,setSchoolState] = useState(false)
+  const [getSchoolState, setSchoolState] = useState(false)
 
 
   useEffect(() => {
@@ -73,6 +75,51 @@ export default function FabCreateCourse() {
     accept: "image/jpeg, image/png, image/jpg, image/gif"
   });
 
+
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
+  const [getSubjects, setSubjects] = useState([]);
+  const [getLevels, setLevels] = useState([]);
+
+  useEffect(() => {
+    console.log('getting subjects')
+
+    getSubjectCategories()
+      .then(data => {
+        console.log('banobagen')
+        console.log(data)
+
+        setSubjects(data)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    getSubjectLevels()
+      .then(data => {
+        console.log('show levels')
+        console.log(data)
+        for (var x of data) {
+          if (x.type == "levelmenu") {
+            console.log('level menu found')
+            console.log(x)
+            setLevels(x.menu)
+          }
+          if (x.type == "subjectmenu") {
+            console.log('subject menu found')
+            console.log(x)
+            setSubjectMenu(x.menu)
+          }
+        }
+        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+
+  }, []);
+
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
@@ -83,16 +130,16 @@ export default function FabCreateCourse() {
   }, [acceptedFiles]);
 
   useEffect(() => {
-    if(GlobalHook.getGlobalUser){
-      if(GlobalHook.getGlobalUser.role == "admin"){
-       setSchoolState(true)
+    if (GlobalHook.getGlobalUser) {
+      if (GlobalHook.getGlobalUser.role == "admin") {
+        setSchoolState(true)
       }
-      if(GlobalHook.getGlobalUser.role == "school"){
-       setSchoolState(true)
+      if (GlobalHook.getGlobalUser.role == "school") {
+        setSchoolState(true)
       }
     }
-   }, [GlobalHook.getGlobalUser]);
-   
+  }, [GlobalHook.getGlobalUser]);
+
 
   function UploadBtnClick(file) {
     setUploadingShow("initing");
@@ -115,7 +162,7 @@ export default function FabCreateCourse() {
   });
 
   function UploadAction(file) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       const params = { Body: file, Bucket: "studysabaiapp", Key: file.name };
       // Sending the file to the Spaces
       S3.putObject(params)
@@ -126,7 +173,7 @@ export default function FabCreateCourse() {
           request.httpRequest.headers["Content-Type"] = file.type;
           request.httpRequest.headers["x-amz-acl"] = "public-read";
         })
-        .on("httpUploadProgress", function(progress) {
+        .on("httpUploadProgress", function (progress) {
           setuploadPercent(
             Math.round((progress.loaded / progress.total) * 100)
           );
@@ -154,39 +201,39 @@ export default function FabCreateCourse() {
 
   function handleDelete(i) {
     const tagsEng = GlobalHook.getGlobalCourseTagEnglish.slice(0);
-    const tagsThai =  GlobalHook.getGlobalCourseTagThai.slice(0);
+    const tagsThai = GlobalHook.getGlobalCourseTagThai.slice(0);
 
     tagsEng.splice(i, 1);
     tagsThai.splice(i, 1);
 
     GlobalHook.setGlobalCourseTagEnglish(tagsEng);
-     GlobalHook.setGlobalCourseTagThai(tagsThai);
+    GlobalHook.setGlobalCourseTagThai(tagsThai);
   }
 
-  function handleAddition(tag,lang) {
+  function handleAddition(tag, lang) {
     if (tag.id) {
       const tagsEng = [].concat(
         GlobalHook.getGlobalCourseTagEnglish,
         getSuggestionsEnglish.filter(item => item.id == tag.id)
       );
       const tagsThai = [].concat(
-         GlobalHook.getGlobalCourseTagThai,
+        GlobalHook.getGlobalCourseTagThai,
         getSuggestionsThai.filter(item => item.id == tag.id)
       );
 
       GlobalHook.setGlobalCourseTagEnglish(tagsEng);
       GlobalHook.setGlobalCourseTagThai(tagsThai);
     } else {
-     
+
       setModalAddNewTagOpenStatus(true)
-     if(lang == "Eng"){
-      setNewTagEnglish(tag.name)
+      if (lang == "Eng") {
+        setNewTagEnglish(tag.name)
 
-     }else{
-      setNewTagThai(tag.name)
+      } else {
+        setNewTagThai(tag.name)
 
-     }
-      
+      }
+
     }
   }
 
@@ -226,61 +273,60 @@ export default function FabCreateCourse() {
               Close
             </button>
             <button
-              onClick={() => {setModalAddNewTagOpenStatus(false);SaveNewTagAction()}}
+              onClick={() => { setModalAddNewTagOpenStatus(false); SaveNewTagAction() }}
               className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             >
               Save
             </button>
 
-  
+
           </div>
         ]}
       >
         <div className="flex flex-col justify-center items-center mx-auto">
           <div>
             <div>English</div>
-          <Input
+            <Input
               placeholder=""
               value={getNewTagEnglish}
-              onChange={(e)=>setNewTagEnglish(e.target.value)}
+              onChange={(e) => setNewTagEnglish(e.target.value)}
 
             />
           </div>
           <div className="mt-4">
             <div>Thai</div>
-          <Input
+            <Input
               placeholder=""
               value={getNewTagThai}
-              onChange={(e)=>setNewTagThai(e.target.value)}
+              onChange={(e) => setNewTagThai(e.target.value)}
             />
           </div>
-      
 
-       
-          </div>
+
+
+        </div>
       </Modal>
     );
   }
 
-  function SaveNewTagAction(){
-  
+  function SaveNewTagAction() {
     axios
-    .post(`/api/tag/addtag/`, { english: getNewTagEnglish,thai: getNewTagThai })
-    .then(res => {
-      const tagsEng = [].concat(
-        GlobalHook.getGlobalCourseTagEnglish,
-        [{ id: res.data._id, name: getNewTagEnglish }]
-      );
-      const tagsThai = [].concat(
-         GlobalHook.getGlobalCourseTagThai,
-         [{ id: res.data._id, name: getNewTagThai }]
-      );
+      .post(`/api/tag/addtag/`, { english: getNewTagEnglish, thai: getNewTagThai })
+      .then(res => {
+        const tagsEng = [].concat(
+          GlobalHook.getGlobalCourseTagEnglish,
+          [{ id: res.data._id, name: getNewTagEnglish }]
+        );
+        const tagsThai = [].concat(
+          GlobalHook.getGlobalCourseTagThai,
+          [{ id: res.data._id, name: getNewTagThai }]
+        );
 
-      GlobalHook.setGlobalCourseTagEnglish(tagsEng);
-      GlobalHook.setGlobalCourseTagThai(tagsThai);
-     console.log(res.data)
-    })
-    .catch(err => console.log(err));
+        GlobalHook.setGlobalCourseTagEnglish(tagsEng);
+        GlobalHook.setGlobalCourseTagThai(tagsThai);
+        console.log(res.data)
+      })
+      .catch(err => console.log(err));
   }
 
   function CreateCoursePopUp() {
@@ -295,13 +341,13 @@ export default function FabCreateCourse() {
         footer={[
           <div className="w-full flex justify-center">
 
-          <Popover
+            <Popover
               content={
                 <div className="flex w-full justify-center">
                   <div
                     className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
                     onClick={() => {
-                  
+
                       setShowConfirmDel(false);
                       DeleteCourseLessionAction(GlobalHook, courseSlug);
                     }}
@@ -324,10 +370,10 @@ export default function FabCreateCourse() {
               onVisibleChange={() => setShowConfirmDel(!getShowConfirmDel)}
             >
               <div
-             
-              className="bg-red-500 text-white p-2 rounded hover:bg-red-400 cursor-pointer mr-4"
-            >
-              Delete Course
+
+                className="bg-red-500 text-white p-2 rounded hover:bg-red-400 cursor-pointer mr-4"
+              >
+                Delete Course
             </div>
             </Popover>
 
@@ -377,10 +423,10 @@ export default function FabCreateCourse() {
               onChange={e => GlobalHook.setGlobalCourseSubject(e)}
               style={{ minWidth: "210px" }}
             >
-              <Option value="Mathematic">Mathematic</Option>
-              <Option value="Physics">Physics</Option>
-              <Option value="Robotics">Robotics</Option>
-              <Option value="Coding">Coding</Option>
+              {getSubjects.map(subjectItem => (
+                <Option value={subjectItem.english}> {subjectItem.thai} </Option>
+              ))}
+
             </Select>
           </div>
 
@@ -392,10 +438,15 @@ export default function FabCreateCourse() {
               value={GlobalHook.getGlobalCourseLevel}
               style={{ minWidth: "210px" }}
             >
-              <Option value="ประถม">ประถม</Option>
+              {console.log('moomin')}
+              {console.log(getLevels)}
+              {getLevels.map(subjectItem => (
+                <Option value={subjectItem.menuThai}> {subjectItem.menuThai} </Option>
+              ))}
+              {/* <Option value="ประถม">ประถม</Option>
               <Option value="มัธยมต้น">มัธยมต้น</Option>
               <Option value="มัธยมปลาย">มัธยมปลาย</Option>
-              <Option value="มหาวิทยาลัย">มหาวิทยาลัย</Option>
+              <Option value="มหาวิทยาลัย">มหาวิทยาลัย</Option> */}
             </Select>
           </div>
 
@@ -447,86 +498,86 @@ export default function FabCreateCourse() {
                   <img src={GlobalHook.getGlobalCourseImage} />
                 </div>
               ) : (
-                <div className="w-full h-full flex flex-col items-center">
-                  {!getUploadingShow && (
-                    <div
-                      style={{ minHeight: "200px" }}
-                      className="w-full flex flex-col justify-center items-center cursor-pointer "
-                    >
-                      {" "}
+                  <div className="w-full h-full flex flex-col items-center">
+                    {!getUploadingShow && (
                       <div
-                        {...getRootProps({ className: "dropzone" })}
                         style={{ minHeight: "200px" }}
                         className="w-full flex flex-col justify-center items-center cursor-pointer "
                       >
-                        <input {...getInputProps()} />
-                        {isDragAccept && <p>All files will be accepted</p>}
-                        {isDragReject && <p>Some files will be rejected</p>}
-                        {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
+                        {" "}
+                        <div
+                          {...getRootProps({ className: "dropzone" })}
+                          style={{ minHeight: "200px" }}
+                          className="w-full flex flex-col justify-center items-center cursor-pointer "
+                        >
+                          <input {...getInputProps()} />
+                          {isDragAccept && <p>All files will be accepted</p>}
+                          {isDragReject && <p>Some files will be rejected</p>}
+                          {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
+                          {GlobalHook.getGlobalStudioUploadFile && (
+                            <p className="mt-4">
+                              {GlobalHook.getGlobalStudioUploadFile.name}
+                            </p>
+                          )}
+                        </div>
                         {GlobalHook.getGlobalStudioUploadFile && (
-                          <p className="mt-4">
-                            {GlobalHook.getGlobalStudioUploadFile.name}
-                          </p>
+                          <button
+                            className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4"
+                            style={{ width: "100px" }}
+                            onClick={() => UploadBtnClick()}
+                          >
+                            Upload
+                          </button>
                         )}
                       </div>
-                      {GlobalHook.getGlobalStudioUploadFile && (
-                        <button
-                          className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4"
-                          style={{ width: "100px" }}
-                          onClick={() => UploadBtnClick()}
-                        >
-                          Upload
-                        </button>
-                      )}
-                    </div>
-                  )}
-                  {getUploadingShow == "initing" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Spin size="large" />
+                    )}
+                    {getUploadingShow == "initing" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Spin size="large" />
+                        </div>
+                        <div className="mt-4 text-center">
+                          กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                      <div className="mt-4 text-center">
-                        กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {getUploadingShow == "uploading" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Progress
-                          className="mt-4"
-                          type="circle"
-                          percent={uploadPercentage}
-                          format={percent => `${percent} %`}
-                        />
+                    {getUploadingShow == "uploading" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Progress
+                            className="mt-4"
+                            type="circle"
+                            percent={uploadPercentage}
+                            format={percent => `${percent} %`}
+                          />
+                        </div>
+                        <div className="mt-4 text-center">
+                          กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                      <div className="mt-4 text-center">
-                        กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {getUploadingShow == "done" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Progress
-                          type="circle"
-                          percent={100}
-                          format={() => "Done"}
-                        />
+                    {getUploadingShow == "done" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Progress
+                            type="circle"
+                            percent={100}
+                            format={() => "Done"}
+                          />
+                        </div>
+                        <div className="mt-4 text-center">อัพโหลดสำเร็จ</div>
+                        <div className="mt-4 text-center">
+                          กด Save เพื่อบันทึกข้อมูล
                       </div>
-                      <div className="mt-4 text-center">อัพโหลดสำเร็จ</div>
-                      <div className="mt-4 text-center">
-                        กด Save เพื่อบันทึกข้อมูล
                       </div>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
             </div>
-           
-            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
+
+            <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} />
 
             <div className="flex flex-col text-center my-4">
               <div className="font-bold text mb-2"> Course Fees</div>
@@ -552,30 +603,30 @@ export default function FabCreateCourse() {
               </div>
             </div>
 
-            {getSchoolState&&<div className="flex flex-col text-center my-4">
+            {getSchoolState && <div className="flex flex-col text-center my-4">
               <div className="flex mb-2">
-              <div className="font-bold text mr-2">Public Course</div>
+                <div className="font-bold text mr-2">Public Course</div>
                 <Switch
                   defaultChecked={GlobalHook.getGlobalPublicCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   onClick={e => GlobalHook.setGlobalPublicCourseStatus(e)}
                 />
-             
+
               </div>
 
               <div className="flex">
-              <div className="font-bold text mr-2">School Course</div>
+                <div className="font-bold text mr-2">School Course</div>
                 <Switch
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
                 />
-             
+
               </div>
 
-              
+
             </div>}
 
           </div>

@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -60,7 +60,7 @@ router.post("/deleteQuizQuestions", (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -94,7 +94,7 @@ router.post("/moveVideoFolder", (req, res) => {
     .catch(err => {
       message.error("video move to folder Error, Try Again");
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -122,7 +122,7 @@ router.post("/createVimeoFolder", (req, res) => {
         { courseVimeoId: folderId },
         function(err, result) {
           if (err) {
-            console.log("error");
+            return res.status(400).json(err);
           } else {
             console.log("success");
             console.log(result);
@@ -133,7 +133,7 @@ router.post("/createVimeoFolder", (req, res) => {
     .catch(err => {
       message.error("video move to folder Error, Try Again");
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -155,7 +155,7 @@ router.post("/editVimeoFolderName", (req, res) => {
     .catch(err => {
       message.error("folder name change error");
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -177,31 +177,22 @@ router.post("/deleteVimeoVideo", (req, res) => {
     .catch(err => {
       message.error("folder name change error");
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
 //GetSubjects
 router.get("/subjects", async (req, res) => {
   Subject.find()
-<<<<<<< HEAD
   .then(data => {
     res.status(200).json(data);
     console.log('subject data')
     console.log(data)
   })
-  .catch(err => {console.log(err);res.status(400).json(err)});
-=======
-    .then(data => {
-      res.status(200).json(data);
-      console.log("subject");
-      console.log(data);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(400).json(err);
-    });
->>>>>>> master
+  .catch(err => {
+    console.log(err);
+    return res.status(400).json(err)
+  });
 });
 
 
@@ -215,7 +206,9 @@ router.get("/subjectLevels", async (req, res) => {
     res.status(200).json(data);
     // console.log(data)
   })
-  .catch(err => {console.log(err);res.status(400).json(err)});
+  .catch(err => {
+    console.log(err);
+    return res.status(400).json(err)});
 });
 
 
@@ -227,7 +220,7 @@ router.get("/all", async (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -239,7 +232,7 @@ router.post("/getcoursesetting", (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 
@@ -316,7 +309,7 @@ router.post(
           )
           .catch(err => {
             console.log(err);
-            res.status(400).json(err);
+            return res.status(400).json(err);
           });
       });
     });
@@ -362,7 +355,7 @@ router.post(
           .catch(err => {
             message.error("vimeo folder delete error");
             console.log(err);
-            res.status(400).json(err);
+            return res.status(400).json(err);
           });
 
         // detele all questions from course
@@ -374,12 +367,12 @@ router.post(
           })
           .catch(err => {
             console.log(err);
-            res.status(400).json(err);
+            return res.status(400).json(err);
           });
       })
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 );
@@ -392,7 +385,7 @@ router.get("/category/:category", async (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
   // res.json({ msg: req.params.cat })
 });
@@ -407,7 +400,7 @@ router.get("/search/:keyword", async (req, res) => {
       })
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 });
@@ -441,16 +434,17 @@ router.post(
       },
       { new: true },
       (err, doc) => {
-        res.status(200).json("success");
+        // res.status(200).json("success");
         if (err) {
           console.log("Something wrong when updating data!");
+          return res.status(400).json(err)
         }
       }
     )
       .then(data => res.status(200).json("success"))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 );
@@ -486,7 +480,7 @@ router.post(
       })
       .catch(err => {
         console.log(err);
-        res.status(400);
+        return res.status(400).json(err);
       });
   }
 );
@@ -509,14 +503,14 @@ router.post(
         res.status(200).json("success");
         if (err) {
           console.log("Something wrong when updating data!");
-          res.status(400).json(err);
+          return res.status(400).json(err);
         }
       }
     )
       .then(data => res.status(200).json("success"))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 );
@@ -545,7 +539,7 @@ router.post(
       .then(data => res.status(200).json("success"))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 );
@@ -568,7 +562,7 @@ router.post(
         })
         .catch(err => {
           console.log(err);
-          res.status(400).json(err);
+          return res.status(400).json(err);
         });
     });
   }
@@ -609,12 +603,12 @@ router.post(
           })
           .catch(err => {
             console.log(err);
-            res.status(400).json(err);
+            return res.status(400).json(err);
           });
       })
       .catch(err => {
         console.log(err);
-        res.status(400).json(err);
+        return res.status(400).json(err);
       });
   }
 );
@@ -635,11 +629,11 @@ router.get("/:courseSlug", async (req, res) => {
             .status(200)
             .json({ courseData, courseName: poolData.courseName, courseId });
         })
-        .catch(err => console.log(err));
+        .catch(err => {console.log(err); return res.status(400).json(err) });
     })
     .catch(err => {
       console.log(err);
-      res.status(400).json(err);
+      return res.status(400).json(err);
     });
 });
 

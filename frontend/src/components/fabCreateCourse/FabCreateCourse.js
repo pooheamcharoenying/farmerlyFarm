@@ -22,7 +22,9 @@ import axios from "axios";
 import { GlobalContext } from "../../hook/GlobalHook";
 import {
   ClearCreateCourseFieldAction,
-  CreateCourseAction
+  CreateCourseAction,
+  getSubjectCategories, 
+  getSubjectLevels,
 } from "../../actions";
 
 const { TextArea } = Input;
@@ -41,7 +43,7 @@ export default function FabCreateCourse() {
   const [getCoursePrice, setCoursePrice] = useState(null);
   const [getSuggestionsEnglish, setSuggestionsEnglish] = useState([]);
   const [getSuggestionsThai, setSuggestionsThai] = useState([]);
-  const [getSchoolState,setSchoolState] = useState(false)
+  const [getSchoolState, setSchoolState] = useState(false)
   const {
     acceptedFiles,
     getRootProps,
@@ -52,6 +54,51 @@ export default function FabCreateCourse() {
   } = useDropzone({
     accept: "image/jpeg, image/png, image/jpg, image/gif"
   });
+
+
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
+  const [getSubjects, setSubjects] = useState([]);
+  const [getLevels, setLevels] = useState([]);
+
+  useEffect(() => {
+    console.log('getting subjects')
+
+    getSubjectCategories()
+      .then(data => {
+        console.log('banobagen')
+        console.log(data)
+
+        setSubjects(data)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    getSubjectLevels()
+      .then(data => {
+        console.log('show levels')
+        console.log(data)
+        for (var x of data) {
+          if (x.type == "levelmenu") {
+            console.log('level menu found')
+            console.log(x)
+            setLevels(x.menu)
+          }
+          if (x.type == "subjectmenu") {
+            console.log('subject menu found')
+            console.log(x)
+            setSubjectMenu(x.menu)
+          }
+        }
+        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, []);
+
+
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
@@ -61,14 +108,14 @@ export default function FabCreateCourse() {
   }, [acceptedFiles]);
 
   useEffect(() => {
-   if(GlobalHook.getGlobalUser){
-     if(GlobalHook.getGlobalUser.role == "admin"){
-      setSchoolState(true)
-     }
-     if(GlobalHook.getGlobalUser.role == "school"){
-      setSchoolState(true)
-     }
-   }
+    if (GlobalHook.getGlobalUser) {
+      if (GlobalHook.getGlobalUser.role == "admin") {
+        setSchoolState(true)
+      }
+      if (GlobalHook.getGlobalUser.role == "school") {
+        setSchoolState(true)
+      }
+    }
   }, [GlobalHook.getGlobalUser]);
 
   function UploadBtnClick(file) {
@@ -92,7 +139,7 @@ export default function FabCreateCourse() {
   });
 
   function UploadAction(file) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       const params = { Body: file, Bucket: "studysabaiapp", Key: file.name };
       // Sending the file to the Spaces
       S3.putObject(params)
@@ -103,7 +150,7 @@ export default function FabCreateCourse() {
           request.httpRequest.headers["Content-Type"] = file.type;
           request.httpRequest.headers["x-amz-acl"] = "public-read";
         })
-        .on("httpUploadProgress", function(progress) {
+        .on("httpUploadProgress", function (progress) {
           setuploadPercent(
             Math.round((progress.loaded / progress.total) * 100)
           );
@@ -130,13 +177,13 @@ export default function FabCreateCourse() {
   }
   function handleDelete(i) {
     const tagsEng = GlobalHook.getGlobalCourseTagEnglish.slice(0);
-    const tagsThai =  GlobalHook.getGlobalCourseTagThai.slice(0);
+    const tagsThai = GlobalHook.getGlobalCourseTagThai.slice(0);
 
     tagsEng.splice(i, 1);
     tagsThai.splice(i, 1);
 
     GlobalHook.setGlobalCourseTagEnglish(tagsEng);
-     GlobalHook.setGlobalCourseTagThai(tagsThai);
+    GlobalHook.setGlobalCourseTagThai(tagsThai);
   }
 
   function handleAddition(tag) {
@@ -146,12 +193,12 @@ export default function FabCreateCourse() {
         getSuggestionsEnglish.filter(item => item.id == tag.id)
       );
       const tagsThai = [].concat(
-         GlobalHook.getGlobalCourseTagThai,
+        GlobalHook.getGlobalCourseTagThai,
         getSuggestionsThai.filter(item => item.id == tag.id)
       );
 
       GlobalHook.setGlobalCourseTagEnglish(tagsEng);
-       GlobalHook.setGlobalCourseTagThai(tagsThai);
+      GlobalHook.setGlobalCourseTagThai(tagsThai);
     } else {
       alert("add custom new tag");
     }
@@ -204,7 +251,7 @@ export default function FabCreateCourse() {
           }}
         >
 
-          
+
 
 
           <div className="flex flex-col text-center mb-4">
@@ -216,7 +263,7 @@ export default function FabCreateCourse() {
             />
           </div>
 
-          
+
 
           <div className="flex flex-col text-center mb-4">
             <div className="font-bold text mb-2">วิชาเรียน</div>
@@ -226,10 +273,13 @@ export default function FabCreateCourse() {
               onChange={e => GlobalHook.setGlobalCourseSubject(e)}
               style={{ minWidth: "210px" }}
             >
-              <Option value="Mathematic">Mathematic</Option>
+              {getSubjects.map(subjectItem => (
+                <Option value={subjectItem.english}> {subjectItem.thai} </Option>
+              ))}
+              {/* <Option value="Mathematic">Mathematic</Option>
               <Option value="Physics">Physics</Option>
               <Option value="Robotics">Robotics</Option>
-              <Option value="Coding">Coding</Option>
+              <Option value="Coding">Coding</Option> */}
             </Select>
           </div>
 
@@ -293,86 +343,87 @@ export default function FabCreateCourse() {
                   <img src={getImageData} />
                 </div>
               ) : (
-                <div className="w-full h-full flex flex-col items-center">
-                  {!getUploadingShow && (
-                    <div
-                      style={{ minHeight: "200px" }}
-                      className="w-full flex flex-col justify-center items-center cursor-pointer "
-                    >
-                      {" "}
+                  <div className="w-full h-full flex flex-col items-center">
+                    {!getUploadingShow && (
                       <div
-                        {...getRootProps({ className: "dropzone" })}
                         style={{ minHeight: "200px" }}
                         className="w-full flex flex-col justify-center items-center cursor-pointer "
                       >
-                        <input {...getInputProps()} />
-                        {isDragAccept && <p>All files will be accepted</p>}
-                        {isDragReject && <p>Some files will be rejected</p>}
-                        {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
+                        {" "}
+                        <div
+                          {...getRootProps({ className: "dropzone" })}
+                          style={{ minHeight: "200px" }}
+                          className="w-full flex flex-col justify-center items-center cursor-pointer "
+                        >
+                          <input {...getInputProps()} />
+                          {isDragAccept && <p>All files will be accepted</p>}
+                          {isDragReject && <p>Some files will be rejected</p>}
+                          {!isDragActive && <p>เลือกไฟล์ที่จะอัพโหลด</p>}
+                          {GlobalHook.getGlobalStudioUploadFile && (
+                            <p className="mt-4">
+                              {GlobalHook.getGlobalStudioUploadFile.name}
+                            </p>
+                          )}
+                        </div>
                         {GlobalHook.getGlobalStudioUploadFile && (
-                          <p className="mt-4">
-                            {GlobalHook.getGlobalStudioUploadFile.name}
-                          </p>
+                          <button
+                            className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4"
+                            style={{ width: "100px" }}
+                            onClick={() => UploadBtnClick()}
+                          >
+                            Upload
+                          </button>
                         )}
                       </div>
-                      {GlobalHook.getGlobalStudioUploadFile && (
-                        <button
-                          className="bg-blue-400 text-white p-2 hover:bg-blue-400 rounded my-4"
-                          style={{ width: "100px" }}
-                          onClick={() => UploadBtnClick()}
-                        >
-                          Upload
-                        </button>
-                      )}
-                    </div>
-                  )}
-                  {getUploadingShow == "initing" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Spin size="large" />
+                    )}
+                    {getUploadingShow == "initing" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Spin size="large" />
+                        </div>
+                        <div className="mt-4 text-center">
+                          กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                      <div className="mt-4 text-center">
-                        กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {getUploadingShow == "uploading" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Progress
-                          className="mt-4"
-                          type="circle"
-                          percent={uploadPercentage}
-                          format={percent => `${percent} %`}
-                        />
+                    {getUploadingShow == "uploading" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Progress
+                            className="mt-4"
+                            type="circle"
+                            percent={uploadPercentage}
+                            format={percent => `${percent} %`}
+                          />
+                        </div>
+                        <div className="mt-4 text-center">
+                          กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                      <div className="mt-4 text-center">
-                        กำลังอัพโหลด โปรดรอสักครู่ .....
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {getUploadingShow == "done" && (
-                    <div>
-                      <div className="flex justify-center">
-                        <Progress
-                          type="circle"
-                          percent={100}
-                          format={() => "Done"}
-                        />
+                    {getUploadingShow == "done" && (
+                      <div>
+                        <div className="flex justify-center">
+                          <Progress
+                            type="circle"
+                            percent={100}
+                            format={() => "Done"}
+                          />
+                        </div>
+                        <div className="mt-4 text-center">อัพโหลดสำเร็จ</div>
+                        <div className="mt-4 text-center">
+                          กด Create เพื่อบันทึกข้อมูล
                       </div>
-                      <div className="mt-4 text-center">อัพโหลดสำเร็จ</div>
-                      <div className="mt-4 text-center">
-                        กด Create เพื่อบันทึกข้อมูล
                       </div>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
             </div>
 
-            <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish}/>
+            {/* <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} /> */}
+            <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} />
 
 
 
@@ -401,30 +452,30 @@ export default function FabCreateCourse() {
             </div>
 
 
-            {getSchoolState&&<div className="flex flex-col text-center my-4">
+            {getSchoolState && <div className="flex flex-col text-center my-4">
               <div className="flex mb-2">
-              <div className="font-bold text mr-2">Public Course</div>
+                <div className="font-bold text mr-2">Public Course</div>
                 <Switch
                   defaultChecked={GlobalHook.getGlobalPublicCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   onClick={e => GlobalHook.setGlobalPublicCourseStatus(e)}
                 />
-             
+
               </div>
 
               <div className="flex">
-              <div className="font-bold text mr-2">School Course</div>
+                <div className="font-bold text mr-2">School Course</div>
                 <Switch
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
                 />
-             
+
               </div>
 
-              
+
             </div>}
 
           </div>

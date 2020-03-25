@@ -34,7 +34,8 @@ router.post(
   (req, res) => {
     const newTag = new Tag({
         english:req.body.english,
-        thai:req.body.thai
+        thai:req.body.thai,
+        subject: req.body.subject
     })
 
     newTag.save().then((data)=>{

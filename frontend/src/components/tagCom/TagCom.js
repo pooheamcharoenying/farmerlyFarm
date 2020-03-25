@@ -33,14 +33,17 @@ export default function TagCom(props) {
 
   const [getSelectedSubject, setSelectedSubject] = useState("Mathematic");
 
-  useEffect(() => {
-    getSubjectCategories()
-      .then(data => {
-        const hhol = data.map(item => item.english);
-        setSubjectPool(hhol);
-      })
-      .catch(err => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   getSubjectCategories()
+  //     .then(data => {
+  //       const hhol = data.map(item => item.english);
+  //       setSubjectPool(hhol);
+  //     })
+  //     .catch(err => console.log(err));
+  // }, []);
+
+
+
 
   function handleDelete(i) {
     const tagsEng = props.InTagEnglish.slice(0);
@@ -61,12 +64,23 @@ export default function TagCom(props) {
       let flittedSuggestEnglish = getSuggestionsEnglish.filter(
         item => item.id == tagTemp.id
       );
-      flittedSuggestEnglish[0].name = `${flittedSuggestEnglish[0].subject} - ${flittedSuggestEnglish[0].name}`;
+      flittedSuggestEnglish[0].name = `${flittedSuggestEnglish[0].subject}: ${flittedSuggestEnglish[0].name}`;
 
       let flittedSuggestThai = getSuggestionsThai.filter(
         item => item.id == tagTemp.id
       );
-      flittedSuggestThai[0].name = `${flittedSuggestThai[0].subject} - ${flittedSuggestThai[0].name}`;
+
+      console.log("mofonity")
+      console.log(props.SubjectCat)
+      console.log(flittedSuggestThai[0].subject)
+      var thaiSubject = flittedSuggestThai[0].subject;
+      for (var item of props.SubjectCat) {
+        if (item.english == flittedSuggestThai[0].subject) {
+          thaiSubject = item.thai;
+        }
+      }
+      
+      flittedSuggestThai[0].name = `${thaiSubject}: ${flittedSuggestThai[0].name}`;
 
       const tagsEng = [].concat(props.InTagEnglish, flittedSuggestEnglish);
       const tagsThai = [].concat(props.InTagThai, flittedSuggestThai);
@@ -151,8 +165,8 @@ export default function TagCom(props) {
               value={getSelectedSubject}
               onClick={e => setSelectedSubject(e.target.value)}
             >
-              {getSubjectPool.map(item => {
-                return <option value={item}>{item}</option>;
+              {props.SubjectCat.map(item => {
+                return <option value={item.english}>{item.thai}</option>;
               })}
             </select>
           </div>
@@ -189,11 +203,20 @@ export default function TagCom(props) {
         const tagsEng = [].concat(props.InTagEnglish, [
           {
             id: res.data._id,
-            name: `${getSelectedSubject} - ${getNewTagEnglish}`
+            name: `${getSelectedSubject}: ${getNewTagEnglish}`
           }
         ]);
+
+        var thaiSubject;
+        for (var item of props.SubjectCat) {
+          if (item.english == getSelectedSubject) {
+            thaiSubject = item.thai;
+          }
+        }
+      
+        
         const tagsThai = [].concat(props.InTagThai, [
-          { id: res.data._id, name: `${getSelectedSubject} - ${getNewTagThai}` }
+          { id: res.data._id, name: `${thaiSubject}: ${getNewTagThai}` }
         ]);
 
         props.OutTagEnglish(tagsEng);

@@ -13,29 +13,6 @@ export default function Home() {
 
     console.log('starting home ..................................................')
     getCoursePoolAction(GlobalHook);
-    var subjectsData = "hobo"
-
-
-<<<<<<< HEAD
-    // getSubjectCategories()
-    // .then(data => {
-    //   console.log('banobagen')
-    //   console.log(data)
-    //   subjectsData = data;
-    //   console.log(subjectsData)
-    // })
-    // .catch(error => {
-    //   console.log(error)
-    // })
-=======
-    getSubjectCategories().then(data => {
-     // console.log('banobagen')
-      //console.log(data)
-      subjectsData = data;
-      //console.log(subjectsData)
-    }).catch(err => console.log(err));
->>>>>>> master
-
 
   }, []);
 

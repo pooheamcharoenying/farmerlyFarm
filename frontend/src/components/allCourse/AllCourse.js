@@ -20,14 +20,11 @@ export default function AllCourse() {
   const [getFiltedCourseData, setFiltedCourseData] = useState([]);
 
 
-  
+  let history = useHistory();
+
   const [getSubjectMenu, setSubjectMenu] = useState([]);
   const [getSubjects, setSubjects] = useState([]);
   const [getLevels, setLevels] = useState([]);
-
-
-  let history = useHistory();
-
 
   useEffect(() => {
     console.log('getting subjects')
@@ -65,10 +62,6 @@ export default function AllCourse() {
       .catch(error => {
         console.log(error)
       })
-
-
-
-
   }, []);
 
   useEffect(() => {
