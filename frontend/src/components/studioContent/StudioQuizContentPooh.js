@@ -72,7 +72,9 @@ const StudioQuizContent = () => {
     console.log('supersaiya')
     console.log(GlobalHook.getGlobalMediaNew)
     if(GlobalHook.getGlobalMediaNew){
+      
       console.log('beijita')
+      console.log(GlobalHook.getGlobalMediaNew)
       setQuizDataPool(GlobalHook.getGlobalMediaNew);
 
     }

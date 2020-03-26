@@ -170,7 +170,7 @@ function getCourseContentAction(GlobalHook, courseSlug) {
         JSON.stringify(res.data.courseData[0].contentStructure)
       );
 
-      console.log(res.data)
+      // console.log(res.data)
     })
     .catch(err => console.log(err));
 }
@@ -289,8 +289,8 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
       GlobalHook.setGlobalPublicCourseStatus(res.data.coursePublic)
       GlobalHook.setGlobalSchoolCourseStatus(res.data.courseSchool)
 
-      console.log("Fetch Course Setting")
-      console.log(res.data)
+      // console.log("Fetch Course Setting")
+      // console.log(res.data)
 
 
     })

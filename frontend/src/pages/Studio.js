@@ -13,7 +13,7 @@ export default function Studio() {
   const GlobalHook = useContext(GlobalContext);
 
   useEffect(() => {
-    console.log("jurassic")
+    // console.log("jurassic")
     getCourseContentAction(GlobalHook, courseSlug);
     GlobalHook.setGlobalCourseSlug(courseSlug);
     getCoursePoolAllAction(GlobalHook);
@@ -29,8 +29,8 @@ export default function Studio() {
 
   return (
     <div className="flex relative overflow-hidden bg-gray-100">
-      {console.log("studio")}
-      {console.log(GlobalHook.getGlobalC)}
+      {/* {console.log("studio")}
+      {console.log(GlobalHook.getGlobalC)} */}
       <Helmet>
       <title>Studysabai:Studio::{GlobalHook.getGlobalCourseName}</title>
       </Helmet>

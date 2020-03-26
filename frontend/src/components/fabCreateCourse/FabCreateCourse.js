@@ -61,12 +61,12 @@ export default function FabCreateCourse() {
   const [getLevels, setLevels] = useState([]);
 
   useEffect(() => {
-    console.log('getting subjects')
+    // console.log('getting subjects')
 
     getSubjectCategories()
       .then(data => {
-        console.log('banobagen')
-        console.log(data)
+        // console.log('banobagen')
+        // console.log(data)
 
         setSubjects(data)
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
@@ -77,17 +77,17 @@ export default function FabCreateCourse() {
 
     getSubjectLevels()
       .then(data => {
-        console.log('show levels')
-        console.log(data)
+        // console.log('show levels')
+        // console.log(data)
         for (var x of data) {
           if (x.type == "levelmenu") {
-            console.log('level menu found')
-            console.log(x)
+            // console.log('level menu found')
+            // console.log(x)
             setLevels(x.menu)
           }
           if (x.type == "subjectmenu") {
-            console.log('subject menu found')
-            console.log(x)
+            // console.log('subject menu found')
+            // console.log(x)
             setSubjectMenu(x.menu)
           }
         }

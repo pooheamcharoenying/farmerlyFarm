@@ -32,6 +32,7 @@ export default function TagCom(props) {
   const [getSubjectPool, setSubjectPool] = useState([]);
 
   const [getSelectedSubject, setSelectedSubject] = useState("Mathematic");
+  const [getSubjects, setSubjects] = useState([]);
 
   // useEffect(() => {
   //   getSubjectCategories()
@@ -42,6 +43,20 @@ export default function TagCom(props) {
   //     .catch(err => console.log(err));
   // }, []);
 
+
+  useEffect(() => {
+    getSubjectCategories()
+      .then(data => {
+        // console.log('banobagen')
+        // console.log(data)
+    
+        setSubjects(data)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
 
 
 
@@ -71,10 +86,10 @@ export default function TagCom(props) {
       );
 
       console.log("mofonity")
-      console.log(props.SubjectCat)
+      console.log(getSubjects)
       console.log(flittedSuggestThai[0].subject)
       var thaiSubject = flittedSuggestThai[0].subject;
-      for (var item of props.SubjectCat) {
+      for (var item of getSubjects) {
         if (item.english == flittedSuggestThai[0].subject) {
           thaiSubject = item.thai;
         }
@@ -165,7 +180,7 @@ export default function TagCom(props) {
               value={getSelectedSubject}
               onClick={e => setSelectedSubject(e.target.value)}
             >
-              {props.SubjectCat.map(item => {
+              {getSubjects.map(item => {
                 return <option value={item.english}>{item.thai}</option>;
               })}
             </select>
@@ -208,7 +223,7 @@ export default function TagCom(props) {
         ]);
 
         var thaiSubject;
-        for (var item of props.SubjectCat) {
+        for (var item of getSubjects) {
           if (item.english == getSelectedSubject) {
             thaiSubject = item.thai;
           }
