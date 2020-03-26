@@ -24,8 +24,10 @@ export default function MyCourse() {
             setcourseMatchPool(myCourseMatch);
 
             setschoolDataLocal([
-              {schoolName:"FIBO",schoolImage:"https://scontent.fbkk12-4.fna.fbcdn.net/v/t31.0-8/s720x720/133452_123937781001909_714704_o.jpg?_nc_cat=110&_nc_sid=85a577&_nc_eui2=AeH-I8gIZx4xDuCET-eeOtMF7Oen9xA9ke-I53ZpwWyYxxLjxeMNoM2OZtLv--dDzut_yGxx7TM9nAn7gKRgZkDF4cYH5jVHEo9m3FDLLFFHyA&_nc_ohc=hVMeENufVIYAX_r4C9A&_nc_ht=scontent.fbkk12-4.fna&_nc_tp=7&oh=575cee08b47642583f22816b22f5911c&oe=5EA1F91A"},
-              {schoolName:"KMUTT",schoolImage:"https://ene.kmutt.ac.th/wp-content/uploads/2019/01/bann.jpg"}
+              {schoolName:"FIBO",schoolSlug:"fibo",schoolImage:"https://scontent.fbkk12-4.fna.fbcdn.net/v/t31.0-8/s720x720/133452_123937781001909_714704_o.jpg?_nc_cat=110&_nc_sid=85a577&_nc_eui2=AeH-I8gIZx4xDuCET-eeOtMF7Oen9xA9ke-I53ZpwWyYxxLjxeMNoM2OZtLv--dDzut_yGxx7TM9nAn7gKRgZkDF4cYH5jVHEo9m3FDLLFFHyA&_nc_ohc=hVMeENufVIYAX_r4C9A&_nc_ht=scontent.fbkk12-4.fna&_nc_tp=7&oh=575cee08b47642583f22816b22f5911c&oe=5EA1F91A"},
+              {schoolName:"KMUTT",schoolSlug:"kmutt",schoolImage:"https://ene.kmutt.ac.th/wp-content/uploads/2019/01/bann.jpg"},
+              {schoolName:"MIT",schoolSlug:"mit",schoolImage:"https://www.autopair.net/images/easyblog_articles/5/MIT-Logo.png"},
+            
             ])
           }
         })
@@ -97,15 +99,15 @@ export default function MyCourse() {
           vertical={false}
           className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5"
         >
-          {getSchoolMatchPool.map((courseData, i) => (
+          {getSchoolMatchPool.map((schoolData, i) => (
             <div
            
               key={i}
               className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
               // onClick={() => history.push(`/course/${courseData.courseSlug}`)}
-              onClick={()=>window.location.href=`/school/${courseData.courseSlug}`}
+              onClick={()=>window.location.href=`/school/${schoolData.schoolSlug}`}
             >
-              <SchoolCard schoolData={courseData} />
+              <SchoolCard schoolData={schoolData} />
             </div>
           ))}
           {getcourseMatchPool.map((courseData, i) => (
