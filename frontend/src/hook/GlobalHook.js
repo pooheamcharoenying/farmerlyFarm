@@ -207,6 +207,7 @@ const Store = props => {
   //School
   const [getGlobalSchoolSlug,setGlobalSchoolSlug] = useState()
 
+  const [getGlobalSchoolPool,setGlobalSchoolPool] = useState([])
 
   ///Generate GlobalHook///
   const GlobalHook = {
@@ -445,7 +446,10 @@ const Store = props => {
     setGlobalSchoolCourseStatus,
 
     getGlobalSchoolSlug,
-    setGlobalSchoolSlug
+    setGlobalSchoolSlug,
+
+    getGlobalSchoolPool,
+    setGlobalSchoolPool
 
 
 

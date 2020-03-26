@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Modal, Input, Select } from "antd";
 import Header from "../components/header/HeaderHome";
 
-import { getCoursePoolAction,CreateTeacherPaymentAction } from "../actions";
+import { getCoursePoolAction,CreateTeacherPaymentAction,getSchoolPoolAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 import AvatarSetting from "../components/settingContent/AvatarSetting";
 import ProfileSetting from "../components/settingContent/ProfileSetting";
@@ -20,6 +20,7 @@ export default function Dashboard() {
   ] = useState(false);
   useEffect(() => {
     getCoursePoolAction(GlobalHook);
+    getSchoolPoolAction(GlobalHook);
   }, []);
 
   const [getEmail, setEmail] = useState("")

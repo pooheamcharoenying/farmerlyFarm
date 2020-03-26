@@ -15,6 +15,7 @@ const Quiz = require("./routes/api/Quiz");
 const Tag = require("./routes/api/Tag");
 const Checkout = require("./routes/api/Checkout");
 const Payment = require("./routes/api/Payment");
+const School = require("./routes/api/School");
 
 const isDev = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || 5000;
@@ -61,6 +62,7 @@ if (!isDev && cluster.isMaster) {
   app.use("/api/tag", Tag);
   app.use("/api/checkout", Checkout);
   app.use("/api/payment", Payment);
+  app.use("/api/school", School);
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, "../frontend/build")));

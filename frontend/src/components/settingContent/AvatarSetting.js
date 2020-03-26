@@ -14,7 +14,7 @@ const AvatarSetting = () => {
     }, [GlobalHook.getGlobalCurrentUser]);
     return (
         <div className="mt-6 flex flex-col items-center">
-           {getAvatar&&<img src={getAvatar} alt="Avatar" class="rounded-full align-middle  mb-4" style={{width:"80px",height:"80px"}}></img>}
+           {getAvatar&&<img src={getAvatar} alt="Avatar" className="rounded-full align-middle  mb-4" style={{width:"80px",height:"80px"}}></img>}
            {/* <button className="bg-gray-300 p-3 rounded-lg font-bold ">Change Profile Image</button> */}
         </div>
     );
