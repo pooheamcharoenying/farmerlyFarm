@@ -5,7 +5,7 @@ import {GlobalContext} from '../../hook/GlobalHook'
 
 import CourseCard from '../courseCard/CourseCard'
 import {UpdataCourseStatusAction} from '../../actions'
-export default function AdminCourse() {
+export default function SchoolCourse() {
 
     const GlobalHook = useContext(GlobalContext)
     
@@ -21,7 +21,7 @@ export default function AdminCourse() {
 
     return (
         <div className="bg-orange-300 flex flex-col py-10 items-center" style={{minHeight:"100vh"}}>
-        <div className="bg-orange-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >School</div>
+        <div className="bg-orange-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >{GlobalHook.getGlobalSchoolSlug}</div>
         <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
            {getcourseMatchPool.map((courseData,i) => <div
              
