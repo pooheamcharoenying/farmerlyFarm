@@ -23,17 +23,16 @@ export default function MyCourse() {
             myCourseMatch.push(allCourseList);
             setcourseMatchPool(myCourseMatch);
 
-            setschoolDataLocal([
-              {schoolName:"FIBO",schoolSlug:"fibo",schoolImage:"https://scontent.fbkk12-4.fna.fbcdn.net/v/t31.0-8/s720x720/133452_123937781001909_714704_o.jpg?_nc_cat=110&_nc_sid=85a577&_nc_eui2=AeH-I8gIZx4xDuCET-eeOtMF7Oen9xA9ke-I53ZpwWyYxxLjxeMNoM2OZtLv--dDzut_yGxx7TM9nAn7gKRgZkDF4cYH5jVHEo9m3FDLLFFHyA&_nc_ohc=hVMeENufVIYAX_r4C9A&_nc_ht=scontent.fbkk12-4.fna&_nc_tp=7&oh=575cee08b47642583f22816b22f5911c&oe=5EA1F91A"},
-              {schoolName:"KMUTT",schoolSlug:"kmutt",schoolImage:"https://ene.kmutt.ac.th/wp-content/uploads/2019/01/bann.jpg"},
-              {schoolName:"MIT",schoolSlug:"mit",schoolImage:"https://www.autopair.net/images/easyblog_articles/5/MIT-Logo.png"},
-            
-            ])
+          
           }
         })
       );
     }
-  }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool]);
+
+    if(GlobalHook.getGlobalSchoolPool[0]){
+      setschoolDataLocal(GlobalHook.getGlobalSchoolPool)
+    }
+  }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool,GlobalHook.getGlobalSchoolPool]);
 
   function RenderNotLoginMyCourse() {
     return (
