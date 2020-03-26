@@ -7,6 +7,8 @@ import Teacher from '../pages/Teacher';
 import Studio from "../pages/Studio"
 import Admin from '../pages/Admin';
 import School from '../pages/School'
+import SchoolAdmin from '../pages/SchoolAdmin'
+
 import NoMatch from '../pages/NoMatch';
 import PrivateRoute from './PrivateRoute'
 import AdminRoute from './AdminRoute'
@@ -25,6 +27,7 @@ function RouterMain() {
         <Route exact path="/school" component={Home}/>
         <Route exact path="/school/:schoolSlug" component={School}/>
         <Route exact path="/admin" component={Admin}/>
+        <Route exact path="/schooladmin" component={SchoolAdmin}/>
         <Route path="*" component={Home} />        
       </Switch>
     </Router>
