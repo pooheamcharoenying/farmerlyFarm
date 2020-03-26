@@ -22,8 +22,8 @@ export default function DropDown(props) {
     }
     if (props.title == "Choose Level") {
       GlobalHook.setGlobalCourseLevelFilter(getChosenItem.menuThai)
-      console.log('level chosen')
-      console.log(getChosenItem.menuThai)
+      // console.log('level chosen')
+      // console.log(getChosenItem.menuThai)
     }
     // console.log('new item chosen')
     // console.log(GlobalHook.getGlobalCourseSubjectFilter)
@@ -33,8 +33,8 @@ export default function DropDown(props) {
 
   function openDropDown() {
     var tempVar = props.options;
-    console.log('tempvar')
-    console.log(tempVar)
+    // console.log('tempvar')
+    // console.log(tempVar)
 
     return (  
       <div style={{position:"absolute", color:"dark-gray", backgroundColor:"white", zIndex:"10"}}>
@@ -52,8 +52,8 @@ export default function DropDown(props) {
     )
 
   }
-  console.log('ngolo')
-  console.log(props.options)
+  // console.log('ngolo')
+  // console.log(props.options)
   return (
 
   <div>
@@ -77,7 +77,7 @@ function DropDownItem(props) {
   const ConsumeThemeContext = useContext(ThemeContext)
 
   function handleItemClick() {
-    console.log('item clicked')
+    // console.log('item clicked')
     ConsumeThemeContext.setChosenItem(props.item)
     ConsumeThemeContext.setToggleDropDown(false)
   }

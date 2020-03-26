@@ -17,14 +17,14 @@ function getSubjectCategories() {
     .get("/api/course/subjects")
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
-      console.log('pooh subject')
-      console.log(response.data)
+      // console.log('pooh subject')
+      // console.log(response.data)
       return response.data
   })
 }
 
 function getSubjectLevels() {
-  console.log('getting subject levels')
+  // console.log('getting subject levels')
   return axios
     .get("/api/course/subjectLevels")
     .then(response => {
@@ -34,7 +34,7 @@ function getSubjectLevels() {
 }
 
 function getSubjectMenu() {
-  console.log('getting subject levels')
+  // console.log('getting subject levels')
   return axios
     .get("/api/course/subjectMenu")
     .then(response => {
@@ -44,12 +44,12 @@ function getSubjectMenu() {
 }
 
 function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
-  console.log('creating new vimeo folder')  
-  console.log(courseName)
-  console.log(courseTeacher)
+  // console.log('creating new vimeo folder')  
+  // console.log(courseName)
+  // console.log(courseTeacher)
   var tempString = courseName + " " + courseTeacher
-  console.log('cozmoanki')
-  console.log(tempString)
+  // console.log('cozmoanki')
+  // console.log(tempString)
   axios.post('/api/course/createVimeoFolder', {
     folderName: tempString,
     courseName: inputCourseName
@@ -65,9 +65,9 @@ function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
 
 function MoveVimeoVideoToFolder(res,GlobalHook) {
   const newVideoCode = res.data.uri.replace("/videos/", "");
-  console.log('moving video to a new folder')  
-  console.log(newVideoCode)
-  console.log(GlobalHook.getGlobalVimeoId)
+  // console.log('moving video to a new folder')  
+  // console.log(newVideoCode)
+  // console.log(GlobalHook.getGlobalVimeoId)
 
   axios.post('/api/course/moveVideoFolder', {
     videoId: newVideoCode,

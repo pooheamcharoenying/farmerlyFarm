@@ -7,6 +7,9 @@ const UserSchema = new Schema({
   uid: {
     type: String
   },
+  schoolAdminId: {
+    type: String
+  },
   role: {
     type: String,
     default: "user"
@@ -53,6 +56,24 @@ const UserSchema = new Schema({
       courseId: {
         type: String
       }
+    }
+  ],
+  schoolCourse: [
+    {
+      schoolId: {
+        type: String
+      },
+      schoolApproved: {
+        type: Boolean
+      },
+      SchoolCourseList: [
+        {
+          courseId: {
+            type: String
+          }
+        }
+      ],
+
     }
   ],
   date: {

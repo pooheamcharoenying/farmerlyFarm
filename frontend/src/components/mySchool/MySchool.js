@@ -1,6 +1,12 @@
-import React from 'react'
+import React,{useState,useContext,useEffect} from 'react'
+import { GlobalContext } from "../../hook/GlobalHook";
 
 export default function MySchool() {
+  const GlobalHook = useContext(GlobalContext);
+
+  useEffect(() => {
+  console.log(GlobalHook.getGlobalUser)
+  }, [GlobalHook.getGlobalUser])
     return (
         <div className="flex flex-col text-center mt-6 mx-auto items-center" style={{ minWidth: "200px"}}>
         <div className="font-bold text-lg mb-2 flex items-center">

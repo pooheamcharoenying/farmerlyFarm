@@ -27,12 +27,12 @@ export default function AllCourse() {
   const [getLevels, setLevels] = useState([]);
 
   useEffect(() => {
-    console.log('getting subjects')
+    // console.log('getting subjects')
 
     getSubjectCategories()
       .then(data => {
-        console.log('banobagen')
-        console.log(data)
+        // console.log('banobagen')
+        // console.log(data)
 
         setSubjects(data)
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
@@ -43,17 +43,17 @@ export default function AllCourse() {
 
     getSubjectLevels()
       .then(data => {
-        console.log('show levels')
-        console.log(data)
+        // console.log('show levels')
+        // console.log(data)
         for (var x of data) {
           if (x.type == "levelmenu") {
-            console.log('level menu found')
-            console.log(x)
+            // console.log('level menu found')
+            // console.log(x)
             setLevels(x.menu)
           }
           if (x.type == "subjectmenu") {
-            console.log('subject menu found')
-            console.log(x)
+            // console.log('subject menu found')
+            // console.log(x)
             setSubjectMenu(x.menu)
           }
         }
@@ -79,8 +79,8 @@ export default function AllCourse() {
     // let courseData = getcourseMatchPool;
     setFiltedCourseData(courseData);
 
-    console.log('pooh filter')
-    console.log(GlobalHook.getGlobalCourseLevelFilter)
+    // console.log('pooh filter')
+    // console.log(GlobalHook.getGlobalCourseLevelFilter)
 
 
     var displayFilteredCats = []
@@ -102,14 +102,14 @@ export default function AllCourse() {
         data => data.courseSubject == filtercat.english
       );      
       if (minifilter.length > 0) {
-        console.log('match found')
+        // console.log('match found')
         for (var item of minifilter) {
           subjectFilterResult.push(item)
         }
       }
     }
-    console.log('conclusion')
-    console.log(subjectFilterResult)
+    // console.log('conclusion')
+    // console.log(subjectFilterResult)
 
     if (GlobalHook.getGlobalCourseSubjectFilter == "All Subjects")  {
       subjectFilterResult = courseData;
@@ -179,8 +179,8 @@ export default function AllCourse() {
 
     return (
       <div styles={{}}>
-        {console.log('princess')}
-        {console.log(tempVar)}
+        {/* {console.log('princess')}
+        {console.log(tempVar)} */}
 
         <Dropdown options={tempVar} title={"Choose Subject"} color={"#3182ce"}></Dropdown>
       </div>
