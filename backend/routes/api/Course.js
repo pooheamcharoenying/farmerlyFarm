@@ -32,15 +32,11 @@ router.get("/test", (req, res) => res.json({ msg: "Course Works" }));
 
 //GetCourse
 router.get("/", async (req, res) => {
-  console.log(
-    "hhhhhhhhhhhhhoooooooooooommmmmmmmmmmmmmmmmmmmmmmeeeeeeeeeeeeeeeeeeeeeee"
-  );
-
+ 
   Course.find({ courseActive: true, coursePublish: true })
     .then(data => {
       res.status(200).json(data);
-      // console.log('course')
-      // console.log(data)
+
     })
     .catch(err => {
       console.log(err);
@@ -124,6 +120,7 @@ router.post("/createVimeoFolder", (req, res) => {
           if (err) {
             return res.status(400).json(err);
           } else {
+            res.status(200).json(result);
             console.log("success");
             console.log(result);
           }
@@ -150,6 +147,7 @@ router.post("/editVimeoFolderName", (req, res) => {
     }
   })
     .then(res => {
+      res.status(200).json(res);
       console.log("vimeo folder name sucessfully edited");
     })
     .catch(err => {
@@ -172,6 +170,7 @@ router.post("/deleteVimeoVideo", (req, res) => {
     }
   })
     .then(res => {
+      res.status(200).json(res);
       console.log("vimeo folder name sucessfully edited");
     })
     .catch(err => {
@@ -507,11 +506,7 @@ router.post(
         }
       }
     )
-      .then(data => res.status(200).json("success"))
-      .catch(err => {
-        console.log(err);
-        return res.status(400).json(err);
-      });
+      
   }
 );
 
@@ -536,11 +531,7 @@ router.post(
         }
       }
     )
-      .then(data => res.status(200).json("success"))
-      .catch(err => {
-        console.log(err);
-        return res.status(400).json(err);
-      });
+     
   }
 );
 
