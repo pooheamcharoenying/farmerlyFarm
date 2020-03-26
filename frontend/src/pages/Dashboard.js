@@ -10,6 +10,7 @@ import ProfileSetting from "../components/settingContent/ProfileSetting";
 import PasswordSetting from "../components/settingContent/PasswordSetting";
 import SaveBtnSetting from "../components/settingContent/SaveBtnSetting";
 import RadarChart from "../components/settingContent/chart/RadarChart";
+import MySchool from '../components/mySchool/MySchool'
 const { Option } = Select;
 export default function Dashboard() {
   const GlobalHook = useContext(GlobalContext);
@@ -121,14 +122,46 @@ export default function Dashboard() {
             <div className="mt-4 flex flex-col">
               <AvatarSetting />
               <ProfileSetting />
-              <div
+           
+            </div>
+
+            <div className="mt-4 flex flex-col">
+            <div
                 className="rounded-lg text-center text-black py-2  font-bold bg-yellow-400 hover:bg-yellow-300 mx-auto cursor-pointer"
                 style={{ width: "250px", maxHeight: "500px" }}
                 onClick={() => setSetupTeacherPaymentModalOpenStatus(true)}
               >
                 Setup Teacher Payment
               </div>
+              </div>
+
+            <MySchool/>
+
+            {/* <div className="mt-8 flex flex-col bg-white rounded-lg p-2">
+            <div
+              className="rounded-lg text-center text-white py-2 text-xl font-bold bg-green-500 mx-auto"
+              style={{ width: "120px", maxHeight: "500px" }}
+            >
+              MySchool
             </div>
+
+            <div
+              className="rounded-full text-center text-white  text-3xl font-bold bg-orange-500 hover:bg-orange-400 mx-auto mt-4 cursor-pointer flex justify-center items-center"
+              style={{ width: "40px", height: "40px" }}
+            >
+              +
+            </div>
+
+            <select
+              id="subject"
+              
+            >
+              {[1,2,3,4].map(item => {
+                return <option value={item}>{item}</option>;
+              })}
+            </select>
+
+            </div> */}
           </div>
 
           <div
@@ -152,6 +185,8 @@ export default function Dashboard() {
               {/* <div style={{minHeight:"25px"}}/> */}
               {/* <RadialBarChart/> */}
             </div>
+
+            
           </div>
         </div>
       </div>
