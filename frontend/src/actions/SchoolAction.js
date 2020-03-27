@@ -21,7 +21,7 @@ function AddMyNewSchoolAction(GlobalHook,schoolId) {
   axios
     .post("/api/school/addmynewschool", pushData)
     .then(res => {
-      // console.log(res.data)
+       console.log(res.data)
       GlobalHook.setGlobalUser(res.data);
       localStorage.setItem("globalUser", JSON.stringify(res.data));
      // CourseSubscriptorActior(GlobalHook)
