@@ -8,17 +8,20 @@ import { useHistory } from "react-router-dom";
 import CourseCard from "../courseCard/CourseCard";
 import { GlobalContext } from "../../hook/GlobalHook";
 
-import { getSubjectCategories, getSubjectLevels, getSubjectMenu } from "../../actions";
+import {
+  getSubjectCategories,
+  getSubjectLevels,
+  getSubjectMenu
+} from "../../actions";
 
-import './AllCourse.css'
+import "./AllCourse.css";
 import Dropdown from "../dropDown/DropDown";
 
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 
 export default function AllCourse() {
   const GlobalHook = useContext(GlobalContext);
   const [getFiltedCourseData, setFiltedCourseData] = useState([]);
-
 
   let history = useHistory();
 
@@ -34,12 +37,12 @@ export default function AllCourse() {
         // console.log('banobagen')
         // console.log(data)
 
-        setSubjects(data)
+        setSubjects(data);
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
       })
       .catch(error => {
-        console.log(error)
-      })
+        console.log(error);
+      });
 
     getSubjectLevels()
       .then(data => {
@@ -49,19 +52,19 @@ export default function AllCourse() {
           if (x.type == "levelmenu") {
             // console.log('level menu found')
             // console.log(x)
-            setLevels(x.menu)
+            setLevels(x.menu);
           }
           if (x.type == "subjectmenu") {
             // console.log('subject menu found')
             // console.log(x)
-            setSubjectMenu(x.menu)
+            setSubjectMenu(x.menu);
           }
         }
         GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
       })
       .catch(error => {
-        console.log(error)
-      })
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -72,25 +75,24 @@ export default function AllCourse() {
     GlobalHook.getGlobalCourseLevelFilter
   ]);
 
-
-
   function GenCourseFilted() {
-    const courseData = GlobalHook.getGlobalCoursePool.filter((data)=> data.coursePublic)
+    const courseData = GlobalHook.getGlobalCoursePool.filter(
+      data => data.coursePublic
+    );
     // let courseData = getcourseMatchPool;
     setFiltedCourseData(courseData);
 
     // console.log('pooh filter')
     // console.log(GlobalHook.getGlobalCourseLevelFilter)
 
+    var displayFilteredCats = [];
 
-    var displayFilteredCats = []
-    
     for (var subject of getSubjects) {
       // console.log(subject.category)
       if (subject.category.length > 0) {
         for (var subcat of subject.category) {
           if (subcat == GlobalHook.getGlobalCourseSubjectFilter) {
-            displayFilteredCats.push(subject)
+            displayFilteredCats.push(subject);
           }
         }
       }
@@ -100,18 +102,18 @@ export default function AllCourse() {
     for (var filtercat of displayFilteredCats) {
       let minifilter = courseData.filter(
         data => data.courseSubject == filtercat.english
-      );      
+      );
       if (minifilter.length > 0) {
         // console.log('match found')
         for (var item of minifilter) {
-          subjectFilterResult.push(item)
+          subjectFilterResult.push(item);
         }
       }
     }
     // console.log('conclusion')
     // console.log(subjectFilterResult)
 
-    if (GlobalHook.getGlobalCourseSubjectFilter == "All Subjects")  {
+    if (GlobalHook.getGlobalCourseSubjectFilter == "All Subjects") {
       subjectFilterResult = courseData;
     }
 
@@ -143,12 +145,14 @@ export default function AllCourse() {
                 ? "#3182ce"
                 : "#e2e8f0"
           }}
-          onClick={() => GlobalHook.setGlobalCourseSubjectFilter(subjectItem.menuEnglish)}
+          onClick={() =>
+            GlobalHook.setGlobalCourseSubjectFilter(subjectItem.menuEnglish)
+          }
         >
           {subjectItem.menuThai}
         </button>
       </div>
-    )
+    );
   }
 
   function renderLevels(levelItem) {
@@ -165,121 +169,108 @@ export default function AllCourse() {
                 ? "#2f855a"
                 : "#e2e8f0"
           }}
-          onClick={() => GlobalHook.setGlobalCourseLevelFilter(levelItem.menuThai)}
+          onClick={() =>
+            GlobalHook.setGlobalCourseLevelFilter(levelItem.menuThai)
+          }
         >
           {levelItem.menuThai}
         </button>
       </div>
-    )
+    );
   }
 
   function renderSubjectCatDropDown() {
     const tempVar = getSubjectMenu;
-
 
     return (
       <div styles={{}}>
         {/* {console.log('princess')}
         {console.log(tempVar)} */}
 
-        <Dropdown options={tempVar} title={"Choose Subject"} color={"#3182ce"}></Dropdown>
+        <Dropdown
+          options={tempVar}
+          title={"Choose Subject"}
+          color={"#3182ce"}
+        ></Dropdown>
       </div>
-    )
+    );
   }
-
 
   function renderLevelsDropDown() {
     const tempVar = getLevels;
     return (
       <div>
-        <Dropdown options={tempVar} title={"Choose Level"} color={"#2f855a"}></Dropdown>
+        <Dropdown
+          options={tempVar}
+          title={"Choose Level"}
+          color={"#2f855a"}
+        ></Dropdown>
       </div>
-    )
+    );
   }
-
 
   return (
     <div className="bg-blue-300 w-full">
-
       <div
         className="flex  flex-col py-10 items-center  mx-auto "
         style={{ minHeight: "700px", maxWidth: "1500px" }}
       >
-
         <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8">
           ค้นหาคอร์สใหม่
         </div>
 
-
+        <div
+          className=" justify-around mb-4 px-10 hidden md:flex"
+          style={{ width: "77%" }}
+        >
+          {getSubjectMenu.map((subjectItem,index) => (
+            <div key={index}>{renderSubjectCat(subjectItem)}</div>
+          ))}
+        </div>
 
         <div
           className=" justify-around mb-4 px-10 hidden md:flex"
           style={{ width: "77%" }}
         >
-
-          {getSubjectMenu.map(subjectItem => (
-            <div>
-              { renderSubjectCat(subjectItem) }
-            </div>
+          {getLevels.map((levelItem,index) => (
+            <div key={index}>{renderLevels(levelItem)}</div>
           ))}
-
         </div>
-
-
-
-        <div
-          className=" justify-around mb-4 px-10 hidden md:flex"
-          style={{ width: "77%" }}
-        >
-
-          {getLevels.map(levelItem => (
-            <div>
-              {renderLevels(levelItem)}
-            </div>
-          ))}
-
-        </div>
-
-
-
-
-
-
-
 
         <div
           className=" justify-around mb-6 px-10 flex flex-col md:hidden"
           style={{ width: "77%" }}
         >
-          <div style={{ marginLeft: "10%" }}>
-            {renderSubjectCatDropDown()}
-          </div>
+          <div style={{ marginLeft: "10%" }}>{renderSubjectCatDropDown()}</div>
 
           <div style={{ marginLeft: "10%", marginTop: "20px" }}>
             {renderLevelsDropDown()}
           </div>
         </div>
 
-        {getFiltedCourseData[0] ? <ScrollContainer
-          hideScrollbars={false}
-          vertical={false}
-          className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5"
-        >
-          {getFiltedCourseData.map((courseData, i) => (
-            <div
-
-              key={i}
-              className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
-              // onClick={() =>{ history.push(`/course/${courseData.courseSlug}`)}}
-              onClick={() => window.location.href = `/course/${courseData.courseSlug}`}
-            >
-              <CourseCard courseData={courseData} />
-            </div>
-          ))}
-        </ScrollContainer> : <div className="mt-20">ไม่พบคอร์สที่ตรงกัน</div>}
+        {getFiltedCourseData[0] ? (
+          <ScrollContainer
+            hideScrollbars={false}
+            vertical={false}
+            className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5"
+          >
+            {getFiltedCourseData.map((courseData, i) => (
+              <div
+                key={i}
+                className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
+                // onClick={() =>{ history.push(`/course/${courseData.courseSlug}`)}}
+                onClick={() =>
+                  (window.location.href = `/course/${courseData.courseSlug}`)
+                }
+              >
+                <CourseCard courseData={courseData} />
+              </div>
+            ))}
+          </ScrollContainer>
+        ) : (
+          <div className="mt-20">ไม่พบคอร์สที่ตรงกัน</div>
+        )}
       </div>
     </div>
   );
 }
-
-

@@ -193,7 +193,7 @@ const SubDragStudio = ({ parentIndex, subItems, itemsPool, mainItem }) => {
               style={getListStyle(snapshot.isDraggingOver)}
             >
               {subItems.map((item, index) => (
-                <div>
+                <div key={index}>
                   <div key={item.id} onClick={() => LessionSelect(item, index)}>
                     <Draggable draggableId={item.id} index={index}>
                       {(provided, snapshot) => (

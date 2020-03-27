@@ -96,7 +96,7 @@ export default function MySchool() {
               style={{minWidth:"100px"}}
             >
               {getNotMatchSchool.map(item => {
-                return <option value={item._id}>{item.schoolName}</option>;
+                return <option key={item._id} value={item._id}>{item.schoolName}</option>;
               })}
             </select>
           </div>
@@ -120,10 +120,10 @@ export default function MySchool() {
          
 
             <div className=" p-2" style={{maxHeight:"300px",minWidth: "200px"}}>
-            {getMatchSchool.map(item => {
+            {getMatchSchool.map((item,index) => {
                 return (
                 
-                  <div className="flex mt-4 bg-white  rounded-lg p-2 items-center cursor-pointer" >
+                  <div key={index} className="flex mt-4 bg-white  rounded-lg p-2 items-center cursor-pointer" >
                   <div className="mr-4"> <Avatar size={40} className="cursor-pointer" src={item.schoolImage}/></div>
                    <div className="font-semibold">{item.schoolName}</div>
                    {!item.schoolApproved && <GiSandsOfTime className="ml-4 text-orange-600 font-medium"/>}

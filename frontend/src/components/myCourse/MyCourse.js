@@ -17,8 +17,8 @@ export default function MyCourse() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCoursePool[0]) {
-      GlobalHook.getGlobalUser.courseSubscription.map(subList =>
-        GlobalHook.getGlobalCoursePool.map(allCourseList => {
+      GlobalHook.getGlobalCoursePool.map(allCourseList =>
+        GlobalHook.getGlobalUser.courseSubscription.map(subList => {
           if (allCourseList._id == subList.courseId) {
             myCourseMatch.push(allCourseList);
             setcourseMatchPool(myCourseMatch);
@@ -28,6 +28,21 @@ export default function MyCourse() {
         })
       );
     }
+
+
+  // useEffect(() => {
+  //   if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCoursePool[0]) {
+  //     GlobalHook.getGlobalUser.courseSubscription.map(subList =>
+  //       GlobalHook.getGlobalCoursePool.map(allCourseList => {
+  //         if (allCourseList._id == subList.courseId) {
+  //           myCourseMatch.push(allCourseList);
+  //           setcourseMatchPool(myCourseMatch);
+
+          
+  //         }
+  //       })
+  //     );
+  //   }
 
     if(GlobalHook.getGlobalSchoolPool[0]){
       setschoolDataLocal(GlobalHook.getGlobalSchoolPool)

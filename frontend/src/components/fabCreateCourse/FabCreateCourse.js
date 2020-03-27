@@ -273,8 +273,8 @@ export default function FabCreateCourse() {
               onChange={e => GlobalHook.setGlobalCourseSubject(e)}
               style={{ minWidth: "210px" }}
             >
-              {getSubjects.map(subjectItem => (
-                <Option value={subjectItem.english}> {subjectItem.thai} </Option>
+              {getSubjects.map((subjectItem,index) => (
+                <Option key={index} value={subjectItem.english}> {subjectItem.thai} </Option>
               ))}
               {/* <Option value="Mathematic">Mathematic</Option>
               <Option value="Physics">Physics</Option>

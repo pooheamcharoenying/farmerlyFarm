@@ -226,7 +226,7 @@ const SubDragStudio = ({
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 {subItems.map((item, index) => (
-                  <div>
+                  <div key={index}>
                     <div
                       key={item.id}
                       onClick={() => LessionSelect(item, index)}
