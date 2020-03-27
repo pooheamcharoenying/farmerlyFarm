@@ -8,6 +8,9 @@ const SchoolSchema = new Schema({
   },
   schoolSlug: {
     type: String
+  },
+  schoolRemainingStudentQuota: {
+    type: Number
   }
 });
 

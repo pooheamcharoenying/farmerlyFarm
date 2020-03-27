@@ -39,4 +39,30 @@ router.get("/", async (req, res) => {
     }
   );
 
+
+
+
+  router.post(
+    "/findstudentbyschool",
+  
+    (req, res) => {
+      User.find({ "schoolCourse.schoolId": req.body.schoolId },'_id uid role schoolCourse')
+        .then(data => {
+          res.status(200).json(data)
+
+          // data.map((item)=>{
+          //  const fitem = item.schoolCourse.map((sitem)=>sitem.schoolId)
+          //  console.log(fitem)
+          //  res.status(200).json(item)
+          // })
+
+          
+         // res.status(200).json(data.filter((item)=>item.schoolCourse.filter((item)=>item.schoolId== "5e7c5b811c9d440000a373a7")));
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
+    }
+  );
 module.exports = router;

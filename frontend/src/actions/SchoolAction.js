@@ -30,10 +30,28 @@ function AddMyNewSchoolAction(GlobalHook,schoolId) {
     .catch(err => console.log(err));
 }
 
+function FindStudentBySchoolAction(GlobalHook,schoolId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = { schoolId};
+  console.log(schoolId)
+
+  
+  axios
+    .post("/api/school/findstudentbyschool", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      GlobalHook.setGlobalMatchStudentBySchool(res.data)
+     console.log(res.data)
+    })
+    .catch(err => console.log(err));
+}
+
+
 
 
 export {
     getSchoolPoolAction,
-    AddMyNewSchoolAction
+    AddMyNewSchoolAction,
+    FindStudentBySchoolAction
 
 }
