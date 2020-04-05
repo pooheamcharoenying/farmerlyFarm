@@ -58,13 +58,28 @@ function SchoolStatusChangeAction(GlobalHook,status,userId) {
 }
 
 
+function GetStudentSchoolCourseAction(GlobalHook,userId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = { userId,schoolId:GlobalHook.getGlobalUser.schoolAdminId};
 
+
+  
+  axios
+    .post("/api/school/getstudentschoolcourse", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      console.log(res.data)
+      // GlobalHook.setGlobalMatchStudentBySchool(res.data)
+    })
+    .catch(err => console.log(err));
+}
 
 
 export {
     getSchoolPoolAction,
     AddMyNewSchoolAction,
     FindStudentBySchoolAction,
-    SchoolStatusChangeAction
+    SchoolStatusChangeAction,
+    GetStudentSchoolCourseAction
 
 }

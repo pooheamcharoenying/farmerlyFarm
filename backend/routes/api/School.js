@@ -53,7 +53,31 @@ router.get("/", async (req, res) => {
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
           user.schoolCourse[SchoolIndex].schoolApproved = req.body.status
 
-          user.save().then(user => res.json(user));
+
+          user.save().then((user) => {
+            if(req.body.status){
+              School.findOneAndUpdate({ _id: req.body.schoolId }, { $inc: { schoolRemainingStudentQuota: -1 } }, {new: true },function(err, response) {
+                if (err) {
+                console.log(err);
+               } else {
+                 console.log("user")
+            res.json(user);
+               }})
+
+            }else{
+
+              School.findOneAndUpdate({ _id: req.body.schoolId }, { $inc: { schoolRemainingStudentQuota: 1 } }, {new: true },function(err, response) {
+                if (err) {
+                console.log(err);
+               } else {
+            res.json(user);
+            console.log("user")
+
+               }})
+            }
+
+
+          });
         })
         .catch(err => {console.log(err);res.status(400).json(err)});
     }
@@ -90,6 +114,26 @@ router.get("/", async (req, res) => {
           console.log(err);
           res.status(400).json(err);
         });
+    }
+  );
+
+  router.post(
+    "/getstudentschoolcourse",
+    passport.authenticate("jwt", { session: false }),
+  
+    (req, res) => {
+      console.log(req.body)
+      User.findById(req.body.userId)
+        .then(user => {
+        
+
+          let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
+          let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
+          
+
+          res.json(user.schoolCourse[SchoolIndex])
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
     }
   );
 module.exports = router;

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Tag, Table, Select, Avatar } from "antd";
 import Header from "../components/header/HeaderHome";
 
-import { FindStudentBySchoolAction,SchoolStatusChangeAction } from "../actions";
+import { FindStudentBySchoolAction,SchoolStatusChangeAction,GetStudentSchoolCourseAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 
 const { Option } = Select;
@@ -89,6 +89,8 @@ export default function Dashboard() {
               dataSource={data}
               onRowClick={e => {
                 setSelectedStudent(e);
+                GetStudentSchoolCourseAction(GlobalHook,e.userId)
+                console.log(e)
               }}
             >
               <Column
