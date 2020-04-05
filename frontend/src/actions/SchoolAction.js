@@ -46,12 +46,30 @@ function FindStudentBySchoolAction(GlobalHook,schoolId) {
     .catch(err => console.log(err));
 }
 
+function SchoolStatusChangeAction(GlobalHook,status,userId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = { status,userId,schoolId:GlobalHook.getGlobalUser.schoolAdminId};
+
+  console.log(userId)
+  axios
+    .post("/api/school/changestudentschoolstatusAction", pushData)
+    .then(res => {
+      GlobalHook.setGlobalLoading(false);
+      window.location.reload()
+      
+     console.log(res.data)
+    })
+    .catch(err => console.log(err));
+}
+
+
 
 
 
 export {
     getSchoolPoolAction,
     AddMyNewSchoolAction,
-    FindStudentBySchoolAction
+    FindStudentBySchoolAction,
+    SchoolStatusChangeAction
 
 }

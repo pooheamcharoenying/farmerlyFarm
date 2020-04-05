@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Tag, Table, Select, Avatar } from "antd";
 import Header from "../components/header/HeaderHome";
 
-import { FindStudentBySchoolAction } from "../actions";
+import { FindStudentBySchoolAction,SchoolStatusChangeAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 
 const { Option } = Select;
@@ -22,21 +22,30 @@ export default function Dashboard() {
     }
   }, [GlobalHook.getGlobalUser]);
 
-  const data = [
+  let data = GlobalHook.getGlobalMatchStudentBySchool.map((item,index)=>{
+    return{
+      key:index,
+      Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set1",
+      Name:item.userId,
+      Status:item.schoolApproved ?"Approved":"Waiting",
+      userId:item.userId
+    }
+  })
+  const datae = [
     {
-      key: "1",
+     
       Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set1",
       Name: "Karita Brown",
       Status: "Approved"
     },
     {
-      key: "2",
+     
       Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set5",
       Name: "Sylvan Green",
       Status: "Waiting"
     },
     {
-      key: "3",
+      
       Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set3",
       Name: "Vaughn Black",
       Status: "Waiting"
@@ -73,9 +82,9 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-row flex-wrap justify-around w-full bg-white p-4">
           <div className="" style={{ width: "auto" }}>
-            <div className="mb-4 font-semibold text-xl">
+            {/* <div className="mb-4 font-semibold text-xl">
               Remaining Quota: 43
-            </div>
+            </div> */}
             <Table
               dataSource={data}
               onRowClick={e => {
@@ -111,10 +120,14 @@ export default function Dashboard() {
                     <a
                       className="text-green-500 hover:text-green-400"
                       style={{ marginRight: 16 }}
+                      onClick={()=>SchoolStatusChangeAction(GlobalHook,true,record.userId)}
                     >
                       ยืนยัน
                     </a>
-                    <a className="text-red-500 hover:text-red-400">ยกเลิก</a>
+                    <a className="text-red-500 hover:text-red-400"
+                      onClick={()=>SchoolStatusChangeAction(GlobalHook,false,record.userId)}
+                    
+                    >ยกเลิก</a>
                   </span>
                 )}
               />
