@@ -211,6 +211,10 @@ const Store = props => {
 
   const [getGlobalMatchStudentBySchool,setGlobalMatchStudentBySchool] = useState([])
 
+  const [getGlobalMatchStudentCourseSchool,setGlobalMatchStudentCourseSchool] = useState([])
+
+  const [getGlobalMatchCourseSchool,setGlobalMatchCourseSchool] = useState([])
+
   ///Generate GlobalHook///
   const GlobalHook = {
     getGlobalToken,
@@ -454,7 +458,13 @@ const Store = props => {
     setGlobalSchoolPool,
 
     getGlobalMatchStudentBySchool,
-    setGlobalMatchStudentBySchool
+    setGlobalMatchStudentBySchool,
+
+    getGlobalMatchStudentCourseSchool,
+    setGlobalMatchStudentCourseSchool,
+
+    getGlobalMatchCourseSchool,
+    setGlobalMatchCourseSchool
 
 
 

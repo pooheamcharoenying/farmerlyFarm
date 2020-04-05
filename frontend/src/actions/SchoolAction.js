@@ -69,17 +69,71 @@ function GetStudentSchoolCourseAction(GlobalHook,userId) {
     .then(res => {
       GlobalHook.setGlobalLoading(false);
       console.log(res.data)
-      // GlobalHook.setGlobalMatchStudentBySchool(res.data)
+     
+        GlobalHook.setGlobalMatchStudentCourseSchool(res.data.SchoolCourseList)
+
+      
     })
     .catch(err => console.log(err));
 }
 
+function getmatchschoolcourseAction(GlobalHook,schoolId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = {schoolId};
+
+
+axios
+.post("/api/school/getmatchschoolcourse", pushData)
+.then(res => {
+  GlobalHook.setGlobalLoading(false);
+  console.log(res.data)
+ GlobalHook.setGlobalMatchCourseSchool(res.data)
+})
+.catch(err => console.log(err));
+}
+
+
+function AssignCourseToUserAction(GlobalHook,userId,schoolId,courseId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = {userId,schoolId,courseId};
+console.log(pushData)
+
+axios
+.post("/api/school/assigncoursetouser", pushData)
+.then(res => {
+  GlobalHook.setGlobalLoading(false);
+  console.log(res.data)
+  GlobalHook.setGlobalMatchStudentCourseSchool(res.data.SchoolCourseList)
+
+})
+.catch(err => console.log(err));
+}
+
+
+function DelCourseToUserAction(GlobalHook,userId,schoolId,courseId) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = {userId,schoolId,courseId};
+console.log(pushData)
+
+axios
+.post("/api/school/delcoursetouser", pushData)
+.then(res => {
+  GlobalHook.setGlobalLoading(false);
+  console.log(res.data)
+  GlobalHook.setGlobalMatchStudentCourseSchool(res.data.SchoolCourseList)
+
+})
+.catch(err => console.log(err));
+}
 
 export {
     getSchoolPoolAction,
     AddMyNewSchoolAction,
     FindStudentBySchoolAction,
     SchoolStatusChangeAction,
-    GetStudentSchoolCourseAction
+    GetStudentSchoolCourseAction,
+    getmatchschoolcourseAction,
+    AssignCourseToUserAction,
+    DelCourseToUserAction
 
 }

@@ -6,6 +6,8 @@ const SchoolSchema = require("../../models/School");
 const School = mongoose.model("school", SchoolSchema);
 const UserSchema = require("../../models/User");
 const User = mongoose.model("user", UserSchema);
+const CourseSchema = require("../../models/Course");
+const Course = mongoose.model("course", CourseSchema);
 
 
 //GetSchool
@@ -136,4 +138,67 @@ router.get("/", async (req, res) => {
         .catch(err => {console.log(err);res.status(400).json(err)});
     }
   );
+
+  router.post(
+    "/getmatchschoolcourse",
+   
+  
+    (req, res) => {
+      console.log(req.body)
+      Course.find({courseSchoolId:req.body.schoolId})
+        .then(matchCourse => {
+          
+          res.json(matchCourse)
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
+  router.post(
+    "/assigncoursetouser",
+    passport.authenticate("jwt", { session: false }),
+  
+    (req, res) => {
+      console.log(req.body)
+      User.findById(req.body.userId)
+        .then(user => {
+        
+
+          let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
+          let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
+          user.schoolCourse[SchoolIndex].SchoolCourseList.push(req.body.courseId)
+        
+          user.save().then((newuser) => {
+            res.json(newuser.schoolCourse[SchoolIndex])
+          })
+
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
+  router.post(
+    "/delcoursetouser",
+    passport.authenticate("jwt", { session: false }),
+  
+    (req, res) => {
+      console.log(req.body)
+      User.findById(req.body.userId)
+        .then(user => {
+        
+
+          let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
+          let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
+          let SchoolCourseIdIndex = user.schoolCourse[SchoolIndex].SchoolCourseList.map((item)=>item._id).indexOf(req.body.courseId)
+          // user.schoolCourse[SchoolIndex].SchoolCourseList.splice(SchoolCourseIdIndex,1)
+        
+          user.save().then((newuser) => {
+            res.json(newuser.schoolCourse[SchoolIndex])
+          })
+
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
 module.exports = router;
