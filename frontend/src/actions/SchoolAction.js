@@ -126,6 +126,23 @@ axios
 .catch(err => console.log(err));
 }
 
+function getSchoolIdBySlugAction(GlobalHook,schoolSlug) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = {schoolSlug};
+
+
+axios
+.post("/api/school/getschoolidbyslug", pushData)
+.then(res => {
+  GlobalHook.setGlobalLoading(false);
+  console.log(res.data)
+//  GlobalHook.setGlobalMatchCourseSchool(res.data)
+})
+.catch(err => console.log(err));
+}
+
+
+
 export {
     getSchoolPoolAction,
     AddMyNewSchoolAction,
@@ -134,6 +151,7 @@ export {
     GetStudentSchoolCourseAction,
     getmatchschoolcourseAction,
     AssignCourseToUserAction,
-    DelCourseToUserAction
+    DelCourseToUserAction,
+    getSchoolIdBySlugAction
 
 }

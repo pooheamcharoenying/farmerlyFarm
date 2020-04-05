@@ -7,16 +7,15 @@ import Banner from "../components/banner/Banner";
 import MyCourse from "../components/myCourse/MyCourse";
 import SchoolCourse from "../components/schoolCourse/SchoolCourse";
 import Footer from "../components/footer/Footer";
-import { getCoursePoolAction } from "../actions";
-import { getSubjectCategories } from "../actions";
+import { getCoursePoolAction,getSchoolIdBySlugAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 export default function School() {
   let { schoolSlug } = useParams();
   const GlobalHook = useContext(GlobalContext);
-
     useEffect(() => {
         getCoursePoolAction(GlobalHook);
         GlobalHook.setGlobalSchoolSlug(schoolSlug);
+        getSchoolIdBySlugAction(GlobalHook,schoolSlug)
     }, [])
 
   return (

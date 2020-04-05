@@ -55,7 +55,7 @@ let LocalSchoolMatch = []
       GlobalHook.getGlobalSchoolPool.map(allSchoolList => {
         if (GlobalHook.getGlobalUser.schoolCourse[0]) {
           GlobalHook.getGlobalUser.schoolCourse.map(subList => {
-            if (allSchoolList._id == subList.schoolId) {
+            if ((allSchoolList._id == subList.schoolId) && subList.schoolApproved) {
        LocalSchoolMatch.push(allSchoolList);
        setSchoolMatchPool(LocalSchoolMatch)
 

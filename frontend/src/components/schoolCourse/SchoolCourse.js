@@ -10,14 +10,31 @@ export default function SchoolCourse() {
     const GlobalHook = useContext(GlobalContext)
     
     const [getcourseMatchPool,setcourseMatchPool] = useState([])
-
+  
+    var myCourseMatch = [];
+  
     useEffect(() => {
-        if(GlobalHook.getGlobalCoursePool[0]){
-      
-            const MatchPool = GlobalHook.getGlobalCoursePool.filter((data)=> data.courseSchool)
-            setcourseMatchPool(MatchPool)
+      if (GlobalHook.getGlobalUser && GlobalHook.getGlobalCoursePool[0]) {
+        GlobalHook.getGlobalCoursePool.map(allCourseList =>
+          GlobalHook.getGlobalUser.schoolCourse.map(subList => {
+
+            subList.SchoolCourseList.map((item)=>{
+              console.log(allCourseList)
+              console.log(item)
+  if (allCourseList._id == item._id) {
+              myCourseMatch.push(allCourseList);
+              setcourseMatchPool(myCourseMatch);
+  
+            
         }
-    }, [GlobalHook.getGlobalCoursePool])
+            })
+          
+          })
+        );
+      }
+  
+
+    }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool]);
 
     return (
         <div className="bg-orange-300 flex flex-col py-10 items-center" style={{minHeight:"100vh"}}>
