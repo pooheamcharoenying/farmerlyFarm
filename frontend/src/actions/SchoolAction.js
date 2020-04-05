@@ -21,7 +21,6 @@ function AddMyNewSchoolAction(GlobalHook,schoolId) {
   axios
     .post("/api/school/addmynewschool", pushData)
     .then(res => {
-       console.log(res.data)
       GlobalHook.setGlobalUser(res.data);
       localStorage.setItem("globalUser", JSON.stringify(res.data));
      // CourseSubscriptorActior(GlobalHook)
@@ -33,7 +32,6 @@ function AddMyNewSchoolAction(GlobalHook,schoolId) {
 function FindStudentBySchoolAction(GlobalHook,schoolId) {
   GlobalHook.setGlobalLoading(true);
   const pushData = { schoolId};
-  console.log(schoolId)
 
   
   axios
@@ -41,7 +39,6 @@ function FindStudentBySchoolAction(GlobalHook,schoolId) {
     .then(res => {
       GlobalHook.setGlobalLoading(false);
       GlobalHook.setGlobalMatchStudentBySchool(res.data)
-     console.log(res.data)
     })
     .catch(err => console.log(err));
 }
@@ -50,14 +47,12 @@ function SchoolStatusChangeAction(GlobalHook,status,userId) {
   GlobalHook.setGlobalLoading(true);
   const pushData = { status,userId,schoolId:GlobalHook.getGlobalUser.schoolAdminId};
 
-  console.log(userId)
   axios
     .post("/api/school/changestudentschoolstatusAction", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
       window.location.reload()
       
-     console.log(res.data)
     })
     .catch(err => console.log(err));
 }
