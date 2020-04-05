@@ -264,7 +264,8 @@ router.post(
       courseTagThai: req.body.courseTagThai,
       courseVimeoId: req.body.courseVimeoId,
       coursePublic:req.body.coursePublic,
-      courseSchool:req.body.courseSchool
+      courseSchool:req.body.courseSchool,
+      courseSchoolId:req.body.courseSchoolId
     });
 
     newCourse.save().then(newcourseData => {

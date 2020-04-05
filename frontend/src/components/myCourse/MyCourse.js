@@ -11,7 +11,7 @@ export default function MyCourse() {
   let history = useHistory();
 
   const [getcourseMatchPool, setcourseMatchPool] = useState([]);
-  const [getSchoolMatchPool, setschoolDataLocal] = useState([]);
+  const [getSchoolMatchPool, setSchoolMatchPool] = useState([]);
 
   var myCourseMatch = [];
 
@@ -44,10 +44,29 @@ export default function MyCourse() {
   //     );
   //   }
 
-    if(GlobalHook.getGlobalSchoolPool[0]){
-      setschoolDataLocal(GlobalHook.getGlobalSchoolPool)
-    }
+    // if(GlobalHook.getGlobalSchoolPool[0]){
+    //   setschoolDataLocal(GlobalHook.getGlobalSchoolPool)
+    // }
   }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool,GlobalHook.getGlobalSchoolPool]);
+
+let LocalSchoolMatch = []
+  useEffect(() => {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalSchoolPool[0]) {
+      GlobalHook.getGlobalSchoolPool.map(allSchoolList => {
+        if (GlobalHook.getGlobalUser.schoolCourse[0]) {
+          GlobalHook.getGlobalUser.schoolCourse.map(subList => {
+            if (allSchoolList._id == subList.schoolId) {
+       LocalSchoolMatch.push(allSchoolList);
+       setSchoolMatchPool(LocalSchoolMatch)
+
+              
+            } 
+          });
+        } 
+      });
+    }
+  }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalSchoolPool]);
+
 
   function RenderNotLoginMyCourse() {
     return (

@@ -67,7 +67,10 @@ const CourseSchema = new Schema({
   },
   coursePublic:{
     type:Boolean
-  }
+  },
+  courseSchoolId: {
+    type: String
+  },
 });
 
 module.exports = CourseSchema

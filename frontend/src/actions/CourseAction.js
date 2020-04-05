@@ -199,7 +199,8 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
     courseVimeoId: "defualt",
     coursePublic:GlobalHook.getGlobalPublicCourseStatus,
-    courseSchool:GlobalHook.getGlobalSchoolCourseStatus
+    courseSchool:GlobalHook.getGlobalSchoolCourseStatus,
+    courseSchoolId:GlobalHook.getGlobalUser.schoolAdminId
   };
 
   console.log('see creation data')
@@ -219,7 +220,7 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
       CreateVimeoFolder(GlobalHook.getGlobalCourseName, GlobalHook.getGlobalCourseTeacher, GlobalHook.getGlobalCourseName)
 
 
-      // window.location.href = `/teacher/${courseSlug}`;
+      window.location.href = `/teacher/${courseSlug}`;
 
 
     })
