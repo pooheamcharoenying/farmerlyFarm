@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
-import Header from "../components/header/HeaderStudio";
+import Header from "../components/header/HeaderHome";
 import SideBar from "../components/sideBar/SideBarStudio";
 import StudioContent from "../components/studioContent/StudioContent";
 import { getCourseContentAction, getCoursePoolAllAction } from "../actions";
