@@ -63,7 +63,7 @@ router.get("/", async (req, res) => {
                 console.log(err);
                } else {
                  console.log("user")
-            res.json(user);
+            res.status(200).json(response);
                }})
 
             }else{
@@ -72,7 +72,7 @@ router.get("/", async (req, res) => {
                 if (err) {
                 console.log(err);
                } else {
-            res.json(user);
+                res.status(200).json(response);
             console.log("user")
 
                }})
@@ -209,6 +209,21 @@ router.get("/", async (req, res) => {
       console.log(req.body)
      
       School.find({schoolSlug:req.body.schoolSlug}).then((data)=>{
+        res.status(200).json(data)
+      })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
+
+  router.post(
+    "/getschoolinfobyid",
+    
+  
+    (req, res) => {
+      console.log(req.body)
+     
+      School.findOne({_id:req.body.schoolId}).then((data)=>{
         res.status(200).json(data)
       })
         .catch(err => {console.log(err);res.status(400).json(err)});

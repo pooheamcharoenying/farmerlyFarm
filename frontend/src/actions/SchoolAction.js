@@ -39,6 +39,8 @@ function FindStudentBySchoolAction(GlobalHook,schoolId) {
     .then(res => {
       GlobalHook.setGlobalLoading(false);
       GlobalHook.setGlobalMatchStudentBySchool(res.data)
+
+      console.log(res.data)
     })
     .catch(err => console.log(err));
 }
@@ -52,6 +54,10 @@ function SchoolStatusChangeAction(GlobalHook,status,userId) {
     .then(res => {
       GlobalHook.setGlobalLoading(false);
       window.location.reload()
+
+     // console.log(res.data)
+
+      // FindStudentBySchoolAction(GlobalHook,GlobalHook.getGlobalUser.schoolAdminId)
       
     })
     .catch(err => console.log(err));
@@ -142,6 +148,22 @@ axios
 }
 
 
+function getSchoolInfoByIdAction(GlobalHook,schoolId){
+
+  const pushData = {schoolId};
+
+
+axios
+.post("/api/school/getschoolinfobyid", pushData)
+.then(res => {
+  GlobalHook.setGlobalLoading(false);
+  console.log(res.data)
+GlobalHook.setGlobalSchoolInfo(res.data)
+})
+.catch(err => console.log(err));
+}
+
+
 
 export {
     getSchoolPoolAction,
@@ -152,6 +174,7 @@ export {
     getmatchschoolcourseAction,
     AssignCourseToUserAction,
     DelCourseToUserAction,
-    getSchoolIdBySlugAction
+    getSchoolIdBySlugAction,
+    getSchoolInfoByIdAction
 
 }

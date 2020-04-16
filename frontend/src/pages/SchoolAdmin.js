@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Modal, Table, Select, Avatar ,message} from "antd";
 import Header from "../components/header/HeaderHome";
 
-import { FindStudentBySchoolAction,SchoolStatusChangeAction,GetStudentSchoolCourseAction,getmatchschoolcourseAction,AssignCourseToUserAction,DelCourseToUserAction } from "../actions";
+import {getSchoolInfoByIdAction, FindStudentBySchoolAction,SchoolStatusChangeAction,GetStudentSchoolCourseAction,getmatchschoolcourseAction,AssignCourseToUserAction,DelCourseToUserAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 
 const { Option } = Select;
@@ -22,6 +22,8 @@ export default function Dashboard() {
         GlobalHook.getGlobalUser.schoolAdminId
       );
       getmatchschoolcourseAction(GlobalHook, GlobalHook.getGlobalUser.schoolAdminId)
+
+      getSchoolInfoByIdAction(GlobalHook,GlobalHook.getGlobalUser.schoolAdminId)
 
     }
   }, [GlobalHook.getGlobalUser]);
@@ -137,47 +139,6 @@ export default function Dashboard() {
   }
 
 
-  const datae = [
-    {
-     
-      Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set1",
-      Name: "Karita Brown",
-      Status: "Approved"
-    },
-    {
-     
-      Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set5",
-      Name: "Sylvan Green",
-      Status: "Waiting"
-    },
-    {
-      
-      Profile: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set3",
-      Name: "Vaughn Black",
-      Status: "Waiting"
-    }
-  ];
-
-  const getSelectedStudentCourseData = [
-    {
-      key: "1",
-      Cover: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set4",
-      CourseName: "Karita Brown",
-     
-    },
-    {
-      key: "2",
-      Cover: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set5",
-      CourseName: "Sylvan Green",
- 
-    },
-    {
-      key: "3",
-      Cover: "https://robohash.org/hicdoloribussunt.png?size=50x50&set=set2",
-      CourseName: "Vaughn Black",
-  
-    }
-  ];
 
   return (
     <>
@@ -185,13 +146,13 @@ export default function Dashboard() {
       <Header />
       <div className=" h-full w-full flex flex-col items-center py-4 justify-start">
         <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-green-500">
-          School Admin
+  School Admin: {" "} {GlobalHook.getGlobalSchoolInfo.schoolName}
         </div>
         <div className="flex flex-row flex-wrap justify-around w-full bg-white p-4">
           <div className="" style={{ width: "auto" }}>
-            {/* <div className="mb-4 font-semibold text-xl">
-              Remaining Quota: 43
-            </div> */}
+            <div className="mb-4 font-semibold text-xl">
+              Remaining Quota: {GlobalHook.getGlobalSchoolInfo.schoolRemainingStudentQuota}
+            </div>
             <Table
               dataSource={data}
               onRowClick={e => {
