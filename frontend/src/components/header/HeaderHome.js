@@ -41,11 +41,11 @@ export default function HeaderHome() {
             style={{ flex: 1 }}
           >
             <CourseCatDropdown />
-            {/* {GlobalHook.getGlobalToken && (
+            {GlobalHook.getGlobalToken && (
               <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={()=>history.push("/school")}>
                 <FaSchool className="mr-2 text-gray-700" />
               </button>
-            )} */}
+            )}
           </div>
           <a
             className=" text-blue-600 flex text-3xl font-bold hover:text-blue-600 no-underline  md:flex-grow-0 flex-grow justify-center"
@@ -58,12 +58,12 @@ export default function HeaderHome() {
             className=" hidden md:flex justify-end ml-10 h-full"
             style={{ flex: 1 }}
           >
-            {/* {GlobalHook.getGlobalToken && (
+            {GlobalHook.getGlobalToken && (
               <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={()=>history.push("/school")}>
                 <FaSchool className="mr-2 text-gray-700" />
                 School
               </button>
-            )} */}
+            )}
 
             <CourseCatDropdown showTitle />
 
