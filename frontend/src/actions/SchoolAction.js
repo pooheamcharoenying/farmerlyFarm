@@ -188,7 +188,7 @@ axios
       window.location.href=`/school/${GlobalHook.getGlobalSchoolSlug}`
       GlobalHook.setGlobalLoading(false);
     })
-    .catch(err => console.log(err));
+    .catch(err => {console.log(err);window.location.href="/"});
  }
 })
 .catch(err => {console.log(err);message.error("error")});

@@ -33,9 +33,15 @@ router.get("/", async (req, res) => {
       console.log(req.body)
       User.findById(req.user.id)
         .then(user => {
-          user.schoolCourse.unshift({ schoolId: req.body.schoolId,schoolApproved:false,schoolCourseList:[] });
+            console.log(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId))
+          if(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId)[0]){
+            res.status(400).json({err:"existing"})
+          }else{
+            user.schoolCourse.unshift({ schoolId: req.body.schoolId,schoolApproved:false,schoolCourseList:[] });
+            user.save().then(user => res.json(user));
+
+          }
   
-          user.save().then(user => res.json(user));
         })
         .catch(err => {console.log(err);res.status(400).json(err)});
     }

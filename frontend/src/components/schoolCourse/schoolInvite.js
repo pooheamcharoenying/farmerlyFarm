@@ -1,9 +1,6 @@
 import React,{useState,useContext,useEffect} from 'react'
-import ScrollContainer from 'react-indiana-drag-scroll'
-import {Switch} from 'antd'
 import {GlobalContext} from '../../hook/GlobalHook'
 
-import CourseCard from '../courseCard/CourseCard'
 import {handleSchoolInviteAcceptAction} from '../../actions'
 export default function SchoolCourse() {
 
