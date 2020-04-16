@@ -276,7 +276,7 @@ export default function Dashboard() {
                  
                     <a className="text-red-500 hover:text-red-400"
                     onClick={()=>{
-                      AssignCourseToUserAction(GlobalHook,getSelectedStudent.userId,GlobalHook.getGlobalUser.schoolAdminId,record.courseId)
+                      DelCourseToUserAction(GlobalHook,getSelectedStudent.userId,GlobalHook.getGlobalUser.schoolAdminId,record.courseId)
                     }}
                     >ลบ</a>
                   </span>

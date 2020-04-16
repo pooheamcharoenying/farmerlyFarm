@@ -188,7 +188,6 @@ router.get("/", async (req, res) => {
     passport.authenticate("jwt", { session: false }),
   
     (req, res) => {
-      console.log(req.body)
       User.findById(req.body.userId)
         .then(user => {
         
@@ -196,8 +195,15 @@ router.get("/", async (req, res) => {
           let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
           let SchoolCourseIdIndex = user.schoolCourse[SchoolIndex].SchoolCourseList.map((item)=>item._id).indexOf(req.body.courseId)
-          // user.schoolCourse[SchoolIndex].SchoolCourseList.splice(SchoolCourseIdIndex,1)
+          
+          console.log("before")
+          console.log(user.schoolCourse[SchoolIndex].SchoolCourseList)
+
+          
+          user.schoolCourse[SchoolIndex].SchoolCourseList.splice(SchoolCourseIdIndex,1)
         
+          console.log("after")
+          console.log(user.schoolCourse[SchoolIndex].SchoolCourseList)
           user.save().then((newuser) => {
             res.json(newuser.schoolCourse[SchoolIndex])
           })
