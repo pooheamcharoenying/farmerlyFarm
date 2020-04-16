@@ -142,7 +142,7 @@ axios
 .then(res => {
   GlobalHook.setGlobalLoading(false);
   console.log(res.data)
-//  GlobalHook.setGlobalMatchCourseSchool(res.data)
+ GlobalHook.setGlobalMatchCourseSchool(res.data)
 })
 .catch(err => console.log(err));
 }
