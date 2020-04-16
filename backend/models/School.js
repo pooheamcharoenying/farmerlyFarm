@@ -11,7 +11,11 @@ const SchoolSchema = new Schema({
   },
   schoolRemainingStudentQuota: {
     type: Number
-  }
+  },
+  schoolMaxQuota: {
+    type: Number,
+    default:0
+  },
 });
 
 module.exports = SchoolSchema;

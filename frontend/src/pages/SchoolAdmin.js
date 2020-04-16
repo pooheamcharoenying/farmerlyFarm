@@ -195,12 +195,27 @@ export default function Dashboard() {
                     <a
                       className="text-green-500 hover:text-green-400"
                       style={{ marginRight: 16 }}
-                      onClick={()=>SchoolStatusChangeAction(GlobalHook,true,record.userId)}
+                      onClick={()=>{
+                        if((GlobalHook.getGlobalSchoolInfo.schoolMaxQuota >= GlobalHook.getGlobalSchoolInfo.schoolRemainingStudentQuota)&&record.Status == "Waiting"){
+                          SchoolStatusChangeAction(GlobalHook,true,record.userId)
+
+                        }else{
+                          message.error("Error Approve")
+                        }
+                      
+                      }}
                     >
                       ยืนยัน
                     </a>
                     <a className="text-red-500 hover:text-red-400"
-                      onClick={()=>SchoolStatusChangeAction(GlobalHook,false,record.userId)}
+                      onClick={()=>{
+                        if((GlobalHook.getGlobalSchoolInfo.schoolRemainingStudentQuota >0)&&record.Status == "Approved"){  
+                        SchoolStatusChangeAction(GlobalHook,false,record.userId)
+                        }else{
+                          message.error("Error Cancel")
+
+                        }
+                      }}
                     
                     >ยกเลิก</a>
                   </span>
