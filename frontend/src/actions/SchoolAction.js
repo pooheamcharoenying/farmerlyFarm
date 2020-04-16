@@ -163,6 +163,40 @@ GlobalHook.setGlobalSchoolInfo(res.data)
 .catch(err => console.log(err));
 }
 
+function handleSchoolInviteAcceptAction(GlobalHook){
+  GlobalHook.setGlobalLoading(true);
+
+
+  const pushData = {schoolSlug:GlobalHook.getGlobalSchoolSlug};
+
+
+axios
+.post("/api/school/getschoolidbyslug", pushData)
+.then(res => {
+ if(res.data[0]){
+
+ 
+  const pushDataId = { schoolId:res.data[0]._id};
+
+  
+  axios
+    .post("/api/school/addmynewschool", pushDataId)
+    .then(res => {
+      GlobalHook.setGlobalUser(res.data);
+      localStorage.setItem("globalUser", JSON.stringify(res.data));
+    
+      window.location.href=`/school/${GlobalHook.getGlobalSchoolSlug}`
+      GlobalHook.setGlobalLoading(false);
+    })
+    .catch(err => console.log(err));
+ }
+})
+.catch(err => {console.log(err);message.error("error")});
+
+
+
+}
+
 
 
 export {
@@ -175,6 +209,7 @@ export {
     AssignCourseToUserAction,
     DelCourseToUserAction,
     getSchoolIdBySlugAction,
-    getSchoolInfoByIdAction
+    getSchoolInfoByIdAction,
+    handleSchoolInviteAcceptAction
 
 }
