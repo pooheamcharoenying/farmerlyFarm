@@ -22,7 +22,8 @@ export default function MySchool() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalSchoolPool[0]) {
-      GlobalHook.getGlobalSchoolPool.map(allSchoolList => {
+      SchoolNotMatch = GlobalHook.getGlobalSchoolPool
+      GlobalHook.getGlobalSchoolPool.map((allSchoolList) => {
         if (GlobalHook.getGlobalUser.schoolCourse[0]) {
           GlobalHook.getGlobalUser.schoolCourse.map(subList => {
             if (allSchoolList._id == subList.schoolId) {
@@ -35,12 +36,13 @@ export default function MySchool() {
               });
               setMatchSchool(mySchoolMatch);
             } else {
-              SchoolNotMatch.push(allSchoolList);
-              setNotMatchSchool(SchoolNotMatch);
+              const newnotmatch = SchoolNotMatch.filter((item)=>item._id != subList.schoolId);
+              SchoolNotMatch = newnotmatch
+              setNotMatchSchool(newnotmatch);
             }
           });
         } else {
-          setNotMatchSchool(GlobalHook.getGlobalSchoolPool);
+          //setNotMatchSchool(GlobalHook.getGlobalSchoolPool);
         }
       });
     }
