@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 
-import Header from "../components/header/HeaderHome";
+import Header from "../components/header/HeaderCourse";
 import SideBar from "../components/sideBar/SideBarCourse";
 import CourseContent from "../components/courseContent/CourseContent";
 import { getCourseContentAction, GetCourseSettingAction } from "../actions";
