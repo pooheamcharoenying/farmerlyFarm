@@ -2,16 +2,16 @@ import React, { useContext } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
-import {message} from 'antd'
+import { message } from 'antd'
 import Firebase from '../hook/firebase'
 import * as firebase from "firebase/app";
 function GetTokenAction(GlobalHook, uid) {
 
   axios
-    .post("/api/user/getToken", {"uid":uid})
+    .post("/api/user/getToken", { "uid": uid })
     .then(res => {
-     
-    
+
+
       GlobalHook.setGlobalToken(res.data.token);
       Cookies.set("globalToken", res.data.token, { expires: 7 });
 
@@ -26,73 +26,75 @@ function GetTokenAction(GlobalHook, uid) {
 
       GlobalHook.setGlobalLoading(false);
     })
-    .catch(err =>{ console.log(err); message.error("Invalid Username or Password"); GlobalHook.setGlobalLoading(false); });
+    .catch(err => { console.log(err); message.error("Invalid Username or Password"); GlobalHook.setGlobalLoading(false); });
 }
 
-async function LoginAction(GlobalHook,userData,vender){
+
+
+async function LoginAction(GlobalHook, userData, vender) {
   GlobalHook.setGlobalShowLoginModal(false);
 
   GlobalHook.setGlobalLoading(true);
-  if(vender == "userpass"){
+  if (vender == "userpass") {
     try {
       await Firebase
         .auth()
-        .signInWithEmailAndPassword(userData.email, userData.password).then((data)=>{
-          GetTokenAction(GlobalHook,data.user.uid)
+        .signInWithEmailAndPassword(userData.email, userData.password).then((data) => {
+          GetTokenAction(GlobalHook, data.user.uid)
         })
-     
+
     } catch (error) {
       GlobalHook.setGlobalLoading(false);
       message.error("Invalid Username or Password");
       console.log(error)
-  
-    }
-  
 
-  }else if(vender == "facebook"){
+    }
+
+
+  } else if (vender == "facebook") {
     let facebook = new firebase.auth.FacebookAuthProvider();
     facebook.addScope('email');
 
     try {
-      await Firebase.auth().signInWithPopup(facebook).then(function(result) {
+      await Firebase.auth().signInWithPopup(facebook).then(function (result) {
         var token = result.credential.accessToken;
         var user = result.user;
-        GetTokenAction(GlobalHook,user.uid)
+        GetTokenAction(GlobalHook, user.uid)
 
 
         // ...
       })
-     
+
     } catch (error) {
       GlobalHook.setGlobalLoading(false);
       message.error("Invalid Username or Password");
       console.log(error)
-  
+
     }
 
 
-  }else if(vender == "google"){
+  } else if (vender == "google") {
     let google = new firebase.auth.GoogleAuthProvider();
 
     try {
-      await Firebase.auth().signInWithPopup(google).then(function(result) {
+      await Firebase.auth().signInWithPopup(google).then(function (result) {
         var token = result.credential.accessToken;
         var user = result.user;
-        GetTokenAction(GlobalHook,user.uid)
+        GetTokenAction(GlobalHook, user.uid)
 
 
         // ...
       })
-     
+
     } catch (error) {
       GlobalHook.setGlobalLoading(false);
       message.success("Invalid Username or Password");
       console.log(error)
-  
+
     }
 
 
-  }else if(vender == "twitter"){
+  } else if (vender == "twitter") {
     // let twitter = new Firebase.auth.TwitterAuthProvider();
     // twitter.setCustomParameters({
     //   'display': 'popup'
@@ -105,25 +107,25 @@ async function LoginAction(GlobalHook,userData,vender){
 
 }
 
-async function SignUpAction(GlobalHook,userData){
+async function SignUpAction(GlobalHook, userData) {
   GlobalHook.setGlobalShowLoginModal(false);
 
   GlobalHook.setGlobalLoading(true);
-  
+
   try {
     await Firebase
       .auth()
-      .createUserWithEmailAndPassword(userData.email, userData.password).then((data)=>{
-      
+      .createUserWithEmailAndPassword(userData.email, userData.password).then((data) => {
+
         data.user.updateProfile({
           displayName: userData.name,
-          photoURL:''
+          photoURL: ''
         })
 
         console.log(data.user.uid)
-        GetTokenAction(GlobalHook,data.user.uid)
+        GetTokenAction(GlobalHook, data.user.uid)
       })
-   
+
   } catch (error) {
     console.log(error)
     message.error(error.message)
@@ -134,22 +136,22 @@ async function SignUpAction(GlobalHook,userData){
 }
 
 
-async function ResetPassAction (GlobalHook,email){
+async function ResetPassAction(GlobalHook, email) {
   GlobalHook.setGlobalShowLoginModal(false);
 
   GlobalHook.setGlobalLoading(true);
-  
+
   try {
     await Firebase
       .auth()
-      .sendPasswordResetEmail(email).then((data)=>{
+      .sendPasswordResetEmail(email).then((data) => {
 
         console.log(email)
-      
+
         GlobalHook.setGlobalLoading(false);
         message.success("password reset link has been sent to your email")
       })
-   
+
   } catch (error) {
     console.log(error)
     message.error(error.message)
@@ -185,7 +187,7 @@ async function ResetPassAction (GlobalHook,email){
 //     .catch(err => console.log(err));
 // }
 async function LogoutAction(GlobalHook) {
-  
+
   await Firebase.auth().signOut();
   Cookies.remove("globalToken");
   localStorage.removeItem("globalUser");
@@ -209,7 +211,7 @@ function CourseSubscriptionAction(GlobalHook) {
       // console.log(res.data)
       GlobalHook.setGlobalUser(res.data);
       localStorage.setItem("globalUser", JSON.stringify(res.data));
-     // CourseSubscriptorActior(GlobalHook)
+      // CourseSubscriptorActior(GlobalHook)
       GlobalHook.setGlobalLoading(false);
     })
     .catch(err => console.log(err));
@@ -227,11 +229,13 @@ function CourseSubscriptionAction(GlobalHook) {
 //     .catch(err => console.log(err));
 //}
 
-function LessionVisitedLogAction(GlobalHook,mediaId) {
+function LessionVisitedLogAction(GlobalHook, mediaId, startLessonTime) {
   GlobalHook.setGlobalLoading(false);
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
-    lessionId:  GlobalHook.getGlobalLessionSelect.mediaId
+    lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
+    startTime: startLessonTime,
+    endTime: Date.now()
   };
 
   axios
@@ -245,35 +249,90 @@ function LessionVisitedLogAction(GlobalHook,mediaId) {
     });
 }
 
-function QuizLogAction(GlobalHook,QuizLogData) {
+function QuizLogAction(GlobalHook, QuizLogData, QuizStartTime, QuizEndTime, passResult) {
   console.log(QuizLogData)
   const pushLogData = {
     courseId: GlobalHook.getGlobalcourseId,
     lessionId: GlobalHook.getGlobalLessionSelect.mediaId,
-    quizData:QuizLogData
+    quizData: QuizLogData,
+    quizStartTime:  QuizStartTime,
+    quizEndTime: QuizEndTime,
+    passResult: passResult,
   };
   axios
     .post("/api/user/quizlog", pushLogData)
-    .then(res => {
-    
+    .then(res => {  
+      GlobalHook.setGlobalUser(res.data);
+      localStorage.setItem("globalUser", JSON.stringify(res.data));
+
     })
     .catch(err => {
       console.log(err);
     });
 }
-async function GetUserByIdAction(uid) {
+async function GetUserByIdAction(_id) {
   const pushData = {
-    uid
+    _id
   };
-  console.log(uid)
-  await axios
+  return await axios
     .post("/api/user/getuserbyid", pushData)
     .then(res => {
-    return("res.data")
+      return (res.data)
     })
     .catch(err => {
       console.log(err);
     });
+}
+
+
+async function GetManyUsersFromDB(listId) {
+ 
+  const result = []
+  
+  const pushData = {
+    listId
+  };
+
+  return await axios
+    .post("/api/user/getmanyusersbyid", pushData)
+    .then(res => {
+      return (res.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });  
+}
+
+function UpdateFirebaseUser(uid, displayName) {
+  const pushData = {
+    uid: uid,
+    displayName: displayName,
+  };
+
+  axios
+    .post("/api/user/updatefirebaseuser", pushData)
+    .then(res => {
+      return (res.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });    
+} 
+
+async function GetManyUsersFromFirebase(listId) {
+  const result = []
+  const pushData = {
+    listId
+  };
+
+  return await axios
+    .post("/api/user/getmanyusersfromfirebase", pushData)
+    .then(res => {
+      return (res.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });  
 }
 
 
@@ -287,4 +346,27 @@ async function GetUserByIdAction(uid) {
 
 // }
 
-export { LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction,LessionVisitedLogAction,QuizLogAction,ResetPassAction,GetUserByIdAction };
+
+function DeleteUserCourseDataDB(GlobalHook) {
+  // GlobalHook.setGlobalLoading(true);
+
+  const pushData = {
+    courseId: GlobalHook.getGlobalcourseId,
+  };
+
+  console.log('immigration say what')
+  console.log(pushData)
+  return axios
+    .post("/api/user/deleteTeacherCourseDataDb", pushData)
+    .then(res => {
+      console.log('successorial')
+      // GlobalHook.setGlobalCoursePool(res.data);
+      // GlobalHook.setGlobalLoading(false);
+      return "success"
+    })
+    .catch(err => console.log(err));
+
+}
+
+
+export {   DeleteUserCourseDataDB,  LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction, LessionVisitedLogAction, QuizLogAction, ResetPassAction, GetUserByIdAction, GetManyUsersFromDB, GetManyUsersFromFirebase, UpdateFirebaseUser };

@@ -5,14 +5,18 @@ import { useParams } from "react-router";
 import Header from "../components/header/HeaderHome";
 import Banner from "../components/banner/Banner";
 import MyCourse from "../components/myCourse/MyCourse";
-import SchoolAll from "../components/schoolCourse/SchoolAll";
+import MySchool from "../components/schoolCourse/MySchool";
+import AllSchool from "../components/schoolCourse/AllSchool";
+import AllCourse from "../components/allCourse/AllCourse";
+
 import Footer from "../components/footer/Footer";
-import { getCoursePoolAction,getSchoolIdBySlugAction } from "../actions";
+import { getCoursePoolAction,getSchoolIdBySlugAction, getSchoolPoolAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
-export default function School() {
+export default function SchoolMenu() {
   const GlobalHook = useContext(GlobalContext);
     useEffect(() => {
         getCoursePoolAction(GlobalHook);
+        getSchoolPoolAction(GlobalHook);
     }, [])
 
   return (
@@ -22,7 +26,9 @@ export default function School() {
       </Helmet>
       <Header />
      
-      <SchoolAll />
+      <MySchool />
+      <AllSchool/>
+      
       <Footer />
     </>
   );

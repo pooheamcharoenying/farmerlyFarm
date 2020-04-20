@@ -17,7 +17,7 @@ import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import SwitchR from "react-switch";
 import uuid from "uuid";
 import { GlobalContext } from "../../hook/GlobalHook";
-import { SaveAllAction, CheckMutateAction, MoveVimeoVideoToFolder } from "../../actions";
+import { SaveAllAction, CheckMutateAction, MoveVimeoVideoToFolder,  getSubjectCategories,  getSubjectLevels, deleteVideoMediaFromDB, deleteCourseStructure, SaveCourseStructureOnly, deleteVimeoVideo } from "../../actions";
 
 import TagCom from '../tagCom/TagCom'
 
@@ -62,6 +62,47 @@ const StudioVideoContent = () => {
     accept: ".mp4"
   });
 
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
+  const [getSubjects, setSubjects] = useState([]);
+  const [getLevels, setLevels] = useState([]);
+
+  useEffect(() => {
+    console.log('getting subjects')
+
+    getSubjectCategories()
+      .then(data => {
+        console.log('superman')
+        console.log(data)
+        setSubjects(data)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    getSubjectLevels()
+      .then(data => {
+        console.log('show levels')
+        console.log(data)
+        for (var x of data) {
+          if (x.type == "levelmenu") {
+            console.log('level menu found')
+            console.log(x)
+            setLevels(x.menu)
+          }
+          if (x.type == "subjectmenu") {
+            console.log('subject menu found')
+            console.log(x)
+            setSubjectMenu(x.menu)
+          }
+        }
+        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, []);
+
   useEffect(() => {
     if (acceptedFiles[0]) {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
@@ -70,6 +111,8 @@ const StudioVideoContent = () => {
   }, [acceptedFiles]);
 
   useEffect(() => {
+    console.log("media name")
+    console.log(GlobalHook.getGlobalLessionSelect.mediaName)
     setLessionName(GlobalHook.getGlobalLessionSelect.mediaName);
     setInitStateName(GlobalHook.getGlobalLessionSelect.mediaName);
 
@@ -128,19 +171,35 @@ const StudioVideoContent = () => {
       oldCourseStructure[parentIndex].subItems.splice(selfIndex, 1);
 
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
-      axios({
-        method: "DELETE",
-        url: `https://api.vimeo.com/videos/${GlobalHook.getGlobalMediaVideo}`,
-        headers: headerDelete,
-        data: {}
+      // axios({
+      //   method: "DELETE",
+      //   url: `https://api.vimeo.com/videos/${GlobalHook.getGlobalMediaVideo}`,
+      //   headers: headerDelete,
+      //   data: {}
+      // })
+      //   .then(res => {
+      //     console.log('vimeo video deleted')
+
+      //   })
+      //   .catch(err => console.log(err));
+
+      console.log('getGlobalMediaVideo')
+      console.log(GlobalHook.getGlobalMediaVideo)
+      console.log(GlobalHook.getGlobalVimeoId)
+      
+      deleteVideoMediaFromDB( GlobalHook )   
+      .then(res => {
+        console.log('success: no say miso')
+        SaveCourseStructureOnly(GlobalHook)
+        // deleteCourseStructure(GlobalHook);
       })
-        .then(res => {
-          console.log('vimeo video deleted')
-        })
-        .catch(err => console.log(err));
       
-      
-      SaveAllAction(GlobalHook);
+      // SaveAllAction(GlobalHook);
+        // .then(res => {})
+
+
+      // SaveAllAction(GlobalHook);
+
     }
   }
 
@@ -227,15 +286,26 @@ const StudioVideoContent = () => {
 
 
   useEffect(() => {
-    if (GlobalHook.getGlobalLessionSelect.new == "new") {
-      setUploadingShow(false);
-    }
+    console.log("starto")
+    console.log(GlobalHook.getGlobalLessionSelect)
+    setUploadingShow(null);
+    // if (GlobalHook.getGlobalLessionSelect.new == "new") {
+    //   console.log("starto")
+
+    // }
   }, [GlobalHook.getGlobalLessionSelect]);
+  // }, [GlobalHook.getGlobalLessionSelect]);
 
 
   
   return (
+
+
     <div className=" h-auto min-h-full w-full flex flex-col items-center py-4 justify-start">
+
+
+{console.log('sls')}
+{console.log(GlobalHook.getGlobalLessionSelect)}
     <div className="w-full flex mb-2  justify-center items-center">
       <FaCaretLeft
         className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -325,11 +395,17 @@ const StudioVideoContent = () => {
           />
         
         </div>
+        
+        {console.log("patango")}
+        {console.log(GlobalHook.getLessionTagSameAsCourseStatus)}
+        {console.log(GlobalHook.getGlobalCourseTagEnglish)}
+        {console.log(GlobalHook.getGlobalCourseTagEnglishLession)}
+       {/* {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>} */}
 
-       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
+       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
 
-
-
+        {console.log("sJukie")}
+        {console.log(GlobalHook.getGlobalMediaVideo)}
 
         <div className="flex flex-col text-center mb-6 justify-center w-full items-center">
           <div className="font-bold text-lg mb-2 flex justify-center">
@@ -340,6 +416,7 @@ const StudioVideoContent = () => {
                 GlobalHook.setGlobalStudioUploadFile(null);
                 setVideoData(null);
                 GlobalHook.setGlobalMediaVideo(null);
+                deleteVimeoVideo(GlobalHook.getGlobalMediaVideo);
               }}
             />
           </div>
@@ -347,11 +424,12 @@ const StudioVideoContent = () => {
             className="bg-white flex justify-center items-center flex-col "
             style={{ minHeight: "200px", width: "60%" }}
           >
-            {GlobalHook.getGlobalMediaVideo ? (
+            { (GlobalHook.getGlobalMediaVideo   )  ? (
               <div
                 className="mt-4 flex flex-col"
                 style={{ width: "100%", height: "auto" }}
               >
+                {console.log('Fu')}
                 <div className="mb-2">{getVideoFileName}</div>
                 <div style={{ padding: "56.25% 0 0 0", position: "relative" }}>
                   <iframe
@@ -429,6 +507,9 @@ const StudioVideoContent = () => {
                     </div>
                   </div>
                 )}
+
+                {console.log("kolo")}
+                {console.log(getUploadingShow)}
 
                 {getUploadingShow == "done" && (
                   <div>

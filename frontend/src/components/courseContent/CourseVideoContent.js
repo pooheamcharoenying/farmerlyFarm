@@ -2,38 +2,49 @@ import React, { useContext, useState, useEffect } from "react";
 import Vimeo from '@u-wave/react-vimeo';
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { GlobalContext } from "../../hook/GlobalHook";
-import {LessionVisitedLogAction} from '../../actions'
+import { LessionVisitedLogAction } from '../../actions'
 
 export default function CourseVideoContent() {
   const GlobalHook = useContext(GlobalContext);
   const [getVideoId, setVideoId] = useState("");
 
   const [getisSubscription, setisSubscription] = useState(false);
+  const [getStartLessonTime, setStartLessonTime] = useState(0)
 
   useEffect(() => {
+
+
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId) {
       GlobalHook.getGlobalUser.courseSubscription.map(data => {
         if (data.courseId == GlobalHook.getGlobalcourseId) {
           setisSubscription(true);
         }
       });
-    }else{
+    } else {
       setisSubscription(false);
     }
-  }, );
+  });
 
   useEffect(() => {
+    console.log("startvideolesson")
+    console.log(GlobalHook.getGlobalcourseId)
+    setStartLessonTime(Date.now())
     if (GlobalHook.getGlobalMediaVideo != "") {
       setVideoId(GlobalHook.getGlobalMediaVideo);
     }
   }, [GlobalHook.getGlobalMediaVideo]);
 
 
-  function IsEnd(){
+  function IsEnd() {
+    console.log("LogLesson")
+    console.log(GlobalHook.getGlobalToken)
+    console.log(getisSubscription)
 
+    if (GlobalHook.getGlobalToken && getisSubscription) {
 
- if(GlobalHook.getGlobalToken && getisSubscription){
-      LessionVisitedLogAction(GlobalHook,GlobalHook.getGlobalLessionSelect.mediaId)
+      console.log('chipote')
+
+      LessionVisitedLogAction(GlobalHook, GlobalHook.getGlobalLessionSelect.mediaId, getStartLessonTime)
 
     }
   }
@@ -60,22 +71,35 @@ export default function CourseVideoContent() {
         </div>
         <div className=" w-full h-full px-2 md:px-4 lg:px-6 mx-auto mt-2 rounded ">
 
-        {/* <Vimeo
+          {/* <Vimeo
             video={"115783408"}
             responsive={true}
             onEnd={IsEnd}
             loop={false}
             /> */}
-             <Vimeo
-            video={GlobalHook.getGlobalMediaVideo}
-            responsive={true}
-            onEnd={IsEnd}
-            loop={false}
-            />
-        
-         
+
+          {console.log("jukie")}
+          {console.log(GlobalHook.getGlobalMediaVideo)}
+
+          {(GlobalHook.getGlobalMediaVideo != "") ?
+            <div>
+              <Vimeo
+                video={GlobalHook.getGlobalMediaVideo}
+                responsive={true}
+                onEnd={IsEnd}
+                loop={false}
+              />
+            </div>
+            : <div style={{ marginTop: "20%", width: "100%", textAlign: "center", height: "40%" }}>
+              <div style={{ backgroundColor: "lightgray", width: "20%", marginLeft: "40%", marginRight: "40%", paddingTop: "10px", paddingBottom: "10px" }}>
+                No Video Added
+                  </div>
+            </div>
+          }
+
+
         </div>
-        <div style={{ minHeight: "60px" }} />
+        <div style={{ minHeight: "30px" }} />
       </div>
     );
   }

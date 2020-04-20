@@ -47,11 +47,13 @@ const [getQuestionLength, setQuestionLength] = useState(0);
 const [getUnSaveAlertStatus, setUnSaveAlertStatus] = useState(false);
 
 useEffect(() => {
+  console.log('quizzyBope')
   GlobalHook.setGlobalMediaNew(items);
   console.log(items)
 }, [items]);
 
 useEffect(() => {
+  console.log('quizzyHead')
   if (GlobalHook.getGlobalMediaQuiz) {
     setQuestionLength(parseInt(GlobalHook.getGlobalMediaQuiz.length));
 
@@ -222,6 +224,12 @@ function renderAddQuestionModal() {
       new: "new"
     });
     GlobalHook.setGloblaQuizQuestionName(getQuestionName);
+
+    console.log('creatingQuiz')
+    console.log(oldstate)
+
+    GlobalHook.setGlobalMediaQuiz(oldstate);
+    
     console.log('new question created!!!!!!!!!!!')
   }
 
@@ -236,6 +244,7 @@ function renderAddQuestionModal() {
     });
     FetchQuestionWhenSelectActionStudio(GlobalHook, item);
   }
+  
   function handlePreviousClick() {
     if (getCurrentQuestionIndex != 0) {
       handleQuizSelect(

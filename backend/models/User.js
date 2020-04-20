@@ -32,7 +32,14 @@ const UserSchema = new Schema({
           },
           lessionData: {
             type: String
+          },
+          startTime: {
+            type: String
+          },
+          endTime: {
+            type: String
           }
+
         }
       ],
 
@@ -44,8 +51,17 @@ const UserSchema = new Schema({
           quizData: {
             type: Object
           },
-          logTime: {
+          // logTime: {
+          //   type: String
+          // },
+          startTime: {
             type: String
+          },
+          endTime: {
+            type: String
+          },
+          passResult: {
+            type: Boolean
           }
         }
       ]

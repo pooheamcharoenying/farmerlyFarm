@@ -67,6 +67,10 @@ const headerPost = {
   Authorization: `bearer ${accessToken}`,
   "Content-Type": "application/json"
 };
+const headerDelete = {
+  Authorization: `bearer ${accessToken}`
+};
+
 
 // move uploaded vimeo video to correct course folder
 router.post("/moveVideoFolder", (req, res) => {
@@ -149,6 +153,7 @@ router.post("/editVimeoFolderName", (req, res) => {
     .then(res => {
       res.status(200).json(res);
       console.log("vimeo folder name sucessfully edited");
+      return "success"
     })
     .catch(err => {
       message.error("folder name change error");
@@ -159,25 +164,23 @@ router.post("/editVimeoFolderName", (req, res) => {
 
 // tell Vimeo to delete video
 router.post("/deleteVimeoVideo", (req, res) => {
-  console.log("editing vimeo folder name");
-  console.log(req.body.folderName);
+
+  console.log('starting: vimeo video delte')
   axios({
-    method: "patch",
-    url: "https://api.vimeo.com/me/projects/" + req.body.vimeoId,
-    headers: headerPost,
-    data: {
-      name: req.body.folderName
-    }
+    method: "DELETE",
+    url: `https://api.vimeo.com/videos/${req.body.vimeoVideoId}`,
+    headers: headerDelete,
+    data: {}
   })
     .then(res => {
-      res.status(200).json(res);
-      console.log("vimeo folder name sucessfully edited");
+      console.log('success: vimeo video deleted')
+
     })
     .catch(err => {
-      message.error("folder name change error");
-      console.log(err);
+      console.log(err)
       return res.status(400).json(err);
     });
+
 });
 
 //GetSubjects
@@ -210,9 +213,49 @@ router.get("/subjectLevels", async (req, res) => {
     return res.status(400).json(err)});
 });
 
+//GetSubjects Levls
+router.post("/usersInCourse", async (req, res) => {
+  console.log('saymooo tono')
+  console.log(req.body.courseId)
+  User.find({ courseSubscription: { $elemMatch: { courseId: req.body.courseId } } })
+    .then(data => {
+      console.log("yomato")
+      res.status(200).json(data);
+
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+
+
+  // User.find()
+  // .then(data => {
+
+  //   res.status(200).json(data);
+  //   // console.log(data)
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  //   return res.status(400).json(err)});
+});
+
 
 //GetCourse
 router.get("/all", async (req, res) => {
+  Course.find()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
+//GetCourse
+router.get("/deleteteachercoursedatadb", async (req, res) => {
+  console.log('saymooo')
   Course.find()
     .then(data => {
       res.status(200).json(data);
@@ -405,6 +448,36 @@ router.get("/search/:keyword", async (req, res) => {
   }
 });
 
+
+//Update Course Info
+router.post(
+  "/updatetag",
+  passport.authenticate("jwt", { session: false }),
+
+  (req, res) => {
+    Course.findOneAndUpdate( {_id: req.body._id },
+      {
+        courseTagEnglish: req.body.courseTagEnglish,
+        courseTagThai: req.body.courseTagThai,
+      },
+      { new: true },
+      (err, doc) => {
+        // res.status(200).json("success");
+        if (err) {
+          console.log("Something wrong when updating data!");
+          return res.status(400).json(err)
+        }
+      }
+    )
+      .then(data => res.status(200).json("success"))
+      .catch(err => {
+        console.log(err);
+        return res.status(400).json(err);
+      });
+  }
+);
+
+
 //Update Course Info
 router.post(
   "/update",
@@ -560,6 +633,12 @@ router.post(
   }
 );
 
+
+
+
+
+
+
 //Add Structure
 router.post(
   "/structureUpdate",
@@ -628,5 +707,8 @@ router.get("/:courseSlug", async (req, res) => {
       return res.status(400).json(err);
     });
 });
+
+
+
 
 module.exports = router;

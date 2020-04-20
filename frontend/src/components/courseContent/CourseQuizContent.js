@@ -39,11 +39,14 @@ export default function CourseQuizContent() {
   const [getUserAnsBank, setUserAnsBank] = useState({});
   const [getShowCorrectAns, setShowCorrectAns] = useState(false);
   const [getAnsSubtmited, setAnsSubtmited] = useState(false);
-  const [getIsReviewQuestion,setIsReviewQuestion] = useState(false)
+  const [getIsReviewQuestion, setIsReviewQuestion] = useState(false)
 
   const [getUserClick, setUserClick] = useState("");
 
   const [getUserAnsCheckStatus, setUserAnsCheckStatus] = useState(false);
+
+  const [getStartQuizTime, setStartQuizTime] = useState(0)
+  const [getEndQuizTime, setEndQuizTime] = useState(0)
 
   const [
     getModalQuizResultSummaryOpenStatus,
@@ -67,6 +70,10 @@ export default function CourseQuizContent() {
   useEffect(() => {
     setAnsPool(shuffle(GlobalHook.getGloblaQuizAnswerField));
   }, [GlobalHook.getGloblaQuizAnswerField]);
+
+  useEffect(() => {
+    setIsReviewQuestion(false)
+  }, [GlobalHook.getGlobalLessionSelect])
 
   useEffect(() => {
     if (GlobalHook.getGlobalMediaQuiz) {
@@ -195,15 +202,17 @@ export default function CourseQuizContent() {
 
   function handleAnsSubmit() {
     if (getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].ans) {
-      if (GlobalHook.getGlobalLessionSelect.mediaEtc1) {
-        setShowCorrectAns(true);
-      } else {
-        setShowCorrectAns(false);
-        handleNextClick();
-        if (getSelectQuestion + 1 == getQuestionAmount) {
-          ShowResult();
-        }
+      // if (GlobalHook.getGlobalLessionSelect.mediaEtc1) {
+      //   setShowCorrectAns(true);
+      //   console.log('joey1')
+      // } else {
+      setShowCorrectAns(false);
+      console.log('joey2')
+      handleNextClick();
+      if (getSelectQuestion + 1 == getQuestionAmount) {
+        ShowResult();
       }
+      // }
       CalUserAnsStatus();
     } else {
       getUserAnsBank[
@@ -241,40 +250,38 @@ export default function CourseQuizContent() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            <button
-              onClick={() => setShowTimeOutModal(false)}
-              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
-            >
-              Ignore
-            </button>
 
             <button
-              onClick={() => {
-                setShowTimeOutModal(false);
-                ShowResult();
-              }}
-              className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-400"
-            >
-              Submit
-            </button>
-
-            <button
-              onClick={() => {
-                RestartQuiz();
-              }}
+              onClick={() => { setModalQuizResultSummaryOpenStatus(false); GlobalHook.setPrevNextStatus("NextLession") }}
               className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
             >
-              Restart
+              ไปบทต่อไป
             </button>
+
+
+            {(GlobalHook.getGlobalLessionSelect.mediaEtc1) ?
+              <>
+
+                <button
+                  onClick={() => { setModalQuizResultSummaryOpenStatus(false); setIsReviewQuestion(true) }}
+                  className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+                // disabled={!GlobalHook.getGlobalLessionSelect.mediaEtc1}
+                >
+                  ดูเฉลย
+            </button>
+              </> : <></>}
+
+
           </div>
         ]}
       >
-        TimeOut
+        TimeOut - หมดเวลาในการทําโจทย์
       </Modal>
     );
   }
 
   function RenderQuizResultSummary() {
+
     return (
       <Modal
         visible={getModalQuizResultSummaryOpenStatus}
@@ -285,20 +292,35 @@ export default function CourseQuizContent() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-            <button
+            {/* <button
               onClick={() => {
                 RestartQuiz();
               }}
               className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
             >
               Restart
-            </button>
+            </button> */}
+
+
             <button
-              onClick={() => {setModalQuizResultSummaryOpenStatus(false);setIsReviewQuestion(true)}}
-              className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+              onClick={() => { setModalQuizResultSummaryOpenStatus(false); GlobalHook.setPrevNextStatus("NextLession") }}
+              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
             >
-              Review Question
+              ไปบทต่อไป
             </button>
+
+
+            {(GlobalHook.getGlobalLessionSelect.mediaEtc1) ?
+              <>
+
+                <button
+                  onClick={() => { setModalQuizResultSummaryOpenStatus(false); setIsReviewQuestion(true) }}
+                  className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
+                // disabled={!GlobalHook.getGlobalLessionSelect.mediaEtc1}
+                >
+                  ดูเฉลย
+            </button>
+              </> : <></>}
 
             {/* <button
               onClick={() => {
@@ -350,12 +372,12 @@ export default function CourseQuizContent() {
     let questionAmount = 0;
     let UserAnswerPool = getUserAnsBank;
     Object.values(UserAnswerPool).forEach(value => {
-     
+
       if (value.result == true) {
         correctAnswerAmount++;
-      }else if(value.result == false){
+      } else if (value.result == false) {
         inCorrectAnswerAmount++;
-      }else{
+      } else {
         skipAnsAmount++;
       }
       questionAmount++;
@@ -377,12 +399,12 @@ export default function CourseQuizContent() {
     let questionAmount = 0;
     let UserAnswerPool = data;
     Object.values(UserAnswerPool).forEach(value => {
-     
+
       if (value.result == true) {
         correctAnswerAmount++;
-      }else if(value.result == false){
+      } else if (value.result == false) {
         inCorrectAnswerAmount++;
-      }else{
+      } else {
         skipAnsAmount++;
       }
       questionAmount++;
@@ -399,7 +421,7 @@ export default function CourseQuizContent() {
   function ResetUserAnsBank() {
     let UserAnsInitBank = {};
     getQuestionPool.map(item => {
-      UserAnsInitBank[item.questionId] = {"Z":"Z"};
+      UserAnsInitBank[item.questionId] = { "Z": "Z" };
 
     });
     setUserAnsBank(UserAnsInitBank);
@@ -409,30 +431,42 @@ export default function CourseQuizContent() {
     setModalQuizResultSummaryOpenStatus(false);
     setShowTimeOutModal(false);
     GlobalHook.setGlobalStatusCode("resetUserClicker");
-    setStartedQuiz(false);
-    ResetUserAnsBank();
 
-    setShowCorrectAns(false);
-    setUserClick(null);
+
+
   }
   function ShowResult() {
     setModalQuizResultSummaryOpenStatus(true);
     clearInterval(countdown);
 
+    var dt = new Date();
+    setEndQuizTime(dt.getTime())
+
     if (GlobalHook.getGlobalToken && getisSubscription) {
-      LessionVisitedLogAction(
-        GlobalHook,
-        GlobalHook.getGlobalLessionSelect.mediaId
-      );
+      // LessionVisitedLogAction(
+      //   GlobalHook,
+      //   GlobalHook.getGlobalLessionSelect.mediaId
+      // );
+
       //   let QuizLogData = {
       //     "correct":CalSocreFinish().correctAnswerAmount,
       //     "done":CalSocreFinish().doneQuestionAmount -
       //   CalSocreFinish().correctAnswerAmount,
       // "totalAmount":getQuestionAmount}
-      if(!getIsReviewQuestion){
-        QuizLogAction(GlobalHook, getUserAnsBank);
+      if (!getIsReviewQuestion) {
+        console.log('recording quiz results')
+        console.log(GlobalHook.getGlobalLessionSelect.mediaEtc4)
+        var passCondition = GlobalHook.getGlobalLessionSelect.mediaEtc4;
+        console.log('your score')
+        console.log(CalSocreFinish().correctAnswerAmount)
+        var passResult = false;
+        if (CalSocreFinish().correctAnswerAmount >= passCondition) {
+          passResult = true;
+        }
 
+        QuizLogAction(GlobalHook, getUserAnsBank, getStartQuizTime, dt.getTime(), passResult);
       }
+
     }
   }
 
@@ -455,7 +489,7 @@ export default function CourseQuizContent() {
     GlobalHook.getGlobalLessionSelect
   ]);
 
-  const dataSource = getQuizHistory.map((data,index) => ({
+  const dataSource = getQuizHistory.map((data, index) => ({
     key: index,
     date: moment(parseInt(data.logTime)).format("DD/MM/YYYY HH:mm:ss"),
     finish: CalSocreResult(data.quizData).questionAmount - CalSocreResult(data.quizData).skipAnsAmount,
@@ -533,18 +567,18 @@ export default function CourseQuizContent() {
     );
   }
 
-  function CalShowAnsOrNot(){
-    if(getIsReviewQuestion){
+  function CalShowAnsOrNot() {
+    if (getIsReviewQuestion) {
+      return true
+    } else {
+      if (getShowCorrectAns) {
         return true
-    }else{
-      if(getShowCorrectAns){
-          return true
-      }else{
+      } else {
         return false
       }
     }
-    
-    
+
+
   }
   return (
     <>
@@ -583,8 +617,10 @@ export default function CourseQuizContent() {
             </div>
           </div>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
+        {console.log('mama')}
+        {console.log(GlobalHook.getGlobalLessionSelect.mediaTime)}
         {!getStartedQuiz && (
           <div
             className="bg-white w-11/12 md:w-10/12 flex flex-col items-center justify-center rounded-lg border-dotted border-2 py-6"
@@ -605,6 +641,8 @@ export default function CourseQuizContent() {
               className="bg-green-600 p-2 rounded text-white hover:bg-green-500 mb-8"
               onClick={() => {
                 setStartedQuiz(true);
+                // var dt = new Date( "December 25, 1995 23:15:20" );
+                setStartQuizTime(Date.now())
                 handleIsCountdown();
                 GlobalHook.setMutantStatus(true);
                 FetchQuestionWhenSelectAction(
@@ -679,9 +717,14 @@ export default function CourseQuizContent() {
             </div>
 
             <div className="w-full  mb-4">
+              {getIsReviewQuestion && (
+                <div style={{ textAlign: "center", width: "60%", marginRight: "20%", marginLeft: "20%", color: "green" }}>
+                  <p style={{ fontSize: "20px" }} > แสดงผลการเฉลย</p>
+                </div>
+              )}
               <TextEditor
                 dataIn={GlobalHook.getGloblaQuizQuestionField}
-                dataOut={() => {}}
+                dataOut={() => { }}
                 readOnly
                 noAll
               />
@@ -710,15 +753,15 @@ export default function CourseQuizContent() {
                   })}
                 </div>
               ) : (
-                <TextArea
-                  autoSize={{ minRows: 2, maxRows: 6 }}
-                  value={getUserClick}
-                  onChange={e => {
-                    setUserClick(e.target.value);
-                    UserAnsClick(e.target.value);
-                  }}
-                />
-              )}
+                  <TextArea
+                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    value={getUserClick}
+                    onChange={e => {
+                      setUserClick(e.target.value);
+                      UserAnsClick(e.target.value);
+                    }}
+                  />
+                )}
               <div className="w-full flex  mt-8 flex-col items-center">
                 {!CalShowAnsOrNot() && (
                   <button
@@ -734,7 +777,7 @@ export default function CourseQuizContent() {
                     onClick={() => {
                       if (
                         getUserAnsBank[
-                          getQuestionPool[getSelectQuestion].questionId
+                        getQuestionPool[getSelectQuestion].questionId
                         ]
                       ) {
                         handleAnsSubmit();
@@ -746,7 +789,9 @@ export default function CourseQuizContent() {
                 )}
 
                 {CalShowAnsOrNot() && (
+
                   <div className="flex flex-col items-center">
+                    {/* <p className="green-500" style={{ fontSize: "20px" }} > แสดงผลการเฉลย</p> */}
                     {" "}
                     <div
                       className="flex flex-col items-start mt-6 w-10/12"
@@ -757,7 +802,7 @@ export default function CourseQuizContent() {
                           className="text-white bg-red-400 p-2 rounded-lg"
                           style={{ minWidth: "400px" }}
                         >
-                          Incorrect
+                          Incorrect ตอบผิด
                         </div>
                       )}
                       {getUserAnsCheckStatus && (
@@ -768,75 +813,98 @@ export default function CourseQuizContent() {
                           Correct
                         </div>
                       )}
+                      <div style={{ marginTop: "2vh" }}>
+                        คําตอบที่ถูกต้อง:
+                      </div>
+                      <div style={{ marginTop: "1vh", marginLeft: "2vw" }}>
+                        {GlobalHook.getGloblaQuizAnswerCorrect}
+                      </div>
+                      {console.log('answer')}
+                      {console.log(GlobalHook.getGloblaQuizAnswerCorrect)}
+                      {/* {console.log(getUserAnsBank[getQuestionPool[getSelectQuestion].questionId].ans)} */}
 
-                      <div>
+
+                      <div style={{ marginTop: "2vh" }}>
+                        คําอธิบาย:
                         {GlobalHook.getGloblaQuizExplainType == "Text" ? (
                           <TextEditor
                             dataIn={GlobalHook.getGloblaQuizExplainField}
-                            dataOut={() => {}}
+                            dataOut={() => { }}
                             readOnly
                             noAll
                           />
                         ) : (
-                          <div style={{ width: "400px", height: "300px" }}>
-                            <div
-                              style={{
-                                padding: "56.25% 0 0 0",
-                                position: "relative"
-                              }}
-                            >
-                              <iframe
-                                src={`https://player.vimeo.com/video/${GlobalHook.getGloblaQuizExplainField}?title=0&byline=0&portrait=0`}
+                            <div style={{ width: "400px", height: "300px" }}>
+                              <div
                                 style={{
-                                  position: "absolute",
-                                  top: 0,
-                                  left: 0,
-                                  width: "100%",
-                                  height: "100%"
+                                  padding: "56.25% 0 0 0",
+                                  position: "relative"
                                 }}
-                                frameBorder="0"
-                                allow="autoplay; fullscreen"
-                                allowFullScreen
-                              ></iframe>
+                              >
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${GlobalHook.getGloblaQuizExplainField}?title=0&byline=0&portrait=0`}
+                                  style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "100%",
+                                    height: "100%"
+                                  }}
+                                  frameBorder="0"
+                                  allow="autoplay; fullscreen"
+                                  allowFullScreen
+                                ></iframe>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                       </div>
                     </div>
                     {!getIsReviewQuestion && <>
-                    {getSelectQuestion + 1 != getQuestionAmount && (
-                      <button
-                        className="bg-blue-500 p-2 text-white font-semibold rounded-lg mt-6"
-                        onClick={() => {
-                          handleNextClick();
-                        }}
-                      >
-                        Next Question >
-                      </button>
-                    )}
+                      {getSelectQuestion + 1 != getQuestionAmount && (
+                        <button
+                          className="bg-blue-500 p-2 text-white font-semibold rounded-lg mt-6"
+                          onClick={() => {
+                            handleNextClick();
+                          }}
+                        >
+                          Next Question >
+                        </button>
+                      )}
                     </>
-                      }
-                   {!getIsReviewQuestion && <>
-                    {getSelectQuestion + 1 == getQuestionAmount && (
-                      <button
-                        className="bg-orange-500 p-2 text-white font-semibold rounded-lg mt-6"
-                        onClick={() => {
-                          ShowResult();
-                        }}
-                      >
-                        View Results >
-                      </button>
-                    )}
+                    }
+                    {!getIsReviewQuestion && <>
+                      {getSelectQuestion + 1 == getQuestionAmount && (
+                        <button
+                          className="bg-orange-500 p-2 text-white font-semibold rounded-lg mt-6"
+                          onClick={() => {
+                            console.log('jaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                            console.log(GlobalHook.getGlobalLessionSelect)
+                            ShowResult();
+                          }}
+                        >
+                          View Results >
+                        </button>
+                      )}
                     </>}
                     {getIsReviewQuestion && (
+                      <>
                         <button
-                        onClick={() => {
-                          RestartQuiz();
-                        }}
-                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
-                      >
-                        Restart
-                      </button>
+                          onClick={() => { GlobalHook.setPrevNextStatus("NextLession") }}
+                          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
+                        >
+                          ไปบทต่อไป
+                        </button>
+
+                        {/* <button
+                          onClick={() => {
+
+                            RestartQuiz();
+                          }}
+                          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400"
+                        >
+                          Restart
+                      </button> */}
+                      </>
                     )}
                   </div>
                 )}

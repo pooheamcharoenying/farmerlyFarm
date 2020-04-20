@@ -49,11 +49,14 @@ user-select: none;
     -webkit-line-clamp: 2; /* number of lines to show */
     -webkit-box-orient: vertical;
  }
+
+ // Background of Main BOx
  .react-tags {
   position: relative;
   padding: 6px 0 0 6px;
   border: 1px solid #D1D1D1;
   border-radius: 1px;
+  // background: teal;
 
   /* shared font styles */
   font-size: 1em;
@@ -71,6 +74,7 @@ user-select: none;
   display: inline;
 }
 
+// Set Color of Tag
 .react-tags__selected-tag {
   display: inline-block;
   box-sizing: border-box;
@@ -78,7 +82,8 @@ user-select: none;
   padding: 6px 8px;
   border: 1px solid #D1D1D1;
   border-radius: 2px;
-  background: #F1F1F1;
+  // background: #F1F1F1;
+  background: white;
 
   /* match the font styles */
   font-size: inherit;
@@ -125,6 +130,8 @@ user-select: none;
   padding: 0;
   border: 0;
   outline: none;
+  background: inherit;
+  color:black;
 
   /* match the font styles */
   font-size: inherit;
@@ -158,6 +165,8 @@ user-select: none;
   border: 1px solid #D1D1D1;
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  position: absolute;
 }
 
 .react-tags__suggestions li {
@@ -167,17 +176,18 @@ user-select: none;
 
 .react-tags__suggestions li mark {
   text-decoration: underline;
-  background: none;
+  background: blue;
   font-weight: 600;
 }
 
 .react-tags__suggestions li:hover {
   cursor: pointer;
-  background: #eee;
+  background: #F4D03F ;
 }
 
 .react-tags__suggestions li.is-active {
-  background: #b7cfe0;
+  background: #F4D03F ;
+  
 }
 
 .react-tags__suggestions li.is-disabled {

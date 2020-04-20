@@ -11,6 +11,9 @@ const TagSchema = new Schema({
   },
   subject: {
     type: String
+  },
+  approval: {
+    type: Boolean
   }
 });
 

@@ -9,7 +9,7 @@ import QuizHead from "./horizonDrag/QuizHead";
 import TextEditor from "./quiz/TextEditor";
 import CreateAnswerDrag from "./quiz/CreateAnswerDrag";
 import VideoUpload from "./quiz/VideoUpload";
-import { SaveAllAction, CheckMutateAction, deleteQuestionsInQuiz, SaveCourseStructureOnly } from "../../actions";
+import { SaveAllAction, CheckMutateAction, deleteQuestionsInQuiz, deleteQuestionById, SaveCourseStructureOnly, getSubjectCategories, getSubjectLevels, deleteMediaFromDB } from "../../actions";
 import TextEditorComp from "../textEditor/TextEditor";
 
 
@@ -66,17 +66,50 @@ const StudioQuizContent = () => {
   const [getQuizDataPool, setQuizDataPool] = useState([{ mock: "1" }]);
 
 
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
+  const [getSubjects, setSubjects] = useState([]);
+  const [getLevels, setLevels] = useState([]);
 
+  useEffect(() => {
+    console.log('getting subjects')
+    getSubjectCategories()
+      .then(data => {
+
+        setSubjects(data)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    getSubjectLevels()
+      .then(data => {
+        console.log('show levels')
+        console.log(data)
+        for (var x of data) {
+          if (x.type == "levelmenu") {
+            console.log('level menu found')
+            console.log(x)
+            setLevels(x.menu)
+          }
+          if (x.type == "subjectmenu") {
+            console.log('subject menu found')
+            console.log(x)
+            setSubjectMenu(x.menu)
+          }
+        }
+        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, []);
 
   useEffect(() => {
     console.log('supersaiya')
     console.log(GlobalHook.getGlobalMediaNew)
-    if(GlobalHook.getGlobalMediaNew){
-      
-      console.log('beijita')
-      console.log(GlobalHook.getGlobalMediaNew)
+    if (GlobalHook.getGlobalMediaNew) {
       setQuizDataPool(GlobalHook.getGlobalMediaNew);
-
     }
 
   }, [GlobalHook.getGlobalMediaNew]);
@@ -90,24 +123,24 @@ const StudioQuizContent = () => {
 
 
   useEffect(() => {
-    if( GlobalHook.getGlobalMessage == "ClearAll"){
-     setInitStateSettingAmountPass(0)
-     setQuizSettingShowAns(null)
-     setQuizSettingTimeCount(null)
-     setQuizSettingRandom(null)
-     setQuizSettingAmountRandom(0)
-     setQuizSettingAmountPass(0)
-    //  setLessionName(getGlobalLessionSelectNew.mediaName)
-     
+    if (GlobalHook.getGlobalMessage == "ClearAll") {
+      setInitStateSettingAmountPass(0)
+      setQuizSettingShowAns(null)
+      setQuizSettingTimeCount(null)
+      setQuizSettingRandom(null)
+      setQuizSettingAmountRandom(0)
+      setQuizSettingAmountPass(0)
+      //  setLessionName(getGlobalLessionSelectNew.mediaName)
 
-     setTimeout(() => {
-       GlobalHook.setGlobalMessage(null)
-       
-       
-     }, 1000);
- 
+
+      setTimeout(() => {
+        GlobalHook.setGlobalMessage(null)
+
+
+      }, 1000);
+
     }
-   }, [GlobalHook.getGlobalMessage]);
+  }, [GlobalHook.getGlobalMessage]);
 
   useEffect(() => {
     setLessionName(getGlobalLessionSelectNew.mediaName);
@@ -135,7 +168,7 @@ const StudioQuizContent = () => {
   }, [getGlobalLessionSelectNew]);
 
 
-  
+
 
 
   //Mutate
@@ -217,7 +250,7 @@ const StudioQuizContent = () => {
       oldCourseStructure[parentIndex].subItems[
         selfIndex
       ].etc5 = getQuizSettingAmountRandom;
-    
+
       // console.log(oldCourseStructure)
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
     }
@@ -243,6 +276,8 @@ const StudioQuizContent = () => {
 
     deleteQuestionsInQuiz(oldCourseStructure[parentIndex].subItems[selfIndex].mediaId);
 
+    deleteMediaFromDB(GlobalHook)
+
     GlobalHook.setGlobalLessionSelect({ mediaType: "CourseOverview" });
 
     if (oldCourseStructure[parentIndex]) {
@@ -261,11 +296,111 @@ const StudioQuizContent = () => {
     const { selfIndex } = GlobalHook.getGloblaQuizQuestionSelect;
     GlobalHook.setGloblaQuizQuestionSelect({});
 
+    console.log('handleDeleteQuestion1')
+    console.log(GlobalHook.getGlobalMediaQuiz)
+    console.log(selfIndex)
+    console.log(oldQuizStructure)
+
     if (oldQuizStructure[selfIndex]) {
+      deleteQuestionById(oldQuizStructure[selfIndex]);
+
       oldQuizStructure.splice(selfIndex, 1);
 
       GlobalHook.setGloblaQuizQuestionSelect(oldQuizStructure);
-      SaveAllAction(GlobalHook);
+      console.log('handleDeleteQuestion2')
+      console.log(GlobalHook.getGlobalMediaQuiz)
+      SaveCourseStructureOnly(GlobalHook);
+    }
+  }
+
+  function renderQuizPassCondition() {
+
+    if(typeof(getQuizDataPool) == "object") {
+      console.log("enter")
+      console.log(typeof(getQuizDataPool))
+      console.log(getQuizDataPool.length)
+      
+      if (getQuizDataPool.length > 1) {
+        return (
+          <>
+            <Select
+              style={{ maxWidth: "100px", width: "100px" }}
+              className="self-center"
+              defaultValue="0"
+              onChange={e => setQuizSettingAmountPass(e)}
+              value={getQuizSettingAmountPass}
+            >
+              <Option value={0}>{0}</Option>
+              {getQuizDataPool.map((temp, index) => (
+                <Option value={index + 1}>{index + 1}</Option>
+              ))}
+  
+            </Select>
+          </>
+        )
+      } else {
+  
+        return (
+          <>
+            <Select
+              style={{ maxWidth: "100px", width: "100px" }}
+              className="self-center"
+              defaultValue="0"
+              onChange={e => setQuizSettingAmountPass(e)}
+              value={getQuizSettingAmountPass}
+            >
+                            <Option value={0}>{0}</Option>
+              
+              <Option value={1}> 1 </Option>
+            </Select>
+          </>
+        )
+      }
+    }
+  }
+
+  function renderQuizRandomCondition() {
+
+    if(typeof(getQuizDataPool) == "object") {
+      console.log("enter")
+      console.log(typeof(getQuizDataPool))
+      console.log(getQuizDataPool.length)
+      
+      if (getQuizDataPool.length > 1) {
+        return (
+          <>
+            <Select
+              style={{ maxWidth: "100px", width: "100px" }}
+              className="self-center"
+              defaultValue="0"
+              onChange={e => setQuizSettingAmountRandom(e)}
+              value={getQuizSettingAmountRandom}
+              disabled={!getQuizSettingRandom}
+            >
+
+  
+            </Select>
+          </>
+        )
+      } else {
+  
+        return (
+          <>
+            <Select
+              style={{ maxWidth: "100px", width: "100px" }}
+              className="self-center"
+              defaultValue="0"
+              onChange={e => setQuizSettingAmountRandom(e)}
+              value={getQuizSettingAmountRandom}
+              disabled={!getQuizSettingRandom}
+            >
+                            <Option value={0}>{0}</Option>
+              
+              <Option value={1}> 1 </Option>
+            </Select>
+          </>
+        )
+      }
     }
   }
 
@@ -280,7 +415,7 @@ const StudioQuizContent = () => {
         />
 
         <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-          {getLessionName} 
+          {getLessionName}
         </div>
         <FaCaretRight
           className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -326,34 +461,55 @@ const StudioQuizContent = () => {
 
         <Input
           value={getLessionName}
-          onChange={e => {setLessionName(e.target.value)}}
+          onChange={e => { setLessionName(e.target.value) }}
         />
       </div>
 
       <div className="flex flex-col text-center mb-6 justify-center">
-          <div className="font-bold text-lg mb-2">Lession Preview</div>
-          <SwitchR
-            className="self-center"
-            onChange={e => setLessionPreview(e)}
-            checked={getLessionPreview}
-          />
-        
-        </div>
+        <div className="font-bold text-lg mb-2">Lesson Preview</div>
+        <SwitchR
+          className="self-center"
+          onChange={e => setLessionPreview(e)}
+          checked={getLessionPreview}
+        />
+
+      </div>
+
+      {console.log("siberia")}
+      {console.log(getQuizDataPool)}
+      {/* {console.log(getQuizDataPool.length)} */}
+
 
       <div className="flex justify-around w-10/12 md:w-4/12 mb-4">
         <div className="flex flex-col text-center">
           <div className="font-bold text-lg mb-2">ข้อกำหนดในการผ่าน</div>
-          <Select
+
+          {renderQuizPassCondition()}
+
+          {/* <Select
             style={{ maxWidth: "100px", width: "100px" }}
             className="self-center"
             defaultValue="1"
             onChange={e => setQuizSettingAmountPass(e)}
             value={getQuizSettingAmountPass}
           >
+           <Option value={1}> Nes No </Option>
+           <Option value={2}> Yes Yo </Option>
+          </Select> */}
+
+          {/* <Select
+            style={{ maxWidth: "100px", width: "100px" }}
+            className="self-center"
+            defaultValue="1"
+            onChange={e => setQuizSettingAmountPass(e)}
+            value={getQuizSettingAmountPass}
+          >
+            
             {getQuizDataPool.map((temp, index) => (
               <Option value={index + 1}>{index + 1}</Option>
-            ))}
-          </Select>
+            ))} 
+
+          </Select> */}
         </div>
 
         <div className="flex flex-col text-center">
@@ -393,7 +549,8 @@ const StudioQuizContent = () => {
       <div className="flex justify-around w-11/12 md:w-4/12 mb-8">
         <div className="flex flex-col text-center ">
           <div className="font-bold text-lg mb-2">สุ่มคำถามหรือไม่</div>
-
+          {console.log("randyselector")}
+          {console.log(getQuizSettingRandom)}
           <SwitchR
             className="self-center"
             onChange={e => setQuizSettingRandom(e)}
@@ -403,7 +560,8 @@ const StudioQuizContent = () => {
 
         <div className="flex flex-col text-center">
           <div className="font-bold text-lg mb-2">จำนวนข้อที่เลือกสุม</div>
-          <Select
+          {renderQuizRandomCondition()}
+          {/* <Select
             style={{ maxWidth: "100px", width: "100px" }}
             className="self-center"
             defaultValue="1"
@@ -414,21 +572,29 @@ const StudioQuizContent = () => {
             {getQuizDataPool.map((temp, index) => (
               <Option value={index + 1}>{index + 1}</Option>
             ))}
-          </Select>
+          </Select> */}
         </div>
       </div>
 
       <div className="flex flex-col text-center mb-6 justify-center">
-          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Course</div>
-          <SwitchR
-            className="self-center"
-            onChange={e => GlobalHook.setLessionTagSameAsCourseStatus(e)}
-            checked={GlobalHook.getLessionTagSameAsCourseStatus}
-          />
-        
-        </div>
+        <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Course</div>
+        <SwitchR
+          className="self-center"
+          onChange={e => GlobalHook.setLessionTagSameAsCourseStatus(e)}
+          checked={GlobalHook.getLessionTagSameAsCourseStatus}
+        />
 
-       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
+      </div>
+
+      {console.log('taggart')}
+      {/* {console.log(getSubjects)} */}
+      {console.log(GlobalHook.getGlobalCourseTagThaiLession)}
+      {console.log(GlobalHook.getGlobalCourseTagEnglishLession)}
+
+      {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession} />}
+
+      {/* {!GlobalHook.getLessionTagSameAsCourseStatus &&         <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} /> } */}
+
 
       <div
         id="QuestionEditorZone"
@@ -499,19 +665,25 @@ const StudioQuizContent = () => {
                 }
               />
             </div>
-           
+
 
             <div className="flex flex-col text-center mb-6 justify-center">
-          <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Lession</div>
-          <SwitchR
-            className="self-center"
-            onChange={e => GlobalHook.setQuizTagSameAsLessionStatus(e)}
-            checked={GlobalHook.getQuizTagSameAsLessionStatus}
-          />
-        
-        </div>
+              <div className="font-bold text-lg mb-2">ใช้ Tag เหมือนกับ Lesson</div>
+              <SwitchR
+                className="self-center"
+                onChange={e => GlobalHook.setQuizTagSameAsLessionStatus(e)}
+                checked={GlobalHook.getQuizTagSameAsLessionStatus}
+              />
 
-       {!GlobalHook.getQuizTagSameAsLessionStatus &&  <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiQuiz} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishQuiz} OutTagThai={GlobalHook.setGlobalCourseTagThaiQuiz} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishQuiz}/>}
+            </div>
+
+            {console.log('cherbio')}
+            {console.log(GlobalHook.getQuizTagSameAsLessionStatus)}
+
+            {!GlobalHook.getQuizTagSameAsLessionStatus && <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThaiQuiz} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishQuiz} OutTagThai={GlobalHook.setGlobalCourseTagThaiQuiz} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishQuiz} />}
+            {/* {!GlobalHook.getQuizTagSameAsLessionStatus &&  <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} />  } */}
+
+
 
             <div className="w-full md:w-10/12 flex flex-col  mb-4">
               <div className="font-bold text-lg mb-2 text-center">
@@ -524,10 +696,10 @@ const StudioQuizContent = () => {
             </div>
           </div>
         ) : (
-          <div className="h-full w-full flex justify-center items-center">
-            โปรดเลือกหรือสร้างคำถามใหม่
-          </div>
-        )}
+            <div className="h-full w-full flex justify-center items-center">
+              โปรดเลือกหรือสร้างคำถามใหม่
+            </div>
+          )}
         <div className="w-full md:w-10/12  flex flex-col  mb-4 mx-auto bg-white">
           {GlobalHook.getGloblaQuizQuestionSelect.questionId && (
             <Tabs type="card">
@@ -585,7 +757,7 @@ const StudioQuizContent = () => {
           )}
         </div>
       </div>
-      
+
       <div style={{ minHeight: "70px" }} />
     </div>
   );

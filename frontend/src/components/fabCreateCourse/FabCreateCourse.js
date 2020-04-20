@@ -65,9 +65,6 @@ export default function FabCreateCourse() {
 
     getSubjectCategories()
       .then(data => {
-        // console.log('banobagen')
-        // console.log(data)
-
         setSubjects(data)
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
       })
@@ -187,6 +184,7 @@ export default function FabCreateCourse() {
   }
 
   function handleAddition(tag) {
+    console.log('tag added')
     if (tag.id) {
       const tagsEng = [].concat(
         GlobalHook.getGlobalCourseTagEnglish,
@@ -422,7 +420,6 @@ export default function FabCreateCourse() {
                 )}
             </div>
 
-            {/* <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} /> */}
             <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} />
 
 
@@ -485,6 +482,10 @@ export default function FabCreateCourse() {
   }
   return (
     <>
+      {console.log("tags english")}
+      {console.log(GlobalHook.getGlobalCourseTagEnglish)}
+      {console.log("tags thai")}
+      {console.log(GlobalHook.getGlobalCourseTagThai)}
       {CreateCoursePopUp()}
       <Tooltip title="Create Course">
         <button

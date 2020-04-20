@@ -30,16 +30,18 @@ router.get("/", async (req, res) => {
     passport.authenticate("jwt", { session: false }),
   
     (req, res) => {
-      console.log(req.body)
+      
       User.findById(req.user.id)
         .then(user => {
             console.log(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId))
+
+
+
           if(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId)[0]){
             res.status(400).json({err:"existing"})
           }else{
             user.schoolCourse.unshift({ schoolId: req.body.schoolId,schoolApproved:false,schoolCourseList:[] });
             user.save().then(user => res.json(user));
-
           }
   
         })
@@ -47,19 +49,49 @@ router.get("/", async (req, res) => {
     }
   );
 
+
+  router.post(
+    "/removemyschool",
+    passport.authenticate("jwt", { session: false }),
+  
+    (req, res) => {
+      console.log('removeMySchool')
+      console.log(req.body)
+      console.log(req.user.id)
+      User.findById(req.user.id)
+        .then(user => {
+            console.log(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId))
+
+            const tempArray = user.schoolCourse;
+            for (index in tempArray) {
+              if (tempArray[index].schoolId == req.body.schoolId) {
+                user.schoolCourse.splice(index,1)
+                user.save().then(user => res.json(user));
+                console.log('schoolRemoveFromUserSuccess')
+              }
+            }
+  
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
+
+
   router.post(
     "/changestudentschoolstatusAction",
     passport.authenticate("jwt", { session: false }),
   
     (req, res) => {
       console.log(req.body)
-      User.findById(req.body.userId)
+      User.findOne({"uid":req.body.userId})
         .then(user => {
         
 
           let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
           user.schoolCourse[SchoolIndex].schoolApproved = req.body.status
+          user.schoolCourse[SchoolIndex].SchoolCourseList = []
 
 
           user.save().then((user) => {
@@ -107,7 +139,7 @@ router.get("/", async (req, res) => {
 
           
            return{
-             userId:item._id,
+             uid:item.uid,
              schoolApproved:fitem[0].schoolApproved
           }
           })
@@ -131,11 +163,17 @@ router.get("/", async (req, res) => {
   
     (req, res) => {
       console.log(req.body)
-      User.findById(req.body.userId)
+      console.log('SeverusSnape')
+      console.log(req.body)
+      User.findOne({"uid":req.body.uid})
         .then(user => {
-        
-
+          console.log('user')
+          console.log(user)
+          console.log('userSchoolCourse')
+          console.log(user.schoolCourse)
           let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
+          console.log('SchoolMatch')
+          console.log(SchoolMatch)
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
           
 
@@ -166,13 +204,13 @@ router.get("/", async (req, res) => {
   
     (req, res) => {
       console.log(req.body)
-      User.findById(req.body.userId)
+      User.findOne({"uid":req.body.userUid})
         .then(user => {
         
 
           let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)
-          user.schoolCourse[SchoolIndex].SchoolCourseList.push(req.body.courseId)
+          user.schoolCourse[SchoolIndex].SchoolCourseList.push( req.body.courseId)
         
           user.save().then((newuser) => {
             res.json(newuser.schoolCourse[SchoolIndex])
@@ -188,9 +226,11 @@ router.get("/", async (req, res) => {
     passport.authenticate("jwt", { session: false }),
   
     (req, res) => {
-      User.findById(req.body.userId)
+      User.findOne({"uid":req.body.userId})
         .then(user => {
-        
+          
+          console.log('delcourseuser')
+          console.log(req.body)
 
           let SchoolMatch = user.schoolCourse.map((item)=>item.schoolId)
           let SchoolIndex = SchoolMatch.indexOf(req.body.schoolId)

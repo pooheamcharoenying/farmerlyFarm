@@ -65,6 +65,19 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
 
   function AddNewQuestionAction (GlobalHook) {
 
+    console.log("quincyjones")
+
+
+    var mediaTagEnglish = [];
+    var mediaTagThai = [];
+      if (GlobalHook.getQuizTagSameAsLessionStatus) {
+    mediaTagEnglish = GlobalHook.getGlobalCourseTagEnglishLession;
+    mediaTagThai = GlobalHook.getGlobalCourseTagThaiLession;   
+  } else {
+    mediaTagEnglish = GlobalHook.getGlobalCourseTagEnglishQuiz;
+    mediaTagThai = GlobalHook.getGlobalCourseTagThaiQuiz;       
+  }
+
   let mockName = " "
   mockName =  GlobalHook.getGloblaQuizQuestionName
 
@@ -82,8 +95,8 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
             lessionName: GlobalHook.getGlobalLessionSelect.mediaName,
             mediaId:GlobalHook.getGlobalLessionSelect.mediaId,
             courseSlug:GlobalHook.getGlobalCourseSlug,
-            quizTagEnglish: GlobalHook.getGlobalCourseTagEnglishQuiz,
-            quizTagThai:  GlobalHook.getGlobalCourseTagThaiQuiz,
+            quizTagEnglish: mediaTagEnglish,
+            quizTagThai:  mediaTagThai,
             quizTagStatus:GlobalHook.getQuizTagSameAsLessionStatus
            
     };
@@ -101,6 +114,45 @@ function FetchQuestionWhenSelectAction (GlobalHook,questionId) {
       });
   }
 
+  async function deleteQuestionById(questionData) {
+    console.log('actionQuizDeleteQuestion')
+    console.log(questionData)
+    const pushData = { 
+      questionId: questionData.questionId
+    };
+    return await axios
+    .post("/api/quiz/deletequestion", pushData)
+    .then(res => {
+      console.log('delete question success')
+      console.log(res.data)
+      return (res.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  async function FetcthAllQuizInCourse(inputCourseId) {
+    const pushData = { 
+      courseId: inputCourseId
+    };
+
+    console.log('pushData')
+    console.log(pushData)
+    return await axios
+      .post("/api/quiz/findquizincourse", pushData)
+      .then(res => {
+        console.log('fetchedQuizData')
+        console.log(res.data)
+        return (res.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+
+
  
 
-  export {FetchQuestionWhenSelectAction,AddNewQuestionAction,FetchQuestionWhenSelectActionStudio}
+  export {deleteQuestionById, FetchQuestionWhenSelectAction,AddNewQuestionAction,FetchQuestionWhenSelectActionStudio, FetcthAllQuizInCourse}

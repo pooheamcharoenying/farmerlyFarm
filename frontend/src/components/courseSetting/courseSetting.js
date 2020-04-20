@@ -11,7 +11,8 @@ import {
   Icon,
   Switch,
   Tag,
-  Popover
+  Popover,
+  Alert,
 } from "antd";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
@@ -29,6 +30,8 @@ import {
   DeleteCourseLessionAction,
   getSubjectCategories,
   getSubjectLevels,
+  DeleteUserCourseDataDB,
+  getUsersInCourse,
 } from "../../actions";
 
 const { TextArea } = Input;
@@ -58,6 +61,7 @@ export default function FabCreateCourse() {
 
   const [getSchoolState, setSchoolState] = useState(false)
 
+  const[getConfirmDeleteCourseTextInput, setConfirmDeleteCourseTextInput] = useState("")
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -85,9 +89,6 @@ export default function FabCreateCourse() {
 
     getSubjectCategories()
       .then(data => {
-        // console.log('banobagen')
-        // console.log(data)
-    
         setSubjects(data)
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
       })
@@ -116,8 +117,6 @@ export default function FabCreateCourse() {
       .catch(error => {
         console.log(error)
       })
-
-
   }, []);
 
   useEffect(() => {
@@ -125,7 +124,10 @@ export default function FabCreateCourse() {
       GlobalHook.setGlobalStudioUploadFile(acceptedFiles[0]);
       GlobalHook.setGlobalcourseImageFileName(acceptedFiles[0].name);
       setImageFileName(acceptedFiles[0].name);
+      console.log('acceptedFiles')
+      console.log(acceptedFiles)
       UploadBtnClick(acceptedFiles[0]);
+
     }
   }, [acceptedFiles]);
 
@@ -169,8 +171,8 @@ export default function FabCreateCourse() {
         .on("build", request => {
           request.httpRequest.headers.Host =
             "https://studysabaiapp.sgp1.digitaloceanspaces.com";
-          request.httpRequest.headers["Content-Length"] = file.size;
-          request.httpRequest.headers["Content-Type"] = file.type;
+          // request.httpRequest.headers["Content-Length"] = file.size;
+          // request.httpRequest.headers["Content-Type"] = file.type;
           request.httpRequest.headers["x-amz-acl"] = "public-read";
         })
         .on("httpUploadProgress", function (progress) {
@@ -199,6 +201,46 @@ export default function FabCreateCourse() {
     });
   }
 
+  function CourseImageDeleteAction(fileName) {
+    return new Promise(function (resolve, reject) {
+      const params = { Bucket: "studysabaiapp", Key: fileName };
+      // Sending the file to the Spaces
+      console.log('blabo')
+      console.log(fileName)
+      S3.deleteObject(params)
+        .on("build", request => {
+          // request.httpRequest.headers.Host = GlobalHook.getGlobalCourseImage;
+          // request.httpRequest.headers["Content-Length"] = file.size;
+          // request.httpRequest.headers["Content-Type"] = file.type;
+          request.httpRequest.headers["x-amz-acl"] = "public-read";
+        })
+        .on("httpUploadProgress", function (progress) {
+          // setuploadPercent(
+          //   Math.round((progress.loaded / progress.total) * 100)
+          // );
+          // console.log(
+          //   Math.round((progress.loaded / progress.total) * 100) + "% done"
+          // );
+        })
+        .send((err, data) => {
+          if (err) {
+            // reject(err);
+            // GlobalHook.setGlobalStudioUploadFile(null);
+            // setUploadingShow("error");
+            // message.error("Upload Error Try Again");
+            // setUploadingShow(false);
+          } else {
+            // setUploadingShow("done");
+
+            resolve(
+              `https://studysabaiapp.sgp1.digitaloceanspaces.com/${fileName}`
+            );
+            console.log('deleteResolved')
+          }
+        });
+    });
+  }
+
   function handleDelete(i) {
     const tagsEng = GlobalHook.getGlobalCourseTagEnglish.slice(0);
     const tagsThai = GlobalHook.getGlobalCourseTagThai.slice(0);
@@ -211,6 +253,7 @@ export default function FabCreateCourse() {
   }
 
   function handleAddition(tag, lang) {
+
     if (tag.id) {
       const tagsEng = [].concat(
         GlobalHook.getGlobalCourseTagEnglish,
@@ -310,8 +353,11 @@ export default function FabCreateCourse() {
   }
 
   function SaveNewTagAction() {
+    
+    console.log('saveNewTagger')
+    
     axios
-      .post(`/api/tag/addtag/`, { english: getNewTagEnglish, thai: getNewTagThai })
+      .post(`/api/tag/addtag/`, { english: getNewTagEnglish, thai: getNewTagThai, subject: "None" , approval: false })
       .then(res => {
         const tagsEng = [].concat(
           GlobalHook.getGlobalCourseTagEnglish,
@@ -329,6 +375,12 @@ export default function FabCreateCourse() {
       .catch(err => console.log(err));
   }
 
+  function handleDeleteCourseInput(event) {
+    console.log('typing')
+    console.log(event.target.value)
+    setConfirmDeleteCourseTextInput( event.target.value )
+  }
+
   function CreateCoursePopUp() {
     return (
       <Modal
@@ -343,26 +395,65 @@ export default function FabCreateCourse() {
 
             <Popover
               content={
-                <div className="flex w-full justify-center">
-                  <div
-                    className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
-                    onClick={() => {
+                <div>
+                    {/* <label> {GlobalHook.getGlobalCourseName} </label> */}
+                  <div style={{marginBottom:"1vh"}}>
 
-                      setShowConfirmDel(false);
-                      DeleteCourseLessionAction(GlobalHook, courseSlug);
-                    }}
-                  >
-                    Delete
+                    <label>เขียนชื่อคอร์สเพื่อยืนยันการลบคอร์ส: </label>
+                    <input onChange={handleDeleteCourseInput} style={{ backgroundColor: "lightgray", marginLeft:"1vw" }}></input>
+                  </div>
+
+                  {(getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName)?
+                       <Alert message="พร้อมที่จะลบคอร์ส กดปุ่ม Delete เพื่อลบทิ้งถาวร" type="success" />
+                      :
+                      <Alert message="ยังไม่พร้อมจะลบคอร์ส เขียนชื่อไม่ถูกต้อง" type="warning" />
+                    }
+
+                  <div className="flex w-full justify-center">
+                    <div
+                      className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
+                      style = {{color: (getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName)? "red":"#718096"   }}
+                      onClick={() => {
+
+                        if (getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName) {
+
+                          GlobalHook.setGlobalStudioUploadFile(null);
+                          setImageData(null);
+                          GlobalHook.setGlobalCourseImage(null);
+                          setUploadingShow(null);
+                          GlobalHook.setGlobalCourseImage(null);
+
+                          setShowConfirmDel(false);
+                          console.log('startDeleteCourse')
+                          CourseImageDeleteAction(GlobalHook.getGlobalcourseImageFileName);
+
+                          DeleteUserCourseDataDB(GlobalHook)
+                            .then(res => {
+                              console.log('sodoyo')
+                              DeleteCourseLessionAction(GlobalHook, courseSlug);
+                            })
+                        } else {
+                          console.log('delete failed: name not matching')
+                          console.log(getConfirmDeleteCourseTextInput)
+
+                          // alert("การลบคอร์สไม่สําเร็จเพราะชื่อคอร์สที่เขียนไม่ถูกต้อง");
+                        }
+                      }}
+                    >
+                      Delete
                   </div>{" "}
-                  <div
-                    className="text-gray-600 hover:text-gray-500 cursor-pointer"
-                    onClick={() => {
-                      setShowConfirmDel(false);
-                    }}
-                  >
-                    cancel
+                    <div
+                      className="text-gray-600 hover:text-gray-500 cursor-pointer"
+                      onClick={() => {
+                        setShowConfirmDel(false);
+                        
+                      }}
+                    >
+                      Cancel
+                  </div>
                   </div>
                 </div>
+
               }
               title="Are you sure to delete this Course?"
               trigger="click"
@@ -480,6 +571,7 @@ export default function FabCreateCourse() {
                   GlobalHook.setGlobalCourseImage(null);
                   setUploadingShow(null);
                   GlobalHook.setGlobalCourseImage(null);
+                  CourseImageDeleteAction(GlobalHook.getGlobalcourseImageFileName);
                 }}
               />
             </div>
@@ -487,6 +579,11 @@ export default function FabCreateCourse() {
               className="bg-white flex justify-center items-center flex-col border"
               style={{ minHeight: "200px", width: "100%" }}
             >
+              {console.log('imagine')}
+              {console.log(GlobalHook.getGlobalCourseImage)}
+              {console.log(GlobalHook.getGlobalcourseImageFileName)}
+
+
               {GlobalHook.getGlobalCourseImage ? (
                 <div
                   className="mt-4 flex flex-col"

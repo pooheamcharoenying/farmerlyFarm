@@ -128,4 +128,36 @@ router.post("/free", async (req, res) => {
     });
 });
 
+//Mock Get Quiz
+router.post("/deletequestion", async (req, res) => {
+  console.log('delQ')
+  Quiz.findOneAndDelete({ questionId: req.body.questionId })
+    .then(doc => {
+      console.log('delQ:success')
+      res.status(200).json({ status: "200", data: doc });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+
+
+
+//Mock Get Quiz
+router.post("/findquizincourse", async (req, res) => {
+  console.log('ready to fetch quizzes in course')
+  console.log(req.body.courseId)
+  Quiz.find({ courseId: req.body.courseId })
+    .then(data => {
+      console.log(data)
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
 module.exports = router;

@@ -216,6 +216,9 @@ const Store = props => {
   const [getGlobalMatchCourseSchool,setGlobalMatchCourseSchool] = useState([])
 
   const [getGlobalSchoolInfo,setGlobalSchoolInfo] = useState([])
+  const [getFilteredCourseData, setFilteredCourseData] = useState([])
+  const [getGlobalCourseMainSubjectFilter, setGlobalCourseMainSubjectFilter] = useState(["All Subjects"])
+
 
   ///Generate GlobalHook///
   const GlobalHook = {
@@ -469,9 +472,13 @@ const Store = props => {
     setGlobalMatchCourseSchool,
 
     getGlobalSchoolInfo,
-    setGlobalSchoolInfo
+    setGlobalSchoolInfo,
 
+    getFilteredCourseData,
+    setFilteredCourseData,
 
+    getGlobalCourseMainSubjectFilter,
+    setGlobalCourseMainSubjectFilter,
 
 
   };

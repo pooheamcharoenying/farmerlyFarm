@@ -20,7 +20,7 @@ function getSubjectCategories() {
       // console.log('pooh subject')
       // console.log(response.data)
       return response.data
-  })
+    })
 }
 
 function getSubjectLevels() {
@@ -30,7 +30,7 @@ function getSubjectLevels() {
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
       return response.data
-  })
+    })
 }
 
 function getSubjectMenu() {
@@ -40,13 +40,57 @@ function getSubjectMenu() {
     .then(response => {
       // returning the data here allows the caller to get it through another .then(...)
       return response.data
-  }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+}
+
+function getUsersInCourse(GlobalHook) {
+  console.log('getting users in course')
+
+  // const courseId = courseIden;
+  // return axios
+  //   .get("/api/course/usersInCourse")
+  //   .then(response => {
+  //     // returning the data here allows the caller to get it through another .then(...)
+  //     var tempArray = [];
+  //     for (var user of response.data) {
+  //       if (user.courseSubscription.length > 0) {
+  //         for (var course of user.courseSubscription) {
+  //           if (course.courseId == courseId) {
+  //             console.log("match found")
+  //             console.log(user.uid)
+  //             tempArray.push(user)
+  //           }
+  //         }
+  //       }
+  //     }
+  //     return tempArray
+  // }).catch(err => console.log(err));
+
+  const pushData = {
+    courseId: GlobalHook.getGlobalcourseId,
+  };
+
+  console.log('immigration say whatydoop')
+  console.log(pushData)
+  return axios
+    .post("/api/course/usersInCourse", pushData)
+    .then(res => {
+      console.log('successorial')
+      // GlobalHook.setGlobalCoursePool(res.data);
+      // GlobalHook.setGlobalLoading(false);
+      return res.data
+    })
+    .catch(err => console.log(err));
+
+
+
+
 }
 
 function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
-  // console.log('creating new vimeo folder')  
-  // console.log(courseName)
-  // console.log(courseTeacher)
+  console.log('creating new vimeo folder')
+  console.log(courseName)
+  console.log(courseTeacher)
   var tempString = courseName + " " + courseTeacher
   // console.log('cozmoanki')
   // console.log(tempString)
@@ -54,43 +98,44 @@ function CreateVimeoFolder(courseName, courseTeacher, inputCourseName) {
     folderName: tempString,
     courseName: inputCourseName
   })
-  .then( response => {
-    console.log('got a response')
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .then(response => {
+      console.log('got a response')
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
-function MoveVimeoVideoToFolder(res,GlobalHook) {
+function MoveVimeoVideoToFolder(res, GlobalHook) {
   const newVideoCode = res.data.uri.replace("/videos/", "");
-  // console.log('moving video to a new folder')  
-  // console.log(newVideoCode)
-  // console.log(GlobalHook.getGlobalVimeoId)
+  console.log('moving video to a new folder')
+  console.log(newVideoCode)
+  console.log(GlobalHook.getGlobalVimeoId)
+  GlobalHook.setGlobalMediaVideo(newVideoCode)
 
   axios.post('/api/course/moveVideoFolder', {
     videoId: newVideoCode,
     videoFolderId: GlobalHook.getGlobalVimeoId
   })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 function deleteQuestionsInQuiz(input) {
   axios.post('/api/course/deleteQuizQuestions', {
     mediaId: input
   })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   console.log('call to delte questions in quiz')
 }
 
@@ -192,11 +237,11 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
     courseTag: GlobalHook.getGlobalCourseTag,
     courseDescription: GlobalHook.getGlobalCourseDescription,
     courseSlug: courseSlug,
-    courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
-    coursePrice:GlobalHook.getGlobalCoursePrice,
-    courseFee:GlobalHook.getGlobalCourseFee,
-    courseTagThai:GlobalHook.getGlobalCourseTagThai,
-    courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
+    courseImageFileName: GlobalHook.getGlobalcourseImageFileName,
+    coursePrice: GlobalHook.getGlobalCoursePrice,
+    courseFee: GlobalHook.getGlobalCourseFee,
+    courseTagThai: GlobalHook.getGlobalCourseTagThai,
+    courseTagEnglish: GlobalHook.getGlobalCourseTagEnglish,
     courseVimeoId: "defualt",
     coursePublic:GlobalHook.getGlobalPublicCourseStatus,
     courseSchool:GlobalHook.getGlobalSchoolCourseStatus,
@@ -219,9 +264,7 @@ function CreateCourseAction(GlobalHook, setModalOpenStatus) {
       console.log(GlobalHook.getGlobalCourseName)
       CreateVimeoFolder(GlobalHook.getGlobalCourseName, GlobalHook.getGlobalCourseTeacher, GlobalHook.getGlobalCourseName)
 
-
       window.location.href = `/teacher/${courseSlug}`;
-
 
     })
     .catch(err => {
@@ -245,7 +288,13 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
       GlobalHook.setGlobalLoading(false);
 
       if (res.data.data.mediaType == "Video") {
-        GlobalHook.setGlobalMediaVideo(res.data.data.mediaContent);
+        console.log('zimbabwe')
+        if (res.data.data.mediaContent == "") {
+          GlobalHook.setGlobalMediaVideo("");
+        } else {
+          GlobalHook.setGlobalMediaVideo(res.data.data.mediaContent);
+        }
+        console.log(res.data.data.mediaContent)
       } else if (res.data.data.mediaType == "Document") {
         GlobalHook.setGlobalMediaDocument(res.data.data.mediaContent);
       } else if (res.data.data.mediaType == "Quiz") {
@@ -256,14 +305,14 @@ function GetMediaFreeAction(GlobalHook, mediaId) {
       GlobalHook.setGlobalCourseTagThaiLession(res.data.data.mediaTagThai)
       GlobalHook.setLessionTagSameAsCourseStatus(res.data.data.mediaTagStatus)
 
-    
+
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-function GetCourseSettingAction(GlobalHook,courseSlug) {
+function GetCourseSettingAction(GlobalHook, courseSlug) {
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
@@ -274,7 +323,7 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
     .post("/api/course/getcoursesetting", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
-  
+
       GlobalHook.setGlobalCourseSubject(res.data.courseSubject)
       GlobalHook.setGlobalCourseLevel(res.data.courseLevel)
       GlobalHook.setGlobalCourseTeacher(res.data.courseTeacher)
@@ -300,30 +349,49 @@ function GetCourseSettingAction(GlobalHook,courseSlug) {
     });
 }
 
-function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
+async function UpdateCourseTag( courseId, newEnglishTag, newThaiTag) {
+  const pushData = {
+    _id: courseId,
+    courseTagEnglish: newEnglishTag,
+    courseTagThai: newThaiTag,
+  };
+
+  console.log('IN_THE_ACTION')
+  axios
+    .post("/api/course/updatetag", pushData)
+    .then(res => {
+      console.log('updateTagSuccess')
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+
+function SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus) {
   const NewCourseSlug = GlobalHook.getGlobalCourseName
     .replace(/\s/g, "-")
     .toString();
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
-        courseSlug: courseSlug,
-        NewCourseSlug:NewCourseSlug,
-        courseName: GlobalHook.getGlobalCourseName,
-        courseDescription: GlobalHook.getGlobalCourseDescription,
-        courseTeacher: GlobalHook.getGlobalCourseTeacher,
-        courseLevel: GlobalHook.getGlobalCourseLevel,
-        courseSubject: GlobalHook.getGlobalCourseSubject,
-        courseImage: GlobalHook.getGlobalCourseImage,
-        courseTag: GlobalHook.getGlobalCourseTag,
-        courseImageFileName:GlobalHook.getGlobalcourseImageFileName,
-        coursePrice:GlobalHook.getGlobalCoursePrice,
-        courseFee:GlobalHook.getGlobalCourseFee,
-        courseTagThai:GlobalHook.getGlobalCourseTagThai,
-        courseTagEnglish:GlobalHook.getGlobalCourseTagEnglish,
-        courseVimeoId:GlobalHook.getGlobalVimeoId,
-        coursePublic:GlobalHook.getGlobalPublicCourseStatus,
-        courseSchool:GlobalHook.getGlobalSchoolCourseStatus
+    courseSlug: courseSlug,
+    NewCourseSlug: NewCourseSlug,
+    courseName: GlobalHook.getGlobalCourseName,
+    courseDescription: GlobalHook.getGlobalCourseDescription,
+    courseTeacher: GlobalHook.getGlobalCourseTeacher,
+    courseLevel: GlobalHook.getGlobalCourseLevel,
+    courseSubject: GlobalHook.getGlobalCourseSubject,
+    courseImage: GlobalHook.getGlobalCourseImage,
+    courseTag: GlobalHook.getGlobalCourseTag,
+    courseImageFileName: GlobalHook.getGlobalcourseImageFileName,
+    coursePrice: GlobalHook.getGlobalCoursePrice,
+    courseFee: GlobalHook.getGlobalCourseFee,
+    courseTagThai: GlobalHook.getGlobalCourseTagThai,
+    courseTagEnglish: GlobalHook.getGlobalCourseTagEnglish,
+    courseVimeoId: GlobalHook.getGlobalVimeoId,
+    coursePublic: GlobalHook.getGlobalPublicCourseStatus,
+    courseSchool: GlobalHook.getGlobalSchoolCourseStatus
   };
 
 
@@ -333,19 +401,19 @@ function SaveCourseSetting(GlobalHook,courseSlug,setModalOpenStatus) {
       GlobalHook.setGlobalLoading(false);
       setModalOpenStatus(false)
 
-      console.log( GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher)
+      console.log(GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher)
 
       axios.post('/api/course/editVimeoFolderName', {
         folderName: GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher,
         vimeoId: GlobalHook.getGlobalVimeoId
       })
-      .then(function (response) {
-        console.log(response);
-        window.location.href = `/teacher/${NewCourseSlug}`;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then(function (response) {
+          console.log(response);
+          window.location.href = `/teacher/${NewCourseSlug}`;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
 
     })
@@ -391,7 +459,7 @@ function UpdataCoursepublishAction(GlobalHook, courseSlug, coursePublish) {
     });
 }
 
-function DeleteCourseLessionAction(GlobalHook,courseSlug) {
+function DeleteCourseLessionAction(GlobalHook, courseSlug) {
   GlobalHook.setGlobalLoading(true);
 
   const pushData = {
@@ -403,12 +471,14 @@ function DeleteCourseLessionAction(GlobalHook,courseSlug) {
     .post("/api/course/delete", pushData)
     .then(res => {
       GlobalHook.setGlobalLoading(false);
-      window.location.href="/teacher";
+      window.location.href = "/teacher";
     })
     .catch(err => {
       console.log(err);
     });
 }
+
+
 
 function SetCourseReviewAction(GlobalHook, courseReview) {
   GlobalHook.setGlobalLoading(true);
@@ -432,6 +502,76 @@ function SetCourseReviewAction(GlobalHook, courseReview) {
     });
 }
 
+async function deleteVideoMediaFromDB(GlobalHook) {
+  console.log('delete video media from db')
+  const pushData = {
+    courseId: GlobalHook.getGlobalcourseId,
+    mediaId: GlobalHook.getGlobalLessionSelect.mediaId,
+    vimeoVideoId: GlobalHook.getGlobalMediaVideo,
+
+  };
+
+  return axios
+    .post("/api/coursemedia/deletemediaitemfromdb", pushData)
+    .then(res => {
+      console.log('success: delete video media from db')
+
+      if (pushData.vimeoVideoId != "") {
+        return axios
+          .post("/api/course/deleteVimeoVideo", pushData)
+          .then(res => {
+            console.log('success: delete video from vimeo')
+            return (res.data)
+          })
+          .catch(err => {
+            return console.log(err);
+          });
+      }
+
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+}
+
+async function deleteVimeoVideo(vimeoVideoId) {
+
+  const pushData = {
+    vimeoVideoId: vimeoVideoId,
+  };
+
+  console.log('delete video media from db')
+  console.log(vimeoVideoId)
+  
+  return axios
+    .post("/api/course/deleteVimeoVideo", pushData)
+    .then(res => {
+      console.log('success: delete video from vimeo')
+      return (res.data)
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+}
+
+async function deleteMediaFromDB(GlobalHook) {
+  console.log('delete media item from db')
+  const pushData = {
+    courseId: GlobalHook.getGlobalcourseId,
+    mediaId: GlobalHook.getGlobalLessionSelect.mediaId,
+  };
+
+  return axios
+    .post("/api/coursemedia/deletemediaitemfromdb", pushData)
+    .then(res => {
+      console.log('success: delete media item from db')
+
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+}
+
 export {
   getCoursePoolAction,
   getCoursePoolAllAction,
@@ -451,4 +591,9 @@ export {
   getSubjectMenu,
   deleteQuestionsInQuiz,
   MoveVimeoVideoToFolder,
+  getUsersInCourse,
+  deleteVideoMediaFromDB,
+  deleteMediaFromDB,
+  deleteVimeoVideo,
+  UpdateCourseTag,
 };
