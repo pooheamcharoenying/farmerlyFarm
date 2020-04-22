@@ -374,6 +374,9 @@ function SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus) {
     .toString();
   GlobalHook.setGlobalLoading(true);
 
+  console.log('savingSetting')
+  console.log(GlobalHook.getGlobalSchoolCourseId)
+
   const pushData = {
     courseSlug: courseSlug,
     NewCourseSlug: NewCourseSlug,
@@ -391,7 +394,8 @@ function SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus) {
     courseTagEnglish: GlobalHook.getGlobalCourseTagEnglish,
     courseVimeoId: GlobalHook.getGlobalVimeoId,
     coursePublic: GlobalHook.getGlobalPublicCourseStatus,
-    courseSchool: GlobalHook.getGlobalSchoolCourseStatus
+    courseSchool: GlobalHook.getGlobalSchoolCourseStatus,
+    courseSchoolId: GlobalHook.getGlobalSchoolCourseId,
   };
 
 

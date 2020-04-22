@@ -133,12 +133,17 @@ export default function FabCreateCourse() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
-      if (GlobalHook.getGlobalUser.role == "admin") {
-        setSchoolState(true)
+      if (GlobalHook.getGlobalUser.schoolAdminId) {
+        if (GlobalHook.getGlobalUser.schoolAdminId != "") {
+          setSchoolState(true)
+        }
       }
-      if (GlobalHook.getGlobalUser.role == "school") {
-        setSchoolState(true)
-      }
+      // if (GlobalHook.getGlobalUser.role == "admin") {
+      //   setSchoolState(true)
+      // }
+      // if (GlobalHook.getGlobalUser.role == "school") {
+      //   setSchoolState(true)
+      // }
     }
   }, [GlobalHook.getGlobalUser]);
 
@@ -551,12 +556,13 @@ export default function FabCreateCourse() {
 
           <div className="flex flex-col text-center mb-4">
             <div className="font-bold text mb-2">รายละเอียดคอร์ส</div>
+
             <TextArea
               onChange={e =>
                 GlobalHook.setGlobalCourseDescription(e.target.value)
               }
               value={GlobalHook.getGlobalCourseDescription}
-              autoSize={{ minRows: 3, maxRows: 5 }}
+              // autoSize={{ minRows: 3, maxRows: 5 }}
             />
           </div>
 
@@ -718,7 +724,7 @@ export default function FabCreateCourse() {
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
-                  onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
+                  onClick={e => { console.log('globalUser'); console.log(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseId(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseStatus(e) } }
                 />
 
               </div>

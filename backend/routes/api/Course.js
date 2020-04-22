@@ -503,7 +503,8 @@ router.post(
         courseTagEnglish: req.body.courseTagEnglish,
         courseTagThai: req.body.courseTagThai,
         coursePublic:req.body.coursePublic,
-        courseSchool:req.body.courseSchool
+        courseSchool:req.body.courseSchool,
+        courseSchoolId: req.body.courseSchoolId, 
       },
       { new: true },
       (err, doc) => {

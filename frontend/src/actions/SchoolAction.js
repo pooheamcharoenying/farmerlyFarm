@@ -13,6 +13,43 @@ function getSchoolPoolAction(GlobalHook) {
     .catch(err => console.log(err));
 }
 
+// Edit the database of an exisiting school.
+function EditSchoolAction(GlobalHook, schoolId, schoolUpdateData) {
+  GlobalHook.setGlobalLoading(true);
+  const pushData = { schoolId, schoolUpdateData };
+  const pushDataEmail = { email: schoolUpdateData.schoolAdminEmail }
+
+  axios
+    .post("/api/school/editschooldb", pushData)
+    .then(res => {
+      console.log('editSchoolDBSuccess')
+
+      axios
+        .post("/api/user/getfirebaseuserbyemail", pushDataEmail)
+        .then(res => {
+          console.log('getUserFromEmailSuccess')
+          console.log(res.data)
+
+          const pushDataUser = { uid: res.data.uid, schoolId: schoolId}
+
+          axios
+            .post("/api/school/updateuserschooladmin", pushDataUser)
+            .then(res => {
+              console.log('updateUserSchoolAdminSuccess')
+              console.log(res.data)
+  
+              GlobalHook.setGlobalLoading(false);
+            })
+            .catch(err => console.log(err));
+    
+        })
+        .catch(err => console.log(err));
+    
+    })
+    .catch(err => console.log(err));
+}
+
+// The user requests registration to a school...
 function AddMyNewSchoolAction(GlobalHook, schoolId) {
   GlobalHook.setGlobalLoading(true);
   const pushData = { schoolId };
@@ -28,7 +65,7 @@ function AddMyNewSchoolAction(GlobalHook, schoolId) {
     .catch(err => console.log(err));
 }
 
-
+// The user removes registration request or membership to a school...
 function RemoveMySchoolAction(GlobalHook, schoolId) {
   GlobalHook.setGlobalLoading(true);
   const pushData = { schoolId };
@@ -269,6 +306,7 @@ export {
   getSchoolIdBySlugAction,
   getSchoolInfoByIdAction,
   handleSchoolInviteAcceptAction,
-  RemoveMySchoolAction
+  RemoveMySchoolAction,
+  EditSchoolAction,
 
 }

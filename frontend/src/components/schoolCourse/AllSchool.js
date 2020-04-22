@@ -6,8 +6,14 @@ import SchoolCard from "../courseCard/SchoolCard";
 
 import CourseCard from '../courseCard/CourseCard'
 import {UpdataCourseStatusAction, getSchoolPoolAction} from '../../actions'
+
+import { useHistory } from "react-router-dom";
+
+
 export default function AllSchool() {
 
+  let history = useHistory();
+  
     const GlobalHook = useContext(GlobalContext)
     
     const [getSchoolMatchPool, setSchoolMatchPool] = useState([]);
@@ -40,8 +46,9 @@ export default function AllSchool() {
               <div             
                 key={i}
                 className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
-                // onClick={() => history.push(`/course/${courseData.courseSlug}`)}
-                onClick={()=>window.location.href=`/school/${schoolData.schoolSlug}`}
+                onClick={()=>{
+                  history.push(`/school`)
+                  window.location.href=`/school/${schoolData.schoolSlug}`} }
               >
                 <SchoolCard schoolData={schoolData} />
               </div>

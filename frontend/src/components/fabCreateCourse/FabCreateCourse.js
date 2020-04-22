@@ -106,16 +106,22 @@ export default function FabCreateCourse() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
-      if (GlobalHook.getGlobalUser.role == "admin") {
-        setSchoolState(true)
+      if (GlobalHook.getGlobalUser.schoolAdminId) {
+        if (GlobalHook.getGlobalUser.schoolAdminId != "") {
+          setSchoolState(true)
+        }
       }
-      if (GlobalHook.getGlobalUser.role == "school") {
-        setSchoolState(true)
-      }
+      // if (GlobalHook.getGlobalUser.role == "admin") {
+      //   setSchoolState(true)
+      // }
+      // if (GlobalHook.getGlobalUser.role == "school") {
+      //   setSchoolState(true)
+      // }
     }
   }, [GlobalHook.getGlobalUser]);
 
   function UploadBtnClick(file) {
+    console.log('uploadBtnClick')
     setUploadingShow("initing");
     handleImageTransform(file);
   }
@@ -369,6 +375,7 @@ export default function FabCreateCourse() {
                             style={{ width: "100px" }}
                             onClick={() => UploadBtnClick()}
                           >
+                            {console.log('uploadingmode3')}
                             Upload
                           </button>
                         )}
@@ -467,7 +474,7 @@ export default function FabCreateCourse() {
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
-                  onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
+                  onClick={e => { console.log('globalUser'); console.log(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseId(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseStatus(e) } }
                 />
 
               </div>

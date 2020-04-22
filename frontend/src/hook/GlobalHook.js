@@ -203,6 +203,7 @@ const Store = props => {
 
   const [getGlobalPublicCourseStatus,setGlobalPublicCourseStatus] = useState(true)
   const [getGlobalSchoolCourseStatus,setGlobalSchoolCourseStatus] = useState(false)
+  const [    getGlobalSchoolCourseId,  setGlobalSchoolCourseId ] = useState("")
 
   //School
   const [getGlobalSchoolSlug,setGlobalSchoolSlug] = useState()
@@ -455,6 +456,9 @@ const Store = props => {
 
     getGlobalSchoolCourseStatus,
     setGlobalSchoolCourseStatus,
+
+    getGlobalSchoolCourseId,
+    setGlobalSchoolCourseId,
 
     getGlobalSchoolSlug,
     setGlobalSchoolSlug,

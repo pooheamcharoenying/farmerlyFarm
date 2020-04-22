@@ -21,11 +21,14 @@ export default function Dashboard() {
   const [getStudentList, setStudentList] = useState([])
 
   useEffect(() => {
+
     if (GlobalHook.getGlobalUser) {
       FindStudentBySchoolAction(
         GlobalHook,
         GlobalHook.getGlobalUser.schoolAdminId
       );
+      console.log('jiffyjaff')
+      console.log(GlobalHook.getGlobalUser.schoolAdminId)
       getmatchschoolcourseAction(GlobalHook, GlobalHook.getGlobalUser.schoolAdminId)
 
       getSchoolInfoByIdAction(GlobalHook, GlobalHook.getGlobalUser.schoolAdminId)

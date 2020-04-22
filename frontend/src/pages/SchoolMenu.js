@@ -12,9 +12,17 @@ import AllCourse from "../components/allCourse/AllCourse";
 import Footer from "../components/footer/Footer";
 import { getCoursePoolAction,getSchoolIdBySlugAction, getSchoolPoolAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
+
+
+
+
 export default function SchoolMenu() {
   const GlobalHook = useContext(GlobalContext);
-    useEffect(() => {
+
+
+
+
+  useEffect(() => {
         getCoursePoolAction(GlobalHook);
         getSchoolPoolAction(GlobalHook);
     }, [])

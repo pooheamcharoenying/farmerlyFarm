@@ -24,6 +24,38 @@ router.get("/", async (req, res) => {
       });
   });
 
+  router.post(
+    "/editschooldb",
+
+    (req, res) => {
+      const schoolUpdateData = req.body.schoolUpdateData;
+      console.log('schoolUpdateData')
+      console.log(schoolUpdateData)
+      School.findOneAndUpdate({"_id":req.body.schoolId}, schoolUpdateData, {new:true} )
+        .then(schoolResponse => {
+          console.log('schoolResponse')
+          console.log(schoolResponse)
+          res.status(200).json(schoolResponse);
+  
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+    }
+  );
+
+  router.post(
+    "/updateuserschooladmin",
+  
+    (req, res) => {
+      User.findOneAndUpdate({"uid":req.body.uid}, {schoolAdminId: req.body.schoolId}, {new:true} )
+        .then(user => {
+          console.log('schoolAdminIdUpdateSuccess')
+          res.status(200).json(user);
+        })
+        .catch(err => {console.log(err);res.status(400).json(err)});
+
+
+    }
+  );
 
   router.post(
     "/addmynewschool",
@@ -34,8 +66,6 @@ router.get("/", async (req, res) => {
       User.findById(req.user.id)
         .then(user => {
             console.log(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId))
-
-
 
           if(user.schoolCourse.filter((item)=>item.schoolId == req.body.schoolId)[0]){
             res.status(400).json({err:"existing"})

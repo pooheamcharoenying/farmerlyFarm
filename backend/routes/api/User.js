@@ -326,8 +326,31 @@ router.post(
         .catch(function (error) {
           console.log("Error fetching user data:", error);
           res.status(400).json(error);
-        }); s
+        }); 
     });
+  }
+);
+
+
+router.post(
+  "/getfirebaseuserbyemail",
+
+  (req, res) => {
+      console.log('getFirebaseByEmail')
+      console.log(req.body.email);
+      admin
+        .auth()
+        .getUserByEmail(req.body.email)
+        .then(function (userRecord) {
+          console.log('resutyGetUserByEmail')
+          console.log(userRecord)
+          res.status(200).json(userRecord.toJSON());
+        })
+        .catch(function (error) {
+          console.log("Error fetching user data:", error);
+          res.status(400).json(error);
+        }); 
+    
   }
 );
 

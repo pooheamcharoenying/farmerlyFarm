@@ -1,14 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react'
 import ScrollContainer from 'react-indiana-drag-scroll'
-import { Switch, Modal, Input, Select } from 'antd'
+import { Switch, Modal, Input, Select, Tooltip, Button } from 'antd'
 import { GlobalContext } from '../../hook/GlobalHook'
 
 import { FaEdit } from "react-icons/fa"
 
 import CourseCard from '../courseCard/CourseCard'
-import { UpdataCourseStatusAction, UpdateCourseTag, getSubjectCategories } from '../../actions'
+import SchoolCard from "../courseCard/SchoolCard";
+
+import { UpdataCourseStatusAction, UpdateCourseTag, getSubjectCategories, getSchoolPoolAction } from '../../actions'
 import axios from "axios";
 
+import SchoolAdmin from "./AdminSchool";
 
 
 
@@ -43,8 +46,12 @@ export default function AdminCourse() {
 
     const [getLoginStatus, setLoginStatus] = useState(false)
 
-    useEffect(() => {
+    // School Management States
+    const [getEditSchoolModal, setEditSchoolModal] = useState(false)
+    const [getEditSchoolSelected, setEditSchoolSelected] = useState(false)
+    const [getEditSchoolSelectedName, setEditSchoolSelectedName] = useState(false)
 
+    useEffect(() => {
         axios
             .get(`/api/tag/getalltags/`)
             .then(res => {
@@ -90,11 +97,11 @@ export default function AdminCourse() {
         setTagModalStatus(false)
     }
 
+
     function adminSucessfullySignedIn() {
         return (
             <div className="bg-blue-300 flex flex-col py-10 items-center" style={{ minHeight: "100vh" }}>
 
-                {/* {getApprovedTags.map()} */}
 
                 <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >คอร์สทั้งหมด</div>
                 <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
@@ -141,8 +148,8 @@ export default function AdminCourse() {
                 <Modal
                     title="Edit Knowledge Tag"
                     visible={getTagModalStatus}
-                    onOk={() => {setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true)  }}
-                    onCancel={() => {setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true) }}
+                    onOk={() => { setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true) }}
+                    onCancel={() => { setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true) }}
                 >
                     <form >
                         <label> {"Tag ID: " + getSelectedTagId} </label>
@@ -159,41 +166,23 @@ export default function AdminCourse() {
                             <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableThai(!getTagDisableThai) }}> Edit </label>
                         </label>
 
-
-                        {/* <label style={{ display: "inline-block", marginTop: "5px" }}>
-                            Tag Subject:
-                        <input type="text" name="namnme" onChange={(event) => setSelectedTagSubject(event.target.value)} value={getSelectedTagSubject} disabled={getTagDisableSubject} style={{ backgroundColor: (getTagDisableSubject) ? "red" : "green" }} />
-                            <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableSubject(!getTagDisableSubject) }}> Edit </label>
-                        </label> */}
-
                     </form>
 
-                    {/* <label for="subject" className="font-semibold mr-4"> Tag Subject : </label>
-                    <select
-                        // id="subject"
-                        value={"Boohoo"}
-                        onClick={e => { console.log('clickclack'); console.log(e.target.value); }}
-                    >
-                        {getSubjects.map(item => {
-                            return <option value={item.english}> {item.thai}</option>;
-                        })}
-                    </select> */}
+                    <label for="subject" className="font-semibold mr-4">  {"Current Tag Subject : " + getSelectedTagSubject} </label>
 
-                    <label for="subject" className="font-semibold mr-4">  { "Current Tag Subject : " +getSelectedTagSubject} </label>
-   
                     {console.log("wtf")}
                     {console.log(getSelectedTagSubject)}
 
-                    {(!getTagDisableSubject)? 
-                    <select  onClick={e => { console.log('clickclack'); console.log(e.target.value); setSelectedTagSubject(e.target.value) }}>
-                        {/* <option value="volvo">Volvo</option>
+                    {(!getTagDisableSubject) ?
+                        <select onClick={e => { console.log('clickclack'); console.log(e.target.value); setSelectedTagSubject(e.target.value) }}>
+                            {/* <option value="volvo">Volvo</option>
                         <option value="saab">Saab</option>
                         <option value="mercedes">Mercedes</option>
                         <option value="audi">Audi</option> */}
-                        {getSubjects.map(item => {
-                            return <option value={item.english}> {item.thai}</option>;
-                        })}
-                    </select> : <></> }
+                            {getSubjects.map(item => {
+                                return <option value={item.english}> {item.thai}</option>;
+                            })}
+                        </select> : <></>}
 
                     <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableSubject(!getTagDisableSubject) }}> Edit </label>
 
@@ -391,7 +380,7 @@ export default function AdminCourse() {
     return (
         <div>
             {/* {(getLoginStatus) ? adminSucessfullySignedIn() : loginToAdmin()} */}
-
+            <SchoolAdmin></SchoolAdmin>
             {adminSucessfullySignedIn()}
 
 
