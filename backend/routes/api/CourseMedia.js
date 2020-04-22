@@ -131,6 +131,8 @@ router.post(
 //     })
 //   }
 // });
+
+
 //Get Media
 router.post("/free", async (req, res) => {
   const adjustCourseSlug = req.body.courseSlug.toString();
@@ -177,5 +179,43 @@ router.post("/free", async (req, res) => {
 //     }).catch((err)=>console.log(err))
 
 // });
+
+
+
+
+router.post("/deletemediaitemfromdb", async(req,res)  => {
+  console.log("yibbo1")
+  const courseId = req.body.courseId;
+  Course.findOne({ _id: courseId })
+    .then(poolData => {
+      let courseId = poolData._id.toString();
+
+      const adjustCourseIdMedia = req.body.courseId + "Media";
+      const MatchMedia = mongoose.model(
+        adjustCourseIdMedia,
+        MediaSchema,
+      );
+      console.log("yibbo2")
+      console.log(MatchMedia)
+
+      // delete course from database
+      MatchMedia.deleteOne({ mediaId: req.body.mediaId})
+        .then(doc => {
+          console.log("yibbo3")
+          console.log(doc)
+          res.status(200).json({ status: "200" });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
+        
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+
+})
 
 module.exports = router;

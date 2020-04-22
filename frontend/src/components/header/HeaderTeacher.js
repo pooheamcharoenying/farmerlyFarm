@@ -51,15 +51,15 @@ useEffect(() => {
        className=" hidden md:flex justify-end ml-10 h-full"
        style={{ flex: 1 }}
      >
-       <CourseCatDropdown />
+       {/* <CourseCatDropdown /> */}
 
-       <Search
+       {/* <Search
          placeholder="ค้นหา คอร์ส"
          onChange={value => setSearchValue(value.target.value)}
          value={getSearchValue}
          loading={getSearchValue != ""}
          className="ml-8 flex-grow-1 max-w-lg my-3"
-       />
+       /> */}
         {GlobalHook.getGlobalToken ? (
               <div className="ml-6 flex items-center">
          <UserDropdown />
@@ -75,7 +75,7 @@ useEffect(() => {
        </div>
 
      <div className="md:hidden text-xl  justify-end flex items-center" style={{flex:1}} >
-     <div className="cursor-pointer hover:bg-gray-200 mr-4 text-gray-700" onClick={()=>GlobalHook.setGlobalShowMobileSearchBar(!GlobalHook.getGlobalShowMobileSearchBar)}><FaSearch/></div>
+     {/* <div className="cursor-pointer hover:bg-gray-200 mr-4 text-gray-700" onClick={()=>GlobalHook.setGlobalShowMobileSearchBar(!GlobalHook.getGlobalShowMobileSearchBar)}><FaSearch/></div> */}
 
      {GlobalHook.getGlobalToken ? (
          <UserDropdown />
@@ -89,7 +89,7 @@ useEffect(() => {
 
         
       </div>
-      <MobileSearchBar/>
+      {/* <MobileSearchBar/> */}
   </div>
 
 

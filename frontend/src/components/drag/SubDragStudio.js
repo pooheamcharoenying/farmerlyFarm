@@ -215,7 +215,7 @@ const SubDragStudio = ({
     <>
       {RenderUnSaveAlert()}
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <div className="DropClick" onClick={() => setisShow(!getisShow)}>
+        <div className="DropClick" onClick={() => { setisShow(!getisShow); console.log('zolaclick') } }>
           <p style={{ color: "rgba(0,0,0,0)" }}>..</p>
         </div>
         <div style={{ display: getisShow ? "none" : "block" }}>

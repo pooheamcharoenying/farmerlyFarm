@@ -13,7 +13,7 @@ import LoginMobileDropdown from "./LoginMobileDropdown";
 import MobileSearchBar from "../popup/MobileSearchBar";
 
 import { courseSearchKeywordAction } from "../../actions";
-export default function HeaderHome() {
+export default function HeaderHome(props) {
   const GlobalHook = useContext(GlobalContext);
   const { Search } = Input;
   const [getSearchValue, setSearchValue] = useState("");
@@ -35,12 +35,14 @@ export default function HeaderHome() {
   return (
     <>
       <div className="sticky top-0 bg-white z-50 flex flex-col">
+        {console.log('headerHome')}
+        {console.log(props.allCourseRef)}
         <div className="h-16 shadow-lg  flex flex-row justify-between items-center px-2 md:px-6 ">
           <div
             className="md:hidden text-2xl  justify-start flex"
             style={{ flex: 1 }}
           >
-            <CourseCatDropdown />
+            <CourseCatDropdown showTitle={false} allCourseRef={props.allCourseRef} />
             {GlobalHook.getGlobalToken && (
               <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={()=>history.push("/school")}>
                 <FaSchool className="mr-2 text-gray-700" />
@@ -65,7 +67,7 @@ export default function HeaderHome() {
               </button>
             )}
 
-            <CourseCatDropdown showTitle />
+            <CourseCatDropdown showTitle={true} allCourseRef={props.allCourseRef} />
 
             <Search
               placeholder="ค้นหา คอร์ส"

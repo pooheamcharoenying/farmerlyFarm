@@ -17,12 +17,17 @@ const UserDropdown = () => {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
-      if (GlobalHook.getGlobalUser.role == "admin") {
-        setSchoolState(true)
+      if (GlobalHook.getGlobalUser.schoolAdminId) {
+        if (GlobalHook.getGlobalUser.schoolAdminId != "") {
+          setSchoolState(true)
+        }
       }
-      if (GlobalHook.getGlobalUser.role == "school") {
-        setSchoolState(true)
-      }
+      // if (GlobalHook.getGlobalUser == "admin") {
+      //   setSchoolState(true)
+      // }
+      // if (GlobalHook.getGlobalUser.role == "school") {
+      //   setSchoolState(true)
+      // }
     }
   }, [GlobalHook.getGlobalUser]);
 

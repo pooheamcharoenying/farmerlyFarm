@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { GiSandsOfTime } from "react-icons/gi";
-import { FaUserCheck } from "react-icons/fa";
+import { FaUserCheck, FaWindowClose } from "react-icons/fa";
 
-import { Modal, Avatar } from "antd";
+import { Modal, Avatar, Tooltip } from "antd";
 
 import { GlobalContext } from "../../hook/GlobalHook";
-import { AddMyNewSchoolAction } from "../../actions";
+import { AddMyNewSchoolAction, RemoveMySchoolAction } from "../../actions";
 export default function MySchool() {
   const GlobalHook = useContext(GlobalContext);
   const [getMatchSchool, setMatchSchool] = useState([]);
@@ -22,13 +22,21 @@ export default function MySchool() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser && GlobalHook.getGlobalSchoolPool[0]) {
+
+      console.log('schoolPool')
+      console.log(GlobalHook.getGlobalSchoolPool)
+      console.log(GlobalHook.getGlobalUser)
+
       SchoolNotMatch = GlobalHook.getGlobalSchoolPool
       GlobalHook.getGlobalSchoolPool.map((allSchoolList) => {
         if (GlobalHook.getGlobalUser.schoolCourse[0]) {
           GlobalHook.getGlobalUser.schoolCourse.map(subList => {
             if (allSchoolList._id == subList.schoolId) {
-              const { schoolName, schoolSlug, schoolImage } = allSchoolList;
+              console.log('allSchoolList')
+              console.log(allSchoolList)
+              const { _id, schoolName, schoolSlug, schoolImage } = allSchoolList;
               mySchoolMatch.push({
+                _id,
                 schoolName,
                 schoolSlug,
                 schoolImage,
@@ -36,13 +44,19 @@ export default function MySchool() {
               });
               setMatchSchool(mySchoolMatch);
             } else {
-              const newnotmatch = SchoolNotMatch.filter((item)=>item._id != subList.schoolId);
+              const newnotmatch = SchoolNotMatch.filter((item) => item._id != subList.schoolId);
               SchoolNotMatch = newnotmatch
               setNotMatchSchool(newnotmatch);
             }
           });
+
+          console.log('schoolMatch')
+          console.log(mySchoolMatch)
+          console.log('schoolNotMatch')
+          console.log(SchoolNotMatch)
+
         } else {
-          //setNotMatchSchool(GlobalHook.getGlobalSchoolPool);
+          setNotMatchSchool(GlobalHook.getGlobalSchoolPool);
         }
       });
     }
@@ -85,7 +99,7 @@ export default function MySchool() {
             <select
               id="subject"
               value={getSelectedMySchool}
-              onChange={e => {setSelectedMySchool(e.target.value);console.log(e.target.value)}}
+              onChange={e => { setSelectedMySchool(e.target.value); console.log(e.target.value) }}
               style={{ minWidth: "100px" }}
             >
               {getNotMatchSchool.map(item => {
@@ -116,7 +130,7 @@ export default function MySchool() {
             style={{ width: "20px", height: "20px" }}
             onClick={() => {
               setModalAddMyNewSchoolOpenStatus(true);
-               setSelectedMySchool(getNotMatchSchool[0]._id);
+              setSelectedMySchool(getNotMatchSchool[0]._id);
             }}
           >
             +
@@ -124,6 +138,8 @@ export default function MySchool() {
         </div>
 
         <div className=" p-2" style={{ maxHeight: "300px", minWidth: "200px" }}>
+          {console.log('tanaka')}
+          {console.log(getMatchSchool)}
           {getMatchSchool.map((item, index) => {
             return (
               <div
@@ -140,11 +156,22 @@ export default function MySchool() {
                 </div>
                 <div className="font-semibold">{item.schoolName}</div>
                 {!item.schoolApproved && (
-                  <GiSandsOfTime className="ml-4 text-orange-600 font-medium" />
+                  <Tooltip title="รอการตอบรับการสมัครเข้าโรงเรียน">
+                    <GiSandsOfTime className="ml-4 text-orange-600 font-medium" />
+                  </Tooltip>
                 )}
                 {item.schoolApproved && (
-                  <FaUserCheck className="ml-4 text-green-600 font-medium" />
+
+                  <Tooltip title="การตอบรับเป็นสมาชิกโรงเรียนสําเร็จ">
+                    <FaUserCheck className="ml-4 text-green-600 font-medium" />
+                  </Tooltip>
                 )}
+                {console.log('ittica')}
+                {console.log(item)}
+                
+                <Tooltip title="ยกเลิกการสมัครเป็นสมชิกโรงเรียน">
+                  <FaWindowClose onClick={() => RemoveMySchoolAction(GlobalHook,item._id)} className="ml-4 text-red-600 font-medium" />
+                </Tooltip>
               </div>
             );
           })}

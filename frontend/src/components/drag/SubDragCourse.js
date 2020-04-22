@@ -148,29 +148,52 @@ const SubDragStudio = ({ parentIndex, subItems, itemsPool, mainItem }) => {
   }
 
   function getIsLessionVisitedFn(item) {
+    console.log('facheck')
+    console.log(item)
+    console.log(GlobalHook.getGlobalLessionSelect.mediaType)
     if (GlobalHook.getGlobalUser) {
-      if (
-        GlobalHook.getGlobalUser.courseSubscription != undefined &&
-        GlobalHook.getGlobalUser.courseSubscription[
-          GlobalHook.getGlobalUser.courseSubscription
-            .map(data => data.courseId)
-            .indexOf(GlobalHook.getGlobalcourseId)
-        ] != undefined
-      ) {
+      if (item.type != "Quiz") {
         if (
+          GlobalHook.getGlobalUser.courseSubscription != undefined &&
           GlobalHook.getGlobalUser.courseSubscription[
             GlobalHook.getGlobalUser.courseSubscription
               .map(data => data.courseId)
               .indexOf(GlobalHook.getGlobalcourseId)
-          ].courseLog
-            .map(data => data.lessionId)
-            .indexOf(item.mediaId) == -1
+          ] != undefined
         ) {
-          return false;
-        } else {
-          return true;
+          if (
+            GlobalHook.getGlobalUser.courseSubscription[
+              GlobalHook.getGlobalUser.courseSubscription
+                .map(data => data.courseId)
+                .indexOf(GlobalHook.getGlobalcourseId)
+            ].courseLog
+              .map(data => data.lessionId)
+              .indexOf(item.mediaId) == -1
+          ) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      } else {
+        console.log('quizzical')
+        console.log(GlobalHook.getGlobalUser.courseSubscription)
+        var filtration1 = GlobalHook.getGlobalUser.courseSubscription.filter(courseSubscript => courseSubscript.courseId == GlobalHook.getGlobalcourseId)
+        console.log('filtration1')
+        console.log(filtration1)
+        if (filtration1.length > 0) {
+          var filtration2 = filtration1[0].quizLog.filter(quizLog => quizLog.lessionId == item.mediaId)
+          console.log('filtration2')
+          console.log(filtration2)
+          var filtration3 = filtration2.filter( quizAttempt => quizAttempt.passResult == true)
+          if (filtration3.length > 0) {
+            return true
+          } else {
+            return false
+          }
         }
       }
+      
     }
   }
 

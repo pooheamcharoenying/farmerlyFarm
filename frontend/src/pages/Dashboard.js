@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
-import { Modal, Input, Select } from "antd";
+import { Modal, Input, Select, Table, Column } from "antd";
 import Header from "../components/header/HeaderHome";
 
 import { getCoursePoolAction,CreateTeacherPaymentAction,getSchoolPoolAction } from "../actions";
@@ -138,6 +138,99 @@ export default function Dashboard() {
 
             <MySchool/>
 
+            {/* <Table
+              dataSource={getStudentList}
+              onRowClick={e => {
+                if (e.schoolApproved) {
+                  setSelectedStudent(e);
+
+                  GetStudentSchoolCourseAction(GlobalHook, e.uid, getLocalMatchCourseSchool)
+                  console.log('tableClick')
+                  console.log(e)
+                } else {
+                  message.warning("Not Approved")
+                }
+
+              }}
+            >
+              <Column
+                title="Profile"
+                dataIndex="profile"
+                key="Profile"
+                className="cursor-pointer"
+                render={Profile => <Avatar size={40} src={Profile} />}
+              />
+              <Column
+                title="Name"
+                dataIndex="name"
+                key="Name"
+                className="cursor-pointer"
+              />
+
+              <Column
+                title="Status"
+                dataIndex="status"
+                key="Status"
+                className="cursor-pointer"
+              />
+
+              <Column
+                title="Action"
+                key="action"
+                render={(text, record) => (
+                  <span>
+                    <a
+                      className="text-green-500 hover:text-green-400"
+                      style={{ marginRight: 16 }}
+                      onClick={() => {
+                        console.log('stussy')
+                        console.log(record.status)
+                        if ((GlobalHook.getGlobalSchoolInfo.schoolMaxQuota >= GlobalHook.getGlobalSchoolInfo.schoolRemainingStudentQuota) && record.status == "Waiting") {
+                          SchoolStatusChangeAction(GlobalHook, true, record.uid)
+
+                        } else {
+                          message.warning("User is already registerd to school.")
+                        }
+
+                      }}
+                    >
+                      ยืนยัน
+                    </a>
+                    <a className="text-red-500 hover:text-red-400"
+                      onClick={() => {
+                        console.log('stacy')
+                        console.log(record.status)
+                        if ((GlobalHook.getGlobalSchoolInfo.schoolRemainingStudentQuota > 0) && record.status == "Approved") {
+                          SchoolStatusChangeAction(GlobalHook, false, record.uid)
+                        } else {
+                          message.error("Error Cancel")
+                        }
+                      }}
+
+                    >ยกเลิก</a>
+                  </span>
+                )}
+              />
+            </Table> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             {/* <div className="mt-8 flex flex-col bg-white rounded-lg p-2">
             <div
               className="rounded-lg text-center text-white py-2 text-xl font-bold bg-green-500 mx-auto"
@@ -165,7 +258,12 @@ export default function Dashboard() {
             </div> */}
           </div>
 
-          <div
+
+
+
+
+
+          {/* <div
             className="bg-gray-200 p-6 rounded-lg"
             style={{
               minHeight: "600px",
@@ -183,12 +281,13 @@ export default function Dashboard() {
 
             <div className="mt-4 flex flex-col w-full pr-20">
               <RadarChart />
-              {/* <div style={{minHeight:"25px"}}/> */}
-              {/* <RadialBarChart/> */}
+              <div style={{minHeight:"25px"}}/> 
+               <RadialBarChart/>
             </div>
+          </div> */}
 
-            
-          </div>
+
+          
         </div>
       </div>
 

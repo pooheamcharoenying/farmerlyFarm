@@ -3,10 +3,13 @@ import axios from "axios";
 import { message } from "antd";
 import {AddNewQuestionAction} from './QuizAction'
 function SaveAllAction(GlobalHook) {
+  console.log('savingallaction')
   GlobalHook.setMutantStatus(false)
    SaveCourseStructure(GlobalHook)
-
 }
+
+
+
 
 function SaveCourseStructure(GlobalHook){
 
@@ -24,12 +27,12 @@ function SaveCourseStructure(GlobalHook){
   GlobalHook.setGlobalCourseInfoStudent(GlobalHook.getGlobalCourseInfoStudentNew)
   GlobalHook.setGlobalCourseInfoTeacher(GlobalHook.getGlobalCourseInfoTeacherNew)
 
-  axios
+  return axios
     .post(`/api/course/structureUpdate`, pushData)
     .then(res => {
       SaveMediaContent(GlobalHook)
       localStorage.setItem("InitStructure", JSON.stringify((GlobalHook.getGlobalCourseStructureNew)))
-
+      return "save all data success"
     })
     .catch(err => {
       console.log(err);
@@ -40,6 +43,22 @@ function SaveCourseStructure(GlobalHook){
 
 
 function SaveMediaContent (GlobalHook){
+
+  console.log('foofighters')
+  console.log(GlobalHook.getLessionTagSameAsCourseStatus)
+  console.log(GlobalHook.getQuizTagSameAsLessionStatus)
+
+  var mediaTagThai = [];
+  var mediaTagEnglish = [];
+  if (GlobalHook.getLessionTagSameAsCourseStatus) {
+    mediaTagEnglish = GlobalHook.getGlobalCourseTagEnglish;
+    mediaTagThai = GlobalHook.getGlobalCourseTagThai;
+  } else {
+    mediaTagEnglish = GlobalHook.getGlobalCourseTagEnglishLession;
+    mediaTagThai = GlobalHook.getGlobalCourseTagThaiLession;   
+  }
+
+
  
   const {mediaId,mediaType,mediaName,mediaPreview} = GlobalHook.getGlobalLessionSelect
  
@@ -53,8 +72,8 @@ function SaveMediaContent (GlobalHook){
 
       "mediaContent":GlobalHook.getGlobalMediaNew,
       "courseSlug":GlobalHook.getGlobalCourseSlug,
-      "mediaTagEnglish":GlobalHook.getGlobalCourseTagEnglishLession,
-      "mediaTagThai":GlobalHook.getGlobalCourseTagThaiLession,
+      "mediaTagEnglish":mediaTagEnglish,
+      "mediaTagThai":mediaTagThai,
       "mediaTagStatus":GlobalHook.getLessionTagSameAsCourseStatus
   }
 

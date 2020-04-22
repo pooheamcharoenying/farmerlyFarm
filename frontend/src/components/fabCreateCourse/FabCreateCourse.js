@@ -65,9 +65,6 @@ export default function FabCreateCourse() {
 
     getSubjectCategories()
       .then(data => {
-        // console.log('banobagen')
-        // console.log(data)
-
         setSubjects(data)
         GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
       })
@@ -109,16 +106,22 @@ export default function FabCreateCourse() {
 
   useEffect(() => {
     if (GlobalHook.getGlobalUser) {
-      if (GlobalHook.getGlobalUser.role == "admin") {
-        setSchoolState(true)
+      if (GlobalHook.getGlobalUser.schoolAdminId) {
+        if (GlobalHook.getGlobalUser.schoolAdminId != "") {
+          setSchoolState(true)
+        }
       }
-      if (GlobalHook.getGlobalUser.role == "school") {
-        setSchoolState(true)
-      }
+      // if (GlobalHook.getGlobalUser.role == "admin") {
+      //   setSchoolState(true)
+      // }
+      // if (GlobalHook.getGlobalUser.role == "school") {
+      //   setSchoolState(true)
+      // }
     }
   }, [GlobalHook.getGlobalUser]);
 
   function UploadBtnClick(file) {
+    console.log('uploadBtnClick')
     setUploadingShow("initing");
     handleImageTransform(file);
   }
@@ -187,6 +190,7 @@ export default function FabCreateCourse() {
   }
 
   function handleAddition(tag) {
+    console.log('tag added')
     if (tag.id) {
       const tagsEng = [].concat(
         GlobalHook.getGlobalCourseTagEnglish,
@@ -371,6 +375,7 @@ export default function FabCreateCourse() {
                             style={{ width: "100px" }}
                             onClick={() => UploadBtnClick()}
                           >
+                            {console.log('uploadingmode3')}
                             Upload
                           </button>
                         )}
@@ -422,7 +427,6 @@ export default function FabCreateCourse() {
                 )}
             </div>
 
-            {/* <TagCom InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagThai} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} /> */}
             <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThai} InTagEnglish={GlobalHook.getGlobalCourseTagEnglish} OutTagThai={GlobalHook.setGlobalCourseTagThai} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglish} />
 
 
@@ -470,7 +474,7 @@ export default function FabCreateCourse() {
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
-                  onClick={e => GlobalHook.setGlobalSchoolCourseStatus(e)}
+                  onClick={e => { console.log('globalUser'); console.log(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseId(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseStatus(e) } }
                 />
 
               </div>
@@ -485,6 +489,10 @@ export default function FabCreateCourse() {
   }
   return (
     <>
+      {console.log("tags english")}
+      {console.log(GlobalHook.getGlobalCourseTagEnglish)}
+      {console.log("tags thai")}
+      {console.log(GlobalHook.getGlobalCourseTagThai)}
       {CreateCoursePopUp()}
       <Tooltip title="Create Course">
         <button

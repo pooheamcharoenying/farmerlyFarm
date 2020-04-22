@@ -62,6 +62,77 @@ router.post("/getToken", (req, res) => {
     .catch(err => res.status(400).json(err));
 });
 
+router.post("/deleteTeacherCourseDataDb", async (req, res) => {
+  console.log('saymooo tono')
+  console.log(req.body.courseId)
+  User.find({ courseSubscription: { $elemMatch: { courseId: req.body.courseId } } })
+    .then(data => {
+
+      var matchFound = 0;
+
+      for (item of data) {
+        matchFound = 0;
+        for (index in item.courseSubscription) {
+          if (item.courseSubscription[index].courseId == req.body.courseId) {
+            // console.log('match found')
+            matchFound = 1;
+            item.courseSubscription.splice(index,1)
+            break;
+          }
+        }
+
+        item.save(function (err) {
+          if (err) {
+            console.error('ERROR!');
+          } else {
+            console.log('save user success')
+          }
+        });
+  
+      }
+
+      // find teacher to erase log
+      User.findOne({ teacherCourse: { $elemMatch: { courseId: req.body.courseId } } })
+        .then( data => {
+
+          console.log('whats up doc')
+          console.log(data)
+          for (index in data.teacherCourse) {
+            if (data.teacherCourse[index].courseId == req.body.courseId) {
+              // console.log('match found')
+              matchFound = 1;
+              data.teacherCourse.splice(index,1)
+              break;
+            }
+          }
+
+          console.log('whats up jude')
+          console.log(data)
+  
+          data.save(function (err) {
+            if (err) {
+              console.error('ERROR!');
+            } else {
+              console.log('save user success')
+            }
+          });
+          res.status(200).json(data);
+
+        })
+        .catch(err => {
+          console.log(err);
+          return res.status(400).json(err);
+        });
+
+
+
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
 router.post("/register", (req, res) => {
   const uid = req.body.uid;
 
@@ -129,7 +200,7 @@ router.post(
 
         user.save().then(user => res.json(user));
       })
-      .catch(err => {console.log(err);res.status(400).json(err)});
+      .catch(err => { console.log(err); res.status(400).json(err) });
   }
 );
 
@@ -138,7 +209,9 @@ router.post(
   "/log",
   passport.authenticate("jwt", { session: false }),
 
+
   (req, res) => {
+    console.log('lumberjack logger')
     User.findById(req.user.id)
       .then(user => {
         const findCourseMatch = user.courseSubscription
@@ -151,13 +224,15 @@ router.post(
             .map(data => data.lessionId)
             .indexOf(req.body.lessionId);
 
-          if (isLessIdExist == -1) {
+          // if (isLessIdExist == -1) {
             user.courseSubscription[findCourseMatch].courseLog.unshift({
-              lessionId: req.body.lessionId
+              lessionId: req.body.lessionId,
+              startTime: req.body.startTime,
+              endTime: req.body.endTime
             });
-          } else {
+          // } else {
             //user.courseSubscription[findCourseMatch].courseLog[isLessIdExist].lessionId =  req.body.lessionId
-          }
+          // }
           user.save().then(user => res.json(user));
         }
       })
@@ -174,6 +249,9 @@ router.post(
   passport.authenticate("jwt", { session: false }),
 
   (req, res) => {
+    console.log('hiho')
+    console.log(req.body)
+
     User.findById(req.user.id)
       .then(user => {
         const findCourseMatch = user.courseSubscription
@@ -183,13 +261,18 @@ router.post(
           user.courseSubscription[findCourseMatch].quizLog.unshift({
             lessionId: req.body.lessionId,
             quizData: req.body.quizData,
-            logTime: Date.now()
+            // logTime: req.body.quizStartTime,
+            endTime: Date.now(), //Date.now()
+            startTime: req.body.quizStartTime,
+            passResult: req.body.passResult,
           });
+          console.log('user')
+          console.log(user.courseSubscription)
 
           user.save().then(user => res.json(user));
         }
       })
-      .catch(err => {console.log(err);res.status(400).json(err)});
+      .catch(err => { console.log(err); res.status(400).json(err) });
   }
 );
 
@@ -221,7 +304,7 @@ router.post(
           user.save().then(user => res.json(user));
         }
       })
-      .catch(err => {console.log(err);res.status(400).json(err)});
+      .catch(err => { console.log(err); res.status(400).json(err) });
   }
 );
 
@@ -229,21 +312,152 @@ router.post(
   "/getuserbyid",
 
   (req, res) => {
-    User.findById(req.body.ouid).then(user => {
+    User.findById(req.body._id).then(user => {
       console.log(user);
       admin
         .auth()
         .getUser(user.uid)
-        .then(function(userRecord) {
+        .then(function (userRecord) {
+          console.log('resulty')
+          console.log(userRecord)
+
           res.status(200).json(userRecord.toJSON());
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error fetching user data:", error);
           res.status(400).json(error);
-        });
+        }); 
     });
   }
 );
+
+
+router.post(
+  "/getfirebaseuserbyemail",
+
+  (req, res) => {
+      console.log('getFirebaseByEmail')
+      console.log(req.body.email);
+      admin
+        .auth()
+        .getUserByEmail(req.body.email)
+        .then(function (userRecord) {
+          console.log('resutyGetUserByEmail')
+          console.log(userRecord)
+          res.status(200).json(userRecord.toJSON());
+        })
+        .catch(function (error) {
+          console.log("Error fetching user data:", error);
+          res.status(400).json(error);
+        }); 
+    
+  }
+);
+
+
+
+
+
+router.post(
+  "/updatefirebaseuser",
+  (req, res) => {
+    console.log('updateFirebase')
+    console.log(req.body)
+    admin
+    .auth()
+    .updateUser(req.body.uid, { displayName: req.body.displayName } )
+    .then(function (userRecord) {
+      console.log('successfully update firebase user')
+    })
+    .catch(function (error) {
+      console.log('Error updating user:', error);
+    });
+  }
+);
+
+
+router.post(
+  "/getmanyusersbyid",
+
+  (req, res) => {
+
+    const mongooseIdList = []
+    const userRecordArray = []
+    for (item of req.body.listId) {
+      mongooseIdList.push(mongoose.Types.ObjectId(item._id))
+    }
+
+    console.log('hope')
+    console.log(mongooseIdList)
+
+    User.find({
+      '_id': {
+        $in: mongooseIdList
+      }
+    }, function (err, docs) {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      else {
+        res.status(200).json(docs);
+      }
+    });
+  }
+);
+
+
+async function getUserFromFirebase(inputId) {
+  // console.log(inputId)
+  // return "rodeo"
+
+  return await admin
+    .auth()
+    .getUser(inputId)
+    .then(function (userRecord) {
+      console.log('komodo')
+      console.log(userRecord)
+      return userRecord
+    })
+    .catch(function (error) {
+      console.log("Error fetching user data:", error);
+      return error
+    });
+}
+
+router.post(
+  "/getmanyusersfromfirebase",
+
+  (req, res) => {
+
+    const userRecordArray = []
+    let promises = [];
+
+    for (item of req.body.listId) {
+      // Add new promise
+      promises.push(
+        getUserFromFirebase(item.uid).then(function (check) {
+          console.log('checker')
+          console.log(check)
+          userRecordArray.push(check)
+        })
+      );
+    }
+
+    Promise.all(promises)
+      .then(() => {
+        console.log('All actions run without any issues!');
+        console.log('promise result')
+        console.log(userRecordArray)
+        res.status(200).json(userRecordArray);
+
+      }).catch((error) => {
+        console.log('An error occured!');
+        return res.status(400).json(err);
+      });
+  }
+);
+
+
 
 
 

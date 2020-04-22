@@ -6,7 +6,7 @@ import tus from "tus-js-client";
 import axios from "axios";
 import uuid from "uuid";
 import { GlobalContext } from "../../../hook/GlobalHook";
-import { SaveAllAction, CheckMutateAction } from "../../../actions";
+import { SaveAllAction, CheckMutateAction, MoveVimeoVideoToFolder, deleteVimeoVideo } from "../../../actions";
 
 
 const accessToken = "4f8f7fafcfec41d45fc069be12c1fbd9";
@@ -115,6 +115,7 @@ const StudioVideoContent = () => {
       onSuccess: function () {
         console.log("Download %s from %s", upload.file.name, upload.url);
         setUploadingShow("done");
+        MoveVimeoVideoToFolder(response,GlobalHook)
       }
     });
 
@@ -135,9 +136,12 @@ const StudioVideoContent = () => {
             <FaTrashAlt
               className="text-red-600 ml-4 text-xl cursor-pointer hover:text-red-500"
               onClick={() => {
+                console.log('explainField')
+                console.log(GlobalHook.getGloblaQuizExplainField)
                 GlobalHook.setGlobalStudioUploadFile(null);
                 setVideoData(null);
                 GlobalHook.setGloblaQuizExplainField(null);
+                deleteVimeoVideo(GlobalHook.getGloblaQuizExplainField);
               }}
             />
           </div>

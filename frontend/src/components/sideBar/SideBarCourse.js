@@ -9,6 +9,9 @@ import './SideBarCourse.css'
 import CheckoutInternetBanking from "../checkout/CheckoutInternetBanking";
 import CheckoutCreditcard from "../checkout/CheckoutCreditCard";
 
+import jsPDF from 'jspdf';
+import imageDataURI from 'image-data-uri';
+
 export default function SideBarCourse() {
   const GlobalHook = useContext(GlobalContext);
   const [getuserCouresLogLength, setuserCouresLogLength] = useState(0);
@@ -23,7 +26,7 @@ export default function SideBarCourse() {
   const [getUserPMid, setUserPMid] = useState(null);
 
   useEffect(() => {
-    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId &&GlobalHook.getGlobalCurrentUser) {
+    if (GlobalHook.getGlobalUser && GlobalHook.getGlobalcourseId && GlobalHook.getGlobalCurrentUser) {
       setUserEmail(GlobalHook.getGlobalCurrentUser.email)
       setUserId(GlobalHook.getGlobalCurrentUser.uid);
       setUserPMid(GlobalHook.getGlobalUser.pmid)
@@ -36,6 +39,114 @@ export default function SideBarCourse() {
       setisSubscription(false);
     }
   });
+
+  function createPdf() {
+    // var doc = new jsPDF('l')
+    var doc = new jsPDF('l', 'mm', [210, 297]);
+
+    doc.setDrawColor(0)
+    doc.setFillColor(255, 255, 255)
+    doc.roundedRect(10, 10, 277, 190, 3, 3, 'FD')
+
+    // doc.setDrawColor(255, 0, 0)
+    // doc.rect(0, 20, 210, 40, 'FD')
+
+    var fontSize = 16;
+    doc.setFontSize(fontSize)
+
+
+    // LOWER CASE TEXT SCALING: text.length*fontSize*0.15
+    // UPPER CASE TEXT SCALING: text.length*fontSize*0.208
+
+    // var text = 'This certificate is awarded for the completion of'
+    // doc.text(text, (297 - text.length*fontSize*0.2)/2, 80)
+
+    // doc.setDrawColor(255, 0, 0)
+    // doc.rect(  (297 - text.length*fontSize*0.2)/2 , 40,  text.length*fontSize*0.15,    10, 'FD')
+
+    fontSize = 30;
+    doc.setFontSize(fontSize)
+    var text = 'CERTIFICATE'
+    doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 80)
+
+    fontSize = 14;
+    doc.setFontSize(fontSize)
+    text = 'OF COMPLETION'
+    doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 90)
+
+    // doc.setDrawColor(255, 0, 0)
+    // doc.rect(  (210 - text.length*fontSize*0.208)/2 , 130,  text.length*fontSize*0.208, 10, 'FD')
+
+    fontSize = 14;
+    doc.setFontSize(fontSize)
+    text = 'AWARDED TO'
+    doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 110)
+
+    // var imgData = "data:image/jpeg;base64,https://studysabaiapp.sgp1.digitaloceanspaces.com/mbot.jpg"
+    // doc.addImage(imgData, 'JPEG', 15, 40, 180, 160)
+
+    imageDataURI.encodeFromURL('https://studysabaiapp.sgp1.digitaloceanspaces.com/StudySabai%20Certificate%20Template-01-01.jpg')
+    // RETURNS image data URI :: 'data:image/png;base64,PNGDATAURI/'
+    .then(res => {
+      console.log('imageURI')
+      console.log(res)
+
+
+
+
+      var doc = new jsPDF('l')
+
+      doc.addImage(res, 'JPEG', 0, 0, 297, 210)
+
+
+
+      console.log('munchkin')
+      console.log(GlobalHook.getGlobalUser)
+      console.log(GlobalHook.getGlobalUserAuth)
+      console.log(GlobalHook.getGlobalCurrentUser)
+  
+      // User name in certificate
+      fontSize = 32;
+      doc.setFontSize(fontSize)
+      text = GlobalHook.getGlobalCurrentUser.email.toUpperCase();
+      doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 125)
+  
+  
+      // fontSize = 14;
+      // doc.setFontSize(fontSize)
+      // text = 'COMPLETION OF COURSE'
+      // doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 140)
+  
+      // Course name in certificate
+      fontSize = 18;
+      doc.setFontSize(fontSize)
+      text = GlobalHook.getGlobalCourseSlug.toUpperCase();
+      // doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 150)
+      doc.text(text, (297 - text.length * fontSize * 0.208) * 210 / 297, 164)
+
+      // Date in certificate
+      fontSize = 18;
+      doc.setFontSize(fontSize)
+      var date = new Date()
+      text = date.getDay().toString()  + " / " + date.getMonth().toString() + " / " + date.getFullYear().toString();
+      // doc.text(text, (297 - text.length * fontSize * 0.208) / 2, 150)
+      doc.text(text, (297 - text.length * fontSize * 0.208) * 97 / 297, 164)
+      
+      
+      doc.save('a4.pdf')
+
+
+
+
+
+
+
+
+
+    })
+
+
+  }
 
   function BeforehandleSubscription() {
     if (!GlobalHook.getGlobalToken) {
@@ -57,12 +168,12 @@ export default function SideBarCourse() {
   }, [GlobalHook.getGlobalCourseFee, GlobalHook.getGlobalcourseId]);
 
 
-  async function createCreditCardCharge  (courseId, amount, token)  {
+  async function createCreditCardCharge(courseId, amount, token) {
     try {
       const res = await axios({
         method: "POST",
         url: "/api/payment/creditCard",
-        data: { "email":getUserEmail,"iuid":getUserId, courseId, amount, token,pmid:getUserPMid },
+        data: { "email": getUserEmail, "iuid": getUserId, courseId, amount, token, pmid: getUserPMid },
         headers: {
           "Content-Type": "application/json"
         }
@@ -71,7 +182,7 @@ export default function SideBarCourse() {
       if (res.data) {
         GlobalHook.setGlobalShowCourseFeeAlertModal(false);
         CourseSubscriptionAction(GlobalHook);
-    
+
         message.success("Payment Successfull");
       }
     } catch (err) {
@@ -89,8 +200,8 @@ export default function SideBarCourse() {
         }}
         footer={[
           <div className="w-full flex justify-center">
-           
-              <button
+
+            <button
               onClick={() => GlobalHook.setGlobalShowCourseFeeAlertModal(false)}
               className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
             >
@@ -103,7 +214,7 @@ export default function SideBarCourse() {
               pmid={getUserPMid}
             />
 
-           
+
           </div>
         ]}
       >
@@ -190,9 +301,43 @@ export default function SideBarCourse() {
       if (
         GlobalHook.getGlobalUser.courseSubscription[courseIdIndex] != undefined
       ) {
+        console.log('courseProgress')
+        console.log(GlobalHook.getGlobalCourseStructure)
+        console.log( GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].courseLog )
+        var courseCompletion = true;
+        var courseProgressCount = 0;
+        for (var section of GlobalHook.getGlobalCourseStructure) {
+          for(var lesson of section.subItems ) {
+            // console.log("lesson")
+            // console.log(lesson)
+            if (lesson.type != "Quiz") {
+              var filterResult = GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].courseLog.filter( logItem => logItem.lessionId == lesson.mediaId ) 
+              if (filterResult.length < 1) {
+                courseCompletion = false;
+              } else {
+                courseProgressCount++;
+              }
+            } else {
+              // Lesson is a quiz
+              var filtration1 = GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].quizLog.filter( logItem => logItem.lessionId == lesson.mediaId ) 
+              var filtration2 = filtration1.filter( quizAttempt => quizAttempt.passResult == true)
+              if (filtration2.length > 0) {
+                courseProgressCount++;
+              } else {
+                courseCompletion = false;
+              }
+            }
+
+          }
+        }
+
+        console.log('courseCompletion')
+        console.log(courseCompletion)
+        console.log(courseProgressCount)
         setuserCouresLogLength(
-          GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].courseLog
-            .length
+          // GlobalHook.getGlobalUser.courseSubscription[courseIdIndex].courseLog
+          //   .length
+          courseProgressCount
         );
       }
       GlobalHook.getGlobalCourseStructure.map(data => {
@@ -217,9 +362,15 @@ export default function SideBarCourse() {
       }}
     >
       {RenderCourseFeeAlert()}
+      
+
+      {/* <img src={"https://studysabaiapp.sgp1.digitaloceanspaces.com/mbot.jpg"} />
+      {console.log('chachacha')}
+      {console.log(GlobalHook.getGlobalCourseImage)} */}
+
       <div
         className="bg-blue-300 flex flex-col px-6 w-full "
-        style={{ minHeight: "150px" }}
+        // style={{ minHeight: "180px" }}
       >
         <div
           className="bg-white rounded my-4 text-center shadow-lg  text-lg truncate"
@@ -232,29 +383,31 @@ export default function SideBarCourse() {
             className="bg-white rounded mb-4 text-center shadow-lg  text-lg px-4"
             style={{ paddingTop: "10px", paddingBottom: "10px" }}
           >
+            {(getuserCouresLogLength / getMainCourseLength == 1)?  <p style={{fontSize:"12px"}}> Congratuations! You've completed the course. </p> : <p style={{fontSize:"12px"}}> Your progress...</p> }
             <Progress
               percent={parseInt(
                 (getuserCouresLogLength / getMainCourseLength) * 100
               )}
               status="active"
             />
+            {(getuserCouresLogLength / getMainCourseLength == 1)?  <button onClick={createPdf} style={{backgroundColor:"#75EE86", marginTop:"1vh", marginBottom:"1vh", paddingLeft:"2vw", paddingRight:"2vw", paddingTop:"1vh", paddingBottom:"1vh", borderRadius:"2vw"}}> GET CERTIFICATE </button> : <></> }
           </div>
         ) : (
-          <div
-            className="bg-white rounded mb-4 text-center shadow-lg px-4 flex items-center justify-center"
-            style={{ paddingTop: "10px", paddingBottom: "10px" }}
-          >
-            <div>ฟรีไม่มีค่าใช้จ่าย</div>
-            <button
-              className="bg-red-500 hover:bg-red-400 p-2 ml-2 rounded"
-              onClick={() => {
-                BeforehandleSubscription();
-              }}
+            <div
+              className="bg-white rounded mb-4 text-center shadow-lg px-4 flex items-center justify-center"
+              style={{ paddingTop: "10px", paddingBottom: "10px" }}
             >
-              สมัครคอร์ส
+              <div>ฟรีไม่มีค่าใช้จ่าย</div>
+              <button
+                className="bg-red-500 hover:bg-red-400 p-2 ml-2 rounded"
+                onClick={() => {
+                  BeforehandleSubscription();
+                }}
+              >
+                สมัครคอร์ส
             </button>
-          </div>
-        )}
+            </div>
+          )}
       </div>
 
       <div

@@ -7,7 +7,7 @@ import SwitchR from "react-switch";
 import TagCom from '../tagCom/TagCom'
 
 import { GlobalContext } from "../../hook/GlobalHook";
-import {SaveAllAction,CheckMutateAction} from "../../actions"
+import {SaveAllAction,CheckMutateAction,  getSubjectCategories,  getSubjectLevels, deleteMediaFromDB, SaveCourseStructureOnly} from "../../actions"
 import TextEditorComp from '../textEditor/TextEditor'
 
 const StudioDocumentContent = () => {
@@ -24,7 +24,36 @@ const StudioDocumentContent = () => {
   const [getInitStatePreview, setInitStatePreview] = useState(null);
   const [getLessionPreview, setLessionPreview] = useState(null);
 
+  const [getSubjectMenu, setSubjectMenu] = useState([]);
+  const [getSubjects, setSubjects] = useState([]);
+  const [getLevels, setLevels] = useState([]);
 
+  useEffect(() => {
+    console.log('getting subjects')
+    GlobalHook.setGlobalCourseTagThaiLession([])
+    GlobalHook.setGlobalCourseTagEnglishLession([])
+
+    getSubjectCategories()
+      .then(data => {
+        setSubjects(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      .catch(error => {
+        console.log(error)
+      })
+  }, []);
+
+  useEffect(() => {
+    // CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
+    if (GlobalHook.getMutantStatus == true) {
+      GlobalHook.setMutantStatus(false)
+    } else {
+      GlobalHook.setMutantStatus(true)
+    }
+  }, [getLessionName, getLessionPreview, getLessionTime]);
 
 useEffect(() => {
   CheckMutateAction(GlobalHook,getInitStateDoc,val)
@@ -71,24 +100,17 @@ useEffect(() => {
     }, [getLessionName,getLessionTime,getLessionPreview])
 
 
-    // useEffect(() => {
-    //   CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
-    // }, [getLessionName])
+    useEffect(() => {
+      CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
 
-      // Pooh Edited this to
-  useEffect(() => {
-    //CheckMutateAction(GlobalHook, getInitStateName, getLessionName);
-    console.log('bla bla black sheep')
-    if (GlobalHook.getMutantStatus == true) {
-      GlobalHook.setMutantStatus(false)
-    } else {
-      GlobalHook.setMutantStatus(true)
-    }
-  }, [getLessionName, getLessionTime]);
+    }, [getLessionName])
+
     
-    // useEffect(() => {
-    //   CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
-    // }, [getLessionTime])
+    useEffect(() => {
+      CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
+
+
+    }, [getLessionTime])
 
     useEffect(() => {
       CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
@@ -133,7 +155,14 @@ useEffect(() => {
       (oldCourseStructure[parentIndex].subItems).splice(selfIndex, 1)
       
       GlobalHook.setGlobalCourseStructure(oldCourseStructure);
-    SaveAllAction(GlobalHook)
+    // SaveAllAction(GlobalHook)
+
+    deleteMediaFromDB( GlobalHook )   
+    .then(res => {
+      console.log('success: no say miso')
+      SaveCourseStructureOnly(GlobalHook)
+      // deleteCourseStructure(GlobalHook);
+    })
      
     }
   }
@@ -148,7 +177,7 @@ useEffect(() => {
       />
 
       <div className="w-10/12 rounded-lg text-center text-white text-xl md:text-2xl font-bold  bg-blue-500 mx-2 py-2 px-2">
-        {getLessionName}
+        {GlobalHook.getGlobalLessionSelect.mediaName}
       </div>
       <FaCaretRight
         className="hover:text-gray-700 text-gray-900 cursor-pointer"
@@ -205,9 +234,14 @@ useEffect(() => {
         
         </div>
 
-       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
+      {console.log('taggart')}
+      {/* {console.log(getSubjects)} */}
+      {console.log(GlobalHook.getGlobalCourseTagThaiLession)}
+      {console.log(GlobalHook.getGlobalCourseTagEnglishLession)}
 
-        <div className="w-11/12 md:w-10/12">
+       {!GlobalHook.getLessionTagSameAsCourseStatus && <TagCom SubjectCat={getSubjects} InTagThai={GlobalHook.getGlobalCourseTagThaiLession} InTagEnglish={GlobalHook.getGlobalCourseTagEnglishLession} OutTagThai={GlobalHook.setGlobalCourseTagThaiLession} OutTagEnglish={GlobalHook.setGlobalCourseTagEnglishLession}/>}
+
+        <div className="w-11/12 md:w-10/12" >
           <ReactQuill
             value={val || ""}
             onChange={handleChange}

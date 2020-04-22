@@ -278,6 +278,7 @@ export default function MainDragStudio() {
   function handleNewTopicCreate() {
     setTopicName("");
     const oldstate = [...items];
+
     oldstate.push({
       id: Math.floor(Math.random() * 1000) + 1,
       content: getTopicName,
@@ -290,18 +291,19 @@ export default function MainDragStudio() {
           preview: "",
           mediaId: uuid.v4(),
           date: Date.now(),
-          time: "10",
+          time: "",
           etc1: "",
           etc2: "",
           etc3: "",
           etc4: "",
-          etc5: ""
+          etc5: "",
         }
       ]
     });
     setitems(oldstate);
     setModalTopicOpenStatus(false);
     message.success("สร้างหัวข้อใหม่สำเร็จ");
+
   }
 
   function CreateNewLessionPopUp() {
@@ -316,7 +318,7 @@ export default function MainDragStudio() {
         footer={[
           <div className="w-full flex justify-center">
             <button
-              onClick={() => {handleNewLessionCreate();GlobalHook.setMutantStatus(true);}}
+              onClick={() => {GlobalHook.setMutantStatus(false); handleNewLessionCreate();GlobalHook.setMutantStatus(true); }}
               className="bg-green-500 text-white p-2 rounded hover:bg-green-400"
             >
               Create
@@ -391,7 +393,7 @@ export default function MainDragStudio() {
           mediaName: getLessionName,
           mediaPreview: true,
           sectionName: getLessionParent.content,
-          mediaTime: "10",
+          mediaTime: "0",
           mediaEtc1:true,
           mediaEtc2:false,
           mediaEtc3:true,
@@ -413,14 +415,18 @@ export default function MainDragStudio() {
           mediaName: getLessionName,
           mediaPreview: true,
           sectionName: getLessionParent.content,
-          mediaTime: "10",
-          mediaEtc1:true,
+          mediaTime: "0",
+          mediaEtc1:false,
           mediaEtc2:false,
-          mediaEtc3:true,
-          mediaEtc4:1,
-          mediaEtc5:1,
+          mediaEtc3:false,
+          mediaEtc4:0,
+          mediaEtc5:0,
           new:"new"
         })
+
+        
+      GlobalHook.setGlobalCourseTagThaiLession([])
+      GlobalHook.setGlobalCourseTagEnglishLession([])
 
         console.log(getLessionName)
       }
@@ -444,14 +450,14 @@ export default function MainDragStudio() {
                 return (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided, snapshot) => (
-                      <div className="relative">
+                      <div className="relative bg-gray-500 hover:bg-gray-600">
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
+                          // style={getItemStyle(
+                          //   snapshot.isDragging,
+                          //   provided.draggableProps.style
+                          // )}
                           {...provided.dragHandleProps}
                         >
                           <div
@@ -463,7 +469,7 @@ export default function MainDragStudio() {
                           <div
                             style={{
                               height: "10px",
-                              backgroundColor: "#8897A2"
+                              // backgroundColor: "#8897A2"
                             }}
                           ></div>
                           <strong>
@@ -481,7 +487,7 @@ export default function MainDragStudio() {
                           <div
                             style={{
                               height: "10px",
-                              backgroundColor: "#8897A2"
+                              // backgroundColor: "#8897A2"
                             }}
                           ></div>
 
