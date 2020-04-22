@@ -379,9 +379,12 @@ export default function AdminCourse() {
 
     return (
         <div>
-            {/* {(getLoginStatus) ? adminSucessfullySignedIn() : loginToAdmin()} */}
-            <SchoolAdmin></SchoolAdmin>
-            {adminSucessfullySignedIn()}
+            {(getLoginStatus) ?  
+                <>
+                <SchoolAdmin></SchoolAdmin>
+                {adminSucessfullySignedIn()}
+                </>
+            : loginToAdmin()}
 
 
         </div>
