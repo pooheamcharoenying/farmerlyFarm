@@ -21,7 +21,6 @@ export default function Admin() {
         <AdminCourse/>
         <Footer/>
        
-       
         </>
     )
 }
