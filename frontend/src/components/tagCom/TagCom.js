@@ -33,6 +33,8 @@ export default function TagCom(props) {
 
   const [getSelectedSubject, setSelectedSubject] = useState("Mathematic");
 
+
+
   const [getApprovedTagsEng, setApprovedTagsEng] = useState("");
   const [getUnapprovedTagsEng, setUnapprovedTagsEng] = useState("");
 
@@ -56,16 +58,23 @@ export default function TagCom(props) {
     setApprovedTagsThai([])
     setUnapprovedTagsThai([])
 
-    if (props.InTagEnglish) {
-      if (props.InTagEnglish.length > 0) {
-        axios
-          .post(`/api/tag/gettagbyid/`, { tagList: props.InTagEnglish })
-          .then(fetchedTags => {
+    getSubjectCategories()
+      .then(allsubjects => {
+        console.log('allsubjects')
+        console.log(allsubjects)
 
-            getSubjectCategories()
-              .then(allsubjects => {
-                setSubjects(allsubjects)
-                GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+        setSubjects(allsubjects)
+        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
+
+
+        if (props.InTagEnglish) {
+          console.log('comTag2')
+          if (props.InTagEnglish.length > 0) {
+            axios
+              .post(`/api/tag/gettagbyid/`, { tagList: props.InTagEnglish })
+              .then(fetchedTags => {
+
+
 
                 console.log('fetchy')
 
@@ -95,23 +104,23 @@ export default function TagCom(props) {
                       tagsEng[index].name = filterRes[0].subject + ": " + filterRes[0].english;
                       tagsEng[index].subject = filterRes[0].subject;
                       tagsEng[index].approval = filterRes[0].approval;
-  
+
                       var filterSubject = allsubjects.filter(subject => subject.english == filterRes[0].subject)
                       // props.SubjectCat.filter( subject => )
-  
+
                       console.log('filterSubject')
                       console.log(allsubjects)
                       console.log(filterRes[0])
                       console.log(filterSubject)
-  
-  
+
+
                       tagsThai[index].name = filterSubject[0].thai + ": " + filterRes[0].thai;
                       tagsThai[index].subject = filterRes[0].subject;
                       tagsThai[index].approval = filterRes[0].approval;
                     } else {
                       console.log('no match')
-                      tagsEng.splice(index,1)
-                      tagsThai.splice(index,1)
+                      tagsEng.splice(index, 1)
+                      tagsThai.splice(index, 1)
                     }
 
 
@@ -158,19 +167,24 @@ export default function TagCom(props) {
                 props.OutTagEnglish(tagsEng);
                 props.OutTagThai(tagsThai);
 
+
+
+
+
+
               })
-              .catch(error => {
-                console.log(error)
-              })
+              .catch(err => console.log(err));
 
 
+          }
+
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
 
-          })
-          .catch(err => console.log(err));
-      }
-
-    }
   }, []);
 
 
@@ -356,10 +370,12 @@ export default function TagCom(props) {
             <label for="subject" className="font-semibold mr-4">
               Choose Subject :
               </label>
+            {console.log('selectedSubjects')}
+            {console.log(getSubjects)}
             <select
               // id="subject"
               value={getSelectedSubject}
-              onClick={e => { setSelectedSubject(e.target.value); console.log('clicked'); console.log(e.target.value); console.log(getSelectedSubject) }}
+              onChange={e => { setSelectedSubject(e.target.value); console.log('clicked'); console.log(e.target.value); console.log(getSelectedSubject) }}
             >
               {getSubjects.map(item => {
                 return <option value={item.english}>{item.thai}</option>;
@@ -409,7 +425,7 @@ export default function TagCom(props) {
         ]);
 
         var thaiSubject;
-        for (var item of getSubjects) {
+        for (var item of props.SubjectCat) {
           if (item.english == getSelectedSubject) {
             thaiSubject = item.thai;
           }

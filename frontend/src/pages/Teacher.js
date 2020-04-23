@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 
 import Banner from "../components/banner/Banner";
-import Header from "../components/header/HeaderStudio";
+import Header from "../components/header/HeaderTeacher";
 import TeacherCourse from "../components/teacherCourse/TeacherCourse";
 import { getCoursePoolAllAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";

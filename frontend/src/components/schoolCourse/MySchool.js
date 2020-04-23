@@ -46,8 +46,8 @@ export default function MySchool() {
       {console.log(getSchoolMatchPool.length)}
       {(getSchoolMatchPool.length > 0)? 
 
-      <div className="bg-pink-200 flex flex-col py-10 items-center" >
-      <div className="bg-pink-400 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >My School</div>
+    <div className="bg-yellow-200 flex flex-col py-10 items-center" >
+    <div className="bg-green-400 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >My School</div>
       <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
       {getSchoolMatchPool.map((schoolData, i) => (
           <div

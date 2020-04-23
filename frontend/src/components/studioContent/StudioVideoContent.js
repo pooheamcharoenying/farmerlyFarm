@@ -289,6 +289,7 @@ const StudioVideoContent = () => {
     console.log("starto")
     console.log(GlobalHook.getGlobalLessionSelect)
     setUploadingShow(null);
+    GlobalHook.setGlobalStudioUploadFile(false)
     // if (GlobalHook.getGlobalLessionSelect.new == "new") {
     //   console.log("starto")
 
