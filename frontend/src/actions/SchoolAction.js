@@ -90,9 +90,9 @@ function FindStudentBySchoolAction(GlobalHook, schoolId) {
   axios
     .post("/api/school/findstudentbyschool", pushData)
     .then(res => {
-      GlobalHook.setGlobalLoading(false);
+      
       GlobalHook.setGlobalMatchStudentBySchool(res.data)
-
+      GlobalHook.setGlobalLoading(false);
       console.log(res.data)
     })
     .catch(err => console.log(err));
@@ -105,12 +105,9 @@ function SchoolStatusChangeAction(GlobalHook, status, userId) {
   axios
     .post("/api/school/changestudentschoolstatusAction", pushData)
     .then(res => {
-      GlobalHook.setGlobalLoading(false);
+      
       window.location.reload()
-
-      // console.log(res.data)
-
-      // FindStudentBySchoolAction(GlobalHook,GlobalHook.getGlobalUser.schoolAdminId)
+      GlobalHook.setGlobalLoading(false);
 
     })
     .catch(err => console.log(err));

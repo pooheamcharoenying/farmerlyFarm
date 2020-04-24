@@ -53,6 +53,7 @@ const StudioDocumentContent = () => {
     } else {
       GlobalHook.setMutantStatus(true)
     }
+    
   }, [getLessionName, getLessionPreview, getLessionTime]);
 
 useEffect(() => {
@@ -100,21 +101,21 @@ useEffect(() => {
     }, [getLessionName,getLessionTime,getLessionPreview])
 
 
-    useEffect(() => {
-      CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
+    // useEffect(() => {
+    //   CheckMutateAction(GlobalHook,getInitStateName,getLessionName)
 
-    }, [getLessionName])
+    // }, [getLessionName])
 
     
-    useEffect(() => {
-      CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
+    // useEffect(() => {
+    //   CheckMutateAction(GlobalHook,getInitStateTime,getLessionTime)
 
 
-    }, [getLessionTime])
+    // }, [getLessionTime])
 
-    useEffect(() => {
-      CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
-    }, [getLessionPreview]);
+    // useEffect(() => {
+    //   CheckMutateAction(GlobalHook, getInitStatePreview, getLessionPreview);
+    // }, [getLessionPreview]);
 
     useEffect(() => {
    if(GlobalHook.getGlobalStatusCode == "CreateNewLession"){

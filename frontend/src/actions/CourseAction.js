@@ -322,8 +322,6 @@ function GetCourseSettingAction(GlobalHook, courseSlug) {
   axios
     .post("/api/course/getcoursesetting", pushData)
     .then(res => {
-      GlobalHook.setGlobalLoading(false);
-
       GlobalHook.setGlobalCourseSubject(res.data.courseSubject)
       GlobalHook.setGlobalCourseLevel(res.data.courseLevel)
       GlobalHook.setGlobalCourseTeacher(res.data.courseTeacher)
@@ -338,6 +336,9 @@ function GetCourseSettingAction(GlobalHook, courseSlug) {
       GlobalHook.setGlobalVimeoId(res.data.courseVimeoId)
       GlobalHook.setGlobalPublicCourseStatus(res.data.coursePublic)
       GlobalHook.setGlobalSchoolCourseStatus(res.data.courseSchool)
+
+      
+      GlobalHook.setGlobalLoading(false);
 
       // console.log("Fetch Course Setting")
       // console.log(res.data)
@@ -402,9 +403,9 @@ function SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus) {
   axios
     .post("/api/course/update", pushData)
     .then(res => {
-      GlobalHook.setGlobalLoading(false);
+      
       setModalOpenStatus(false)
-
+      GlobalHook.setGlobalLoading(false); 
       console.log(GlobalHook.getGlobalCourseName + " " + GlobalHook.getGlobalCourseTeacher)
 
       axios.post('/api/course/editVimeoFolderName', {
@@ -412,11 +413,15 @@ function SaveCourseSetting(GlobalHook, courseSlug, setModalOpenStatus) {
         vimeoId: GlobalHook.getGlobalVimeoId
       })
         .then(function (response) {
+          console.log('editVimeoFolderName success')
           console.log(response);
           window.location.href = `/teacher/${NewCourseSlug}`;
+          GlobalHook.setGlobalLoading(false);   
         })
         .catch(function (error) {
+          console.log('editVimeoFolderName fail')
           console.log(error);
+          GlobalHook.setGlobalLoading(false);   
         });
 
 

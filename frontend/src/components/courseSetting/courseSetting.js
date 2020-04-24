@@ -61,7 +61,7 @@ export default function FabCreateCourse() {
 
   const [getSchoolState, setSchoolState] = useState(false)
 
-  const[getConfirmDeleteCourseTextInput, setConfirmDeleteCourseTextInput] = useState("")
+  const [getConfirmDeleteCourseTextInput, setConfirmDeleteCourseTextInput] = useState("")
 
   useEffect(() => {
     GetCourseSettingAction(GlobalHook, courseSlug);
@@ -86,6 +86,8 @@ export default function FabCreateCourse() {
 
   useEffect(() => {
     // console.log('getting subjects')
+
+    GlobalHook.setGlobalLoading(true);
 
     getSubjectCategories()
       .then(data => {
@@ -113,6 +115,9 @@ export default function FabCreateCourse() {
           }
         }
         GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+
+        GlobalHook.setGlobalLoading(false);
+
       })
       .catch(error => {
         console.log(error)
@@ -358,11 +363,11 @@ export default function FabCreateCourse() {
   }
 
   function SaveNewTagAction() {
-    
+
     console.log('saveNewTagger')
-    
+
     axios
-      .post(`/api/tag/addtag/`, { english: getNewTagEnglish, thai: getNewTagThai, subject: "None" , approval: false })
+      .post(`/api/tag/addtag/`, { english: getNewTagEnglish, thai: getNewTagThai, subject: "None", approval: false })
       .then(res => {
         const tagsEng = [].concat(
           GlobalHook.getGlobalCourseTagEnglish,
@@ -383,7 +388,7 @@ export default function FabCreateCourse() {
   function handleDeleteCourseInput(event) {
     console.log('typing')
     console.log(event.target.value)
-    setConfirmDeleteCourseTextInput( event.target.value )
+    setConfirmDeleteCourseTextInput(event.target.value)
   }
 
   function CreateCoursePopUp() {
@@ -401,23 +406,23 @@ export default function FabCreateCourse() {
             <Popover
               content={
                 <div>
-                    {/* <label> {GlobalHook.getGlobalCourseName} </label> */}
-                  <div style={{marginBottom:"1vh"}}>
+                  {/* <label> {GlobalHook.getGlobalCourseName} </label> */}
+                  <div style={{ marginBottom: "1vh" }}>
 
                     <label>เขียนชื่อคอร์สเพื่อยืนยันการลบคอร์ส: </label>
-                    <input onChange={handleDeleteCourseInput} style={{ backgroundColor: "lightgray", marginLeft:"1vw" }}></input>
+                    <input onChange={handleDeleteCourseInput} style={{ backgroundColor: "lightgray", marginLeft: "1vw" }}></input>
                   </div>
 
-                  {(getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName)?
-                       <Alert message="พร้อมที่จะลบคอร์ส กดปุ่ม Delete เพื่อลบทิ้งถาวร" type="success" />
-                      :
-                      <Alert message="ยังไม่พร้อมจะลบคอร์ส เขียนชื่อไม่ถูกต้อง" type="warning" />
-                    }
+                  {(getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName) ?
+                    <Alert message="พร้อมที่จะลบคอร์ส กดปุ่ม Delete เพื่อลบทิ้งถาวร" type="success" />
+                    :
+                    <Alert message="ยังไม่พร้อมจะลบคอร์ส เขียนชื่อไม่ถูกต้อง" type="warning" />
+                  }
 
                   <div className="flex w-full justify-center">
                     <div
                       className="text-red-600 hover:text-red-400 mr-4 cursor-pointer"
-                      style = {{color: (getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName)? "red":"#718096"   }}
+                      style={{ color: (getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName) ? "red" : "#718096" }}
                       onClick={() => {
 
                         if (getConfirmDeleteCourseTextInput == GlobalHook.getGlobalCourseName) {
@@ -451,7 +456,7 @@ export default function FabCreateCourse() {
                       className="text-gray-600 hover:text-gray-500 cursor-pointer"
                       onClick={() => {
                         setShowConfirmDel(false);
-                        
+
                       }}
                     >
                       Cancel
@@ -562,7 +567,7 @@ export default function FabCreateCourse() {
                 GlobalHook.setGlobalCourseDescription(e.target.value)
               }
               value={GlobalHook.getGlobalCourseDescription}
-              // autoSize={{ minRows: 3, maxRows: 5 }}
+            // autoSize={{ minRows: 3, maxRows: 5 }}
             />
           </div>
 
@@ -724,7 +729,7 @@ export default function FabCreateCourse() {
                   defaultChecked={GlobalHook.getGlobalSchoolCourseStatus}
                   checkedChildren="Yes"
                   unCheckedChildren="No"
-                  onClick={e => { console.log('globalUser'); console.log(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseId(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseStatus(e) } }
+                  onClick={e => { console.log('globalUser'); console.log(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseId(GlobalHook.getGlobalUser.schoolAdminId); GlobalHook.setGlobalSchoolCourseStatus(e) }}
                 />
 
               </div>

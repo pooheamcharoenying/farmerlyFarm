@@ -150,15 +150,16 @@ router.post("/editVimeoFolderName", (req, res) => {
       name: req.body.folderName
     }
   })
-    .then(res => {
-      res.status(200).json(res);
+    .then(data => {
+
       console.log("vimeo folder name sucessfully edited");
-      return "success"
+      console.log(data)
+      // res.send(data)
     })
     .catch(err => {
       message.error("folder name change error");
       console.log(err);
-      return res.status(400).json(err);
+      res.status(400).json(err);
     });
 });
 
@@ -172,8 +173,10 @@ router.post("/deleteVimeoVideo", (req, res) => {
     headers: headerDelete,
     data: {}
   })
-    .then(res => {
+    .then(data => {
       console.log('success: vimeo video deleted')
+      console.log(data)
+      res.status(200).json(data);
 
     })
     .catch(err => {

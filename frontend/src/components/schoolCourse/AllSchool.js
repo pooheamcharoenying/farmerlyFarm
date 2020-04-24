@@ -40,6 +40,7 @@ export default function AllSchool() {
 
     return (
           <div className="bg-blue-200 flex flex-col py-10 items-center" >
+
           <div className="bg-blue-400 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-6" >All School</div>
           <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
           {GlobalHook.getGlobalSchoolPool.map((schoolData, i) => (

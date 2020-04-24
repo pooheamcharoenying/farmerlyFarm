@@ -37,7 +37,9 @@ export default function AllSchoolCourse() {
   }, [GlobalHook.getGlobalUser, GlobalHook.getGlobalCoursePool, GlobalHook.getGlobalSchoolPool]);
 
   return (
-    <div className="bg-green-300 flex flex-col py-10 items-center" >
+    <div className="bg-green-300 flex flex-col py-10 items-center" style={{height:"100%"}} >
+      {console.log('winHeight')}
+      {console.log(window.innerHeight)}
       <div className="bg-green-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-2" >{GlobalHook.getGlobalSchoolSlug + ": All Courses"}</div>
       <ScrollContainer hideScrollbars={false} vertical={false} className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5" >
         {getSchoolAllCourse.map((courseData, i) => <div

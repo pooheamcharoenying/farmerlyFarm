@@ -129,6 +129,14 @@ const StudioVideoContent = () => {
     var oldCourseStructure = GlobalHook.getGlobalCourseStructure;
     const { parentIndex, selfIndex } = GlobalHook.getGlobalLessionSelect;
 
+
+      if (GlobalHook.getMutantStatus == true) {
+        GlobalHook.setMutantStatus(false)
+      } else {
+        GlobalHook.setMutantStatus(true)
+      }
+
+
     if (oldCourseStructure[parentIndex]) {
       oldCourseStructure[parentIndex].subItems[
         selfIndex

@@ -19,6 +19,7 @@ export default function Home() {
 
   const GlobalHook = useContext(GlobalContext);
   useEffect(() => {
+    
 
     // console.log('starting home ..................................................')
     getSchoolPoolAction(GlobalHook);

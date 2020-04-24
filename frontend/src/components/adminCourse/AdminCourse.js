@@ -148,22 +148,20 @@ export default function AdminCourse() {
                 <Modal
                     title="Edit Knowledge Tag"
                     visible={getTagModalStatus}
-                    onOk={() => { setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true) }}
-                    onCancel={() => { setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); setTagDisableThai(true); setTagDisableEnglish(true); setTagDisableSubject(true) }}
+                    onOk={() => {saveTagDataUpdate(); setTagModalStatus(!getTagModalStatus);  }}
+                    onCancel={() => { setTagModalStatus(!getTagModalStatus); setSelectedTagEnglish(""); }}
                 >
                     <form >
                         <label> {"Tag ID: " + getSelectedTagId} </label>
 
-                        <label style={{ display: "inline-block" }}>
+                        <label style={{ display: "inline-block", marginTop: "10px" }}>
                             Tag English:
-                        <input type="text" name="namnme" onChange={(event) => setSelectedTagEnglish(event.target.value)} value={getSelectedTagEnglish} disabled={getTagDisableEnglish} style={{ backgroundColor: (getTagDisableEnglish) ? "red" : "green" }} />
-                            <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableEnglish(!getTagDisableEnglish) }}> Edit </label>
+                        <input style={{backgroundColor:"gray"}} type="text" name="namnme" onChange={(event) => setSelectedTagEnglish(event.target.value)} value={getSelectedTagEnglish} style={{ backgroundColor: "white" }} />
                         </label>
 
-                        <label style={{ display: "inline-block", marginTop: "5px" }}>
+                        <label style={{ display: "inline-block", marginTop: "10px" }}>
                             Tag Thai:
-                        <input type="text" name="namnme" onChange={(event) => setSelectedTagThai(event.target.value)} value={getSelectedTagThai} disabled={getTagDisableThai} style={{ backgroundColor: (getTagDisableThai) ? "red" : "green" }} />
-                            <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableThai(!getTagDisableThai) }}> Edit </label>
+                        <input style={{backgroundColor:"gray"}} type="text" name="namnme" onChange={(event) => setSelectedTagThai(event.target.value)} value={getSelectedTagThai} style={{ backgroundColor: "white" }} />
                         </label>
 
                     </form>
@@ -173,18 +171,14 @@ export default function AdminCourse() {
                     {console.log("wtf")}
                     {console.log(getSelectedTagSubject)}
 
-                    {(!getTagDisableSubject) ?
-                        <select onClick={e => { console.log('clickclack'); console.log(e.target.value); setSelectedTagSubject(e.target.value) }}>
-                            {/* <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="audi">Audi</option> */}
+
+                    <select 
+                        style = {{marginTop:"10px"}}
+                        onChange={e => { console.log('clickclack'); console.log(e.target.value); setSelectedTagSubject(e.target.value) }}>
                             {getSubjects.map(item => {
                                 return <option value={item.english}> {item.thai}</option>;
                             })}
-                        </select> : <></>}
-
-                    <label className="ml-2 bg-blue-500 rounded text-center mr-2 pr-2" onClick={() => { setTagDisableSubject(!getTagDisableSubject) }}> Edit </label>
+                    </select>
 
 
 
@@ -195,8 +189,6 @@ export default function AdminCourse() {
                         onClick={e => setSelectedTagApproval(e)}
                     />
 
-                    <button onClick={saveTagDataUpdate} className=" bg-green-500 rounded text-center mt-4 p-2 ml-2" > Save Changes </button>
-                    {/* <button onClick={updateTagsInCourseDB} className=" bg-green-500 rounded text-center mt-4 p-2 ml-2" > Save Changes </button> */}
 
                     <button onClick={deleteTagUpdate} className=" bg-red-500 rounded text-center mt-4 p-2 ml-2" > Delete Tag </button>
 
@@ -379,12 +371,12 @@ export default function AdminCourse() {
 
     return (
         <div>
-            {(getLoginStatus) ?  
+            {(getLoginStatus) ?
                 <>
-                <SchoolAdmin></SchoolAdmin>
-                {adminSucessfullySignedIn()}
+                    <SchoolAdmin></SchoolAdmin>
+                    {adminSucessfullySignedIn()}
                 </>
-            : loginToAdmin()}
+                : loginToAdmin()}
 
 
         </div>
