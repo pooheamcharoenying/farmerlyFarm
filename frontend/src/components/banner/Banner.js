@@ -26,7 +26,7 @@ export default function Banner() {
         style={{ maxWidth: "300px" }}
       >
         Build skills with courses, certificates, and degrees online from
-        brilliant teachers all around the country.
+        brilliant teachers all around Thailand.
       </div>
 
       {!GlobalHook.getGlobalToken && (
