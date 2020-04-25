@@ -26,7 +26,7 @@ export default function Banner() {
         style={{ maxWidth: "300px" }}
       >
         Build skills with courses, certificates, and degrees online from
-        world-class universities and companies
+        brilliant teachers all around the country.
       </div>
 
       {!GlobalHook.getGlobalToken && (
