@@ -135,8 +135,6 @@ const StudioQuizContent = () => {
 
       setTimeout(() => {
         GlobalHook.setGlobalMessage(null)
-
-
       }, 1000);
 
     }
@@ -541,7 +539,7 @@ const StudioQuizContent = () => {
             onChange={e => setLessionTime(e.target.value)}
             suffix="นาที"
             style={{ maxWidth: "100px" }}
-            disabled={!getQuizSettingTimeCount}
+            // disabled={!getQuizSettingTimeCount}
           />
         </div>
       </div>
