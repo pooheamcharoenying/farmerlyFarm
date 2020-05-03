@@ -5,13 +5,18 @@ import Cookies from "js-cookie";
 import { message } from 'antd'
 import Firebase from '../hook/firebase'
 import * as firebase from "firebase/app";
+
+
 function GetTokenAction(GlobalHook, uid) {
+
+  console.log('startGetToken')
+  console.log(uid)
 
   axios
     .post("/api/user/getToken", { "uid": uid })
     .then(res => {
-
-
+      console.log('getTokenSuccess')
+      console.log(res.data.user)
       GlobalHook.setGlobalToken(res.data.token);
       Cookies.set("globalToken", res.data.token, { expires: 7 });
 
@@ -26,7 +31,12 @@ function GetTokenAction(GlobalHook, uid) {
 
       GlobalHook.setGlobalLoading(false);
     })
-    .catch(err => { console.log(err); message.error("Invalid Username or Password"); GlobalHook.setGlobalLoading(false); });
+    .catch(err => {
+      console.log('getTokenFail')
+      console.log(err); 
+      message.error("Invalid Username or Password"); 
+      GlobalHook.setGlobalLoading(false); 
+    });
 }
 
 
@@ -36,12 +46,15 @@ async function LoginAction(GlobalHook, userData, vender) {
 
   GlobalHook.setGlobalLoading(true);
   if (vender == "userpass") {
+    console.log('userpassLogin1')
     try {
       await Firebase
         .auth()
-        .signInWithEmailAndPassword(userData.email, userData.password).then((data) => {
-          GetTokenAction(GlobalHook, data.user.uid)
-        })
+        .signInWithEmailAndPassword(userData.email, userData.password)
+          .then((data) => {
+            console.log('userpassLogin2')
+            GetTokenAction(GlobalHook, data.user.uid)
+          })
 
     } catch (error) {
       GlobalHook.setGlobalLoading(false);
@@ -132,6 +145,20 @@ async function SignUpAction(GlobalHook, userData) {
     GlobalHook.setGlobalLoading(false);
 
   }
+
+}
+
+
+function GetFirebaseUserByEmail(userEmail) {
+  const pushData = {
+    email: userEmail,
+  }
+  return axios
+  .post("/api/user/getfirebaseuserbyemail", pushData)
+  .then(res => {
+    return res.data
+  })
+  .catch(err => console.log(err));
 
 }
 
@@ -369,4 +396,4 @@ function DeleteUserCourseDataDB(GlobalHook) {
 }
 
 
-export {   DeleteUserCourseDataDB,  LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction, LessionVisitedLogAction, QuizLogAction, ResetPassAction, GetUserByIdAction, GetManyUsersFromDB, GetManyUsersFromFirebase, UpdateFirebaseUser };
+export {  GetFirebaseUserByEmail, DeleteUserCourseDataDB,  LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction, LessionVisitedLogAction, QuizLogAction, ResetPassAction, GetUserByIdAction, GetManyUsersFromDB, GetManyUsersFromFirebase, UpdateFirebaseUser };

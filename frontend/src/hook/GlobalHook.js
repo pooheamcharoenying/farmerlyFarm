@@ -504,36 +504,38 @@ const Store = props => {
 
   //   }, [])
 
-  useEffect(() => {
-    setGlobalLoading(true);
-    const uid = localStorage.getItem("uid");
-if(uid){
-    axios
-      .post("/api/user/getToken", { uid })
-      .then(res => {
-        setGlobalToken(res.data.token);
-        Cookies.set("globalToken", res.data.token, { expires: 7 });
 
-        setGlobalUser(res.data.user);
-        setGlobalUserAuth(res.data.user);
+// GET USER ---------------------------------->>>>
+//   useEffect(() => {
+//     setGlobalLoading(true);
+//     const uid = localStorage.getItem("uid");
+// if(uid){
+//     axios
+//       .post("/api/user/getToken", { uid })
+//       .then(res => {
+//         setGlobalToken(res.data.token);
+//         Cookies.set("globalToken", res.data.token, { expires: 7 });
+
+//         setGlobalUser(res.data.user);
+//         setGlobalUserAuth(res.data.user);
 
         
-        localStorage.setItem("globalUser", JSON.stringify(res.data.user));
+//         localStorage.setItem("globalUser", JSON.stringify(res.data.user));
 
-        axios.defaults.headers.common["Authorization"] = res.data.token;
+//         axios.defaults.headers.common["Authorization"] = res.data.token;
 
-        setGlobalLoading(false);
+//         setGlobalLoading(false);
 
 
-        GlobalHook.setGlobalTeacherPayment_AccountHolderName(res.data.user.teacherPayment_AccountHolderName)
-        GlobalHook.setGlobalTeacherPayment_AccountNumber(res.data.user.teacherPayment_AccountNumber)
-        GlobalHook.setGlobalTeacherPayment_AccountBank(res.data.user.teacherPayment_AccountBank)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    }
-  }, []);
+//         GlobalHook.setGlobalTeacherPayment_AccountHolderName(res.data.user.teacherPayment_AccountHolderName)
+//         GlobalHook.setGlobalTeacherPayment_AccountNumber(res.data.user.teacherPayment_AccountNumber)
+//         GlobalHook.setGlobalTeacherPayment_AccountBank(res.data.user.teacherPayment_AccountBank)
+//       })
+//       .catch(err => {
+//         console.log(err);
+//       });
+//     }
+//   }, []);
 
   return (
     <GlobalContext.Provider value={GlobalHook}>

@@ -3,7 +3,11 @@ import { Input, Button } from "antd";
 import { useHistory } from 'react-router-dom';
 
 import { FaSearch, FaSchool, FaSave } from "react-icons/fa";
+import { GiFarmer, GiFarmTractor, GiFruitBowl } from "react-icons/gi"
+import {RiCalendarEventLine} from "react-icons/ri"
+
 import { GlobalContext } from "../../hook/GlobalHook";
+
 
 import CourseCatDropdown from "./CourseCatDropdown";
 import UserDropdown from "./UserDropdown";
@@ -44,52 +48,60 @@ export default function HeaderHome(props) {
           >
             <CourseCatDropdown showTitle={false} allCourseRef={props.allCourseRef} />
             {GlobalHook.getGlobalToken && (
-              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={()=>history.push("/school")}>
+              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/school")}>
                 <FaSchool className="mr-2 text-gray-700" />
               </button>
             )}
           </div>
           <a
-            className=" text-blue-600 flex text-3xl font-bold hover:text-blue-600 no-underline  md:flex-grow-0 flex-grow justify-center"
+            className=" text-green-600 flex text-3xl font-bold hover:text-blue-600 no-underline  md:flex-grow-0 flex-grow justify-center"
             href="/"
           >
-            StudySabai
+            Farmerly Farm
           </a>
 
           <div
             className=" hidden md:flex justify-end ml-10 h-full"
             style={{ flex: 1 }}
           >
-            {GlobalHook.getGlobalToken && (
-              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={()=>history.push("/school")}>
-                <FaSchool className="mr-2 text-gray-700" />
-                School
+
+
+            <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/school")}>
+              <RiCalendarEventLine className="mr-2 text-gray-700" />
+                Events
               </button>
-            )}
 
-            <CourseCatDropdown showTitle={true} allCourseRef={props.allCourseRef} />
+              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/school")}>
+              <GiFruitBowl className="mr-2 text-gray-700"/>
+              {/* <FaSchool className="mr-2 text-gray-700" /> */}
 
-            <Search
+                Farm Fresh
+              </button>
+
+
+            {/* <CourseCatDropdown showTitle={true} allCourseRef={props.allCourseRef} /> */}
+
+            {/* <Search
               placeholder="ค้นหา คอร์ส"
               onChange={value => setSearchValue(value.target.value)}
               value={getSearchValue}
               loading={getSearchValue != ""}
               className="ml-8 flex-grow-1 max-w-lg my-3"
-            />
+            /> */}
 
             {GlobalHook.getGlobalToken ? (
               <div className="ml-6 flex items-center">
                 <UserDropdown />
               </div>
             ) : (
-              <div className="ml-6 flex items-center">
-                <Button
-                  onClick={() => GlobalHook.setGlobalShowLoginModal(true)}
-                >
-                  Login / Signup
+                <div className="ml-6 flex items-center">
+                  <Button
+                    onClick={() => GlobalHook.setGlobalShowLoginModal(true)}
+                  >
+                    Login / Signup
                 </Button>
-              </div>
-            )}
+                </div>
+              )}
           </div>
 
           <div
@@ -110,8 +122,8 @@ export default function HeaderHome(props) {
             {GlobalHook.getGlobalToken ? (
               <UserDropdown />
             ) : (
-              <LoginMobileDropdown />
-            )}
+                <LoginMobileDropdown />
+              )}
           </div>
         </div>
         <MobileSearchBar />

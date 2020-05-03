@@ -1,6 +1,35 @@
 import React from "react";
 import axios from "axios";
 import { message } from "antd";
+
+function FetchAllProducts() {
+  // GlobalHook.setGlobalLoading(true);
+  console.log('preparingProductFetch')
+  return axios
+    .get("/api/course/getallproducts")
+    .then(res => {
+      console.log('fetchResult')
+      console.log(res.data)
+      return res.data
+      // GlobalHook.setGlobalLoading(false);
+    })
+    .catch(err => console.log(err));
+}
+
+function FetchAllFarms() {
+  // GlobalHook.setGlobalLoading(true);
+  console.log('farmFetch')
+  return axios
+    .get("/api/course/getallfarms")
+    .then(res => {
+      console.log('fetchResult')
+      console.log(res.data)
+      return res.data
+      // GlobalHook.setGlobalLoading(false);
+    })
+    .catch(err => console.log(err));
+}
+
 function getCoursePoolAction(GlobalHook) {
   GlobalHook.setGlobalLoading(true);
   axios
@@ -582,6 +611,8 @@ async function deleteMediaFromDB(GlobalHook) {
 }
 
 export {
+  FetchAllProducts,
+  FetchAllFarms,
   getCoursePoolAction,
   getCoursePoolAllAction,
   courseSearchKeywordAction,

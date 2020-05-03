@@ -35,6 +35,9 @@ const LogInModal = () => {
     setUserName("")
     setUserPassword("")
     setUserPassword2("")
+    console.log('startLoginAction')
+    console.log(getUserEmail)
+    console.log(getUserPassword)
     LoginAction(GlobalHook, { email: getUserEmail, password: getUserPassword },"userpass");
    
   }

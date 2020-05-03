@@ -2,14 +2,13 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 const Firebase = firebase.initializeApp( {
-  apiKey: "AIzaSyDKWjWpeoYL2hgo08h739lM-pdziaH1oTc",
-  authDomain: "studysabaiapp.firebaseapp.com",
-  databaseURL: "https://studysabaiapp.firebaseio.com",
-  projectId: "studysabaiapp",
-  storageBucket: "studysabaiapp.appspot.com",
-  messagingSenderId: "213085120828",
-  appId: "1:213085120828:web:f03401527fa648a1261639",
-  measurementId: "G-LRKZ42YP35"
+  apiKey: "AIzaSyBBECuRReDCu9OtEUJugn5pbpJsTJ2_kjQ",
+  authDomain: "farmerly-farm-firebase.firebaseapp.com",
+  databaseURL: "https://farmerly-farm-firebase.firebaseio.com",
+  projectId: "farmerly-farm-firebase",
+  storageBucket: "farmerly-farm-firebase.appspot.com",
+  messagingSenderId: "1028504904717",
+  appId: "1:1028504904717:web:c1349733ba0002fe276144"
 });
 
 export default Firebase;

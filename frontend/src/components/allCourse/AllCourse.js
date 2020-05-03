@@ -5,21 +5,24 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { FaCalculator, FaAtom, FaRobot, FaCode } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 
-import CourseCard from "../courseCard/CourseCard";
+import ProductCard from "../courseCard/CourseCard";
 import { GlobalContext } from "../../hook/GlobalHook";
 
 import {
   getSubjectCategories,
   getSubjectLevels,
-  getSubjectMenu
+  getSubjectMenu,
+  FetchAllProducts,
+  GetFirebaseUserByEmail,
 } from "../../actions";
 
 import "./AllCourse.css";
 import Dropdown from "../dropDown/DropDown";
 
 import ReactDOM from "react-dom";
+import { GiMailShirt } from "react-icons/gi";
 
-export default function AllCourse() {
+export default function AllProduct() {
   const GlobalHook = useContext(GlobalContext);
 
   let history = useHistory();
@@ -29,41 +32,37 @@ export default function AllCourse() {
   const [getLevels, setLevels] = useState([]);
 
 
+  const [getProducts, setProducts] = useState([]);
 
   useEffect(() => {
     // console.log('getting subjects')
 
-    getSubjectCategories()
+    console.log('hellohi')
+    FetchAllProducts()
       .then(data => {
-        setSubjects(data)
-        GlobalHook.setGlobalCourseSubjectFilter("All Subjects");
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        console.log('setting fetch data')
+        console.log(data)
+        setProducts(data)
 
-    getSubjectLevels()
-      .then(data => {
-        // console.log('show levels')
-        // console.log(data)
-        for (var x of data) {
-          if (x.type == "levelmenu") {
-            // console.log('level menu found')
-            // console.log(x)
-            setLevels(x.menu);
-          }
-          if (x.type == "subjectmenu") {
-            // console.log('subject menu found')
-            // console.log(x)
-            setSubjectMenu(x.menu);
-          }
-        }
-        GlobalHook.setGlobalCourseLevelFilter("ทั้งหมด");
+        GetFirebaseUserByEmail("8moXINt8G8OdepCEYAmGNhuxjq52")
+          .then(data => {
+            console.log('getFirebaseUser')
+            console.log(data)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+
       })
       .catch(error => {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+
+  },[])
 
   useEffect(() => {
     GenCourseFiltedMainSubject(GlobalHook.getGlobalCourseMainSubjectFilter);
@@ -315,13 +314,15 @@ export default function AllCourse() {
   }
 
   return (
-    <div className="bg-blue-300 w-full">
+    <div className="bg-green-300 w-full">
       <div
         className="flex  flex-col py-10 items-center  mx-auto "
         style={{ minHeight: "700px", maxWidth: "1500px" }}
       >
-        <div className="bg-blue-500 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8">
-          ค้นหาคอร์สใหม่
+        {console.log('getProducts')}
+        {console.log(getProducts)}
+        <div className="bg-green-700 w-3/4 rounded-lg text-center text-white py-2 text-2xl font-bold mb-4">
+          สั่งผักผลไม้ Farm to Table ได้แล้ววันนี้
         </div>
 
         <div
@@ -350,7 +351,7 @@ export default function AllCourse() {
           className=" justify-around mb-4 px-10 hidden md:flex"
           style={{ width: "77%" }}
         >
-          {getLevels.map((levelItem,index) => (
+          {getLevels.map((levelItem, index) => (
             <div key={index}>{renderLevels(levelItem)}</div>
           ))}
         </div>
@@ -381,20 +382,20 @@ export default function AllCourse() {
         {console.log('showCourse')}
         {console.log(GlobalHook.getFilteredCourseData)}
 
-        {GlobalHook.getFilteredCourseData[0] ? <ScrollContainer
+        {getProducts ? <ScrollContainer
           hideScrollbars={false}
           vertical={false}
           className="flex-row overflow-x-auto flex md:flex-wrap md:overflow-hidden mt-10 w-4/5"
         >
-          {GlobalHook.getFilteredCourseData.map((courseData, i) => (
+          {getProducts.map((productData, i) => (
             <div
 
               key={i}
-              className=" mb-4 mr-2 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
+              className="  mb-12 mr-4 md:mr-0 hover:text-black curser-pointer no-underline md:w-1/3  lg:w-1/4 xl:w-1/4 flex justify-center"
               // onClick={() =>{ history.push(`/course/${courseData.courseSlug}`)}}
-              onClick={() => window.location.href = `/course/${courseData.courseSlug}`}
+              onClick={() => window.location.href = `/product/${productData.productSlug}`}
             >
-              <CourseCard courseData={courseData} />
+              <ProductCard courseData={productData} />
             </div>
           ))}
         </ScrollContainer> : <div className="mt-20">ไม่พบคอร์สที่ตรงกัน</div>}
@@ -402,7 +403,7 @@ export default function AllCourse() {
 
       {console.log('mainstay')}
       {console.log(GlobalHook.getGlobalCourseMainSubjectFilter)}
-      {console.log('substay')} 
+      {console.log('substay')}
       {console.log(GlobalHook.getGlobalCourseSubjectFilter)}
     </div>
   );

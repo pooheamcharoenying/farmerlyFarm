@@ -9,21 +9,35 @@ const admin = require("firebase-admin");
 
 const UserSchema = require("../../models/User");
 
-var serviceAccount = require("../../studysabaiapp-firebase-adminsdk-uqhjc-63ba1c8102.json");
+var serviceAccount = require("../../farmerly-farm-firebase-firebase-adminsdk-1ifnx-36990316a5.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://studysabaiapp.firebaseio.com"
+  databaseURL: "https://farmerly-farm-firebase.firebaseio.com"
 });
 const User = mongoose.model("user", UserSchema);
 
 router.get("/test", (req, res) => res.json({ msg: "Users Works" }));
 
-router.post("/getToken", (req, res) => {
+
+
+router.post("/getbooty", (req, res) => {
+  console.log('blamington')
   const uid = req.body.uid;
   const payload = { id: uid };
+
+  res.send('holymoly')
+
+});
+
+router.post("/getToken", (req, res) => {
+  console.log('blamington')
+  const uid = req.body.uid;
+  const payload = { id: uid };
+
   User.findOne({ uid })
     .then(user => {
+      console.log('getToken')
       if (user) {
         jwt.sign(
           { id: user._id },
@@ -338,9 +352,10 @@ router.post(
   (req, res) => {
       console.log('getFirebaseByEmail')
       console.log(req.body.email);
+      const userEmail = req.body.email;
       admin
         .auth()
-        .getUserByEmail(req.body.email)
+        .getUser(userEmail)
         .then(function (userRecord) {
           console.log('resutyGetUserByEmail')
           console.log(userRecord)

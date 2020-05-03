@@ -41,9 +41,16 @@ if (!isDev && cluster.isMaster) {
     useUnifiedTopology: true
   };
 
+  console.log('process.env.MONGO_URI')
+  console.log(process.env.MONGO_URI)
+
   mongoose
-    .connect(process.env.MONGO_URI, mongooseOptions)
+    .connect("mongodb+srv://studysabaiapp-user:ZvlUXt3FWhOycA4e@studysabaiapp-fiqyj.mongodb.net/farmerlyfarm?retryWrites=true&w=majority", mongooseOptions)
     .then(() => console.log("DB connected")).catch((err)=>console.log(err))
+
+  // mongoose
+  //   .connect(process.env.MONGO_URI, mongooseOptions)
+  //   .then(() => console.log("DB connected")).catch((err)=>console.log(err))
 
   mongoose.connection.on("error", err => {
     console.log(`DB connection error: ${err.message}`);
@@ -56,13 +63,13 @@ if (!isDev && cluster.isMaster) {
   app.use(express.json({ limit: "50mb" }));
 
   app.use("/api/course", Course);
-  app.use("/api/coursemedia", CourseMedia);
+  // app.use("/api/coursemedia", CourseMedia);
   app.use("/api/user", User);
-  app.use("/api/quiz", Quiz);
-  app.use("/api/tag", Tag);
-  app.use("/api/checkout", Checkout);
-  app.use("/api/payment", Payment);
-  app.use("/api/school", School);
+  // app.use("/api/quiz", Quiz);
+  // app.use("/api/tag", Tag);
+  // app.use("/api/checkout", Checkout);
+  // app.use("/api/payment", Payment);
+  // app.use("/api/school", School);
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, "../frontend/build")));

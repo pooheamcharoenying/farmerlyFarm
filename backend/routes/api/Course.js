@@ -18,22 +18,56 @@ const SubjectSchema = require("../../models/Subject");
 const Subject = mongoose.model("subjects", SubjectSchema);
 
 const SubjectMenuSchema = require("../../models/Menu");
-console.log('SubjectMenuSchema')
-console.log(SubjectMenuSchema)
 const Menu = mongoose.model("menu", SubjectMenuSchema);
 
 const SubjectLevelSchema = require("../../models/SubjectLevel");
 const Level = mongoose.model("levels", SubjectLevelSchema);
+
+const ProductSchema = require("../../models/Product");
+const Product = mongoose.model("products", ProductSchema);
+
+const FarmSchema = require("../../models/Farm");
+const Farm = mongoose.model("farms", FarmSchema);
 ///////
 
 //////
 
 router.get("/test", (req, res) => res.json({ msg: "Course Works" }));
 
+
+
 //GetCourse
 router.get("/", async (req, res) => {
  
   Course.find({ courseActive: true, coursePublish: true })
+    .then(data => {
+      res.status(200).json(data);
+
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
+//GetCourse
+router.get("/getallproducts", async (req, res) => {
+ 
+  Product.find({})
+    .then(data => {
+      res.status(200).json(data);
+
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
+//GetCourse
+router.get("/getallfarms", async (req, res) => {
+ 
+  Farm.find({})
     .then(data => {
       res.status(200).json(data);
 

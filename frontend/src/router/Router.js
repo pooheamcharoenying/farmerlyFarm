@@ -1,7 +1,7 @@
 import React,{useContext,useEffect} from 'react';
 import {BrowserRouter as Router, Route,Switch,Link} from 'react-router-dom';
 import Home from '../pages/Home';
-import Course from '../pages/Course';
+import Product from '../pages/Product';
 import Dashboard from '../pages/Dashboard';
 import Teacher from '../pages/Teacher';
 import Studio from "../pages/Studio"
@@ -22,7 +22,7 @@ function RouterMain() {
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route exact path="/course/" component={Home}/>
-        <Route exact path="/course/:courseSlug" component={Course}/>
+        <Route exact path="/product/:productSlug" component={Product}/>
         <Route exact path="/dashboard/" component={Dashboard}/>
         <Route exact path="/teacher" component={Teacher}/>
         <Route exact path="/teacher/:courseSlug" component={Studio}/>
