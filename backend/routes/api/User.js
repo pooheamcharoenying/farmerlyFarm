@@ -30,6 +30,18 @@ router.post("/getbooty", (req, res) => {
 
 });
 
+router.post("/updateshoppingcartaction", (req, res) => {
+  User.findOneAndUpdate({ uid:  req.body.uid }, {shoppingCart: req.body.shoppingCart }, {new:true} )
+  .then( data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    console.log(err);
+    return res.status(400).json(err);
+  });
+});
+
+
 router.post("/getToken", (req, res) => {
   console.log('blamington')
   const uid = req.body.uid;

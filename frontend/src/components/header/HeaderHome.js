@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Input, Button } from "antd";
 import { useHistory } from 'react-router-dom';
 
-import { FaSearch, FaSchool, FaSave } from "react-icons/fa";
+import { FaSearch, FaSchool, FaSave, FaShoppingCart } from "react-icons/fa";
 import { GiFarmer, GiFarmTractor, GiFruitBowl } from "react-icons/gi"
 import {RiCalendarEventLine} from "react-icons/ri"
 
@@ -16,7 +16,7 @@ import LoginMobileDropdown from "./LoginMobileDropdown";
 
 import MobileSearchBar from "../popup/MobileSearchBar";
 
-import { courseSearchKeywordAction } from "../../actions";
+import { courseSearchKeywordAction, GetTokenAction } from "../../actions";
 export default function HeaderHome(props) {
   const GlobalHook = useContext(GlobalContext);
   const { Search } = Input;
@@ -35,6 +35,59 @@ export default function HeaderHome(props) {
       setSearchValue("");
     }
   }, [GlobalHook.getGlobalShowSearch]);
+
+
+  useEffect(() => {
+    console.log('yahoo')
+    GlobalHook.setGlobalCartEvent(false)
+  }, [GlobalHook.getGlobalCartEvent]);
+
+  useEffect( () => {
+    const memUser = JSON.parse( localStorage.getItem("globalUser") )
+    GetTokenAction(GlobalHook, memUser.uid)
+    // GlobalHook.setGlobalUser( JSON.parse( localStorage.getItem("globalUser") ) );
+    // GlobalHook.setGlobalToken( JSON.parse( localStorage.getItem("globalUser") ) );
+
+    console.log('setToken')
+    console.log(localStorage.getItem("globalToken"))
+  }, [] );
+
+  useEffect( () => {
+    console.log('gotUser')
+    console.log(GlobalHook.getGlobalUser)
+    if (GlobalHook.getGlobalUser) {
+      console.log('userLogEffect')
+      console.log(GlobalHook.getGlobalUser)
+      GlobalHook.setGlobalCart( GlobalHook.getGlobalUser.shoppingCart )
+    } 
+  }, [GlobalHook.getGlobalUser] );
+
+  // useEffect( () => {
+  //   if (GlobalHook.getGlobalUser) {
+  //     console.log('userLogEffect')
+  //     console.log(GlobalHook.getGlobalUser)
+  //     GlobalHook.setGlobalCart( GlobalHook.getGlobalUser.shoppingCart )
+  //   }
+  //   // GlobalHook.setGlobalCart( JSON.parse(localStorage.getItem('shoppingCart')) )
+  // }, [GlobalHook.getGlobalUser] );
+
+  function shoppingCart() {
+    var count = 0;
+    console.log('jigidy')
+    console.log(GlobalHook.getGlobalCart)
+    for (var item of GlobalHook.getGlobalCart) {
+      console.log('itoo')
+      console.log(item.productQuantity)
+      count = count + parseInt(item.productQuantity);
+    }
+
+    return(
+      <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/school")}>
+      <FaShoppingCart className="mr-2 text-gray-700" />
+        {"Cart " + count}
+      </button>
+    )
+  }
 
   return (
     <>
@@ -71,12 +124,17 @@ export default function HeaderHome(props) {
                 Events
               </button>
 
-              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/school")}>
+              <button className="flex justify-center items-center hover:bg-gray-200 text-xl text-gray-600 mr-4 px-2" onClick={() => history.push("/teacher")}>
               <GiFruitBowl className="mr-2 text-gray-700"/>
               {/* <FaSchool className="mr-2 text-gray-700" /> */}
-
                 Farm Fresh
               </button>
+              {console.log('getGlobalCart')}
+              {console.log(GlobalHook.getGlobalCart)}
+              {console.log(GlobalHook.getGlobalCart.length)}
+
+              {shoppingCart()}
+
 
 
             {/* <CourseCatDropdown showTitle={true} allCourseRef={props.allCourseRef} /> */}
@@ -89,6 +147,10 @@ export default function HeaderHome(props) {
               className="ml-8 flex-grow-1 max-w-lg my-3"
             /> */}
 
+            {console.log('getGlobalToken')}
+            {console.log(GlobalHook.getGlobalToken)}
+            {console.log(GlobalHook.getGlobalCurrentUser)}
+
             {GlobalHook.getGlobalToken ? (
               <div className="ml-6 flex items-center">
                 <UserDropdown />
@@ -98,7 +160,7 @@ export default function HeaderHome(props) {
                   <Button
                     onClick={() => GlobalHook.setGlobalShowLoginModal(true)}
                   >
-                    Login / Signup
+                    Login / Signup jojo
                 </Button>
                 </div>
               )}

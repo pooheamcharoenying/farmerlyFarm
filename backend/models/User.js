@@ -7,95 +7,27 @@ const UserSchema = new Schema({
   uid: {
     type: String
   },
-  schoolAdminId: {
-    type: String
-  },
   role: {
     type: String,
     default: "user"
   },
-  pmid: {
-    type: String
-  },
-  rpid: {
-    type: String
-  },
-  courseSubscription: [
+  shoppingCart: [
     {
-      courseId: {
+      productName: {
         type: String
       },
-      courseLog: [
-        {
-          lessionId: {
-            type: String
-          },
-          lessionData: {
-            type: String
-          },
-          startTime: {
-            type: String
-          },
-          endTime: {
-            type: String
-          }
-
-        }
-      ],
-
-      quizLog: [
-        {
-          lessionId: {
-            type: String
-          },
-          quizData: {
-            type: Object
-          },
-          // logTime: {
-          //   type: String
-          // },
-          startTime: {
-            type: String
-          },
-          endTime: {
-            type: String
-          },
-          passResult: {
-            type: Boolean
-          }
-        }
-      ]
+      productQuantity: {
+        type: String
+      },
     }
   ],
-  teacherCourse: [
+  orderHistory: [
     {
       courseId: {
         type: String
       }
     }
   ],
-  schoolCourse: [
-    {
-      schoolId: {
-        type: String
-      },
-      schoolApproved: {
-        type: Boolean
-      },
-      SchoolCourseList: [
-        {
-          courseId: {
-            type: String
-          }
-        }
-      ],
-
-    }
-  ],
-  date: {
-    type: Date,
-    default: Date.now
-  },
   teacherPayment_AccountHolderName: {
     type: String
   },

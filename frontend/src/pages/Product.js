@@ -13,7 +13,7 @@ import Footer from "../components/footer/Footer";
 import SideBar from "../components/sideBar/SideBarCourse";
 import CourseContent from "../components/courseContent/CourseContent";
 
-import { getCourseContentAction, GetCourseSettingAction, FetchAllProducts, FetchAllFarms } from "../actions";
+import { getCourseContentAction, GetCourseSettingAction, FetchAllProducts, FetchAllFarms, UpdateShoppingCartAction } from "../actions";
 import { GlobalContext } from "../hook/GlobalHook";
 export default function Course() {
   let { productSlug } = useParams();
@@ -38,7 +38,7 @@ export default function Course() {
         }
         FetchAllFarms()
           .then(farmData => {
-            setFarmData(farmData[0])
+            setFarmData(farmData)
           })
       })
 
@@ -121,24 +121,24 @@ export default function Course() {
               {console.log(getFarmData)}
               {/* <img className=" object-cover rounded-lg rounded-b-none" src={getFarmData.farmImageURI}  style={{ maxWidth:"60px",minHeight: "350px", maxHeight: "350px", marginTop: "10px" }}></img>               */}
               <div>
-                <div style={{ float: "left" }}>
-                  <Avatar
-                    size={80}
-                    className="cursor-pointer"
-                    src={getFarmData.farmImageURI}
-                  />
-                  <div style={{ textAlign: "center", lineHeight: "1.5em", height: "3em", overflow: "hidden" }}>
-                    <p >{getFarmData.farmName}</p>
-                  </div>
-                </div>
 
-                <div style={{ float: "left" }}>
-                  <Avatar
-                    size={60}
-                    className="cursor-pointer"
-                    src={getFarmData.farmImageURI}
-                  />
-                </div>
+                {getFarmData.map((item) => {
+                  return (
+                    <div style={{ float: "left", marginLeft: "10px", marginTop: "10px" }}>
+                      <Avatar
+                        size={80}
+                        className="cursor-pointer"
+                        src={item.farmImageURI}
+                      />
+                      <div style={{ textAlign: "center", lineHeight: "1.5em", height: "6em", overflow: "hidden", width: "80px" }}>
+                        <p >{item.farmName }</p>
+                      </div>
+                    </div>
+                  )
+                })}
+
+
+
               </div>
 
 
@@ -147,7 +147,42 @@ export default function Course() {
             </div>
 
             <div style={{ width: "100%", textAlign: "center" }}>
-              <button className="rounded bg-blue-400 " style={{ width: "100px", height: "60px" }}> Add to Cart</button>
+              <button 
+                onClick={() => {
+                 
+
+                  // tempArray = GlobalHook.getGlobalCart;
+                  // tempArray.push(getProduct.productName)
+                  // GlobalHook.setGlobalCart(tempArray )
+                  // GlobalHook.setGlobalCartEvent(true)
+                  // console.log(tempArray)
+                  
+                  GlobalHook.setGlobalCartEvent(true)
+                  var tempArray = [];
+                  tempArray = GlobalHook.getGlobalCart;
+                  var matchFound = tempArray.filter(element => element.productName == getProduct.productName)
+                  console.log(matchFound)
+
+                  if (matchFound.length > 0) {
+                    matchFound[0].productQuantity = matchFound[0].productQuantity + 1; 
+                  } else {
+                    tempArray.push({
+                      productName: getProduct.productName,
+                      productQuantity: 1, 
+                    })
+                  }
+                  console.log(tempArray)
+                  if (GlobalHook.getGlobalUser) {
+                    UpdateShoppingCartAction(GlobalHook.getGlobalUser.uid, tempArray)
+                  }
+                  localStorage.setItem( 'shoppingCart', JSON.stringify(tempArray) )
+
+
+                }}
+                className="rounded bg-blue-400 " 
+                style={{ width: "100px", height: "60px" }}> 
+                  Add to Cart
+              </button>
             </div>
 
 

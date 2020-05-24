@@ -163,6 +163,41 @@ function GetFirebaseUserByEmail(userEmail) {
 }
 
 
+function UpdateShoppingCartAction(uid, shoppingCart) {
+  // GlobalHook.setGlobalLoading(true);
+
+
+  const tempShoppingCart = []
+
+  for (var item of shoppingCart) {
+    tempShoppingCart.push( 
+      {
+      productName: item.productName,
+      productQuantity: item.productQuantity,
+      }
+    )
+  }
+
+  console.log('shoppingCart')
+  console.log(tempShoppingCart)
+
+  const pushData = {
+    uid: uid,
+    shoppingCart: tempShoppingCart,
+  };
+
+  return axios
+    .post("/api/user/updateshoppingcartaction", pushData)
+    .then(res => {
+      console.log('successorial')
+      // GlobalHook.setGlobalCoursePool(res.data);
+      // GlobalHook.setGlobalLoading(false);
+      return "success"
+    })
+    .catch(err => console.log(err));
+
+}
+
 async function ResetPassAction(GlobalHook, email) {
   GlobalHook.setGlobalShowLoginModal(false);
 
@@ -396,4 +431,4 @@ function DeleteUserCourseDataDB(GlobalHook) {
 }
 
 
-export {  GetFirebaseUserByEmail, DeleteUserCourseDataDB,  LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction, LessionVisitedLogAction, QuizLogAction, ResetPassAction, GetUserByIdAction, GetManyUsersFromDB, GetManyUsersFromFirebase, UpdateFirebaseUser };
+export { GetTokenAction, UpdateShoppingCartAction, GetFirebaseUserByEmail, DeleteUserCourseDataDB,  LoginAction, SignUpAction, LogoutAction, CourseSubscriptionAction, LessionVisitedLogAction, QuizLogAction, ResetPassAction, GetUserByIdAction, GetManyUsersFromDB, GetManyUsersFromFirebase, UpdateFirebaseUser };

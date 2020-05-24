@@ -229,6 +229,7 @@ export default function Dashboard() {
         <div className="w-10/12 rounded-lg text-center text-white py-2 text-2xl font-bold mb-8 md:mb-10 bg-green-500">
           School Admin: {" "} {GlobalHook.getGlobalSchoolInfo.schoolName}
         </div>
+        
         <div className="flex flex-row flex-wrap justify-around w-full bg-white p-4">
           <div className="" style={{ width: "auto" }}>
             <div className="mb-4 font-semibold text-xl">

@@ -6,7 +6,7 @@ import Header from "../components/header/HeaderHome";
 import Banner from "../components/banner/Banner";
 import MyCourse from "../components/myCourse/MyCourse";
 import MySchool from "../components/schoolCourse/MySchool";
-import AllSchool from "../components/schoolCourse/AllSchool";
+import MyCart from "../components/schoolCourse/MyCart";
 import AllCourse from "../components/allCourse/AllCourse";
 
 import Footer from "../components/footer/Footer";
@@ -48,9 +48,8 @@ export default function SchoolMenu() {
       </Helmet>
       <Header />
      
-      <MySchool />
 
-      <AllSchool/>
+      <MyCart/>
       
 
 

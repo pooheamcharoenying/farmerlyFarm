@@ -220,9 +220,20 @@ const Store = props => {
   const [getFilteredCourseData, setFilteredCourseData] = useState([])
   const [getGlobalCourseMainSubjectFilter, setGlobalCourseMainSubjectFilter] = useState(["All Subjects"])
 
+  const [getGlobalCart, setGlobalCart] = useState([])
+  const [getGlobalCartEvent, setGlobalCartEvent] = useState(false)
+
 
   ///Generate GlobalHook///
   const GlobalHook = {
+
+    getGlobalCart,
+    setGlobalCart,
+
+    getGlobalCartEvent,
+    setGlobalCartEvent,
+
+
     getGlobalToken,
     setGlobalToken,
 

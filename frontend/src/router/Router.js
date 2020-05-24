@@ -8,7 +8,7 @@ import Studio from "../pages/Studio"
 import Admin from '../pages/Admin';
 import School from '../pages/School'
 import SchoolAdmin from '../pages/SchoolAdmin'
-import SchoolMenu from '../pages/SchoolMenu'
+import ShoppingCart from '../pages/ShoppingCart'
 import Schoolinvite from '../pages/SchoolInvite'
 
 import NoMatch from '../pages/NoMatch';
@@ -26,7 +26,7 @@ function RouterMain() {
         <Route exact path="/dashboard/" component={Dashboard}/>
         <Route exact path="/teacher" component={Teacher}/>
         <Route exact path="/teacher/:courseSlug" component={Studio}/>
-        <Route exact path="/school" component={SchoolMenu}/>
+        <Route exact path="/school" component={ShoppingCart}/>
         <Route exact path="/school/:schoolSlug" component={School}/>
         <Route exact path="/admin" component={Admin}/>
         <Route exact path="/schooladmin" component={SchoolAdmin}/>
