@@ -23,7 +23,7 @@
     "firebase": "^7.7.0",
     "image-data-uri": "^2.0.1",
     "js-cookie": "^2.2.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "jwt-decode": "^2.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
